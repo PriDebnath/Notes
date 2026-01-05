@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/Quotes-Keeper-3/", // 👈 EXACT repo name
+  base: "/Quotes-Keeper-3/", // 👈 EXACT repo name (for github pages)
   plugins: [
     react(
       {

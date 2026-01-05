@@ -76,7 +76,7 @@ function App() {
 
   return (
     <main>
-      <div className="flex gap-4">
+      <div className="flex gap-4 mb-4">
         <h3>List Quote</h3>
         <Button onClick={openAddDialog} > <PlusIcon /> Add Quote </Button>
       </div>

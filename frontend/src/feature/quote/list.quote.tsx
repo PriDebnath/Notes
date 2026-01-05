@@ -18,7 +18,7 @@ export function ListQuote(props: Props) {
         loading && <p>Loading quotes...</p>
       }
       {
-        (quotes?.length <= 0 ) &&  (
+        ( !loading &&quotes?.length <= 0 ) &&  (
            <p className="text-center text-gray-500">No quotes available.</p>
         )
       }

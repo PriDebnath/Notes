@@ -1,0 +1,14 @@
+{
+  "name": "quotes-keeper",
+  "private": true,
+  "scripts": {
+    "install:packages": "pnpm install",
+    "install:packages:lockfile": "pnpm install --frozen-lockfile",
+    "build:frontend": "pnpm --filter frontend build",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:f": "pnpm --filter frontend dev",
+    "dev:backend": "cd backend && bun dev",
+    "dev:b": "cd backend && bun dev",
+    "clean": "rm -rf frontend/node_modules backend/node_modules"
+  }
+}

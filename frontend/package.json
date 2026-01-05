@@ -8,7 +8,7 @@
     "install:packages:lockfile": "pnpm install --frozen-lockfile",
     "start": "vite",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

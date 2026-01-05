@@ -1,19 +1,16 @@
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import type { Quote } from "@/model/quote.model"
 import { Textarea } from "@/components/ui/textarea"
-import { useState, type Dispatch, type SetStateAction } from "react"
+import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
 
 interface Props {
   open: boolean;
@@ -26,11 +23,28 @@ interface Props {
 export default function AddEditQuoteDialog(props: Props) {
 
   const { quote, mode, open, setOpen, handleSubmit } = props
-  let [quoteData, setQuoteData] = useState<Quote | null>(quote)
+  const [quoteData, setQuoteData] = useState<Quote | null>(quote)
+  // Sync quoteData when quote prop changes or when dialog opens in add mode
+  useEffect(() => {
+    if (open) {
+      if (quote) {
+        setQuoteData(quote)
+      } else {
+        setQuoteData({ text: "" })
+      }
+    }
+  }, [quote, open, mode])
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (quoteData && quoteData.text.trim()) {
+      handleSubmit(quoteData)
+    }
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <form onSubmit={()=>handleSubmit(quoteData!)}>
+      <form onSubmit={handleFormSubmit}>
         {/* <DialogTrigger asChild>
           <Button variant="outline">Add Quote</Button>
         </DialogTrigger> */}
@@ -51,25 +65,28 @@ export default function AddEditQuoteDialog(props: Props) {
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="name-1">Quote</Label>
-              <Textarea id="name-1" name="name" defaultValue={quote && quote.text || ""}
-              onChange={(text)=>{
-                let textValue = (text.target as HTMLTextAreaElement).value
-
-                console.log({text, textValue})
-
-                setQuoteData({
-                  ...quoteData,
-                  id: quoteData ? quoteData.id : performance.now(),
-                  text: textValue
-                })
-              }} />
+              <Textarea 
+                id="name-1" 
+                name="name" 
+                value={quoteData?.text || ""}
+                onChange={(e)=>{
+                  const textValue = e.target.value
+                  setQuoteData({
+                    ...quoteData,
+                    id: quoteData?.id, // Preserve id when editing
+                    text: textValue
+                  })
+                }} 
+              />
             </div>
           </div>
           <DialogFooter>
             {/* <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose> */}
-            <Button type="submit" onClick={()=>handleSubmit(quoteData!)}>Add Quote</Button>
+            <Button type="submit" onClick={handleFormSubmit}>
+              {mode == "add" ? "Add Quote" : "Update Quote"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </form>

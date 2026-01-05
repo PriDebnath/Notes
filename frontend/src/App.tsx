@@ -1,39 +1,24 @@
 import './App.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PlusIcon } from 'lucide-react'
 import { Button } from './components/ui/button'
 import type { Quote } from './model/quote.model'
 import { ListQuote } from './feature/quote/list.quote'
 import AddEditQuoteDialog from '@/feature/quote/dialog/add-edit.quote.dialog'
-
-let quotesMock = [
-  {
-    id: 1,
-    text: "Q 1"
-  },
-  {
-    id: 2,
-    text: "Q 2"
-  }
-]
+import { getAllQuotes, addQuote, updateQuote, deleteQuote } from '@/db/quote.db'
 
 function App() {
-
+  const [loading, setLoading] = useState(false)
+  const [quotes, setQuotes] = useState<Quote[]>([])
   const [openDialog, setOpenDialog] = useState(false)
   const [addOrEdit, setAddOrEdit] = useState<"add" | "edit">("add")
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
-  const [quotes, setQuotes] = useState<Quote[]>(quotesMock)
 
   const openAddDialog = () => {
+    setAddOrEdit("add")    
     setSelectedQuote(null)
-    setAddOrEdit("add")
     setOpenDialog(true)
   }
-
-  const addQuote = (quote: Quote) => {
-    setQuotes([...quotes, quote])
-  }
-
 
   const openEditDialog = (quote: Quote) => {
     setSelectedQuote(quote)
@@ -41,19 +26,40 @@ function App() {
     setOpenDialog(true)
   }
 
-  const handleSubmit = (quote: Quote) => {
+  const handleSubmit = async (quote: Quote) => {
     console.log(quote)
-    let editedQuote = quotes.find((quote) => quote.id == quote.id)
-    let editedQuoteIndex = quotes.indexOf(editedQuote!)
-    quotes[editedQuoteIndex] = quote
-    let newQuotes = quotes
-    setQuotes(newQuotes)
+    if (quote.id) { // edit
+      await updateQuote(quote)
+    } else {
+      await addQuote({
+        ...quote    ,
+            id: new Date().getTime(),
+      })
+    }
+    fetchQuotes()
     setOpenDialog(false)
-  }
-
-  const openEditDeleteDialog = (quote: Quote) => {
+        setSelectedQuote(null)
 
   }
+
+  const openEditDeleteDialog = async (quote: Quote) => {
+    await deleteQuote(quote.id!)
+    fetchQuotes();
+
+  }
+
+  const fetchQuotes = async () => {
+    const storedQuotes = await getAllQuotes();
+    console.log({ storedQuotes });
+    setLoading(false)
+        setSelectedQuote(null)
+    setQuotes(storedQuotes);
+  };
+
+  useEffect(() => {
+    setLoading(true)
+    fetchQuotes();
+  }, []);
 
   return (
     <main>
@@ -62,7 +68,7 @@ function App() {
         <Button onClick={openAddDialog} > <PlusIcon /> Add Quote </Button>
       </div>
 
-      <ListQuote quotes={quotes} onEdit={openEditDialog} onDelete={openEditDeleteDialog} />
+      <ListQuote loading={loading} quotes={quotes} onEdit={openEditDialog} onDelete={openEditDeleteDialog} />
 
       <AddEditQuoteDialog
         mode={addOrEdit}

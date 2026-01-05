@@ -1,20 +1,27 @@
-import { PenIcon } from "lucide-react"
+import { PenIcon, Trash } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Quote } from "@/model/quote.model"
 
-
 interface Props {
+  loading: boolean
   quotes: Quote[];
   onEdit:(quote: Quote) => void
   onDelete:(quote: Quote) => void
 }
 
-
 export function ListQuote(props: Props) {
-  let { quotes, onEdit, onDelete } = props
+  let { loading, quotes, onEdit, onDelete } = props
 
   return (
     <div>
+      {
+        loading && <p>Loading quotes...</p>
+      }
+      {
+        (quotes?.length <= 0 ) &&  (
+           <p className="text-center text-gray-500">No quotes available.</p>
+        )
+      }
       {
         (quotes && quotes?.length > 0) && (
           <div className="flex flex-col gap-4">
@@ -25,6 +32,9 @@ export function ListQuote(props: Props) {
                   <p>{q.text}</p>
                   <Button onClick={()=>onEdit(q)}>
                     <PenIcon/>
+                  </Button>
+                   <Button onClick={()=>onDelete(q)}>
+                    <Trash/>
                   </Button>
                 </div>
               )

@@ -1,4 +1,4 @@
 export interface Quote{
-    id: number;
+    id?: number | undefined;
     text: string;
 }

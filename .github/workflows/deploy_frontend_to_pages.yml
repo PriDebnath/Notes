@@ -27,7 +27,7 @@ jobs:
       - name: Install Dependencies
         run: |
           cd frontend
-          npm run install:packages
+          pnpm install 
    
       - name: Build Frontend App
         env:

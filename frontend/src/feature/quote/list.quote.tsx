@@ -13,15 +13,15 @@ export function ListQuote(props: Props) {
   const { loading, quotes, onEdit, onDelete } = props
 
   if (loading) {
-    return <p className="loading-text">Loading quotes...</p>
+    return <p className="">Loading quotes...</p>
   }
 
   if (!quotes || quotes.length === 0) {
-    return <p className="empty-text">No quotes available.</p>
+    return <p className="">No quotes available.</p>
   }
 
   return (
-    <div className="quotes-list">
+    <div className="flex flex-col gap-4">
       {quotes.map((q) => {
         return (
           <div key={q.id}>

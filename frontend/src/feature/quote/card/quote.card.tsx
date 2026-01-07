@@ -13,7 +13,7 @@ interface Props {
 const QuoteCard = (props: Props) => {
     const { quote, onEdit, onDelete, } = props
     const [copying, setCopying] = useState(false)
-    
+
     const onCopy = async (text: string) => {
         setCopying(true)
         await window.navigator.clipboard.writeText(text)
@@ -30,8 +30,8 @@ const QuoteCard = (props: Props) => {
             "transition-shadow duration-200"
         )
     }>
-        <div className="quote-content">
-            <p className="quote-text">{quote.text}</p>
+        <div className="">
+            <p className="">{quote.text}</p>
             {/* {(q.author || q.book) && (
                 <p className="quote-attribution">
                   {q.author && q.book 

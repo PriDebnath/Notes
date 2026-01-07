@@ -13,7 +13,7 @@ export const quotes = pgTable(
         text: text('text').notNull(),
         createdAt: timestamp('created_at').defaultNow().notNull(),
         updatedAt: timestamp('updated_at').defaultNow().notNull(),
-        deletedAt: timestamp('deleted_at').notNull(),
+        deletedAt: timestamp('deleted_at'),
         isDeleted: boolean('is_deleted').default(false).notNull(),
     }
 )

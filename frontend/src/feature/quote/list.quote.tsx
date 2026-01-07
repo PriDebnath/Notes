@@ -1,9 +1,6 @@
-import { useState } from "react";
-import { PenIcon, SearchIcon, Trash } from "lucide-react"
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button"
+import { PenIcon, Copy } from "lucide-react"
 import type { Quote } from "@/model/quote.model"
-import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
+import QuoteCard from "@/feature/quote/card/quote.card";
 
 interface Props {
   loading: boolean
@@ -14,45 +11,24 @@ interface Props {
 
 export function ListQuote(props: Props) {
   const { loading, quotes, onEdit, onDelete } = props
-  const [inputValue, setInputValue] = useState("")
+
+  if (loading) {
+    return <p className="loading-text">Loading quotes...</p>
+  }
+
+  if (!quotes || quotes.length === 0) {
+    return <p className="empty-text">No quotes available.</p>
+  }
 
   return (
-    <div>
-
-      <InputGroup className="mb-4">
-        <InputGroupInput placeholder="Search..." />
-        <InputGroupAddon>
-          <SearchIcon />
-        </InputGroupAddon>
-      </InputGroup>
-      {
-        loading && <p>Loading quotes...</p>
-      }
-      {
-        (!loading && quotes?.length <= 0) && (
-          <p className="text-center text-gray-500">No quotes available.</p>
-        )
-      }
-      {
-        (quotes && quotes?.length > 0) && (
-          <div className="flex flex-col gap-4">
-            {quotes.map((q) => {
-              return (
-                <div key={q.id + q.text.slice(0, 5)}
-                  className=" px-4 py-2 flex items-center justify-between border border-grey-200">
-                  <p>{q.text}</p>
-                  <Button onClick={() => onEdit(q)}>
-                    <PenIcon />
-                  </Button>
-                  <Button onClick={() => onDelete(q)}>
-                    <Trash />
-                  </Button>
-                </div>
-              )
-            })}
+    <div className="quotes-list">
+      {quotes.map((q) => {
+        return (
+          <div key={q.id}>
+            <QuoteCard quote={q} onEdit={onEdit} onDelete={onDelete} />
           </div>
         )
-      }
+      })}
     </div>
   )
 }

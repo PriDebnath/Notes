@@ -1,8 +1,22 @@
 import { Elysia, t } from 'elysia'
 import { quoteService } from '@/src/module/quote/service'
-import { createQuoteSchema } from '@/src/module/quote/type'
+import { createQuoteSchema, getQuoteSchema } from '@/src/module/quote/type'
 
 export const quote = new Elysia({ prefix: '/quote' })
+    .get(
+        '/:id',
+        async ({ params, cookie: { session } }) => {
+            const response = await quoteService.getQuote(params.id)
+            return response
+        }, {
+        params: getQuoteSchema,
+        detail: {
+            summary: 'Get a quote by id',
+            description: 'Get a quote by id',
+            tags: ['quote'],
+        }
+    }
+    )
     .get(
         '/',
         async ({ body, cookie: { session } }) => {

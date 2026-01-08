@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button"
 import type { Quote } from "@/model/quote.model"
 import { Textarea } from "@/components/ui/textarea"
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
+import Tiptap from "@/components/common/tiptap"
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
 
 interface Props {
   open: boolean;
@@ -48,7 +50,7 @@ export default function AddEditQuoteDialog(props: Props) {
         {/* <DialogTrigger asChild>
           <Button variant="outline">Add Quote</Button>
         </DialogTrigger> */}
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className=" ">
           <DialogHeader>
             <DialogTitle>
               {mode == "add" ? "Add " : "Edit "}
@@ -65,7 +67,7 @@ export default function AddEditQuoteDialog(props: Props) {
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="name-1">Quote</Label>
-              <Textarea 
+              {/* <Textarea 
                 id="name-1" 
                 name="name" 
                 value={quoteData?.text || ""}
@@ -77,7 +79,9 @@ export default function AddEditQuoteDialog(props: Props) {
                     text: textValue
                   })
                 }} 
-              />
+              /> */}
+              {/* <Tiptap  /> */}
+              <SimpleEditor />
             </div>
           </div>
           <DialogFooter>

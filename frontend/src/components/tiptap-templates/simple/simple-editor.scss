@@ -60,7 +60,8 @@ body,
   overflow: auto;
   width: 100%;
   height: 60vh;
-
+  border: 2px solid var(--tt-border-color);
+  border-radius: 0.5rem;
 }
 
 .simple-editor-content {

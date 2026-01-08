@@ -18,7 +18,7 @@ interface Props {
   open: boolean;
   mode: "add" | "edit";
   quote: Quote | null;
-  handleSubmit: (quote: Quote)=> void;
+  handleSubmit: (quote: Quote) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -37,37 +37,45 @@ export default function AddEditQuoteDialog(props: Props) {
     }
   }, [quote, open, mode])
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (quoteData && quoteData.text.trim()) {
-      handleSubmit(quoteData)
-    }
+  const onChange = (text: string) => {    
+    setQuoteData({
+      ...quoteData,
+      id: quoteData?.id, // Preserve id when editing
+      text: text
+    })
   }
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <form onSubmit={handleFormSubmit}>
-        {/* <DialogTrigger asChild>
+const handleFormSubmit = (e: React.FormEvent) => {
+  e.preventDefault()
+  if (quoteData && quoteData.text.trim()) {
+    handleSubmit(quoteData)
+  }
+}
+
+return (
+  <Dialog open={open} onOpenChange={setOpen}>
+    <form onSubmit={handleFormSubmit}>
+      {/* <DialogTrigger asChild>
           <Button variant="outline">Add Quote</Button>
         </DialogTrigger> */}
-        <DialogContent className=" ">
-          <DialogHeader>
-            <DialogTitle>
-              {mode == "add" ? "Add " : "Edit "}
-              Quote
-            </DialogTitle>
-            <DialogDescription>
-              {
-                mode == "add"
-                  ? "Add a new quote to your collection."
-                  : "Edit the quote details below."
-              }
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4">
-            <div className="grid gap-3">
-              <Label htmlFor="name-1">Quote</Label>
-              {/* <Textarea 
+      <DialogContent className=" ">
+        <DialogHeader>
+          <DialogTitle>
+            {mode == "add" ? "Add " : "Edit "}
+            Quote
+          </DialogTitle>
+          <DialogDescription>
+            {
+              mode == "add"
+                ? "Add a new quote to your collection."
+                : "Edit the quote details below."
+            }
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4">
+          <div className="grid gap-3">
+            <Label htmlFor="name-1">Quote</Label>
+            {/* <Textarea 
                 id="name-1" 
                 name="name" 
                 value={quoteData?.text || ""}
@@ -80,20 +88,20 @@ export default function AddEditQuoteDialog(props: Props) {
                   })
                 }} 
               /> */}
-              {/* <Tiptap  /> */}
-              <SimpleEditor />
-            </div>
+            {/* <Tiptap  /> */}
+            <SimpleEditor value={quoteData?.text} onChange={onChange} />
           </div>
-          <DialogFooter>
-            {/* <DialogClose asChild>
+        </div>
+        <DialogFooter>
+          {/* <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose> */}
-            <Button type="submit" onClick={handleFormSubmit}>
-              {mode == "add" ? "Add Quote" : "Update Quote"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </form>
-    </Dialog>
-  )
+          <Button type="submit" onClick={handleFormSubmit}>
+            {mode == "add" ? "Add Quote" : "Update Quote"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </form>
+  </Dialog>
+)
 }

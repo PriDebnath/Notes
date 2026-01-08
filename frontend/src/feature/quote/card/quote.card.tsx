@@ -30,13 +30,15 @@ const QuoteCard = (props: Props) => {
             "transition-shadow duration-200"
         )
     }>
-    
-        <p className="text-xl font-bold text-purple-700">"{quote.text}"</p>
+
+        <p className="text-xl font-bold text-purple-700">
+            <div dangerouslySetInnerHTML={{ __html: quote.text }}></div>
+        </p>
         <p className="text-base w-full text-right">-- Pritam</p>
-                
+
         <div className="flex w-full items-end justify-between">
-        <div className="">
-            {/* {q.tags && q.tags.length > 0 && (
+            <div className="">
+                {/* {q.tags && q.tags.length > 0 && (
                 <div className="quote-tags">
                   {q.tags.map((tag, index) => (
                     <span key={index} className="quote-tag">
@@ -45,41 +47,41 @@ const QuoteCard = (props: Props) => {
                   ))}
                 </div>
               )} */}
-              <span  className="text-purple-400">  #tag</span>
-              <span  className="text-purple-400">  #tag</span>
-              <span  className="text-purple-400">  #tag</span>
-              <span  className="text-purple-400">  #tag</span>
-              <span  className="text-purple-400">  #tag</span>
-              <span  className="text-purple-400">  #tag</span>
-              <span  className="text-purple-400">  #tag</span>
-        </div>
-        <div className="flex items-center gap-2 ">
-            <Button
-                className="!bg-transparent border !border-gray-300"
-                variant={"ghost"}
-                onClick={() => onCopy(quote.text)}
-                aria-label="Copy quote"
-            >
-                {copying ? <Check className="text-green-500" /> : <Copy />}
-            </Button>
-            <Button
-                className="!bg-transparent border !border-gray-300"
-                variant={"outline"}
-                onClick={() => onEdit(quote)}
-                aria-label="Edit quote"
-            >
-                <PenIcon />
-            </Button>
+                <span className="text-purple-400">  #tag</span>
+                <span className="text-purple-400">  #tag</span>
+                <span className="text-purple-400">  #tag</span>
+                <span className="text-purple-400">  #tag</span>
+                <span className="text-purple-400">  #tag</span>
+                <span className="text-purple-400">  #tag</span>
+                <span className="text-purple-400">  #tag</span>
+            </div>
+            <div className="flex items-center gap-2 ">
+                <Button
+                    className="!bg-transparent border !border-gray-300"
+                    variant={"ghost"}
+                    onClick={() => onCopy(quote.text)}
+                    aria-label="Copy quote"
+                >
+                    {copying ? <Check className="text-green-500" /> : <Copy />}
+                </Button>
+                <Button
+                    className="!bg-transparent border !border-gray-300"
+                    variant={"outline"}
+                    onClick={() => onEdit(quote)}
+                    aria-label="Edit quote"
+                >
+                    <PenIcon />
+                </Button>
 
-            <Button
-                className="!bg-transparent border !border-gray-300"
-                variant={"secondary"}
-                onClick={() => onDelete(quote)}
-                aria-label="Delete quote"
-            >
-                {<Trash />}
-            </Button>
-        </div>
+                <Button
+                    className="!bg-transparent border !border-gray-300"
+                    variant={"secondary"}
+                    onClick={() => onDelete(quote)}
+                    aria-label="Delete quote"
+                >
+                    {<Trash />}
+                </Button>
+            </div>
         </div>
     </div>
     )

@@ -58,7 +58,7 @@ const QuoteCard = (props: Props) => {
             </div>
             <div className="flex items-center gap-2 ">
                 <Button
-                    className=" border !border-gray-300" size={"icon"}
+                    className="" size={"icon"}
                     variant={"ghost"}
                     onClick={() => onCopy(quote.text)}
                     aria-label="Copy quote"
@@ -66,7 +66,7 @@ const QuoteCard = (props: Props) => {
                     {copying ? <Check className="text-green-500" /> : <Copy />}
                 </Button>
                 <Button
-                    className="text-foreground hover:bg-accent"
+                    className=""
                     variant={"outline"}
                     onClick={() => onEdit(quote)}
                     aria-label="Edit quote"
@@ -75,8 +75,8 @@ const QuoteCard = (props: Props) => {
                 </Button>
 
                 <Button
-                    className=" border !border-gray-300"
-                    variant={"secondary"}
+                    className=""
+                    variant={"destructive"}
                     onClick={() => onDelete(quote)}
                     aria-label="Delete quote"
                 >

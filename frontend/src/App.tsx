@@ -1,3 +1,4 @@
+import './App.css'
 import { useEffect, useState } from 'react'
 import { PlusIcon, Home, BookOpen, Search, Settings, SearchIcon } from 'lucide-react'
 import type { Quote } from '@/model/quote.model'
@@ -112,9 +113,9 @@ className="rounded-b-2xl  sticky top-0 bg-purple-600 p-4">
           <span>Books</span>
         </button> */}
         <Button 
-          className="shadow-[0_0px_12px_rgba(1,255,1,0.4)] fixed bottom-4 !border-gray-500 border-lg "
+          className="shadow-[0_0px_12px_rgba(1,255,1,0.4)] fixed bottom-4 !border-gray-500 border-lg !bg-white"
           onClick={openAddDialog}>
-          <PlusIcon className='' />
+          <PlusIcon className='!text-green-500' />
         </Button>
         {/* <button className="nav-item">
           <Search size={24} />

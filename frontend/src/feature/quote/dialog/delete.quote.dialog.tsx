@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button"
 import type { Quote } from "@/model/quote.model"
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
+import { sanitizeHTML } from "@/helper/sanitize-html";
 
 interface Props {
   open: boolean;
@@ -23,7 +24,7 @@ export default function DeleteQuoteDialog(props: Props) {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-      handleDelete(quote!)
+    handleDelete(quote!)
   }
 
   return (
@@ -42,16 +43,13 @@ export default function DeleteQuoteDialog(props: Props) {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4">
-            <div>
-              {quote?.text}
-            </div>
-
+            <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quote?.text!) }}></div>
           </div>
           <DialogFooter>
             {/* <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose> */}
-            <Button type="submit" onClick={handleFormSubmit}>
+            <Button type="submit" onClick={handleFormSubmit} variant={'destructive'} className="">
               Delete Quote
             </Button>
           </DialogFooter>

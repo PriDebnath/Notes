@@ -54,7 +54,7 @@ export default function AddEditQuoteDialog(props: Props) {
         {/* <DialogTrigger asChild>
           <Button variant="outline">Add Quote</Button>
         </DialogTrigger> */}
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="">
           <DialogHeader>
             <DialogTitle>
               {mode == "add" ? "Add " : "Edit "}

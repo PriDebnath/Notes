@@ -5,6 +5,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -87,10 +88,12 @@ export default function AddEditQuoteDialog(props: Props) {
               <Tiptap value={quote?.text} onValueUpdate={onValueUpdate} />
             </div>
           </div>
-          <DialogFooter>
-            {/* <DialogClose asChild>
+          <DialogFooter className="flex no-wrap ">
+            {/* 
+            */}
+            <DialogClose asChild>
               <Button variant="outline">Close</Button>
-            </DialogClose> */}
+            </DialogClose>
             <Button type="submit" onClick={handleFormSubmit}>
               {mode == "add" ? "Add Quote" : "Update Quote"}
             </Button>

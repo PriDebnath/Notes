@@ -1,3 +1,4 @@
+//import "index.scss"
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import type { Quote } from '@/model/quote.model'
@@ -112,6 +113,7 @@ function App() {
           <span>Books</span>
         </button> */}
         <Button
+        size="lg"
           className=" fixed bottom-4 "
           onClick={openAddDialog}>
           <PlusIcon  />

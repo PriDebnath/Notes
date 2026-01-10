@@ -67,27 +67,30 @@ const QuoteCard = (props: Props) => {
             </div>
             <div className="flex items-center gap-2 ">
                 <Button
-                    className=" border !border-gray-300"
-                    variant={"ghost"}
+                    className="hover:text-green-600"
+                    variant={"outline"}
                     onClick={() => onCopy(quote.text)}
                     aria-label="Copy quote"
+                    size={"sm"}
                 >
                     {copying ? <Check className="text-green-500" /> : <Copy />}
                 </Button>
                 <Button
-                    className=" border !border-gray-300"
+                    className="hover:text-yellow-600"
                     variant={"outline"}
                     onClick={() => onEdit(quote)}
                     aria-label="Edit quote"
+                    size={"sm"}
                 >
                     <PenIcon />
                 </Button>
 
                 <Button
-                    className="  "
-                    variant={"destructive"}
+                    className=" hover:text-destructive"
+                    variant={"outline"}
                     onClick={() => onDelete(quote)}
                     aria-label="Delete quote"
+                    size={"sm"}
                 >
                     {<Trash />}
                 </Button>

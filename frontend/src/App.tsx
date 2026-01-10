@@ -72,31 +72,31 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-purple-100">
+    <div  className="bg-primary/10">
       {/* Purple Header */}
-      <header className="w-full text-white bg-purple-600 text-white p-4 flex flex-col items-center">
+      <header className="w-full text-white bg-primary  p-4 flex flex-col items-center">
         <h1 className="p-4">Quotes Keeper 3.0</h1>
-          
-          </header>
 
-{/* Sticky Search Bar */}
-<div 
-className="rounded-b-2xl  sticky top-0 bg-purple-600 p-4">
-           <InputGroup 
-           className=" mb-4 text-white border-white border">
-        <InputGroupInput placeholder="Search..." className='text-white' />
-        <InputGroupAddon>
-          <SearchIcon className='text-white'/>
-        </InputGroupAddon>
-      </InputGroup>
+      </header>
+
+      {/* Sticky Search Bar */}
+      <div
+        className="rounded-b-2xl  sticky top-0 bg-primary p-4">
+        <InputGroup
+          className=" mb-4 text-white border-white border">
+          <InputGroupInput placeholder="Search..." className='text-white' />
+          <InputGroupAddon>
+            <SearchIcon className='text-white' />
+          </InputGroupAddon>
+        </InputGroup>
       </div>
 
       {/* Main Content */}
-      <main className="p-4">
-        <ListQuote 
-          loading={loading} 
-          quotes={quotes} 
-          onEdit={openEditDialog} 
+      <main className="p-4 ">
+        <ListQuote
+          loading={loading}
+          quotes={quotes}
+          onEdit={openEditDialog}
           onDelete={openDeleteDialog}
         />
       </main>
@@ -111,10 +111,10 @@ className="rounded-b-2xl  sticky top-0 bg-purple-600 p-4">
           <BookOpen size={24} />
           <span>Books</span>
         </button> */}
-        <Button 
-          className="shadow-[0_0px_12px_rgba(1,255,1,0.4)] fixed bottom-4 !border-gray-500 border-lg !bg-white"
+        <Button
+          className=" fixed bottom-4 "
           onClick={openAddDialog}>
-          <PlusIcon className='!text-green-500' />
+          <PlusIcon  />
         </Button>
         {/* <button className="nav-item">
           <Search size={24} />

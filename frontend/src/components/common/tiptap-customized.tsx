@@ -24,18 +24,8 @@ const Tiptap = (props: Props) => {
 
   return (
     <div>
-      <button
-  onClick={() => {
-    console.log('can toggle:', editor.can().toggleBulletList())
-    editor.chain().focus().toggleBulletList().run()
-    console.log(editor.getHTML())
-  }}
->
-  <List />
-   
-</button>
-<TiptapToolbar editor={editor}/>
-      <EditorContent editor={editor} />
+<TiptapToolbar editor={editor} />
+      <EditorContent editor={editor} className='border rounded border-primary/20 active:border-primary' />
       {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
       <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
     </div>

@@ -41,9 +41,11 @@ import { useEditorState } from '@tiptap/react'
 
 interface Props {
   editor: Editor
+  isMobile?: boolean
+  isFocused?: boolean
 }
 
-export default function TiptapToolbar({ editor }: Props) {
+export default function TiptapToolbar({ editor, isMobile = false, isFocused = false }: Props) {
   const state = useEditorState({
     editor,
     selector: ({ editor }) => ({
@@ -72,7 +74,14 @@ export default function TiptapToolbar({ editor }: Props) {
   })
 
   return (
-    <Toolbar variant="floating" className="flex-wrap gap-1 border rounded">
+    <Toolbar 
+      variant="floating" 
+      className={`flex-wrap gap-1 border rounded ${
+        isMobile && isFocused 
+          ? 'mobile-toolbar-fixed' 
+          : ''
+      }`}
+    >
       {/* TEXT MARKS */}
       <ToolbarGroup>
         <Button  className="  " 

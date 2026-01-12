@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
 import Tiptap from "@/components/common/tiptap-customized"
 import TagField from "@/feature/quote/form-field/tag"
+import { Separator } from "@/components/ui/separator"
 
 interface Props {
   open: boolean;
@@ -89,7 +90,10 @@ export default function AddEditQuoteDialog(props: Props) {
               <Tiptap value={quote?.text} onValueUpdate={onValueUpdate} />
             </div>
           </div>
+          <Separator className="my-4" />
           <TagField/>
+          <Separator className="my-4" />
+
           <DialogFooter className="flex no-wrap ">
             {/* 
             */}

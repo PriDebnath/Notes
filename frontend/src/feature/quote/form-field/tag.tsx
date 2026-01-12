@@ -5,6 +5,7 @@ import type { Quote } from "@/model/quote.model";
 import { Check, Copy, PenIcon, Trash, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Label } from "@/components/ui/label"
+import { ChooseTagDropdown } from "@/feature/quote/dropdown/choose-tag"
 
 interface Props {
 
@@ -17,13 +18,7 @@ const TagField = () => {
     <div >
     <div className="flex items-center justify-between">
       <Label htmlFor="tag">Tag</Label>
-
-        <Button
-        variant={"outline"}
-        size="icon"
-          className="   ">
-          <PlusIcon  />
-        </Button>
+        <ChooseTagDropdown />
     </div>
     </div>
     )

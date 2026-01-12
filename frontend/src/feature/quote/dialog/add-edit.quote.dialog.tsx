@@ -13,6 +13,7 @@ import type { Quote } from "@/model/quote.model"
 import { Textarea } from "@/components/ui/textarea"
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
 import Tiptap from "@/components/common/tiptap-customized"
+import TagField from "@/feature/quote/form-field/tag"
 
 interface Props {
   open: boolean;
@@ -88,6 +89,7 @@ export default function AddEditQuoteDialog(props: Props) {
               <Tiptap value={quote?.text} onValueUpdate={onValueUpdate} />
             </div>
           </div>
+          <TagField/>
           <DialogFooter className="flex no-wrap ">
             {/* 
             */}

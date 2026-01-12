@@ -5,3 +5,15 @@ export interface Quote{
     // book?: string;
     // tags?: string[];
 }
+
+
+export interface Tag{
+    id?: number | undefined;
+    name: string;
+}
+
+export interface QuoteTags{
+    id?: number | undefined;
+    quoteId: number;
+    tagId: number;
+}

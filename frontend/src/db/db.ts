@@ -10,6 +10,9 @@ const DB_VERSION = 1 ;
 
 export const STORES = {
     QUOTES: 'quotes',
+    TAGS: 'tags',
+
+    QUOTES_TAGS: 'quotes_tags', // many to many relationship between quotes and tags.
 } as const;
 
 export const openDB = (): Promise<IDBDatabase> => {

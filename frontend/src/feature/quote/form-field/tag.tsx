@@ -8,20 +8,20 @@ import { Label } from "@/components/ui/label"
 import { ChooseTagDropdown } from "@/feature/quote/dropdown/choose-tag"
 
 interface Props {
-
+  onChoose: (tag: string) => void
 }
 
-const TagField = () => {
+const TagField = (props: Props) => {
+  const { onChoose } = props
 
-
-    return (
+  return (
     <div >
-    <div className="flex items-center justify-between">
-      <Label htmlFor="tag">Tag</Label>
-        <ChooseTagDropdown />
+      <div className="flex items-center justify-between">
+        <Label htmlFor="tag">Tag</Label>
+        <ChooseTagDropdown onChoose={onChoose} />
+      </div>
     </div>
-    </div>
-    )
+  )
 }
 
 export default TagField

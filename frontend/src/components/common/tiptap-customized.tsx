@@ -33,7 +33,7 @@ const Tiptap = (props: Props) => {
                 focus:outline-none
             ">   {/* IMPORTANT */}
       <EditorContent editor={editor} className='border rounded border-primary/20 active:border-primary' />
-    <TiptapToolbar editor={editor} />
+    {/* <TiptapToolbar editor={editor} /> */}
       {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
       <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
     </div>

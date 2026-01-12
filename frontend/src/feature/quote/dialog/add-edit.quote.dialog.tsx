@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import type { Quote } from "@/model/quote.model"
+import type { Quote, QuoteFormData } from "@/model/quote.model"
 import { Textarea } from "@/components/ui/textarea"
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
 import Tiptap from "@/components/common/tiptap-customized"
@@ -27,7 +27,7 @@ interface Props {
 export default function AddEditQuoteDialog(props: Props) {
 
   const { quote, mode, open, setOpen, handleSubmit } = props
-  const [quoteData, setQuoteData] = useState<Quote | null>(quote)
+  const [quoteData, setQuoteData] = useState<QuoteFormData | null>(quote)
   // Sync quoteData when quote prop changes or when dialog opens in add mode
   useEffect(() => {
     if (open) {
@@ -41,14 +41,28 @@ export default function AddEditQuoteDialog(props: Props) {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (quoteData && quoteData.text.trim()) {
-      handleSubmit(quoteData)
+    if (quoteData && quoteData?.text?.trim()) {
+      handleSubmit({
+        ...quoteData,
+        text: quoteData.text || ""
+      })
     }
   }
 
 
   const onValueUpdate = (text: string) => {
     setQuoteData({ text: text })
+  }
+
+  const onTagChoose = (tag: string) => {
+    console.log({ tag })
+    const selectedTags = quoteData?.tags || []
+    selectedTags.push(tag)
+    const tags = [...new Set(selectedTags)]
+    setQuoteData({
+      ...quoteData,
+      tags: tags
+    })
   }
 
   return (
@@ -91,7 +105,7 @@ export default function AddEditQuoteDialog(props: Props) {
             </div>
           </div>
           <Separator className="my-4" />
-          <TagField/>
+          <TagField onChoose={onTagChoose} />
           <Separator className="my-4" />
 
           <DialogFooter className="flex no-wrap ">

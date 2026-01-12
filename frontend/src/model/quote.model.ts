@@ -17,3 +17,10 @@ export interface QuoteTags{
     quoteId: number;
     tagId: number;
 }
+
+
+export interface QuoteFormData{
+  id?: number | undefined;
+  text?: string;
+  tags?: string[];
+}

@@ -1,7 +1,7 @@
 //import "index.scss"
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import type { Quote } from '@/model/quote.model'
+import type { Quote, QuoteFormData } from '@/model/quote.model'
 import { ListQuote } from '@/feature/quote/list.quote'
 import DeleteQuoteDialog from '@/feature/quote/dialog/delete.quote.dialog'
 import AddEditQuoteDialog from '@/feature/quote/dialog/add-edit.quote.dialog'
@@ -35,22 +35,26 @@ function App() {
     setOpenedDeleteDialog(true)
   }
 
-  const handleSubmit = async (quote: Quote) => {
+  const handleSubmit = async (quote: QuoteFormData) => {
     console.log(quote)
-    if (quote.id) { // edit
-      await updateQuote(quote)
-    } else {
-      await addQuote({
-        ...quote,
-        id: new Date().getTime(),
-      })
-    }
-    fetchQuotes()
-    setOpenAddOrEditDialog(false)
-    setSelectedQuote(null)
+    // if (quote.id) { // edit
+    //   await updateQuote({
+    //     ...quote,
+    //     text: quote.text || "Empty"
+    //   })
+    // } else {
+    //   await addQuote({
+    //     ...quote,
+    //     text: quote.text || "Empty",
+    //     id: new Date().getTime(),
+    //   })
+    // }
+    // fetchQuotes()
+    // setOpenAddOrEditDialog(false)
+    // setSelectedQuote(null)
   }
 
-  const handleDeleteSubmit = async (quote: Quote) => {
+  const handleDeleteSubmit = async (quote: QuoteFormData) => {
     console.log("deleted")
     await deleteQuote(quote.id!)
     console.log("deleted")

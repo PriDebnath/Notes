@@ -15,7 +15,13 @@ import {
 import { PlusIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-export function ChooseTagDropdown() {
+interface Props {
+    onChoose: (tag: string) => void
+}
+
+export function ChooseTagDropdown(props: Props) {
+    const { onChoose } = props
+
     const CATEGORY_TAGS = {
         emotion: [
             "happiness",
@@ -84,9 +90,12 @@ export function ChooseTagDropdown() {
                     <PlusIcon />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56  " align="start">
-                <DropdownMenuLabel className="sticky top-0 backdrop-blur-sm   z-10">Tags</DropdownMenuLabel>
-                <DropdownMenuSeparator />
+            <DropdownMenuContent className="w-56 m-0 p-0 " align="start">
+                <div className="sticky top-0 z-10 backdrop-blur-sm">
+                    <DropdownMenuLabel className=" ">Tags</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                </div>
+
                 <DropdownMenuGroup>
                     {
                         Object.entries(CATEGORY_TAGS).map(([category, tags]) => (
@@ -94,9 +103,16 @@ export function ChooseTagDropdown() {
                                 <DropdownMenuSubTrigger>{category}</DropdownMenuSubTrigger>
                                 <DropdownMenuPortal>
                                     <DropdownMenuSubContent>
-                                        {tags.map((tag) => (
-                                            <DropdownMenuItem key={tag}>{tag}</DropdownMenuItem>
-                                        ))}
+                                        {tags.map((tag) => {
+                                            return (
+                                                <DropdownMenuItem
+                                                    key={tag}
+                                                    onClick={() => onChoose(tag)}
+                                                >
+                                                    # {tag}
+                                                </DropdownMenuItem>
+                                            )
+                                        })}
                                     </DropdownMenuSubContent>
                                 </DropdownMenuPortal>
                             </DropdownMenuSub>
@@ -104,8 +120,12 @@ export function ChooseTagDropdown() {
                     }
                     {
                         FREE_TAGS.map((tag) => (
-                            <DropdownMenuItem key={tag}>
-                                {tag}
+                            <DropdownMenuItem
+                                key={tag}
+                                onClick={() => onChoose(tag)}
+                                className="flex align-center"
+                            >
+                                # {tag} 
                             </DropdownMenuItem>
                         ))
                     }

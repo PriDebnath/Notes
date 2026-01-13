@@ -1,7 +1,7 @@
 import StarterKit from '@tiptap/starter-kit'
+import { BatteryFull, List } from 'lucide-react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus'
-import { BatteryFull, List } from 'lucide-react'
 import TiptapToolbar from '@/components/common/tiptap-toolbar'
 
 
@@ -15,6 +15,11 @@ const Tiptap = (props: Props) => {
   const editor = useEditor({
     extensions: [StarterKit], // define your extension array
     content: value,
+    editorProps: {
+      attributes: {
+        class: 'border rounded border-primary/20 focus-visible:border-primary outline-none'
+      }
+    },
     onUpdate: (updates) => {
       const { editor: newEditor } = updates
       const html = newEditor.getHTML()
@@ -32,8 +37,8 @@ const Tiptap = (props: Props) => {
                 xl:prose-2xl
                 focus:outline-none
             ">   {/* IMPORTANT */}
-      <EditorContent editor={editor} className='border rounded border-primary/20 active:border-primary' />
-    {/* <TiptapToolbar editor={editor} /> */}
+      <EditorContent editor={editor} />
+    <TiptapToolbar editor={editor} />
       {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
       <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
     </div>

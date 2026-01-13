@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { cn } from "@/lib/utils";
@@ -50,12 +51,13 @@ const QuoteCard = (props: Props) => {
             {quote.tags && quote.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                     {quote.tags.map((tag, index) => (
-                        <span
-                            className="text-purple-400 rounded-md px-2 py-1 bg-purple-100"
+                        <Badge
+                        variant={'outline'}
+                            className=" bg-primary/10 border-primary/30 text-primary/90"
                             key={tag.id}
                         >
                             #{tag.name}
-                        </span>
+                        </Badge>
                     ))}
                 </div>
             )}

@@ -14,6 +14,7 @@ import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
 import Tiptap from "@/components/common/tiptap-customized"
 import TagField from "@/feature/quote/form-field/tag"
 import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
 
 interface Props {
   open: boolean;
@@ -117,9 +118,18 @@ export default function AddEditQuoteDialog(props: Props) {
           <div className="flex flex-wrap gap-2">
             {
               quoteData?.tags && quoteData?.tags.length > 0 && (
-                quoteData?.tags.map((tag) => (
-                  <span key={tag} className="text-purple-400 rounded-md px-2 py-1 bg-purple-100">  #{tag}</span>
-                ))
+                quoteData?.tags.map((tag) => {
+                  return (
+                    <Badge
+                      variant={'outline'}
+                      className=" bg-primary/10 border-primary/30 text-primary/90"
+                      key={tag}
+                    >
+                      #{tag}
+                    </Badge>
+                  )
+                }
+                )
               )
             }
           </div>

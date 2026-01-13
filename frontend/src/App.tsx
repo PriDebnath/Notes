@@ -14,6 +14,7 @@ import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote
 function App() {
   const [loading, setLoading] = useState(false)
   const [quotes, setQuotes] = useState<Quote[]>([])
+  const [quotesLocal, setQuotesLocal] = useState<Quote[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [openedDeleteDialog, setOpenedDeleteDialog] = useState(false)
   const [openAddOrEditDialog, setOpenAddOrEditDialog] = useState(false)
@@ -102,7 +103,20 @@ const fetchQuotes = async () => {
   setLoading(false)
   setSelectedQuote(null)
   setQuotes(storedQuotes);
+  setQuotesLocal(storedQuotes);
 };
+
+const showSearchResult = (search:string)=>{
+  let searchTerm = search.trim()
+  let filteredQuotes = quotesLocal.filter((quote)=>quote.text.includes(searchTerm))
+  console.log(filteredQuotes, searchTerm)
+  if(searchTerm){
+    setQuotes(filteredQuotes)
+  }else{
+    setQuotes(quotesLocal)
+  }
+    
+}
 
 useEffect(() => {
   setLoading(true)
@@ -122,9 +136,19 @@ return (
       className="rounded-b-2xl  sticky top-0 bg-primary p-4">
       <InputGroup
         className=" mb-4 text-white border-white border">
-        <InputGroupInput placeholder="Search..." className='text-white' />
+        <InputGroupInput 
+        placeholder="Search..." 
+        className='text-white'
+        onChange={(e)=>{
+          let search = e.target.value
+          showSearchResult(search)
+        }} 
+        />
         <InputGroupAddon>
-          <SearchIcon className='text-white' />
+          <SearchIcon 
+            className='text-white' 
+            
+          />
         </InputGroupAddon>
       </InputGroup>
     </div>

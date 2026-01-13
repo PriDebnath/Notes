@@ -28,29 +28,30 @@ export default function AddEditQuoteDialog(props: Props) {
 
   const { quote, mode, open, setOpen, handleSubmit } = props
   const [quoteData, setQuoteData] = useState<QuoteFormData>(() => ({
+    id: quote?.id,
     text: quote?.text || "",
-    tags: [],
+    tags: quote?.tags?.map((tag)=>tag.name) || [],
   }))
 
   // Reset form when quote changes or dialog opens
+  /*
+*/
   useEffect(() => {
     if (open) {
       setQuoteData({
-        ...quoteData,
+        id: quote?.id,
         text: quote?.text || "",
-        tags: [],
+        tags: quote?.tags?.map((tag)=>tag.name) || []
       })
     }
   }, [quote, open])
-
+  
+  
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("Submitted", quoteData)
     if (quoteData && quoteData?.text?.trim()) {
-      handleSubmit({
-        ...quoteData,
-        text: quoteData.text || "",
-        tags: quoteData.tags || []
-      })
+      handleSubmit(quoteData)
     }
   }
 

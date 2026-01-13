@@ -6,7 +6,7 @@
 * - keyPath change
 */
 const DB_NAME = 'quotes_keeper_db_by_pri';
-const DB_VERSION = 2
+const DB_VERSION = 4
 
 export const STORES = {
   QUOTES: 'quotes',
@@ -62,7 +62,16 @@ export const openDB = (): Promise<IDBDatabase> => {
 
     request.onupgradeneeded = () => {
       const db = request.result
-
+if (db.objectStoreNames.contains(STORES.QUOTES)) {
+    db.deleteObjectStore(STORES.QUOTES)
+  }
+  if (db.objectStoreNames.contains(STORES.TAGS)) {
+    db.deleteObjectStore(STORES.TAGS)
+  }
+  if (db.objectStoreNames.contains(STORES.QUOTES_TAGS)) {
+    db.deleteObjectStore(STORES.QUOTES_TAGS)
+  }
+  
       createQuotesStore(db)
       createTagsStore(db)
       createQuotesTagsStore(db)

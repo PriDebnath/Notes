@@ -33,17 +33,24 @@ export const addQuote = async (
   const tx = db.transaction(STORE_NAME, 'readwrite')
   const store = tx.objectStore(STORE_NAME)
 
-  return new Promise((resolve, reject) => {
-    const req = store.add({
-      text: quote.text,
-    })
+  return new Promise(async (resolve, reject) => {
+    const { id, ...data } = quote 
+    const req = store.add(data)
 
-    req.onsuccess = () =>
-      resolve({ id: req.result as number, ...quote })
+    req.onsuccess = async () => {
+      console.log("resol", quote, req.result)
+      await tx.done
+      resolve({
+        ...quote,
+        id: req.result as number,
+      })
+    }
 
     req.onerror = () => reject(req.error)
   })
 }
+
+
 
 
 export const updateQuote = async (quote: Quote): Promise<Quote> => {
@@ -55,12 +62,18 @@ export const updateQuote = async (quote: Quote): Promise<Quote> => {
   const tx = db.transaction(STORE_NAME, 'readwrite');
   const store = tx.objectStore(STORE_NAME);
 
-  const request = store.put(quote);
+  return new Promise(async (resolve, reject) => {
+    const { id, ...data } = quote 
+    const req = store.put(quote)
 
-  return new Promise((resolve, reject) => {
-    request.onsuccess = () => resolve(quote);
-    request.onerror = () => reject(request.error);
-  });
+    req.onsuccess = async () => {
+      console.log("resol", quote, req.result)
+      await tx.done
+      resolve(quote)
+    }
+
+    req.onerror = () => reject(req.error)
+  })
 };
 
 

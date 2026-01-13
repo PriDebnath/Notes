@@ -47,8 +47,8 @@ const QuoteCard = (props: Props) => {
         </div>
         <p className="text-base w-full text-right">-- Pritam</p>
 
-        <div className="flex w-full items-end justify-between">
-            {quote.tags && quote.tags.length > 0 && (
+        <div className="flex w-full items-end justify-between gap-2">
+            {quote.tags && quote.tags.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
                     {quote.tags.map((tag, index) => (
                         <Badge
@@ -60,7 +60,7 @@ const QuoteCard = (props: Props) => {
                         </Badge>
                     ))}
                 </div>
-            )}
+            ) : (<span></span>)}
 
             <div className="flex items-center gap-2 ">
                 <Button

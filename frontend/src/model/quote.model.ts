@@ -1,9 +1,12 @@
 export interface Quote{
     id?: number | undefined;
     text: string;
-    // author?: string;
-    // book?: string;
-    // tags?: string[];
+}
+
+export interface QuoteDetails{
+    id?: number | undefined;
+    text: string;
+    tags?: Tag[]
 }
 
 

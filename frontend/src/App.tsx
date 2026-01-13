@@ -1,13 +1,15 @@
 //import "index.scss"
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import type { Quote, QuoteFormData } from '@/model/quote.model'
+import type { Quote, QuoteFormData, Tag } from '@/model/quote.model'
 import { ListQuote } from '@/feature/quote/list.quote'
 import DeleteQuoteDialog from '@/feature/quote/dialog/delete.quote.dialog'
 import AddEditQuoteDialog from '@/feature/quote/dialog/add-edit.quote.dialog'
-import { getAllQuotes, addQuote, updateQuote, deleteQuote } from '@/db/quote.db'
+import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@/db/quote.db'
 import { PlusIcon, Home, BookOpen, Search, Settings, SearchIcon } from 'lucide-react'
 import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group'
+import { addOrGetTag } from '@/db/tag.db'
+import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote_tags.db'
 
 function App() {
   const [loading, setLoading] = useState(false)
@@ -35,80 +37,111 @@ function App() {
     setOpenedDeleteDialog(true)
   }
 
-  const handleSubmit = async (quote: QuoteFormData) => {
-    console.log(quote)
-    // if (quote.id) { // edit
-    //   await updateQuote({
-    //     ...quote,
-    //     text: quote.text || "Empty"
-    //   })
-    // } else {
-    //   await addQuote({
-    //     ...quote,
-    //     text: quote.text || "Empty",
-    //     id: new Date().getTime(),
-    //   })
-    // }
-    // fetchQuotes()
-    // setOpenAddOrEditDialog(false)
-    // setSelectedQuote(null)
-  }
+  const getTags = async (tags: string[]): Promise<Tag[]> => {
+    const result: Tag[] = [];
 
-  const handleDeleteSubmit = async (quote: QuoteFormData) => {
-    console.log("deleted")
-    await deleteQuote(quote.id!)
-    console.log("deleted")
-    setSelectedQuote(null)
-    setOpenedDeleteDialog(false)
-    fetchQuotes()
-  }
+    for (const tag of tags) {
+      const savedTag = await addOrGetTag({ name: tag });
+      result.push(savedTag);
+    }
 
-  const fetchQuotes = async () => {
-    const storedQuotes = await getAllQuotes();
-    console.log({ storedQuotes });
-    setLoading(false)
-    setSelectedQuote(null)
-    setQuotes(storedQuotes);
+    return result;
   };
 
-  useEffect(() => {
-    setLoading(true)
-    fetchQuotes();
-  }, []);
 
-  return (
-    <div  className="bg-primary/10">
-      {/* Purple Header */}
-      <header className="w-full text-white bg-primary  p-4 flex flex-col items-center">
-        <h1 className="p-4">Quotes Keeper 3.0</h1>
+  const handleSubmit = async (quote: QuoteFormData) => {
+    console.log({quote})
+  let quoteId: number | undefined = quote.id
+  if (quoteId) { // edit
+    await updateQuote({
+      ...quote,
+      text: quote.text || "Empty"
+    })
+  } else {
+    const newQuote = await addQuote({
+      ...quote,
+      text: quote.text || "Empty",
+    })
+    quoteId = newQuote.id
+  }
 
-      </header>
+  console.log({quoteId});
+  
+  const tags = await getTags(quote.tags!)
+  console.log({ tags })
 
-      {/* Sticky Search Bar */}
-      <div
-        className="rounded-b-2xl  sticky top-0 bg-primary p-4">
-        <InputGroup
-          className=" mb-4 text-white border-white border">
-          <InputGroupInput placeholder="Search..." className='text-white' />
-          <InputGroupAddon>
-            <SearchIcon className='text-white' />
-          </InputGroupAddon>
-        </InputGroup>
-      </div>
+  // Delete all existing tags for this quote
+  await deleteAllQuoteTags(quoteId!)
 
-      {/* Main Content */}
-      <main className="p-4 ">
-        <ListQuote
-          loading={loading}
-          quotes={quotes}
-          onEdit={openEditDialog}
-          onDelete={openDeleteDialog}
-        />
-      </main>
+  // Add new tags for this quote
+  for (const tag of tags) {
+    await addQuoteTag({
+      quoteId: quoteId!,
+      tagId: tag.id!
+    })
+  }
 
-      {/* Bottom Navigation */}
-      <nav className="flex items-center justify-center ">
-        {/* <button className="nav-item active">
+  fetchQuotes()
+  setOpenAddOrEditDialog(false)
+  setSelectedQuote(null)
+}
+
+const handleDeleteSubmit = async (quote: QuoteFormData) => {
+  console.log("deleted")
+  await deleteQuote(quote.id!)
+  console.log("deleted")
+  setSelectedQuote(null)
+  setOpenedDeleteDialog(false)
+  fetchQuotes()
+}
+
+const fetchQuotes = async () => {
+  const storedQuotes = await getAllQuotesDetails();
+ console.log({storedQuotes});
+ 
+  setLoading(false)
+  setSelectedQuote(null)
+  setQuotes(storedQuotes);
+};
+
+useEffect(() => {
+  setLoading(true)
+  fetchQuotes();
+}, []);
+
+return (
+  <div className="bg-primary/10">
+    {/* Purple Header */}
+    <header className="w-full text-white bg-primary  p-4 flex flex-col items-center">
+      <h1 className="p-4">Quotes Keeper 3.0</h1>
+
+    </header>
+
+    {/* Sticky Search Bar */}
+    <div
+      className="rounded-b-2xl  sticky top-0 bg-primary p-4">
+      <InputGroup
+        className=" mb-4 text-white border-white border">
+        <InputGroupInput placeholder="Search..." className='text-white' />
+        <InputGroupAddon>
+          <SearchIcon className='text-white' />
+        </InputGroupAddon>
+      </InputGroup>
+    </div>
+
+    {/* Main Content */}
+    <main className="p-4 ">
+      <ListQuote
+        loading={loading}
+        quotes={quotes}
+        onEdit={openEditDialog}
+        onDelete={openDeleteDialog}
+      />
+    </main>
+
+    {/* Bottom Navigation */}
+    <nav className="flex items-center justify-center ">
+      {/* <button className="nav-item active">
           <Home size={24} />
           <span>Home</span>
         </button>
@@ -116,13 +149,13 @@ function App() {
           <BookOpen size={24} />
           <span>Books</span>
         </button> */}
-        <Button
+      <Button
         size="lg"
-          className=" fixed bottom-4 "
-          onClick={openAddDialog}>
-          <PlusIcon  />
-        </Button>
-        {/* <button className="nav-item">
+        className=" fixed bottom-4 "
+        onClick={openAddDialog}>
+        <PlusIcon />
+      </Button>
+      {/* <button className="nav-item">
           <Search size={24} />
           <span>Discover</span>
         </button>
@@ -130,24 +163,24 @@ function App() {
           <Settings size={24} />
           <span>Settings</span>
         </button> */}
-      </nav>
+    </nav>
 
-      <AddEditQuoteDialog
-        mode={addOrEdit}
-        quote={selectedQuote}
-        open={openAddOrEditDialog}
-        setOpen={setOpenAddOrEditDialog}
-        handleSubmit={handleSubmit}
-      />
+    <AddEditQuoteDialog
+      mode={addOrEdit}
+      quote={selectedQuote}
+      open={openAddOrEditDialog}
+      setOpen={setOpenAddOrEditDialog}
+      handleSubmit={handleSubmit}
+    />
 
-      <DeleteQuoteDialog
-        open={openedDeleteDialog}
-        setOpen={setOpenedDeleteDialog}
-        quote={selectedQuote}
-        handleDelete={handleDeleteSubmit}
-      />
-    </div>
-  )
+    <DeleteQuoteDialog
+      open={openedDeleteDialog}
+      setOpen={setOpenedDeleteDialog}
+      quote={selectedQuote}
+      handleDelete={handleDeleteSubmit}
+    />
+  </div>
+)
 }
 
 export default App

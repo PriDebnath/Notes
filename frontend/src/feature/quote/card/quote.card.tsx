@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { cn } from "@/lib/utils";
-import type { Quote } from "@/model/quote.model";
+import type { Quote, QuoteDetails } from "@/model/quote.model";
 import { Check, Copy, PenIcon, Trash } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
-    quote: Quote;
+    quote: QuoteDetails;
     onEdit: (quote: Quote) => void
     onDelete: (quote: Quote) => void
 }
@@ -47,24 +47,19 @@ const QuoteCard = (props: Props) => {
         <p className="text-base w-full text-right">-- Pritam</p>
 
         <div className="flex w-full items-end justify-between">
-            <div className="">
-                {/* {q.tags && q.tags.length > 0 && (
-                <div className="quote-tags">
-                  {q.tags.map((tag, index) => (
-                    <span key={index} className="quote-tag">
-                      #{tag}
-                    </span>
-                  ))}
+            {quote.tags && quote.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                    {quote.tags.map((tag, index) => (
+                        <span
+                            className="text-purple-400 rounded-md px-2 py-1 bg-purple-100"
+                            key={tag.id}
+                        >
+                            #{tag.name}
+                        </span>
+                    ))}
                 </div>
-              )} */}
-                <span className="text-purple-400">  #tag</span>
-                <span className="text-purple-400">  #tag</span>
-                <span className="text-purple-400">  #tag</span>
-                <span className="text-purple-400">  #tag</span>
-                <span className="text-purple-400">  #tag</span>
-                <span className="text-purple-400">  #tag</span>
-                <span className="text-purple-400">  #tag</span>
-            </div>
+            )}
+
             <div className="flex items-center gap-2 ">
                 <Button
                     className="hover:text-green-600"

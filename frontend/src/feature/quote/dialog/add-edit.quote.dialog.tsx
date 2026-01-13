@@ -10,7 +10,6 @@ import {
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import type { Quote, QuoteFormData } from "@/model/quote.model"
-import { Textarea } from "@/components/ui/textarea"
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
 import Tiptap from "@/components/common/tiptap-customized"
 import TagField from "@/feature/quote/form-field/tag"
@@ -20,48 +19,57 @@ interface Props {
   open: boolean;
   mode: "add" | "edit";
   quote: Quote | null;
-  handleSubmit: (quote: Quote) => void;
+  handleSubmit: (quote: QuoteFormData) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function AddEditQuoteDialog(props: Props) {
 
   const { quote, mode, open, setOpen, handleSubmit } = props
-  const [quoteData, setQuoteData] = useState<QuoteFormData | null>(quote)
-  // Sync quoteData when quote prop changes or when dialog opens in add mode
+  const [quoteData, setQuoteData] = useState<QuoteFormData>(() => ({
+    text: quote?.text || "",
+    tags: [],
+  }))
+
+  // Reset form when quote changes or dialog opens
   useEffect(() => {
     if (open) {
-      if (quote) {
-        setQuoteData(quote)
-      } else {
-        setQuoteData({ text: "" })
-      }
+      setQuoteData({
+        ...quoteData,
+        text: quote?.text || "",
+        tags: [],
+      })
     }
-  }, [quote, open, mode])
+  }, [quote, open])
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (quoteData && quoteData?.text?.trim()) {
       handleSubmit({
         ...quoteData,
-        text: quoteData.text || ""
+        text: quoteData.text || "",
+        tags: quoteData.tags || []
       })
     }
   }
 
 
   const onValueUpdate = (text: string) => {
-    setQuoteData({ text: text })
+    setQuoteData(prev => ({
+      ...prev,
+      text: text
+    }))
   }
 
   const onTagChoose = (tag: string) => {
-    console.log({ tag })
-    const selectedTags = quoteData?.tags || []
-    selectedTags.push(tag)
-    const tags = [...new Set(selectedTags)]
-    setQuoteData({
-      ...quoteData,
-      tags: tags
+    setQuoteData(prev => {
+      const currentTags = prev?.tags || []
+      const updatedTags = [...currentTags, tag]
+      const uniqueTags = [...new Set(updatedTags)]
+      return {
+        ...prev,
+        tags: uniqueTags
+      }
     })
   }
 
@@ -106,6 +114,15 @@ export default function AddEditQuoteDialog(props: Props) {
           </div>
           <Separator className="my-4" />
           <TagField onChoose={onTagChoose} />
+          <div className="flex flex-wrap gap-2">
+            {
+              quoteData?.tags && quoteData?.tags.length > 0 && (
+                quoteData?.tags.map((tag) => (
+                  <span key={tag} className="text-purple-400 rounded-md px-2 py-1 bg-purple-100">  #{tag}</span>
+                ))
+              )
+            }
+          </div>
           <Separator className="my-4" />
 
           <DialogFooter className="flex no-wrap ">

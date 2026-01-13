@@ -9,44 +9,69 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import type { Quote } from "@/model/quote.model"
-import { Textarea } from "@/components/ui/textarea"
+import type { Quote, QuoteFormData } from "@/model/quote.model"
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
 import Tiptap from "@/components/common/tiptap-customized"
+import TagField from "@/feature/quote/form-field/tag"
+import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
 
 interface Props {
   open: boolean;
   mode: "add" | "edit";
   quote: Quote | null;
-  handleSubmit: (quote: Quote) => void;
+  handleSubmit: (quote: QuoteFormData) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function AddEditQuoteDialog(props: Props) {
 
   const { quote, mode, open, setOpen, handleSubmit } = props
-  const [quoteData, setQuoteData] = useState<Quote | null>(quote)
-  // Sync quoteData when quote prop changes or when dialog opens in add mode
+  const [quoteData, setQuoteData] = useState<QuoteFormData>(() => ({
+    text: quote?.text || "",
+    tags: [],
+  }))
+
+  // Reset form when quote changes or dialog opens
   useEffect(() => {
     if (open) {
-      if (quote) {
-        setQuoteData(quote)
-      } else {
-        setQuoteData({ text: "" })
-      }
+      setQuoteData({
+        ...quoteData,
+        text: quote?.text || "",
+        tags: [],
+      })
     }
-  }, [quote, open, mode])
+  }, [quote, open])
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (quoteData && quoteData.text.trim()) {
-      handleSubmit(quoteData)
+    if (quoteData && quoteData?.text?.trim()) {
+      handleSubmit({
+        ...quoteData,
+        text: quoteData.text || "",
+        tags: quoteData.tags || []
+      })
     }
   }
 
 
   const onValueUpdate = (text: string) => {
-    setQuoteData({ text: text })
+    setQuoteData(prev => ({
+      ...prev,
+      text: text
+    }))
+  }
+
+  const onTagChoose = (tag: string) => {
+    setQuoteData(prev => {
+      const currentTags = prev?.tags || []
+      const updatedTags = [...currentTags, tag]
+      const uniqueTags = [...new Set(updatedTags)]
+      return {
+        ...prev,
+        tags: uniqueTags
+      }
+    })
   }
 
   return (
@@ -88,6 +113,28 @@ export default function AddEditQuoteDialog(props: Props) {
               <Tiptap value={quote?.text} onValueUpdate={onValueUpdate} />
             </div>
           </div>
+          <Separator className="my-4" />
+          <TagField onChoose={onTagChoose} />
+          <div className="flex flex-wrap gap-2">
+            {
+              quoteData?.tags && quoteData?.tags.length > 0 && (
+                quoteData?.tags.map((tag) => {
+                  return (
+                    <Badge
+                      variant={'outline'}
+                      className=" bg-primary/10 border-primary/30 text-primary/90"
+                      key={tag}
+                    >
+                      #{tag}
+                    </Badge>
+                  )
+                }
+                )
+              )
+            }
+          </div>
+          <Separator className="my-4" />
+
           <DialogFooter className="flex no-wrap ">
             {/* 
             */}

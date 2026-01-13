@@ -6,31 +6,70 @@
 * - keyPath change
 */
 const DB_NAME = 'quotes_keeper_db_by_pri';
-const DB_VERSION = 1 ;
+const DB_VERSION = 2
 
 export const STORES = {
-    QUOTES: 'quotes',
-} as const;
+  QUOTES: 'quotes',
+  TAGS: 'tags',
+  QUOTES_TAGS: 'quotes_tags', // many to many relationship
+} as const
+
+
+const createQuotesStore = (db: IDBDatabase) => {
+  if (!db.objectStoreNames.contains(STORES.QUOTES)) {
+    db.createObjectStore(STORES.QUOTES, { keyPath: 'id',
+        autoIncrement: true,
+     })
+  }
+}
+
+const createTagsStore = (db: IDBDatabase) => {
+  if (!db.objectStoreNames.contains(STORES.TAGS)) {
+    const store = db.createObjectStore(STORES.TAGS, { 
+      keyPath: 'id',
+      autoIncrement: true,
+ })
+
+    // tag name must be unique
+    store.createIndex('name', 'name', { unique: true })
+  }
+}
+
+const createQuotesTagsStore = (db: IDBDatabase) => {
+  if (!db.objectStoreNames.contains(STORES.QUOTES_TAGS)) {
+    const store = db.createObjectStore(STORES.QUOTES_TAGS, {
+      keyPath: 'id',
+        autoIncrement: true,
+    })
+
+    store.createIndex('quoteId', 'quoteId')
+    store.createIndex('tagId', 'tagId')
+
+    // prevent duplicate links
+    store.createIndex(
+      'quoteId_tagId',
+      ['quoteId', 'tagId'],
+      { unique: true }
+    )
+  }
+}
+
+/* ===================== DB OPEN ===================== */
 
 export const openDB = (): Promise<IDBDatabase> => {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-        request.onupgradeneeded = (e) => {
-            // const db = e.target?.result as IDBDatabase;
-            const db = request.result;
-            Object.values(STORES).forEach((storeName) => {
-                if (!db.objectStoreNames.contains(storeName)) {
-                    db.createObjectStore(storeName, { keyPath: 'id' });
-                }
-            });
-        };
-        request.onerror = (e) => {
-            reject('Error opening database');
-        };
-        request.onsuccess = (e) => {
-            resolve((e.target as IDBRequest).result);
-        };
-    });
-};
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION)
 
+    request.onupgradeneeded = () => {
+      const db = request.result
+
+      createQuotesStore(db)
+      createTagsStore(db)
+      createQuotesTagsStore(db)
+    }
+
+    request.onerror = () => reject('Failed to open IndexedDB')
+    request.onsuccess = () => resolve(request.result)
+  })
+}
 

@@ -126,14 +126,14 @@ useEffect(() => {
 return (
   <div className="bg-primary/10">
     {/* Purple Header */}
-    <header className="w-full text-white bg-primary  p-4 flex flex-col items-center">
+    <header className="w-full text-white bg-rose-900  p-4 flex flex-col items-center">
       <h1 className="p-4">Quotes Keeper 3.0</h1>
 
     </header>
 
     {/* Sticky Search Bar */}
     <div
-      className="rounded-b-2xl  sticky top-0 bg-primary p-4">
+      className="rounded-b-2xl  sticky top-0 bg-primary p-4 bg-rose-900">
       <InputGroup
         className=" mb-4 text-white border-white border">
         <InputGroupInput 
@@ -174,8 +174,8 @@ return (
           <span>Books</span>
         </button> */}
       <Button
-        size="lg"
-        className=" fixed bottom-4 "
+      size={"icon-lg"}
+        className=" fixed bottom-8 rounded-full  aspect-square scale-150 "
         onClick={openAddDialog}>
         <PlusIcon />
       </Button>

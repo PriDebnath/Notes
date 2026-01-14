@@ -26,10 +26,11 @@ const QuoteCard = (props: Props) => {
 
     return (<div className={
         cn(
-            "bg-white rounded-xl p-4 flex flex-col justify-between items-start gap-4",
+            "bg-rose-50 rounded-xl p-4 flex flex-col justify-between items-start gap-2",
             "shadow-[0_2px_12px_rgba(0,0,0,0.1)]",
             "hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)]",
-            "transition-shadow duration-200"
+            "transition-shadow duration-200",
+            "border-primary/30"
         )
     }>
 

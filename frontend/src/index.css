@@ -99,6 +99,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: oklch(0.27 0.10 12);
 }
 
 

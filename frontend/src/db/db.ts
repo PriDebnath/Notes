@@ -17,18 +17,19 @@ export const STORES = {
 
 const createQuotesStore = (db: IDBDatabase) => {
   if (!db.objectStoreNames.contains(STORES.QUOTES)) {
-    db.createObjectStore(STORES.QUOTES, { keyPath: 'id',
-        autoIncrement: true,
-     })
+    db.createObjectStore(STORES.QUOTES, {
+      keyPath: 'id',
+      autoIncrement: true,
+    })
   }
 }
 
 const createTagsStore = (db: IDBDatabase) => {
   if (!db.objectStoreNames.contains(STORES.TAGS)) {
-    const store = db.createObjectStore(STORES.TAGS, { 
+    const store = db.createObjectStore(STORES.TAGS, {
       keyPath: 'id',
       autoIncrement: true,
- })
+    })
 
     // tag name must be unique
     store.createIndex('name', 'name', { unique: true })
@@ -39,7 +40,7 @@ const createQuotesTagsStore = (db: IDBDatabase) => {
   if (!db.objectStoreNames.contains(STORES.QUOTES_TAGS)) {
     const store = db.createObjectStore(STORES.QUOTES_TAGS, {
       keyPath: 'id',
-        autoIncrement: true,
+      autoIncrement: true,
     })
 
     store.createIndex('quoteId', 'quoteId')
@@ -63,6 +64,9 @@ export const openDB = (): Promise<IDBDatabase> => {
     request.onupgradeneeded = () => {
       const db = request.result
 
+      // delete all stores(@TODO: should not use in production, plan migration)
+      deleteStores(db) 
+
       createQuotesStore(db)
       createTagsStore(db)
       createQuotesTagsStore(db)
@@ -73,3 +77,14 @@ export const openDB = (): Promise<IDBDatabase> => {
   })
 }
 
+const deleteStores = (db: IDBDatabase) => {
+  if (db.objectStoreNames.contains(STORES.QUOTES)) {
+    db.deleteObjectStore(STORES.QUOTES)
+  }
+  if (db.objectStoreNames.contains(STORES.TAGS)) {
+    db.deleteObjectStore(STORES.TAGS)
+  }
+  if (db.objectStoreNames.contains(STORES.QUOTES_TAGS)) {
+    db.deleteObjectStore(STORES.QUOTES_TAGS)
+  }
+}

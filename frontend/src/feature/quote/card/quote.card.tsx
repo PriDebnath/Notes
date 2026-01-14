@@ -33,26 +33,25 @@ const QuoteCard = (props: Props) => {
 
             <div className={
                 cn(
-                    "bg-rose-50 rounded-xl p-4 flex flex-col justify-between items-start gap-2",
-                    "shadow-[0_2px_12px_rgba(0,0,0,0.1)]",
-                    "hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)]",
-                    "transition-shadow duration-200",
-                    "border-primary/30 relative"
+                    "border  bg-card rounded-xl p-4",
+                    "flex flex-col justify-between items-start gap-2",
+                    "",
                 )
             }>
                 <div className="
                 tiptap
-                prose
                 prose-sm 
-                sm:prose-base 
-                lg:prose-lg
-                xl:prose-2xl
-                m-5 
-                focus:outline-none
+                removed-prose
+                removed-sm:prose-base 
+                removed-lg:prose-lg
+                removed-xl:prose-2xl
+                removed-prose-foreground
             ">   {/* IMPORTANT */}
                     <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quote.text) }}></div>
                 </div>
-                <p className="text-base w-full text-right">-- Pritam</p>
+                            {/*
+                <p className="text-base w-full text-card-foreground text-right">-- Pritam</p>
+                            */}
 
                 <div className="flex w-full items-end justify-between gap-2">
                     {quote.tags && quote.tags.length > 0 ? (
@@ -71,7 +70,7 @@ const QuoteCard = (props: Props) => {
 
                     <div className="flex items-center gap-2 ">
                         <Button
-                            className="hover:text-green-600 border-primary/30"
+                            className="hover:text-green-600 "
                             variant={"outline"}
                             onClick={() => onCopy(quote.text)}
                             aria-label="Copy quote"
@@ -80,7 +79,7 @@ const QuoteCard = (props: Props) => {
                             {copying ? <Check className="text-green-500" /> : <Copy />}
                         </Button>
                         <Button
-                            className="hover:text-yellow-600 border-primary/30"
+                            className="hover:text-yellow-600 "
                             variant={"outline"}
                             onClick={(e) => {
                                 e.preventDefault()
@@ -91,7 +90,7 @@ const QuoteCard = (props: Props) => {
                             <PenIcon />
                         </Button>
                         <Button
-                            className=" hover:text-destructive border-primary/30"
+                            className=" hover:text-destructive "
                             variant={"outline"}
                             onClick={() => onDelete(quote)}
                             aria-label="Delete quote"

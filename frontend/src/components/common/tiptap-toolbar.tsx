@@ -72,7 +72,8 @@ export default function TiptapToolbar({ editor }: Props) {
   })
 
   return (
-    <Toolbar variant="floating" className="flex-wrap gap-1 border rounded">
+    <Toolbar variant="floating" 
+    className="flex-wrap gap-1 border rounded-xl">
       {/* TEXT MARKS */}
       <ToolbarGroup>
         <Button  className="  " 

@@ -42,7 +42,14 @@ console. log({k: keyBoardHeight})
                 bg-red-700
             ">   {/* IMPORTANT */}
       <EditorContent editor={editor} />
-      <div className={"fixed bottom-0"}
+      <div className="fixed 
+          bottom-0
+          z-50
+          overflow-hidden
+          left-0
+          right-0
+          rounded-t-lg
+      "
         style={{
           transform: `translateY(-${keyBoardHeight}px)`
         }}

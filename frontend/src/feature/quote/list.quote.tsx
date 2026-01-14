@@ -18,7 +18,7 @@ export function ListQuote(props: Props) {
 
   return (
     <Masonry
-      breakpointCols={{ default: 4, 1024: 3, 768: 2, 480: 1 }}
+      breakpointCols={{ default: 4, 1024: 3, 768: 2, 480: 1, 240: 1 }}
       className="flex gap-4"
       columnClassName="flex flex-col gap-4"
     >      

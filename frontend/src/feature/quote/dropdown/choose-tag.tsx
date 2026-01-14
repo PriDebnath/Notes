@@ -86,6 +86,7 @@ export function ChooseTagDropdown(props: Props) {
                 <Button
                     variant="outline"
                     size="icon"
+                    className="border-primary/10"
                 >
                     <PlusIcon />
                 </Button>

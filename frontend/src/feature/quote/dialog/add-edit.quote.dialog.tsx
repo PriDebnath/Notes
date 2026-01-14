@@ -28,29 +28,30 @@ export default function AddEditQuoteDialog(props: Props) {
 
   const { quote, mode, open, setOpen, handleSubmit } = props
   const [quoteData, setQuoteData] = useState<QuoteFormData>(() => ({
+    id: quote?.id,
     text: quote?.text || "",
-    tags: [],
+    tags: quote?.tags?.map((tag)=>tag.name) || [],
   }))
 
   // Reset form when quote changes or dialog opens
+  /*
+*/
   useEffect(() => {
     if (open) {
       setQuoteData({
-        ...quoteData,
+        id: quote?.id,
         text: quote?.text || "",
-        tags: [],
+        tags: quote?.tags?.map((tag)=>tag.name) || []
       })
     }
   }, [quote, open])
-
+  
+  
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("Submitted", quoteData)
     if (quoteData && quoteData?.text?.trim()) {
-      handleSubmit({
-        ...quoteData,
-        text: quoteData.text || "",
-        tags: quoteData.tags || []
-      })
+      handleSubmit(quoteData)
     }
   }
 
@@ -113,7 +114,9 @@ export default function AddEditQuoteDialog(props: Props) {
               <Tiptap value={quote?.text} onValueUpdate={onValueUpdate} />
             </div>
           </div>
-          <Separator className="my-4" />
+          
+          <Separator className="my-0  bg-primary/10" />
+          
           <TagField onChoose={onTagChoose} />
           <div className="flex flex-wrap gap-2">
             {
@@ -133,7 +136,8 @@ export default function AddEditQuoteDialog(props: Props) {
               )
             }
           </div>
-          <Separator className="my-4" />
+          
+          <Separator className="my-0 bg-primary/10" />
 
           <DialogFooter className="flex no-wrap ">
             {/* 

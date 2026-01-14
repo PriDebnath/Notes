@@ -26,7 +26,7 @@ const QuoteCard = (props: Props) => {
 
     return (<div className={
         cn(
-            "bg-white rounded-xl p-5 flex flex-col justify-between items-start gap-4",
+            "bg-white rounded-xl p-4 flex flex-col justify-between items-start gap-4",
             "shadow-[0_2px_12px_rgba(0,0,0,0.1)]",
             "hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)]",
             "transition-shadow duration-200"
@@ -47,8 +47,8 @@ const QuoteCard = (props: Props) => {
         </div>
         <p className="text-base w-full text-right">-- Pritam</p>
 
-        <div className="flex w-full items-end justify-between">
-            {quote.tags && quote.tags.length > 0 && (
+        <div className="flex w-full items-end justify-between gap-2">
+            {quote.tags && quote.tags.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
                     {quote.tags.map((tag, index) => (
                         <Badge
@@ -60,11 +60,11 @@ const QuoteCard = (props: Props) => {
                         </Badge>
                     ))}
                 </div>
-            )}
+            ) : (<span></span>)}
 
             <div className="flex items-center gap-2 ">
                 <Button
-                    className="hover:text-green-600"
+                    className="hover:text-green-600 border-primary/30"
                     variant={"outline"}
                     onClick={() => onCopy(quote.text)}
                     aria-label="Copy quote"
@@ -73,7 +73,7 @@ const QuoteCard = (props: Props) => {
                     {copying ? <Check className="text-green-500" /> : <Copy />}
                 </Button>
                 <Button
-                    className="hover:text-yellow-600"
+                    className="hover:text-yellow-600 border-primary/30"
                     variant={"outline"}
                     onClick={() => onEdit(quote)}
                     aria-label="Edit quote"
@@ -83,7 +83,7 @@ const QuoteCard = (props: Props) => {
                 </Button>
 
                 <Button
-                    className=" hover:text-destructive"
+                    className=" hover:text-destructive border-primary/30"
                     variant={"outline"}
                     onClick={() => onDelete(quote)}
                     aria-label="Delete quote"

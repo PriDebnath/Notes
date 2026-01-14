@@ -3,7 +3,7 @@ import { BatteryFull, List } from 'lucide-react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus'
 import TiptapToolbar from '@/components/common/tiptap-toolbar'
-
+import {useGetKeyBoardHeight} from '@/hook/use-get-keyboard-height.hook'
 
 interface Props {
   value?: string
@@ -17,7 +17,7 @@ const Tiptap = (props: Props) => {
     content: value,
     editorProps: {
       attributes: {
-        class: 'border rounded border-primary/20 focus-visible:border-primary outline-none'
+        class: 'border bg-yellow-500 rounded border-primary/20 focus-visible:border-primary outline-none'
       }
     },
     onUpdate: (updates) => {
@@ -26,7 +26,10 @@ const Tiptap = (props: Props) => {
       onValueUpdate(html)
     }
   })
+  
+let   keyBoardHeight = useGetKeyBoardHeight()
 
+console. log({k: keyBoardHeight})
   return (
     <div className="
                 tiptap
@@ -36,9 +39,16 @@ const Tiptap = (props: Props) => {
                 lg:prose-lg
                 xl:prose-2xl
                 focus:outline-none
+                bg-red-700
             ">   {/* IMPORTANT */}
       <EditorContent editor={editor} />
-    <TiptapToolbar editor={editor} />
+      <div className={"fixed bottom-0"}
+        style={{
+          transform: `translateY(-${keyBoardHeight}px)`
+        }}
+      >
+        <TiptapToolbar editor={editor} />
+      </div>
       {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
       <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
     </div>

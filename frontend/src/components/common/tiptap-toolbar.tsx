@@ -73,9 +73,9 @@ export default function TiptapToolbar({ editor }: Props) {
 
   return (
     <Toolbar variant="floating" 
-    className="flex-wrap gap-1 border rounded-xl">
+    className="rounded! bg-card  flex-wrap gap-1">
       {/* TEXT MARKS */}
-      <ToolbarGroup>
+      <ToolbarGroup className="" >
         <Button  className="  " 
           data-active-state={state.bold ? 'on' : 'off'} 
           onClick={() => editor.chain().focus().toggleBold().run()}>

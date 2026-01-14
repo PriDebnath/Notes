@@ -5,11 +5,14 @@ export const useGetKeyBoardHeight = () => {
   const [keyBoardHeight, setKeyBoardHeight] = useState(0)
   
   useEffect(()=>{
+    const vv = window.visualViewport
+    if (!vv) return
+    
     function updateHeight(){
-      const vv = window.visualViewport
       const innerHeight = window.innerHeight
       const keyBoardHeightNew = innerHeight - vv.height - vv.offsetTop
-      setKeyBoardHeight(keyBoardHeightNew)
+      const keyBoardHeightNormalized =  keyBoardHeightNew > 0 ? keyBoardHeightNew : 0
+      setKeyBoardHeight(keyBoardHeightNormalized)
     }
     updateHeight()
     

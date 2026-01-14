@@ -17,7 +17,7 @@ const Tiptap = (props: Props) => {
     content: value,
     editorProps: {
       attributes: {
-        class: 'border bg-yellow-500 rounded border-primary/20 focus-visible:border-primary outline-none'
+        class: 'p-2 border bg-card overflow-hidden h-48  rounded-xl   '
       }
     },
     onUpdate: (updates) => {
@@ -33,22 +33,25 @@ console. log({k: keyBoardHeight})
   return (
     <div className="
                 tiptap
-                removed-prose
-                prose-sm 
-                sm:prose-base 
-                lg:prose-lg
-                xl:prose-2xl
-                focus:outline-none
-                bg-red-700
+                prose
+                prose-foreground
+removed-prose-sm  
+removed-sm:prose-base 
+                removed-lg:prose-lg
+                removed-xl:prose-2xl
+               h-full
+               
             ">   {/* IMPORTANT */}
       <EditorContent editor={editor} />
-      <div className="fixed 
-          bottom-0
+      <div className="
+          fixed 
           z-50
-          overflow-hidden
+          bottom-0
           left-0
           right-0
-          rounded-t-lg
+          border
+          rounded-t-xl
+          overflow-hidden
       "
         style={{
           transform: `translateY(-${keyBoardHeight}px)`

@@ -1,5 +1,6 @@
-import { motion, AnimatePresence } from "framer-motion"
+import Masonry from "react-masonry-css"
 import type { Quote } from "@/model/quote.model"
+import { motion, AnimatePresence } from "framer-motion"
 import QuoteCard from "@/feature/quote/card/quote.card"
 
 interface Props {
@@ -16,8 +17,12 @@ export function ListQuote(props: Props) {
   if (!quotes || quotes.length === 0) return <p>No quotes available.</p>
 
   return (
-    <div className="flex flex-col gap-2">
-      <AnimatePresence>
+    <Masonry
+      breakpointCols={{ default: 4, 1024: 3, 768: 2, 480: 1 }}
+      className="flex gap-4"
+      columnClassName="flex flex-col gap-4"
+    >      
+    {/* <AnimatePresence> */}
         {quotes.map((q) => (
           <motion.div
             key={q.id}
@@ -33,11 +38,11 @@ export function ListQuote(props: Props) {
             />
           </motion.div>
         ))}
-      </AnimatePresence>
+      {/* </AnimatePresence> */}
 
-      <p className="text-center p-4 text-gray-400">
+      {/* <p className="text-center p-4 text-gray-400">
         --- end of quotes ---
-      </p>
-    </div>
+      </p> */}
+    </Masonry>
   )
 }

@@ -72,7 +72,10 @@ const QuoteCard = (props: Props) => {
                         <Button
                             className="hover:text-green-600 "
                             variant={"outline"}
-                            onClick={() => onCopy(quote.text)}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              onCopy(quote.text)
+                            }}
                             aria-label="Copy quote"
                             size={"sm"}
                         >
@@ -92,7 +95,10 @@ const QuoteCard = (props: Props) => {
                         <Button
                             className=" hover:text-destructive "
                             variant={"outline"}
-                            onClick={() => onDelete(quote)}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              onDelete(quote)
+                            }}
                             aria-label="Delete quote"
                             size={"sm"}
                         >

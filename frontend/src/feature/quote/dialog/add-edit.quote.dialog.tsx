@@ -114,7 +114,9 @@ export default function AddEditQuoteDialog(props: Props) {
               <Tiptap value={quote?.text} onValueUpdate={onValueUpdate} />
             </div>
           </div>
-          <Separator className="my-4" />
+          
+          <Separator className="my-0  bg-primary/10" />
+          
           <TagField onChoose={onTagChoose} />
           <div className="flex flex-wrap gap-2">
             {
@@ -134,7 +136,8 @@ export default function AddEditQuoteDialog(props: Props) {
               )
             }
           </div>
-          <Separator className="my-4" />
+          
+          <Separator className="my-0 bg-primary/10" />
 
           <DialogFooter className="flex no-wrap ">
             {/* 

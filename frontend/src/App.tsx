@@ -138,7 +138,7 @@ return (
         className=" mb-4 text-white border-white border">
         <InputGroupInput 
         placeholder="Search..." 
-        className='text-white'
+        className='placeholder:text-white'
         onChange={(e)=>{
           let search = e.target.value
           showSearchResult(search)

@@ -30,7 +30,7 @@ const Tiptap = (props: Props) => {
   return (
     <div className="
                 tiptap
-                prose
+                removed-prose
                 prose-sm 
                 sm:prose-base 
                 lg:prose-lg

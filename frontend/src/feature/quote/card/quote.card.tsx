@@ -82,13 +82,14 @@ const QuoteCard = (props: Props) => {
                         <Button
                             className="hover:text-yellow-600 border-primary/30"
                             variant={"outline"}
-                            onClick={() => onEdit(quote)}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                onEdit(quote)
+                            }} 
                             aria-label="Edit quote"
-                            size={"sm"}
-                        >
+                            size={"sm"}>
                             <PenIcon />
                         </Button>
-
                         <Button
                             className=" hover:text-destructive border-primary/30"
                             variant={"outline"}

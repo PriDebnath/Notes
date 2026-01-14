@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import type { Quote, QuoteFormData } from "@/model/quote.model"
+import type { Quote, QuoteDetails, QuoteFormData } from "@/model/quote.model"
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
 import Tiptap from "@/components/common/tiptap-customized"
 import TagField from "@/feature/quote/form-field/tag"
@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge"
 interface Props {
   open: boolean;
   mode: "add" | "edit";
-  quote: Quote | null;
+  quote: QuoteDetails | null;
   handleSubmit: (quote: QuoteFormData) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }

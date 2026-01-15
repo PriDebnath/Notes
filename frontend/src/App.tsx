@@ -6,13 +6,14 @@ import { ListQuote } from '@/feature/quote/list.quote'
 import DeleteQuoteDialog from '@/feature/quote/dialog/delete.quote.dialog'
 import AddEditQuoteDialog from '@/feature/quote/dialog/add-edit.quote.dialog'
 import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@/db/quote.db'
-import { PlusIcon, Home, BookOpen, Search, Settings, SearchIcon } from 'lucide-react'
+import { PlusIcon, Home, BookOpen, Search, Settings, SearchIcon,LightbulbOff,Lightbulb} from 'lucide-react'
 import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group'
 import { addOrGetTag } from '@/db/tag.db'
 import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote_tags.db'
 
 function App() {
   const [loading, setLoading] = useState(false)
+  const [darkMode, setDarkMode] = useState(true)
   const [quotes, setQuotes] = useState<Quote[]>([])
   const [quotesLocal, setQuotesLocal] = useState<Quote[]>([])
   const [searchQuery, setSearchQuery] = useState("")
@@ -120,25 +121,42 @@ const showSearchResult = (search:string)=>{
 
 useEffect(() => {
   setLoading(true)
+  setDarkMode(true)
+  document.documentElement.classList.add("dark")
   fetchQuotes();
 }, []);
 
 return (
-  <div className="bg-primary/10">
-    {/* Purple Header */}
+  <div className="bg-black">
+    {/* 
+    Purple Header 
+    */}
+    {/* 
     <header className="w-full text-white bg-rose-900  p-4 flex flex-col items-center">
       <h1 className="p-4">Quotes Keeper 3.0</h1>
-
     </header>
+    */}
 
     {/* Sticky Search Bar */}
     <div
-      className="rounded-b-2xl  sticky top-0 bg-primary p-4 bg-rose-900">
+      className="rounded-b-2xl flex flex-col sticky top-0 z-10 bg-black p-4 gap-4">
+    <div className="w-full text-right">
+       <Button
+        size={"icon"}
+        variant="outline"
+        className="rounded-full "
+        onClick={()=>{
+        setDarkMode(!darkMode)
+        document.documentElement.classList.toggle("dark")
+        }}>
+        { darkMode ? <LightbulbOff />: <Lightbulb/>}
+      </Button>
+    </div>
       <InputGroup
-        className=" mb-4 text-white border-white border">
+        className=" border">
         <InputGroupInput 
         placeholder="Search..." 
-        className='placeholder:text-white'
+        className=''
         onChange={(e)=>{
           let search = e.target.value
           showSearchResult(search)
@@ -146,8 +164,7 @@ return (
         />
         <InputGroupAddon>
           <SearchIcon 
-            className='text-white' 
-            
+            className='' 
           />
         </InputGroupAddon>
       </InputGroup>

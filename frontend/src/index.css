@@ -100,6 +100,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: oklch(0.27 0.10 12);
+  background-color: black;
 }
 
 
@@ -175,10 +176,24 @@ body {
 /*  tiptap style */
 
 .tiptap {
-  /* Add custom css  */
+  /* 
+  Add custom css  
+  */
+  /* 
   li::marker {
-    color: black;
+    color: red;
   }
+  */
 
  
 }
+
+
+.tiptap {
+  color: hsl(var(--foreground)) !important;
+}
+
+.tiptap :where(p, h1, h2, h3, h4, h5, h6, li, blockquote) {
+  color: hsl(var(--foreground)) !important;
+}
+

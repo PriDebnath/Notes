@@ -1,7 +1,7 @@
 
 
 import { Route } from '@/routes/$quoteId'
-import { ArrowLeftIcon,Save } from 'lucide-react'
+import { ArrowLeftIcon,Save, Shirt } from 'lucide-react'
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Button } from '@/components/ui/button'
@@ -172,6 +172,9 @@ useBlocker(
               <ArrowLeftIcon />
             </Button>
           </Link>
+            <Button variant="outline" size="icon">
+          <Shirt/>
+            </Button>
 
         </div>
 
@@ -180,10 +183,10 @@ useBlocker(
         {error && <div className="text-destructive">Error: {error}</div>}
         
           
-        <div className="p-4">
-        
+        <div className="p-4 flex flex-col gap-4">
+        {/*
         <Separator className="  bg-border" />
-        
+        */}
         { !isLoading && 
           (
           <div className="grid gap-4">
@@ -197,9 +200,10 @@ useBlocker(
           </div>
           )
         }
-        
+        {/*
           <Separator className="  bg-border" />
-  
+  */}
+          <div className="">
           <TagField onChoose={onTagChoose} />
           <div className="flex flex-wrap gap-2">
             {
@@ -231,8 +235,15 @@ useBlocker(
               )
             }
           </div>
-          <Separator className=" bg-border" />
+        
           
+          </div>
+          
+          
+          
+          {/*
+          <Separator className=" bg-border" />
+          */}
           </div>
         
       </motion.div>

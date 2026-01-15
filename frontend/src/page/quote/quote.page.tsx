@@ -152,7 +152,10 @@ useBlocker(
   Boolean(quoteData?.text)
 )
 
-  return (<div className='w-full red-red-900 overflow-hidden'>
+  return (
+
+  <div
+    className='w-full h-[100dvh] '>
     <AnimatePresence mode="wait">
       <motion.div
         key={quoteId}
@@ -160,10 +163,11 @@ useBlocker(
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.8, opacity: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="w-full p-4"
+        className="w-full "
       >
-        <div className='flex flex-row  justify-between items-center'>
-          <Link to="/" className='flex items-center gap-2 mb-4'>
+        
+        <div className='flex p-4 bg-background flex-row sticky top-0 z-10  justify-between items-center'>
+          <Link to="/" className='flex items-center gap-2'>
             <Button variant="outline" size="icon">
               <ArrowLeftIcon />
             </Button>
@@ -176,10 +180,14 @@ useBlocker(
         </div>
 
         {isLoading && <div>Loading...</div>}
+        
         {error && <div className="text-destructive">Error: {error}</div>}
         
-        <Separator className="  bg-border" />
           
+        <div className="p-4">
+        
+        <Separator className="  bg-border" />
+        
         { !isLoading && 
           (
           <div className="grid gap-4">
@@ -195,8 +203,7 @@ useBlocker(
         }
         
           <Separator className="  bg-border" />
-          
-        
+  
           <TagField onChoose={onTagChoose} />
           <div className="flex flex-wrap gap-2">
             {
@@ -212,7 +219,7 @@ useBlocker(
                     onClick={ ()=>{
                               onTagRemove(tag)
                             }}
-                   >
+                    >
                           <Badge
         
                             variant={'outline'}
@@ -224,17 +231,19 @@ useBlocker(
                     </motion.div>
                   )
                 }
-      
           )
               )
             }
           </div>
-          
           <Separator className=" bg-border" />
           
+          </div>
         
       </motion.div>
     </AnimatePresence>
+  {/*
+  </div>
+  */}
   </div>
   )
 }

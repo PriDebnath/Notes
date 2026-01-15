@@ -18,7 +18,7 @@ const Tiptap = (props: Props) => {
     content: value,
     editorProps: {
       attributes: {
-        class: 'p-2 border bg-card overflow-hidden h-48  rounded-xl   '
+        class: 'p-2 border  bg-card max-h-64 overflow-auto  rounded-xl   '
       }
     },
     onUpdate: (updates) => {
@@ -36,11 +36,11 @@ console. log({k: keyBoardHeight})
                 tiptap
                 prose
                 prose-foreground
+                
 removed-prose-sm  
 removed-sm:prose-base 
                 removed-lg:prose-lg
                 removed-xl:prose-2xl
-               h-full
 transition-transform duration-300 ease-out
             ">   {/* IMPORTANT */}
       <EditorContent editor={editor} />
@@ -70,10 +70,12 @@ transition-transform duration-300 ease-out
     right-0
     border
     rounded-t-xl
-    overflow-hidden
   "
-  initial={{ y: -50,  }}
-  animate={{ y: -keyBoardHeight }}
+  initial={{ scale: 0.8,  }}
+  animate={{
+    y: -keyBoardHeight ,
+    scale: 1
+  }}
   transition={{
     type: "spring",
     stiffness: 300, // how stiff the spring is

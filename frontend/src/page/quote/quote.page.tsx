@@ -173,10 +173,6 @@ useBlocker(
             </Button>
           </Link>
 
-          <Button type="submit" onClick={handleFormSubmit}>
-            {/* {mode == "add" ? "Add Quote" : "Update Quote"} */}
-            <Save/>
-          </Button>
         </div>
 
         {isLoading && <div>Loading...</div>}

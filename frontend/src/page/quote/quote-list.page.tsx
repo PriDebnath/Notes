@@ -98,8 +98,9 @@ export function QuoteListPage() {
     if (!quote.id) return
     await deleteQuote(quote.id)
     setOpenDelete(false)
-    setSelectedQuote(null)
-    fetchQuotes()
+    setQuotes(
+      quotes.filter(q =>q.id != quote.id)
+    )
   }
 
   const handleSearch = (value: string) => {
@@ -117,7 +118,7 @@ export function QuoteListPage() {
 
   useEffect(() => {
     fetchQuotes()
-  }, [fetchQuotes])
+  }, [])
 
   /* ------------------ UI ------------------ */
 

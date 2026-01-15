@@ -81,6 +81,7 @@ const QuoteCard = (props: Props) => {
                         >
                             {copying ? <Check className="text-green-500" /> : <Copy />}
                         </Button>
+                        {/*
                         <Button
                             className="hover:text-yellow-600 "
                             variant={"outline"}
@@ -92,6 +93,7 @@ const QuoteCard = (props: Props) => {
                             size={"sm"}>
                             <PenIcon />
                         </Button>
+                        */}
                         <Button
                             className=" hover:text-destructive "
                             variant={"outline"}

@@ -11,6 +11,7 @@ import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote
 import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group'
 import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@/db/quote.db'
 import { PlusIcon, Home, BookOpen, Search, Settings, SearchIcon,LightbulbOff,Lightbulb} from 'lucide-react'
+import { Link } from "@tanstack/react-router";
 
 export function QuoteListPage() {
   const [loading, setLoading] = useState(false)
@@ -191,12 +192,14 @@ return (
           <BookOpen size={24} />
           <span>Books</span>
         </button> */}
+                <Link to={"/new"}>
       <Button
       size={"icon-lg"}
         className=" fixed bottom-8 rounded-full  aspect-square scale-150 "
         onClick={openAddDialog}>
         <PlusIcon />
       </Button>
+      </Link>
       {/* <button className="nav-item">
           <Search size={24} />
           <span>Discover</span>

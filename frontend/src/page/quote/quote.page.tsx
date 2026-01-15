@@ -9,25 +9,42 @@ import TagField from "@/feature/quote/form-field/tag"
 import { Separator } from "@/components/ui/separator"
 import { AnimatePresence, motion } from 'framer-motion'
 import Tiptap from '@/components/common/tiptap-customized'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useGetQuoteDetails } from '@/hook/get-quote-details.hook'
 import type { Quote, QuoteDetails, QuoteFormData } from "@/model/quote.model"
-
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
 import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote_tags.db'
 import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@/db/quote.db'
 import { addOrGetTag } from '@/db/tag.db'
+import { useBlocker } from "@tanstack/react-router"
 
-export function QuotePage() {
-  const { quoteId } = Route.useParams()
-  const { data: quote, isLoading, error } = useGetQuoteDetails(Number(quoteId))
+interface Props{
+  mode: "add"| "edit";
+}
 
+export function QuotePage(props: Props) {
+  const { mode} = props
+  // Only read params in edit mode
+  const params = mode === 'edit' ? Route.useParams() : null
+  const quoteId = params?.quoteId
+
+  // Only fetch in edit mode
+  const {
+    data: quote,
+    isLoading,
+    error,
+  } = useGetQuoteDetails(
+    mode === 'edit' ? Number(quoteId) : undefined
+  )
+  
 const [quoteData, setQuoteData] = useState<QuoteFormData>(() => ({
     id: quote?.id,
     text: quote?.text || "",
     tags: quote?.tags?.map((tag)=>tag.name) || [],
   }))
   
+const navigate = useNavigate()
+
 const onTagChoose = (tag: string) => {
     setQuoteData(prev => {
       const currentTags = prev?.tags || []
@@ -47,15 +64,6 @@ const onValueUpdate = (text: string) => {
       text: text
     }))
   }
-  
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Submitted", quoteData)
-    if (quoteData && quoteData?.text?.trim()) {
-      handleSubmit(quoteData)
-    }
-  }
-  
   const getTags = async (tags: string[]): Promise<Tag[]> => {
     const result: Tag[] = [];
 
@@ -66,6 +74,15 @@ const onValueUpdate = (text: string) => {
 
     return result;
   };
+  
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log("Submitted", quoteData)
+    if (quoteData && quoteData?.text?.trim()) {
+      handleSubmit(quoteData)
+    }
+  }
+  
   
   const handleSubmit = async (quote: QuoteFormData) => {
     console.log({quote})
@@ -98,11 +115,30 @@ const onValueUpdate = (text: string) => {
       tagId: tag.id!
     })
   }
-
-  
-  
+  navigate({
+      to: '/'
+  })
 }
 
+useEffect(() => {
+  if (quote) {
+    setQuoteData({
+      id: quote.id,
+      text: quote.text,
+      tags: quote.tags?.map(t => t.name) || []
+    })
+  }
+}, [quote, mode])
+
+// Sliently saves quote on leave
+useBlocker(
+  (tx) => {
+    if (quoteData?.text?.trim()) {
+      handleSubmit(quoteData).then(() => tx.retry())
+    } else tx.retry()
+  },
+  Boolean(quoteData?.text)
+)
 
   return (<div className='w-full red-red-900 overflow-hidden'>
     <AnimatePresence mode="wait">
@@ -114,13 +150,12 @@ const onValueUpdate = (text: string) => {
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="w-full p-4"
       >
-        <div className='flex flex-row  justify-between'>
+        <div className='flex flex-row  justify-between items-center'>
           <Link to="/" className='flex items-center gap-2 mb-4'>
             <Button variant="outline" size="icon">
               <ArrowLeftIcon />
             </Button>
           </Link>
-
 
           <Button type="submit" onClick={handleFormSubmit}>
             {/* {mode == "add" ? "Add Quote" : "Update Quote"} */}
@@ -129,15 +164,25 @@ const onValueUpdate = (text: string) => {
         </div>
 
         {isLoading && <div>Loading...</div>}
-        {error && <div>Error: {error}</div>}
+        {error && <div className="text-destructive">Error: {error}</div>}
         
+        <Separator className="  bg-border" />
+          
+        { !isLoading && 
+          (
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="name-1">Quote</Label>
-              <Tiptap value={quote?.text} onValueUpdate={onValueUpdate} />
+              <Tiptap 
+              key={quoteData?.id ?? "new"}
+              value={quoteData?.text} 
+              onValueUpdate={onValueUpdate} />
             </div>
           </div>
-          <Separator className="  bg-primary/50" />
+          )
+        }
+        
+          <Separator className="  bg-border" />
           
         
           <TagField onChoose={onTagChoose} />
@@ -155,13 +200,13 @@ const onValueUpdate = (text: string) => {
                     </Badge>
                   )
                 }
-                )
+      
+          )
               )
             }
->
           </div>
           
-          <Separator className=" bg-primary/50" />
+          <Separator className=" bg-border" />
           
         
       </motion.div>

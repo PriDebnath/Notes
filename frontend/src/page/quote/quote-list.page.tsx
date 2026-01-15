@@ -128,7 +128,7 @@ useEffect(() => {
 }, []);
 
 return (
-  <div className="bg-black">
+  <div className="">
     {/* 
     Purple Header 
     */}
@@ -140,7 +140,7 @@ return (
 
     {/* Sticky Search Bar */}
     <div
-      className="rounded-b-2xl flex flex-col sticky top-0 z-10 bg-black p-4 gap-4">
+      className="rounded-b-2xl flex flex-col sticky bg-background top-0 z-20 p-4 gap-4">
     <div className="w-full text-right">
        <Button
         size={"icon"}

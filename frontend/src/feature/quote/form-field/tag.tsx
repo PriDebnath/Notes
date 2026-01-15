@@ -15,12 +15,11 @@ const TagField = (props: Props) => {
   const { onChoose } = props
 
   return (
-    <div >
-      <div className="flex items-center justify-between">
-        <Label htmlFor="tag">Tag</Label>
+      <div className="py-2 flex items-center justify-between ">
+        <Label htmlFor="tag" className="text-foreground">Tag</Label>
         <ChooseTagDropdown onChoose={onChoose} />
       </div>
-    </div>
+
   )
 }
 

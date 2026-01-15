@@ -57,6 +57,17 @@ const onTagChoose = (tag: string) => {
     })
   }
 
+const onTagRemove = (tag: string) => {
+    setQuoteData(prev => {
+      const currentTags = prev?.tags || []
+      const updatedTags = currentTags.filter((t)=>tag!=t)
+      const uniqueTags = [...new Set(updatedTags)]
+      return {
+        ...prev,
+        tags: uniqueTags
+      }
+    })
+  }
 
 const onValueUpdate = (text: string) => {
     setQuoteData(prev => ({
@@ -64,6 +75,7 @@ const onValueUpdate = (text: string) => {
       text: text
     }))
   }
+  
   const getTags = async (tags: string[]): Promise<Tag[]> => {
     const result: Tag[] = [];
 
@@ -144,9 +156,9 @@ useBlocker(
     <AnimatePresence mode="wait">
       <motion.div
         key={quoteId}
-        initial={{ x: 40, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: -40, opacity: 0 }}
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.8, opacity: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="w-full p-4"
       >
@@ -191,13 +203,25 @@ useBlocker(
               quoteData?.tags && quoteData?.tags.length > 0 && (
                 quoteData?.tags.map((tag) => {
                   return (
-                    <Badge
-                      key={tag}
-                      variant={'outline'}
+                  <motion.div
+                    key={tag}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    onClick={ ()=>{
+                              onTagRemove(tag)
+                            }}
+                   >
+                          <Badge
+        
+                            variant={'outline'}
+                            
                       className=" bg-primary/10 border-primary/30 text-primary/90"
                       >
                       #{tag}
                     </Badge>
+                    </motion.div>
                   )
                 }
       

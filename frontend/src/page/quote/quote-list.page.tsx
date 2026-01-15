@@ -121,9 +121,9 @@ export function QuoteListPage() {
   /* ------------------ UI ------------------ */
 
   return (
-    <div>
+    <div className="p-2 gap-2 flex flex-col">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-20 bg-background p-4 rounded-b-2xl space-y-4">
+      <div className="gap-2 flex flex-col sticky top-0 z-20 bg-background rounded-b-2xl ">
         <div className="text-right">
           <Button
             size="icon"
@@ -147,7 +147,7 @@ export function QuoteListPage() {
       </div>
 
       {/* Content */}
-      <main className="p-4">
+      <main className="">
         <ListQuote
           loading={loading}
           quotes={quotes}

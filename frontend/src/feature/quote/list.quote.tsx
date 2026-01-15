@@ -18,9 +18,9 @@ export function ListQuote(props: Props) {
 
   return (
     <Masonry
-      breakpointCols={{ default: 4, 1024: 3, 768: 2, 480: 1, 240: 1 }}
-      className="flex gap-4"
-      columnClassName="flex flex-col gap-4"
+      breakpointCols={{ default: 4, 1024: 3, 768: 2, 480: 2, 240: 1 }}
+      className="flex gap-2"
+      columnClassName="flex flex-col gap-2"
     >      
     {/* <AnimatePresence> */}
         {quotes.map((q) => (

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import StarterKit from '@tiptap/starter-kit'
 import { BatteryFull, List } from 'lucide-react'
 import { useEditor, EditorContent } from '@tiptap/react'
@@ -40,9 +41,10 @@ removed-sm:prose-base
                 removed-lg:prose-lg
                 removed-xl:prose-2xl
                h-full
-               
+transition-transform duration-300 ease-out
             ">   {/* IMPORTANT */}
       <EditorContent editor={editor} />
+      {/*
       <div className="
           fixed 
           z-50
@@ -52,13 +54,34 @@ removed-sm:prose-base
           border
           rounded-t-xl
           overflow-hidden
+          transition-transform duration-300 ease-out
       "
         style={{
           transform: `translateY(-${keyBoardHeight}px)`
         }}
       >
+      */}
+      <motion.div
+  className="
+    fixed 
+    z-50
+    bottom-0
+    left-0
+    right-0
+    border
+    rounded-t-xl
+    overflow-hidden
+  "
+  initial={{ y: -50,  }}
+  animate={{ y: -keyBoardHeight }}
+  transition={{
+    type: "spring",
+    stiffness: 300, // how stiff the spring is
+    damping: 30,    // how quickly it settles
+  }}
+>
         <TiptapToolbar editor={editor} />
-      </div>
+      </motion.div>
       {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
       <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
     </div>

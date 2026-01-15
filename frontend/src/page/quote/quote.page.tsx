@@ -17,6 +17,7 @@ import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote
 import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@/db/quote.db'
 import { addOrGetTag } from '@/db/tag.db'
 import { useBlocker } from "@tanstack/react-router"
+import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
 
 interface Props{
   mode: "add"| "edit";
@@ -172,10 +173,8 @@ useBlocker(
               <ArrowLeftIcon />
             </Button>
           </Link>
-            <Button variant="outline" size="icon">
-          <Shirt/>
-            </Button>
-
+           
+<ChooseBackground/>
         </div>
 
         {isLoading && <div>Loading...</div>}

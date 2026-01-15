@@ -23,13 +23,13 @@ export function ListQuote(props: Props) {
       columnClassName="flex flex-col gap-2"
     >      
     {/* <AnimatePresence> */}
-        {quotes.map((q) => (
+        {quotes.map((q, i) => (
           <motion.div
             key={q.id}
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.4, delay: 0.2 * i }}
           >
             <QuoteCard
               quote={q}

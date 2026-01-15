@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { PlusIcon, Lightbulb, LightbulbOff, SearchIcon } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -121,9 +122,17 @@ export function QuoteListPage() {
   /* ------------------ UI ------------------ */
 
   return (
-    <div className="p-2 gap-2 flex flex-col">
-      {/* Sticky Header */}
-      <div className="gap-2 flex flex-col sticky top-0 z-20 bg-background rounded-b-2xl ">
+        <div  className="p-2 gap-2 flex flex-col">
+       {/* Sticky Header */}
+        <motion.div
+            key={"search"}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.4 }}
+            className="gap-2 flex flex-col sticky top-0 z-20 bg-background rounded-b-2xl "
+           >
+      
         <div className="text-right">
           <Button
             size="icon"
@@ -144,7 +153,7 @@ export function QuoteListPage() {
             <SearchIcon />
           </InputGroupAddon>
         </InputGroup>
-      </div>
+      </motion.div>
 
       {/* Content */}
       <main className="">

@@ -1,10 +1,8 @@
-import App from '@/App'
 import { createFileRoute } from '@tanstack/react-router'
+import { QuoteListPage } from '@/page/quote/quote-list.page'
 
 export const Route = createFileRoute('/')({
-  component: RouteComponent,
+  component: QuoteListPage,
 })
 
-function RouteComponent() {
-  return <App/>
-}
+ 

@@ -1,17 +1,18 @@
+
 //import "index.scss"
+import { addOrGetTag } from '@/db/tag.db'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import type { Quote, QuoteFormData, Tag } from '@/model/quote.model'
 import { ListQuote } from '@/feature/quote/list.quote'
+import type { Quote, QuoteFormData, Tag } from '@/model/quote.model'
 import DeleteQuoteDialog from '@/feature/quote/dialog/delete.quote.dialog'
 import AddEditQuoteDialog from '@/feature/quote/dialog/add-edit.quote.dialog'
+import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote_tags.db'
+import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group'
 import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@/db/quote.db'
 import { PlusIcon, Home, BookOpen, Search, Settings, SearchIcon,LightbulbOff,Lightbulb} from 'lucide-react'
-import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group'
-import { addOrGetTag } from '@/db/tag.db'
-import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote_tags.db'
 
-function App() {
+export function QuoteListPage() {
   const [loading, setLoading] = useState(false)
   const [darkMode, setDarkMode] = useState(true)
   const [quotes, setQuotes] = useState<Quote[]>([])
@@ -224,4 +225,3 @@ return (
 )
 }
 
-export default App

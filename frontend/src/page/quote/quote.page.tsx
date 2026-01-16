@@ -12,7 +12,7 @@ import Tiptap from '@/components/common/tiptap-customized'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useGetQuoteDetails } from '@/hook/get-quote-details.hook'
 import type { Quote, QuoteDetails, QuoteFormData } from "@/model/quote.model"
-import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
+import { useState, useEffect, useCallback, type Dispatch, type SetStateAction } from "react"
 import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote_tags.db'
 import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@/db/quote.db'
 import { addOrGetTag } from '@/db/tag.db'
@@ -97,7 +97,7 @@ export function QuotePage(props: Props) {
   }
 
 
-  const handleSubmit = async (quote: QuoteFormData) => {
+  const handleSubmit = useCallback(async (quote: QuoteFormData) => {
     console.log({ quote })
     let quoteId: number | undefined = quote.id
     if (quoteId) { // edit
@@ -131,7 +131,7 @@ export function QuotePage(props: Props) {
     navigate({
       to: '/'
     })
-  }
+  }, [navigate])
 
   useEffect(() => {
     if (quote) {
@@ -143,15 +143,29 @@ export function QuotePage(props: Props) {
     }
   }, [quote, mode])
 
-  // Sliently saves quote on leave
-  useBlocker(
-    (tx) => {
-      if (quoteData?.text?.trim()) {
-        handleSubmit(quoteData).then(() => tx.retry())
-      } else tx.retry()
-    },
-    Boolean(quoteData?.text)
-  )
+  const blocker = useBlocker({
+    shouldBlockFn: () => Boolean(quoteData?.text?.trim()),
+    withResolver: true,
+  })
+
+  useEffect(() => {
+    if (blocker.status === 'blocked' && quoteData?.text?.trim()) {
+      const saveAndProceed = async () => {
+        try {
+          await handleSubmit(quoteData)
+          // handleSubmit already navigates, but proceed() clears the blocker state
+          blocker.proceed()
+        } catch (error) {
+          console.error('Failed to save quote before navigation:', error)
+          blocker.reset()
+        }
+      }
+      saveAndProceed()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blocker.status, quoteData, handleSubmit])
+
+
 
   return (
 

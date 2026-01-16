@@ -3,6 +3,8 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
@@ -54,17 +56,21 @@ export default function ChooseBackground() {
   };
 
   return (
-    <Drawer>
+    <Drawer 
+    >
       <DrawerTrigger asChild>
         <Button variant="outline" size="icon">
           <Shirt />
         </Button>
       </DrawerTrigger>
 
-      <DrawerContent className="p-4">
-        <DrawerTitle className="w-full text-center text-lg font-medium p-4">
-          Choose Background
-        </DrawerTitle>
+      <DrawerContent className="p-4" aria-describedby="Choose Background">
+        <DrawerHeader>
+          <DrawerTitle>Choose Background</DrawerTitle>
+          <DrawerDescription>
+            Select a texture and a color
+          </DrawerDescription>
+        </DrawerHeader>
         {/* Top bar */}
         <div className="flex items-center justify-between ">
           {/*

@@ -26,14 +26,16 @@ const QuoteCard = (props: Props) => {
     }
 
     return (
-        <Link to={"/$quoteId"}
+        <Link 
+        className=""
+        to={"/$quoteId"}
             params={
                 { quoteId: quote.id?.toString()! }
             }>
 
             <div className={
                 cn(
-                    "border  bg-card rounded-xl p-4",
+                    "border p-2  bg-card rounded-xl ",
                     "flex flex-col justify-between items-start gap-2",
                     "",
                 )
@@ -59,7 +61,7 @@ const QuoteCard = (props: Props) => {
                             {quote.tags.map((tag, index) => (
                                 <Badge
                                     variant={'outline'}
-                                    className=" bg-primary/10 border-primary/30 text-primary/90"
+                                    className=" bg-primary/10 border-primary/20 text-primary/70"
                                     key={tag.id}
                                 >
                                     #{tag.name}
@@ -81,6 +83,7 @@ const QuoteCard = (props: Props) => {
                         >
                             {copying ? <Check className="text-green-500" /> : <Copy />}
                         </Button>
+                        {/*
                         <Button
                             className="hover:text-yellow-600 "
                             variant={"outline"}
@@ -92,6 +95,7 @@ const QuoteCard = (props: Props) => {
                             size={"sm"}>
                             <PenIcon />
                         </Button>
+                        */}
                         <Button
                             className=" hover:text-destructive "
                             variant={"outline"}

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import StarterKit from '@tiptap/starter-kit'
 import { BatteryFull, List } from 'lucide-react'
 import { useEditor, EditorContent } from '@tiptap/react'
@@ -17,7 +18,7 @@ const Tiptap = (props: Props) => {
     content: value,
     editorProps: {
       attributes: {
-        class: 'p-2 border bg-card overflow-hidden h-48  rounded-xl   '
+        class: 'p-2 border  bg-card max-h-64 overflow-auto  rounded-xl   '
       }
     },
     onUpdate: (updates) => {
@@ -35,14 +36,15 @@ console. log({k: keyBoardHeight})
                 tiptap
                 prose
                 prose-foreground
+                
 removed-prose-sm  
 removed-sm:prose-base 
                 removed-lg:prose-lg
                 removed-xl:prose-2xl
-               h-full
-               
+transition-transform duration-300 ease-out
             ">   {/* IMPORTANT */}
       <EditorContent editor={editor} />
+      {/*
       <div className="
           fixed 
           z-50
@@ -52,13 +54,36 @@ removed-sm:prose-base
           border
           rounded-t-xl
           overflow-hidden
+          transition-transform duration-300 ease-out
       "
         style={{
           transform: `translateY(-${keyBoardHeight}px)`
         }}
       >
+      */}
+      <motion.div
+  className="
+    fixed 
+    z-50
+    bottom-0
+    left-0
+    right-0
+    border
+    rounded-t-xl
+  "
+  initial={{ scale: 0.8,  }}
+  animate={{
+    y: -keyBoardHeight ,
+    scale: 1
+  }}
+  transition={{
+    type: "spring",
+    stiffness: 300, // how stiff the spring is
+    damping: 30,    // how quickly it settles
+  }}
+>
         <TiptapToolbar editor={editor} />
-      </div>
+      </motion.div>
       {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
       <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
     </div>

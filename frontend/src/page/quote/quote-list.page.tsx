@@ -24,48 +24,39 @@ import {
   getAllQuotesDetails,
 } from '@/db/quote_tags.db'
 import { useDarkOrLightTheme } from '@/hook/use-dark-or-light-theme.hook'
+import { useGetAllQuoteDetails } from '@/hook/get-all-quote-details.hook'
 
 export function QuoteListPage() {
   const { darkMode, toggleDarkMode } = useDarkOrLightTheme()
   
   /* ------------------ data ------------------ */
 
-  const [loading, setLoading] = useState(true)
-  const [quotes, setQuotes] = useState<Quote[]>([])
-  const [allQuotes, setAllQuotes] = useState<Quote[]>([])
+  const { data: quotesStored, isLoading, error, refetch} = useGetAllQuoteDetails()
+  const [quotes, setQuotes] = useState(quotesStored)
 
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
-  const [mode, setMode] = useState<'add' | 'edit'>('add')
+  // const [mode, setMode] = useState<'add' | 'edit'>('add')
 
-  const [openAddEdit, setOpenAddEdit] = useState(false)
+  // const [openAddEdit, setOpenAddEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
 
-  /* ------------------ helpers ------------------ */
-
-  const fetchQuotes = useCallback(async () => {
-    setLoading(true)
-    const data = await getAllQuotesDetails()
-    setQuotes(data)
-    setAllQuotes(data)
-    setLoading(false)
-  }, [])
 
   const resolveTags = async (tags: string[]): Promise<Tag[]> =>
     Promise.all(tags.map(name => addOrGetTag({ name })))
 
-  /* ------------------ handlers ------------------ */
+  // /* ------------------ handlers ------------------ */
 
-  const openAddDialog = () => {
-    setMode('add')
-    setSelectedQuote(null)
-    setOpenAddEdit(true)
-  }
+  // const openAddDialog = () => {
+  //   setMode('add')
+  //   setSelectedQuote(null)
+  //   setOpenAddEdit(true)
+  // }
 
-  const openEditDialog = (quote: Quote) => {
-    setMode('edit')
-    setSelectedQuote(quote)
-    setOpenAddEdit(true)
-  }
+  // const openEditDialog = (quote: Quote) => {
+  //   setMode('edit')
+  //   setSelectedQuote(quote)
+  //   setOpenAddEdit(true)
+  // }
 
   const openDeleteDialog = (quote: Quote) => {
     setSelectedQuote(quote)
@@ -89,38 +80,34 @@ export function QuoteListPage() {
       )
     )
 
-    setOpenAddEdit(false)
+    // setOpenAddEdit(false)
     setSelectedQuote(null)
-    fetchQuotes()
+    refetch()
   }
 
   const handleDelete = async (quote: QuoteFormData) => {
     if (!quote.id) return
     await deleteQuote(quote.id)
     setOpenDelete(false)
-    setQuotes(
-      quotes.filter(q =>q.id != quote.id)
-    )
+    refetch()
   }
 
   const handleSearch = (value: string) => {
     const term = value.trim().toLowerCase()
-    if (!term) return setQuotes(allQuotes)
+    if (!term) return setQuotes(quotesStored)
+    if (!quotesStored) return setQuotes(quotesStored)
 
     setQuotes(
-      allQuotes.filter(q =>
+      quotesStored.filter(q =>
         q.text.toLowerCase().includes(term)
       )
     )
   }
 
-  /* ------------------ init ------------------ */
+   if (error) {
+    return <p className="w-full text-center text-destructive">Error: {error}</p>
+  }
 
-  useEffect(() => {
-    fetchQuotes()
-  }, [])
-
-  /* ------------------ UI ------------------ */
 
   return (
         <div  className="p-2 gap-2 flex flex-col">
@@ -159,9 +146,9 @@ export function QuoteListPage() {
       {/* Content */}
       <main className="">
         <ListQuote
-          loading={loading}
-          quotes={quotes}
-          onEdit={openEditDialog}
+          loading={isLoading}
+          quotes={quotes!}
+          onEdit={()=>{}}
           onDelete={openDeleteDialog}
         />
       </main>
@@ -172,7 +159,6 @@ export function QuoteListPage() {
           <Button
             size="icon-lg"
             className="fixed bottom-8 rounded-full aspect-square scale-150"
-            onClick={openAddDialog}
           >
             <PlusIcon />
           </Button>
@@ -180,13 +166,13 @@ export function QuoteListPage() {
       </nav>
 
       {/* Dialogs */}
-      <AddEditQuoteDialog
+      {/* <AddEditQuoteDialog
         mode={mode}
         quote={selectedQuote}
         open={openAddEdit}
         setOpen={setOpenAddEdit}
         handleSubmit={handleSubmit}
-      />
+      /> */}
 
       <DeleteQuoteDialog
         open={openDelete}

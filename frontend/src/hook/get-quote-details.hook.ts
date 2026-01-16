@@ -3,7 +3,7 @@ import { getQuoteDetails } from "@/db/quote_tags.db"
 
 export const useGetQuoteDetails = (quoteId?: number) => {
     const { data, isLoading, error} = useQuery({
-    queryKey: ['quoteDetails', quoteId],
+    queryKey: ['quote-details', quoteId],
     queryFn: () => getQuoteDetails(quoteId!),
     enabled: Boolean(quoteId)
   })

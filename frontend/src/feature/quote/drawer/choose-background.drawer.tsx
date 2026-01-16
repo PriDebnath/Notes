@@ -112,13 +112,14 @@ export default function ChooseBackground() {
                   title={p.name}
                 >
                   <div
-                    className="w-full h-full rounded-lg"
+                    className="w-full text-center h-full rounded-lg"
                     style={{
                       ...(p.overlay
                         ? { backgroundImage: p.overlay, backgroundSize: "cover", backgroundPosition: "center" }
                         : { backgroundColor: p.color }),
                     }}
-                  />
+                  >{ p.name}
+                  </div>
                 </button>
               );
             })}

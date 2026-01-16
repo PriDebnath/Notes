@@ -31,7 +31,7 @@ const Tiptap = (props: Props) => {
 
   let keyBoardHeight = useGetKeyBoardHeight()
 
-  console.log({ k: keyBoardHeight })
+  //console.log({ k: keyBoardHeight })
   return (
     <div className="
                 tiptap

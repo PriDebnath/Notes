@@ -126,8 +126,7 @@ export const getQuoteDetails = async (
         }
 
         resolve({
-          id: quote.id,
-          text: quote.text,
+          ...quote,
           tags,
         })
       }

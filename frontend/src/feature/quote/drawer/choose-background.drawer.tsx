@@ -1,31 +1,37 @@
-import { useState } from "react";
 import {
   Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
   DrawerTitle,
+  DrawerClose,
+  DrawerHeader,
+  DrawerContent,
   DrawerTrigger,
+  DrawerDescription,
 } from "@/components/ui/drawer";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
+import type { QuoteFormData } from "@/model/quote.model";
 import { ArrowLeftIcon, Save, Shirt } from "lucide-react";
+import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
 
-export default function ChooseBackground() {
+interface Props {
+  onValueUpdate: (key: keyof QuoteFormData, value: string) => void
+}
 
+export default function ChooseBackground(props: Props) {
+  const { onValueUpdate} = props
   const { textures, colorPresets, buildStyle } = useBackground()
-
   const [selectedTexture, setSelectedTexture] = useState<TextureKey> ( "cardboard");
   const [selectedPreset, setSelectedPreset] = useState<Pri_set>('pri_set_1');
 
-  const apply = () => {
-    // const result = {
-    //   image: selectedTexture,
-    //   color: selectedPreset.color ?? undefined,
-    //   overlay: selectedPreset.overlay ?? undefined,
-    // };
-  };
+  const handleTextureClick = (key: TextureKey)=>{
+    setSelectedTexture(key)
+    onValueUpdate("texture", key)
+  }
+
+  const handlePriSetClick = (pri: Pri_set)=>{
+    setSelectedPreset(pri)
+    onValueUpdate("pri_set", pri)
+  }
 
   return (
     <Drawer
@@ -79,7 +85,7 @@ export default function ChooseBackground() {
               return (
                 <button
                   key={ key}
-                  onClick={() => setSelectedTexture(key as TextureKey)}
+                  onClick={() => handleTextureClick(key as TextureKey)}
                   className={`w-28 h-20 rounded-lg shrink-0  focus:outline-none ${selectedTexture === key ? "ring-2 ring-primary" : "border"
                     }`}
                   aria-pressed={selectedTexture === key}
@@ -110,7 +116,7 @@ export default function ChooseBackground() {
               return (
                 <button
                   key={key}
-                  onClick={() => setSelectedPreset(key as Pri_set)}
+                  onClick={() => handlePriSetClick(key as Pri_set)}
                   className={`w-20 h-20 rounded-lg shrink-0 p-0 relative focus:outline-none ${isSelected ? "ring-2 ring-primary" : "border"
                     }`}
                   aria-pressed={isSelected}

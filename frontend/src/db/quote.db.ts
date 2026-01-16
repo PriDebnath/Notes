@@ -27,7 +27,7 @@ export const getAllQuote = async (quoteId: number): Promise<Quote> => {
 
 
 export const addQuote = async (
-  quote: Omit<Quote, 'id'>
+  quote: Quote
 ): Promise<Quote> => {
   const db = await openDB()
   const tx = db.transaction(STORE_NAME, 'readwrite')

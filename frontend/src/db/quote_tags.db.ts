@@ -174,8 +174,7 @@ export const getAllQuotesDetails = async (): Promise<QuoteDetails[]> => {
         }
 
         result.push({
-          id: quote.id,
-          text: quote.text,
+          ...quote,
           tags,
         })
       }

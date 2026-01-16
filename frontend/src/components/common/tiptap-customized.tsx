@@ -2,13 +2,14 @@ import { motion } from "framer-motion";
 import StarterKit from '@tiptap/starter-kit'
 import { BatteryFull, List } from 'lucide-react'
 import { useEditor, EditorContent } from '@tiptap/react'
+import type { QuoteFormData } from "@/model/quote.model";
 import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus'
 import TiptapToolbar from '@/components/common/tiptap-toolbar'
-import {useGetKeyBoardHeight} from '@/hook/use-get-keyboard-height.hook'
+import { useGetKeyBoardHeight } from '@/hook/use-get-keyboard-height.hook'
 
 interface Props {
   value?: string
-  onValueUpdate: (text: string) => void
+  onValueUpdate: (key: keyof QuoteFormData, value: string) => void
 }
 
 const Tiptap = (props: Props) => {
@@ -24,13 +25,13 @@ const Tiptap = (props: Props) => {
     onUpdate: (updates) => {
       const { editor: newEditor } = updates
       const html = newEditor.getHTML()
-      onValueUpdate(html)
+      onValueUpdate("text", html)
     }
   })
-  
-let   keyBoardHeight = useGetKeyBoardHeight()
 
-console. log({k: keyBoardHeight})
+  let keyBoardHeight = useGetKeyBoardHeight()
+
+  console.log({ k: keyBoardHeight })
   return (
     <div className="
                 tiptap
@@ -62,7 +63,7 @@ transition-transform duration-300 ease-out
       >
       */}
       <motion.div
-  className="
+        className="
     fixed 
     z-50
     bottom-0
@@ -71,17 +72,17 @@ transition-transform duration-300 ease-out
     border
     rounded-t-xl
   "
-  initial={{ scale: 0.8,  }}
-  animate={{
-    y: -keyBoardHeight ,
-    scale: 1
-  }}
-  transition={{
-    type: "spring",
-    stiffness: 300, // how stiff the spring is
-    damping: 30,    // how quickly it settles
-  }}
->
+        initial={{ scale: 0.8, }}
+        animate={{
+          y: -keyBoardHeight,
+          scale: 1
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 300, // how stiff the spring is
+          damping: 30,    // how quickly it settles
+        }}
+      >
         <TiptapToolbar editor={editor} />
       </motion.div>
       {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>

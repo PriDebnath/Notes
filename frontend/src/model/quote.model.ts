@@ -10,6 +10,8 @@ export interface Quote {
 export interface QuoteDetails {
     id?: number | undefined;
     text: string;
+    texture?: TextureKey;
+    pri_set?: Pri_set;
     tags?: Tag[]
 }
 

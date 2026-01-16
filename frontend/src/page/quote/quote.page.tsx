@@ -25,6 +25,8 @@ interface Props {
 
 export function QuotePage(props: Props) {
   const { mode } = props
+  const navigate = useNavigate()
+
   // Only read params in edit mode
   const params = mode === 'edit' ? Route.useParams() : null
   const quoteId = params?.quoteId
@@ -42,9 +44,10 @@ export function QuotePage(props: Props) {
     id: quote?.id,
     text: quote?.text || "",
     tags: quote?.tags?.map((tag) => tag.name) || [],
+    texture: quote?.texture,
+    pri_set: quote?.pri_set,
   }))
 
-  const navigate = useNavigate()
 
   const onTagChoose = (tag: string) => {
     setQuoteData(prev => {
@@ -70,21 +73,19 @@ export function QuotePage(props: Props) {
     })
   }
 
-  const onValueUpdate = (text: string) => {
+  const onValueUpdate = (key: keyof QuoteFormData, value: string) => {
     setQuoteData(prev => ({
       ...prev,
-      text: text
+      [key]: value
     }))
   }
 
   const getTags = async (tags: string[]): Promise<Tag[]> => {
     const result: Tag[] = [];
-
     for (const tag of tags) {
       const savedTag = await addOrGetTag({ name: tag });
       result.push(savedTag);
     }
-
     return result;
   };
 
@@ -98,7 +99,7 @@ export function QuotePage(props: Props) {
 
 
   const handleSubmit = useCallback(async (quote: QuoteFormData) => {
-    console.log({ quote })
+    console.log({at:"at" ,quote })
     let quoteId: number | undefined = quote.id
     if (quoteId) { // edit
       await updateQuote({
@@ -188,7 +189,7 @@ export function QuotePage(props: Props) {
               </Button>
             </Link>
             <div>
-              <ChooseBackground />
+              <ChooseBackground onValueUpdate={onValueUpdate}/>
             </div>
           </div>
 

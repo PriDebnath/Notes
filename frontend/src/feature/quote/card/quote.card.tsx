@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { sanitizeHTML } from "@/helper/sanitize-html";
+import useBackground from "@/hook/use-background.hook";
 import { cn } from "@/lib/utils";
 import type { Quote, QuoteDetails } from "@/model/quote.model";
 import { Link } from "@tanstack/react-router";
@@ -16,6 +17,7 @@ interface Props {
 const QuoteCard = (props: Props) => {
     const { quote, onEdit, onDelete, } = props
     const [copying, setCopying] = useState(false)
+    const { buildStyle } = useBackground()
 
     const onCopy = async (text: string) => {
         setCopying(true)
@@ -26,20 +28,23 @@ const QuoteCard = (props: Props) => {
     }
 
     return (
-        <Link 
-        className=""
-        to={"/$quoteId"}
+        <Link
+            className=""
+            to={"/$quoteId"}
             params={
                 { quoteId: quote.id?.toString()! }
             }>
 
-            <div className={
-                cn(
-                    "border p-2  bg-card rounded-xl ",
-                    "flex flex-col justify-between items-start gap-2",
-                    "",
-                )
-            }>
+            <div
+                style={buildStyle(quote.texture!, quote.pri_set!)}
+                className={
+                    cn(
+                        "border p-2  bg-card rounded-xl ",
+                        "flex flex-col justify-between items-start gap-2",
+                        "",
+                    )
+
+                }>
                 <div className="
                 tiptap
                 prose-sm 
@@ -51,7 +56,7 @@ const QuoteCard = (props: Props) => {
             ">   {/* IMPORTANT */}
                     <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quote.text) }}></div>
                 </div>
-                            {/*
+                {/*
                 <p className="text-base w-full text-card-foreground text-right">-- Pritam</p>
                             */}
 
@@ -75,8 +80,8 @@ const QuoteCard = (props: Props) => {
                             className="hover:text-green-600 "
                             variant={"outline"}
                             onClick={(e) => {
-                              e.preventDefault()
-                              onCopy(quote.text)
+                                e.preventDefault()
+                                onCopy(quote.text)
                             }}
                             aria-label="Copy quote"
                             size={"sm"}
@@ -100,8 +105,8 @@ const QuoteCard = (props: Props) => {
                             className=" hover:text-destructive "
                             variant={"outline"}
                             onClick={(e) => {
-                              e.preventDefault()
-                              onDelete(quote)
+                                e.preventDefault()
+                                onDelete(quote)
                             }}
                             aria-label="Delete quote"
                             size={"sm"}

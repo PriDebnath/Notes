@@ -3,12 +3,13 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon, Save, Shirt } from "lucide-react";
 
-export default function ChooseBackground({ onApply } = {}) {
+export default function ChooseBackground() {
   // separate lists: textures and color/overlay presets
   const textures = [
     "src/assets/images/fresh-snow.png",
@@ -16,7 +17,13 @@ export default function ChooseBackground({ onApply } = {}) {
     "src/assets/images/cardboard.png",
   ];
 
-  const colorPresets = [
+  interface ColorPresets {
+    id: string;
+    overlay?: string;
+    color?: string;
+  }
+
+  const colorPresets: ColorPresets[] = [
     { id: "red", color: "red" }, // solid color
     { id: "sun", overlay: "linear-gradient(to right, #ff512f, #dd2476)" }, // gradient overlay
     { id: "yellow", color: "yellow" },
@@ -29,7 +36,7 @@ export default function ChooseBackground({ onApply } = {}) {
   const [selectedPreset, setSelectedPreset] = useState(colorPresets[0]);
 
   // build inline style for preview & thumbnails that need composition
-  const buildStyle = (texture, preset) => {
+  const buildStyle = (texture: string, preset: ColorPresets) => {
     return {
       backgroundImage: `${preset?.overlay ?? "none"}, ${texture ? `url(${texture})` : "none"}`,
       backgroundColor: preset?.color ?? undefined,
@@ -44,21 +51,22 @@ export default function ChooseBackground({ onApply } = {}) {
       color: selectedPreset.color ?? undefined,
       overlay: selectedPreset.overlay ?? undefined,
     };
-    if (typeof onApply === "function") onApply(result);
   };
 
   return (
     <Drawer>
-      <DrawerTrigger>
+      <DrawerTrigger asChild>
         <Button variant="outline" size="icon">
           <Shirt />
         </Button>
       </DrawerTrigger>
 
       <DrawerContent className="p-4">
+        <DrawerTitle className="w-full text-center text-lg font-medium p-4">
+          Choose Background
+        </DrawerTitle>
         {/* Top bar */}
         <div className="flex items-center justify-between ">
-            <h3 className="w-full text-center text-lg font-medium p-4">Choose Background</h3>
           {/*
           <div className="flex items-center justify-center gap-2 p-4">
             <ArrowLeftIcon className="w-5 h-5" />
@@ -92,9 +100,8 @@ export default function ChooseBackground({ onApply } = {}) {
               <button
                 key={t}
                 onClick={() => setSelectedTexture(t)}
-                className={`w-28 h-20 rounded-lg flex-shrink-0  focus:outline-none ${
-                  selectedTexture === t ? "ring-2 ring-primary" : "border"
-                }`}
+                className={`w-28 h-20 rounded-lg shrink-0  focus:outline-none ${selectedTexture === t ? "ring-2 ring-primary" : "border"
+                  }`}
                 aria-pressed={selectedTexture === t}
                 title={t}
               >
@@ -121,9 +128,8 @@ export default function ChooseBackground({ onApply } = {}) {
                 <button
                   key={p.id}
                   onClick={() => setSelectedPreset(p)}
-                  className={`w-20 h-20 rounded-lg flex-shrink-0 p-0 relative focus:outline-none ${
-                    isSelected ? "ring-2 ring-primary" : "border"
-                  }`}
+                  className={`w-20 h-20 rounded-lg shrink-0 p-0 relative focus:outline-none ${isSelected ? "ring-2 ring-primary" : "border"
+                    }`}
                   aria-pressed={isSelected}
                   title={p.id}
                 >

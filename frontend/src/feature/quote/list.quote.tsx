@@ -24,7 +24,7 @@ export function ListQuote(props: Props) {
         className="flex gap-2"
         columnClassName={columnClassName}
       >
-        {Array.from({ length: 8 }).map((_, i) => {
+        {Array.from({ length: 3}).map((_, i) => {
           return (
             <motion.div
               key={i}

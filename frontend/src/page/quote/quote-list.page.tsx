@@ -1,7 +1,12 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { PlusIcon, Lightbulb, LightbulbOff, SearchIcon } from 'lucide-react'
-import { AnimatePresence, motion } from 'framer-motion'
+import {
+  PlusIcon,
+  Lightbulb,
+  LightbulbOff,
+  SearchIcon,
+} from 'lucide-react'
+import { motion } from 'framer-motion'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -11,7 +16,6 @@ import {
 } from '@/components/ui/input-group'
 
 import { ListQuote } from '@/feature/quote/list.quote'
-import AddEditQuoteDialog from '@/feature/quote/dialog/add-edit.quote.dialog'
 import DeleteQuoteDialog from '@/feature/quote/dialog/delete.quote.dialog'
 
 import type { Quote, QuoteFormData, Tag } from '@/model/quote.model'
@@ -21,68 +25,66 @@ import { addQuote, updateQuote, deleteQuote } from '@/db/quote.db'
 import {
   addQuoteTag,
   deleteAllQuoteTags,
-  getAllQuotesDetails,
 } from '@/db/quote_tags.db'
+
 import { useDarkOrLightTheme } from '@/hook/use-dark-or-light-theme.hook'
 import { useGetAllQuoteDetails } from '@/hook/get-all-quote-details.hook'
 
 export function QuoteListPage() {
   const { darkMode, toggleDarkMode } = useDarkOrLightTheme()
-  
+
   /* ------------------ data ------------------ */
 
-  const { data: quotesStored, isLoading, error, refetch} = useGetAllQuoteDetails()
-  const [quotes, setQuotes] = useState(quotesStored)
+  const {
+    data: quotesStored,
+    isLoading,
+    error,
+    refetch,
+  } = useGetAllQuoteDetails()
+
+  const [quotes, setQuotes] = useState<Quote[]>([])
+  const [search, setSearch] = useState('')
+  const [activeTags, setActiveTags] = useState<string[]>([])
 
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
-  // const [mode, setMode] = useState<'add' | 'edit'>('add')
-
-  // const [openAddEdit, setOpenAddEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
 
+  /* ------------------ sync db → local ------------------ */
 
-  const resolveTags = async (tags: string[]): Promise<Tag[]> =>
-    Promise.all(tags.map(name => addOrGetTag({ name })))
+  useEffect(() => {
+    setQuotes(quotesStored ?? [])
+  }, [quotesStored])
 
-  // /* ------------------ handlers ------------------ */
+  /* ------------------ search + tag filter ------------------ */
 
-  // const openAddDialog = () => {
-  //   setMode('add')
-  //   setSelectedQuote(null)
-  //   setOpenAddEdit(true)
-  // }
+  useEffect(() => {
+    if (!quotesStored) return
 
-  // const openEditDialog = (quote: Quote) => {
-  //   setMode('edit')
-  //   setSelectedQuote(quote)
-  //   setOpenAddEdit(true)
-  // }
+    let result = quotesStored
+
+    // 🔍 search
+    if (search.trim()) {
+      const term = search.toLowerCase()
+      result = result.filter(q =>
+        q.text.toLowerCase().includes(term)
+      )
+    }
+
+    // 🏷 tags
+    if (activeTags.length > 0) {
+      result = result.filter(q =>
+        q.tags?.some(tag => activeTags.includes(tag.name))
+      )
+    }
+
+    setQuotes(result)
+  }, [quotesStored, search, activeTags])
+
+  /* ------------------ handlers ------------------ */
 
   const openDeleteDialog = (quote: Quote) => {
     setSelectedQuote(quote)
     setOpenDelete(true)
-  }
-
-  const handleSubmit = async (data: QuoteFormData) => {
-    const text = data.text || 'Empty'
-
-    const savedQuote = data.id
-      ? await updateQuote({ ...data, text })
-      : await addQuote({ ...data, text })
-
-    const quoteId = savedQuote.id!
-    const tags = await resolveTags(data.tags ?? [])
-
-    await deleteAllQuoteTags(quoteId)
-    await Promise.all(
-      tags.map(tag =>
-        addQuoteTag({ quoteId, tagId: tag.id! })
-      )
-    )
-
-    // setOpenAddEdit(false)
-    setSelectedQuote(null)
-    refetch()
   }
 
   const handleDelete = async (quote: QuoteFormData) => {
@@ -92,35 +94,35 @@ export function QuoteListPage() {
     refetch()
   }
 
-  const handleSearch = (value: string) => {
-    const term = value.trim().toLowerCase()
-    if (!term) return setQuotes(quotesStored)
-    if (!quotesStored) return setQuotes(quotesStored)
-
-    setQuotes(
-      quotesStored.filter(q =>
-        q.text.toLowerCase().includes(term)
-      )
+  const toggleTag = (tag: string) => {
+    setActiveTags(prev =>
+      prev.includes(tag)
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
     )
   }
 
-   if (error) {
-    return <p className="w-full text-center text-destructive">Error: {error}</p>
+  /* ------------------ error ------------------ */
+
+  if (error) {
+    return (
+      <p className="w-full text-center text-destructive">
+        Error: {error}
+      </p>
+    )
   }
 
+  /* ------------------ ui ------------------ */
 
   return (
-        <div  className="p-2 gap-2 flex flex-col">
-       {/* Sticky Header */}
-        <motion.div
-            key={"search"}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.4 }}
-            className="gap-2 flex flex-col sticky top-0 z-20 bg-background rounded-b-2xl "
-           >
-      
+    <div className="p-2 gap-4 flex flex-col">
+      {/* Sticky Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="gap-4 flex flex-col sticky top-0 z-20 bg-background rounded-b-2xl"
+      >
         <div className="text-right">
           <Button
             size="icon"
@@ -132,23 +134,44 @@ export function QuoteListPage() {
           </Button>
         </div>
 
+        {/* Search */}
         <InputGroup>
           <InputGroupInput
             placeholder="Search..."
-            onChange={e => handleSearch(e.target.value)}
+            value={search}
+            onChange={e => setSearch(e.target.value)}
           />
           <InputGroupAddon>
             <SearchIcon />
           </InputGroupAddon>
         </InputGroup>
+
+        {/* Tags */}
+        <div className="flex gap-2 flex-wrap">
+          <p>Filter by tags: </p>
+          {[...new Set(quotesStored?.flatMap(q =>
+            q.tags?.map(t => t.name) ?? []
+          ))].map(tag => (
+            <Button
+              key={tag}
+              size="sm"
+              variant={
+                activeTags.includes(tag) ? 'default' : 'outline'
+              }
+              onClick={() => toggleTag(tag)}
+            >
+              {tag}
+            </Button>
+          ))}
+        </div>
       </motion.div>
 
       {/* Content */}
-      <main className="">
+      <main>
         <ListQuote
           loading={isLoading}
-          quotes={quotes!}
-          onEdit={()=>{}}
+          quotes={quotes}
+          onEdit={() => {}}
           onDelete={openDeleteDialog}
         />
       </main>
@@ -165,15 +188,7 @@ export function QuoteListPage() {
         </Link>
       </nav>
 
-      {/* Dialogs */}
-      {/* <AddEditQuoteDialog
-        mode={mode}
-        quote={selectedQuote}
-        open={openAddEdit}
-        setOpen={setOpenAddEdit}
-        handleSubmit={handleSubmit}
-      /> */}
-
+      {/* Delete Dialog */}
       <DeleteQuoteDialog
         open={openDelete}
         setOpen={setOpenDelete}

@@ -6,7 +6,7 @@
 * - keyPath change
 */
 const DB_NAME = 'quotes_keeper_db_by_pri';
-const DB_VERSION = 4
+const DB_VERSION = 5
 
 export const STORES = {
   QUOTES: 'quotes',

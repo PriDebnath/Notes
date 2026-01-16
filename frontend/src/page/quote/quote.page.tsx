@@ -139,7 +139,9 @@ export function QuotePage(props: Props) {
       setQuoteData({
         id: quote.id,
         text: quote.text,
-        tags: quote.tags?.map(t => t.name) || []
+        tags: quote.tags?.map(t => t.name) || [],
+        texture: quote.texture,
+        pri_set: quote.pri_set,
       })
     }
   }, [quote, mode])

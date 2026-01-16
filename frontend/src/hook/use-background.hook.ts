@@ -1,10 +1,7 @@
 
 
-const textures = [
-    "src/assets/images/fresh-snow.png",
-    "src/assets/images/dark-wood.png",
-    "src/assets/images/cardboard.png",
-];
+
+
 
 interface ColorPresets {
     id: number;
@@ -13,22 +10,38 @@ interface ColorPresets {
     color?: string;
 }
 
-const colorPresets: ColorPresets[] = [
-    { id: 1, name: "red", color: "red" }, // id: 1 ,solname color
-    { id: 2, name: "sun", overlay: "linear-gradient(to right, #ff512f, #dd2476)" }, // gradient overlay
-    { id: 3, name: "yellow", color: "yellow" },
-    { id: 4, name: "blue", color: "blue" },
-    { id: 5, name: "dark-fade", overlay: "linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6))" },
-];
+const colorPresets = {
+    pri_set_1: { id: 1, name: "red", color: "red" } as ColorPresets,
+    pri_set_2: { id: 2, name: "sun", overlay: "linear-gradient(to right, #ff512f, #dd2476)" } as ColorPresets, // gradient overlay
+    pri_set_3: { id: 3, name: "yellow", color: "yellow" } as ColorPresets,
+    pri_set_4: { id: 4, name: "blue", color: "blue" } as ColorPresets,
+    pri_set_5: { id: 5, name: "dark-fade", overlay: "linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6))" } as ColorPresets,
+}
+
+export type Pri_set = keyof typeof colorPresets
+
+export type TextureKey = keyof typeof textures
+
+const textures = {
+    fresh_snow: "src/assets/images/fresh-snow.png",
+    dark_wood: "src/assets/images/dark-wood.png",
+    cardboard: "src/assets/images/cardboard.png",
+};
 
 // build inline style for preview & thumbnails that need composition
-const buildStyle = (texture: string, preset: ColorPresets) => {
-    return {
-        backgroundImage: `${preset?.overlay ?? "none"}, ${texture ? `url(${texture})` : "none"}`,
+const buildStyle = (texture: TextureKey, pri_set: Pri_set) => {
+    const preset = colorPresets[pri_set]
+    const style = {
+        ...(preset?.overlay && { backgroundImage: preset.overlay }),
+        ...(textures[texture] && { backgroundImage: `url(${textures[texture]}` }),
+        // backgroundImage: `${texture ?? "none"}, ${texture ? `url(${texture})` : "none"}`,
         backgroundColor: preset?.color ?? undefined,
         backgroundSize: "cover",
         backgroundPosition: "center",
     };
+    console.log({ style, preset,texture });
+
+    return style
 };
 
 

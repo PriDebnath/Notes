@@ -9,22 +9,22 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import useBackground from "@/hook/use-background.hook";
+import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
 import { ArrowLeftIcon, Save, Shirt } from "lucide-react";
 
 export default function ChooseBackground() {
 
   const { textures, colorPresets, buildStyle } = useBackground()
 
-  const [selectedTexture, setSelectedTexture] = useState(textures[0]);
-  const [selectedPreset, setSelectedPreset] = useState(colorPresets[0]);
+  const [selectedTexture, setSelectedTexture] = useState<TextureKey> ( "cardboard");
+  const [selectedPreset, setSelectedPreset] = useState<Pri_set>('pri_set_1');
 
   const apply = () => {
-    const result = {
-      image: selectedTexture,
-      color: selectedPreset.color ?? undefined,
-      overlay: selectedPreset.overlay ?? undefined,
-    };
+    // const result = {
+    //   image: selectedTexture,
+    //   color: selectedPreset.color ?? undefined,
+    //   overlay: selectedPreset.overlay ?? undefined,
+    // };
   };
 
   return (
@@ -74,25 +74,28 @@ export default function ChooseBackground() {
         <div className="mb-4">
           <h4 className="text-sm font-semibold mb-2">Textures</h4>
           <div className="flex gap-4 overflow-auto p-2">
-            {textures.map((t) => (
-              <button
-                key={t}
-                onClick={() => setSelectedTexture(t)}
-                className={`w-28 h-20 rounded-lg shrink-0  focus:outline-none ${selectedTexture === t ? "ring-2 ring-primary" : "border"
-                  }`}
-                aria-pressed={selectedTexture === t}
-                title={t}
-              >
-                <div
-                  className="w-full h-full rounded-lg"
-                  style={{
-                    backgroundImage: `url(${t})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                />
-              </button>
-            ))}
+            {Object.entries(textures).map((textureObj) => {
+              const [key, value] = textureObj
+              return (
+                <button
+                  key={ key}
+                  onClick={() => setSelectedTexture(key as TextureKey)}
+                  className={`w-28 h-20 rounded-lg shrink-0  focus:outline-none ${selectedTexture === key ? "ring-2 ring-primary" : "border"
+                    }`}
+                  aria-pressed={selectedTexture === key}
+                  title={key}
+                >
+                  <div
+                    className="w-full h-full rounded-lg"
+                    style={{
+                      backgroundImage: `url(${value})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  />
+                </button>
+              )
+            })}
           </div>
         </div>
 
@@ -100,25 +103,28 @@ export default function ChooseBackground() {
         <div>
           <h4 className="text-sm font-semibold mb-2">Colors & Overlays</h4>
           <div className="flex gap-4 overflow-auto p-2">
-            {colorPresets.map((p) => {
-              const isSelected = selectedPreset.id === p.id;
+            {Object.entries(colorPresets).map((pri) => {
+              const [key, value] = pri
+
+              const isSelected = selectedPreset  === key;
               return (
                 <button
-                  key={p.id}
-                  onClick={() => setSelectedPreset(p)}
+                  key={key}
+                  onClick={() => setSelectedPreset(key as Pri_set)}
                   className={`w-20 h-20 rounded-lg shrink-0 p-0 relative focus:outline-none ${isSelected ? "ring-2 ring-primary" : "border"
                     }`}
                   aria-pressed={isSelected}
-                  title={p.name}
+                  title={value.name}
                 >
                   <div
-                    className="w-full text-center h-full rounded-lg"
+                    className="w-full flex items-center justify-center h-full rounded-lg"
                     style={{
-                      ...(p.overlay
-                        ? { backgroundImage: p.overlay, backgroundSize: "cover", backgroundPosition: "center" }
-                        : { backgroundColor: p.color }),
+                      ...(value.overlay
+                        ? { backgroundImage: value.overlay, backgroundSize: "cover", backgroundPosition: "center" }
+                        : { backgroundColor: value.color }),
                     }}
-                  >{ p.name}
+                  > 
+                  {/* {value.name} */}
                   </div>
                 </button>
               );

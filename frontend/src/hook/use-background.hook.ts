@@ -33,7 +33,7 @@ const buildStyle = (texture: TextureKey, pri_set: Pri_set) => {
     const preset = colorPresets[pri_set]
     const style = {
         ...(preset?.overlay && { backgroundImage: preset.overlay }),
-        ...(textures[texture] && { backgroundImage: `url(${textures[texture]}` }),
+        ...((textures[texture] && preset?.color )&& { backgroundImage: `url(${textures[texture]}` }),
         // backgroundImage: `${texture ?? "none"}, ${texture ? `url(${texture})` : "none"}`,
         backgroundColor: preset?.color ?? undefined,
         backgroundSize: "cover",

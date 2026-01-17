@@ -17,6 +17,7 @@ import { sanitizeHTML } from "@/helper/sanitize-html";
 import { cn } from "@/lib/utils";
 import { ListTags } from "@/feature/quote/list.tags";
 import { toPng } from "html-to-image"
+import { ResizableBox } from "react-resizable";
 
 interface Props {
   quoteFormData: QuoteFormData
@@ -66,35 +67,46 @@ export function ShareBackground(props: Props) {
         <div className="flex flex-col gap-4">
 
           {/* Live preview */}
-          <div className="w-full   rounded-lg bg-transparent   overflow-auto max-h-[65dvh]"
-            ref={noteRef}
-          >
-            <div
-              style={cardStyle}
-              className={
-                cn(
-                  "border p-2  bg-card rounded-xl ",
-                  "flex flex-col justify-between items-start gap-2",
-                  "",
-                )
+          <div className="relative">
+            <ResizableBox
+              width={420}
+              height={320}
+              minConstraints={[240, 240]}
+              maxConstraints={[900, 900]}
+              resizeHandles={["se"]}
+            >
+              <div 
+                className="w-full h-full rounded-lg bg-transparent overflow-hidden"
+                ref={noteRef}
+                style={{ width: '100%', height: '100%' }}
+              >
+                <div
+                  style={cardStyle}
+                  className={
+                    cn(
+                      "border p-2  bg-card rounded-xl h-full",
+                      "flex flex-col justify-between items-start gap-2",
+                    )
 
-              }>
-              <div className="
-                        tiptap
-                        prose-sm 
-                        removed-prose
-                        removed-sm:prose-base 
-                        removed-lg:prose-lg
-                        removed-xl:prose-2xl
-                        removed-prose-foreground
-                    ">   {/* IMPORTANT */}
-                <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quoteFormData.text!) }}></div>
-              </div>
-              <div className="flex w-full items-end justify-between gap-2">
-                <ListTags tags={quoteFormData?.tags?.map((tag, i) => { return { id: i, name: tag } }) || []} />
+                  }>
+                  <div className="
+                            tiptap
+                            prose-sm 
+                            removed-prose
+                            removed-sm:prose-base 
+                            removed-lg:prose-lg
+                            removed-xl:prose-2xl
+                            removed-prose-foreground
+                        ">   {/* IMPORTANT */}
+                    <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quoteFormData.text!) }}></div>
+                  </div>
+                  <div className="flex w-full items-end justify-between gap-2">
+                    <ListTags tags={quoteFormData?.tags?.map((tag, i) => { return { id: i, name: tag } }) || []} />
 
+                  </div>
+                </div>
               </div>
-            </div>
+            </ResizableBox>
           </div>
 
           {/* Action */}

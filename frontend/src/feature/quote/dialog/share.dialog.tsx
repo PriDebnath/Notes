@@ -11,7 +11,7 @@ import {
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { QuoteFormData } from "@/model/quote.model";
-import { ArrowLeftIcon, CircleArrowDown, LoaderCircle, Save, Share } from "lucide-react";
+import { ArrowLeftIcon, CircleArrowDown, Copy, LoaderCircle, Save, Share } from "lucide-react";
 import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { cn } from "@/lib/utils";
@@ -29,6 +29,7 @@ export function ShareBackground(props: Props) {
   const { buildStyle } = useBackground()
   const noteRef = useRef<HTMLDivElement>(null)
   const [downloading, setDownloading] = useState(false)
+  const [copying, setCopying] = useState(false)
   const [dimensions, setDimensions] = useState({ width: 320, height: 240 })
   const cardStyle = buildStyle(quoteFormData.texture!, quoteFormData.pri_set!)
 
@@ -180,38 +181,54 @@ export function ShareBackground(props: Props) {
           {/* Action */}
 
           <div className="flex items-center   gap-4 ">
-
             <div className="flex flex-col gap-4">
               <Button
                 className=""
                 variant={"outline"}
-                onClick={ async(e) => {
-    setDownloading(true)
+                onClick={async (e) => {
+                  setDownloading(true)
                   e.preventDefault()
-                await  exportAsImage()
-                    setTimeout(() => {
-      setDownloading(false)
-    }, 500);
-
+                  await exportAsImage()
+                  setDownloading(false)
                 }}
                 aria-label="Download quote"
                 size={"lg"}
               >
                 {downloading ? <LoaderCircle className="animate-spin" /> : <CircleArrowDown />}
               </Button>
-              <p className="text-xs">
+              <p className="text-xs text-center">
                 {downloading ? "Downloading" : "Download"}
               </p>
             </div>
 
             <div className="flex flex-col gap-4">
-
               <Button
                 variant="outline"
                 size="lg"
                 onClick={async (e) => {
                   e.preventDefault()
+                  setCopying(true)
+                  const dataUrl = await exportAsImage()
+                  if (!dataUrl) return
+                  const res = await fetch(dataUrl)
+                  const blob = await res.blob()
+                  await navigator.clipboard.write([
+                    new ClipboardItem({ "image/png": blob })
+                  ])
+                  setCopying(false)
+                }}
+              >
+                {copying ? <LoaderCircle className="animate-spin" /> : <Copy />}
+              </Button>
+              <p className="text-xs text-center">{copying ? "Copying" : "Copy"}</p>
+            </div>
 
+            <div className="flex flex-col gap-4">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={async (e) => {
+                  e.preventDefault()
                   const dataUrl = await exportAsImage()
                   if (!dataUrl) return
                   exportAndShareWhatsApp(dataUrl)
@@ -219,7 +236,7 @@ export function ShareBackground(props: Props) {
               >
                 <Share />
               </Button>
-              <p className="text-xs">WhatsApp</p>
+              <p className="text-xs text-center">WhatsApp</p>
             </div>
 
           </div>

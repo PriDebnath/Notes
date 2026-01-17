@@ -45,7 +45,10 @@ setDownloading(true)
     const onCopy = async (text: string) => {
         setCopying(true)
         await window.navigator.clipboard.writeText(text)
-        setCopying(false)
+        
+        setTimeout(()=>{
+     setCopying(false)
+    }, 3000)
     }
 
     return (

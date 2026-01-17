@@ -236,8 +236,8 @@ export function ShareBackground(props: Props) {
           <Separator className="bg-border" />
           {/* Action */}
 
-          <div className="flex items-center   gap-4 ">
-            <div className="flex flex-col gap-4">
+          <div className="flex items-center   gap-6 ">
+            <div className="flex flex-col gap-4 items-center">
               <Button
                 className=""
                 variant={"outline"}
@@ -259,7 +259,7 @@ export function ShareBackground(props: Props) {
               </p>
             </div>
             
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 items-center">
               <Button
                 variant="outline"
                 size="lg"
@@ -281,7 +281,7 @@ export function ShareBackground(props: Props) {
            
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4  items-center">
               <Button
                 variant="outline"
                 size="lg"
@@ -301,7 +301,7 @@ export function ShareBackground(props: Props) {
               </p>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 items-center">
               <Button
                 variant="outline"
                 size="lg"

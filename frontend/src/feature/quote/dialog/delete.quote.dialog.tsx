@@ -42,8 +42,8 @@ export default function DeleteQuoteDialog(props: Props) {
               Are you sure you want to delete ?
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4">
-            <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quote?.text!) }}></div>
+          <div className="grid gap-4 ">
+            <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: sanitizeHTML(quote?.text!) }}></div>
           </div>
           <DialogFooter>
             {/* <DialogClose asChild>

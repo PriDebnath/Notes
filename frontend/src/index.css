@@ -3,6 +3,7 @@
 
 @import "tailwindcss";
 @import "tw-animate-css";
+@import 'react-resizable/css/styles.css'; /* seems not working */
 
 @plugin "@tailwindcss/typography";
 
@@ -213,3 +214,33 @@ body {
   color: hsl(var(--foreground)) !important;
 }
 
+/* Make resize handle visible */
+.react-resizable-handle {
+  position: absolute;
+  z-index: 100;
+}
+
+.react-resizable-handle-se {
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  cursor: nwse-resize;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px 0 0 0;
+}
+
+.react-resizable-handle-se:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dark .react-resizable-handle-se {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.dark .react-resizable-handle-se:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+ 

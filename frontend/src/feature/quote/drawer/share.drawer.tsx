@@ -10,11 +10,12 @@ import {
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { QuoteFormData } from "@/model/quote.model";
-import { ArrowLeftIcon, Save, Share } from "lucide-react";
+import { ArrowLeftIcon, CircleArrowDown, LoaderCircle, Save, Share } from "lucide-react";
 import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { cn } from "@/lib/utils";
 import { ListTags } from "@/feature/quote/list.tags";
+import { toPng } from "html-to-image"
 
 interface Props {
   quoteFormData: QuoteFormData
@@ -24,7 +25,27 @@ export default function ShareBackground(props: Props) {
   const { quoteFormData } = props
   const { buildStyle } = useBackground()
   const noteRef = useRef<HTMLDivElement>(null)
+  const [downloading, setDownloading] = useState(false)
   const cardStyle = buildStyle(quoteFormData.texture!, quoteFormData.pri_set!)
+
+  const exportAsImage = async () => {
+    if (!noteRef.current) return
+    setDownloading(true)
+    const dataUrl = await toPng(noteRef.current, {
+      pixelRatio: 2,        // crisp image
+      //backgroundColor: "#fff"
+      cacheBust: true,
+      backgroundColor: cardStyle.backgroundColor
+    })
+
+    const link = document.createElement("a")
+    link.download = "note-by-pri-" + new Date().getTime() + "-.png"
+    link.href = dataUrl
+    link.click()
+    setTimeout(() => {
+      setDownloading(false)
+    }, 500);
+  }
 
   return (
     <Drawer
@@ -42,25 +63,44 @@ export default function ShareBackground(props: Props) {
             Share it with your close one.
           </DrawerDescription>
         </DrawerHeader>
-        {/* Top bar */}
-        <div className="flex items-center justify-between ">
+        <div className="flex flex-col gap-4">
 
-        </div>
+          <div className="flex items-center justify-between gap-4 ">
 
-        {/* Live preview */}
-        <div className="w-full border  rounded-lg   overflow-hidden shadow">
-          <div
-            ref={noteRef}
-            style={cardStyle}
-            className={
-              cn(
-                "border p-2  bg-card rounded-xl ",
-                "flex flex-col justify-between items-start gap-2",
-                "",
-              )
+            <div className="flex flex-col gap-4">
+              <Button
+                className=""
+                variant={"outline"}
+                onClick={(e) => {
+                  e.preventDefault()
+                  exportAsImage()
+                }}
+                aria-label="Download quote"
+                size={"lg"}
+              >
+                {downloading ? <LoaderCircle className="animate-spin" /> : <CircleArrowDown />}
+              </Button>
+              <p className="text-xs">
+                {downloading ? "Downloading" : "Download"}
+              </p>
+            </div>
 
-            }>
-            <div className="
+          </div>
+
+          {/* Live preview */}
+          <div className="w-full border  rounded-lg   overflow-hidden shadow">
+            <div
+              ref={noteRef}
+              style={cardStyle}
+              className={
+                cn(
+                  "border p-2  bg-card rounded-xl ",
+                  "flex flex-col justify-between items-start gap-2",
+                  "",
+                )
+
+              }>
+              <div className="
                         tiptap
                         prose-sm 
                         removed-prose
@@ -69,13 +109,16 @@ export default function ShareBackground(props: Props) {
                         removed-xl:prose-2xl
                         removed-prose-foreground
                     ">   {/* IMPORTANT */}
-              <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quoteFormData.text!) }}></div>
-            </div>
-            <div className="flex w-full items-end justify-between gap-2">
-              <ListTags tags={quoteFormData?.tags?.map((tag, i)=>{return {id: i, name: tag}}) || []} />
+                <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quoteFormData.text!) }}></div>
+              </div>
+              <div className="flex w-full items-end justify-between gap-2">
+                <ListTags tags={quoteFormData?.tags?.map((tag, i) => { return { id: i, name: tag } }) || []} />
 
+              </div>
             </div>
           </div>
+
+
         </div>
 
 

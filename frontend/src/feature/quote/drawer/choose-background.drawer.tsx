@@ -20,8 +20,8 @@ interface Props {
 export default function ChooseBackground(props: Props) {
   const { onValueUpdate} = props
   const { textures, colorPresets, buildStyle } = useBackground()
-  const [selectedTexture, setSelectedTexture] = useState<TextureKey> ( "cardboard");
-  const [selectedPreset, setSelectedPreset] = useState<Pri_set>('pri_set_1');
+  const [selectedTexture, setSelectedTexture] = useState<TextureKey> ();
+  const [selectedPreset, setSelectedPreset] = useState<Pri_set>('pri_set_0');
 
 
   const handleTextureClick = (key: TextureKey)=>{
@@ -73,7 +73,7 @@ export default function ChooseBackground(props: Props) {
         <div className="w-full h-48 rounded-lg mb-4 overflow-hidden shadow">
           <div
             className="w-full h-full"
-            style={buildStyle(selectedTexture, selectedPreset)}
+            style={buildStyle(selectedTexture!, selectedPreset)}
           />
         </div>
 

@@ -25,7 +25,7 @@ const Tiptap = (props: Props) => {
     editorProps: {
       attributes: {
         style: styleString,
-        class: 'p-2 border  bg-card max-h-64 overflow-auto  rounded-xl   '
+        class: 'p-2 border  bg-card min-h-48 max-h-64 overflow-auto  rounded-xl   '
       }
     },
     onUpdate: (updates) => {

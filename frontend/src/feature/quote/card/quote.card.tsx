@@ -38,16 +38,14 @@ setDownloading(true)
   link.download = new Date().getTime()+"-note.png"
   link.href = dataUrl
   link.click()
-        setTimeout(() => {
-setDownloading(false)
-        }, 500);
+        
+     setDownloading(false)
+
 }
     const onCopy = async (text: string) => {
         setCopying(true)
         await window.navigator.clipboard.writeText(text)
-        setTimeout(() => {
-            setCopying(false)
-        }, 500);
+        setCopying(false)
     }
 
     return (

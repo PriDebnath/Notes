@@ -11,9 +11,10 @@ import {
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { QuoteFormData } from "@/model/quote.model";
-import { ArrowLeftIcon, CircleArrowDown, Copy, LoaderCircle, Save, Share } from "lucide-react";
+import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy,Images, LoaderCircle, Save, Share } from "lucide-react";
 import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
+import { htmlToPlainText } from "@/helper/html-to-text";
 import { cn } from "@/lib/utils";
 import { ListTags } from "@/feature/quote/list.tags";
 import { toPng } from "html-to-image"
@@ -24,12 +25,18 @@ interface Props {
   quoteFormData: QuoteFormData
 }
 
+type Status = "idle" | "pending" | "success"
+
 export function ShareBackground(props: Props) {
   const { quoteFormData } = props
   const { buildStyle } = useBackground()
   const noteRef = useRef<HTMLDivElement>(null)
-  const [downloading, setDownloading] = useState(false)
-  const [copying, setCopying] = useState(false)
+  
+  const [ shareStatus, setShareStatus] = useState<Status>("idle")
+  const [ downloadStatus, setDownloadStatus] = useState<Status>("idle")
+  const [ textCopyStatus, setTextCopyStatus] = useState<Status>("idle")
+  const [ imageCopyStatus, setImageCopyStatus] = useState<Status>("idle")
+  
   const [dimensions, setDimensions] = useState({ width: 320, height: 240 })
   const cardStyle = buildStyle(quoteFormData.texture!, quoteFormData.pri_set!)
 
@@ -70,7 +77,7 @@ export function ShareBackground(props: Props) {
     return dataUrl
   }
 
-  const exportAndShareWhatsApp = async (dataUrl: string) => {
+  const exportAndShare = async (dataUrl: string) => {
     // dataUrl is base64 
     // convert base64 → Blob → File
     const res = await fetch(dataUrl)
@@ -82,18 +89,67 @@ export function ShareBackground(props: Props) {
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
-        title: "Quote",
-        text: "Sharing a quote ❤️",
+        title: "Note 💙",
+        text: "Sharing a quote 💙",
       })
     } else {
       // fallback download
       const link = document.createElement("a")
-      link.download = "quote.png"
+      const fileName = "note-by-pri-" + new Date().getTime() + "-.png"
+      link.download = fileName
       link.href = dataUrl
       link.click()
     }
+  }
+  
+  const handleDownload = async ()=>{
+    setDownloadStatus("pending")
+    await exportAsImage()
+    setDownloadStatus("success")
+    
+    setTimeout(()=>{
+     setDownloadStatus("idle") 
+    }, 3000)
+  }
+  
+  const handleTextCopy = async () => {
+        setTextCopyStatus("pending")
+        const text =  htmlToPlainText(quoteFormData.text)
+        await window.navigator.clipboard.writeText(text!)
+        setTextCopyStatus("success")
+    
+        setTimeout(()=>{
+         setTextCopyStatus("idle") 
+        }, 3000)
+    }
+    
+  const handleImageCopy = async () => {
+    setImageCopyStatus("pending")
+    const dataUrl = await exportAsImage()
+    if (!dataUrl) return
+    const res = await fetch(dataUrl)
+    const blob = await res.blob()
+    await navigator.clipboard.write([
+      new ClipboardItem({ "image/png": blob })
+    ])
+    setImageCopyStatus("success")
 
-    setDownloading(false)
+    setTimeout(()=>{
+     setImageCopyStatus("idle") 
+    }, 3000)
+  }
+  
+  const handleShare = async ()=>{
+    setShareStatus("pending")
+    const dataUrl = await exportAsImage()
+    if (!dataUrl) return
+    exportAndShare(dataUrl)
+  
+    setShareStatus("success")
+
+    setTimeout(()=>{
+     setShareStatus("idle") 
+    }, 3000)
   }
 
   return (
@@ -186,18 +242,62 @@ export function ShareBackground(props: Props) {
                 className=""
                 variant={"outline"}
                 onClick={async (e) => {
-                  setDownloading(true)
                   e.preventDefault()
-                  await exportAsImage()
-                  setDownloading(false)
+                  handleDownload()
                 }}
                 aria-label="Download quote"
                 size={"lg"}
               >
-                {downloading ? <LoaderCircle className="animate-spin" /> : <CircleArrowDown />}
+                {downloadStatus == "idle" && <CircleArrowDown /> }
+                {downloadStatus == "pending" && <LoaderCircle className="animate-spin" /> }
+                {downloadStatus == "success" && <CircleCheckBig className="text-green-500" /> }
               </Button>
               <p className="text-xs text-center">
-                {downloading ? "Downloading" : "Download"}
+                {downloadStatus == "idle" && "Download" }
+                {downloadStatus == "pending" && "Downloading"}
+                {downloadStatus == "success" &&  "Downloaded"}
+              </p>
+            </div>
+            
+            <div className="flex flex-col gap-4">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleTextCopy()
+                }}
+              >
+                {textCopyStatus == "idle" && <Copy /> }
+                {textCopyStatus == "pending" && <LoaderCircle className="animate-spin" /> }
+                {textCopyStatus == "success" && <CircleCheckBig className="text-green-500" /> }
+              </Button>
+              
+              <p className="text-xs text-center">
+                {textCopyStatus == "idle" && "Copy Text" }
+                {textCopyStatus == "pending" && "Copying..."}
+                {textCopyStatus == "success" &&  "Copied Text"}
+              </p>
+           
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={async (e) => {
+                  e.preventDefault()
+                  handleImageCopy()
+                }}
+              >
+                {imageCopyStatus == "idle" && <Images /> }
+                {imageCopyStatus == "pending" && <LoaderCircle className="animate-spin" /> }
+                {imageCopyStatus == "success" && <CircleCheckBig className="text-green-500" /> }
+              </Button>
+              <p className="text-xs text-center">
+                {imageCopyStatus == "idle" && "Copy Image" }
+                {imageCopyStatus == "pending" && "Copying..."}
+                {imageCopyStatus == "success" &&  "Copied Image"}
               </p>
             </div>
 
@@ -207,36 +307,18 @@ export function ShareBackground(props: Props) {
                 size="lg"
                 onClick={async (e) => {
                   e.preventDefault()
-                  setCopying(true)
-                  const dataUrl = await exportAsImage()
-                  if (!dataUrl) return
-                  const res = await fetch(dataUrl)
-                  const blob = await res.blob()
-                  await navigator.clipboard.write([
-                    new ClipboardItem({ "image/png": blob })
-                  ])
-                  setCopying(false)
+                  handleShare()
                 }}
               >
-                {copying ? <LoaderCircle className="animate-spin" /> : <Copy />}
+                {shareStatus == "idle" && <Share /> }
+                {shareStatus == "pending" && <LoaderCircle className="animate-spin" /> }
+                {shareStatus == "success" && <CircleCheckBig className="text-green-500" /> }
               </Button>
-              <p className="text-xs text-center">{copying ? "Copying" : "Copy"}</p>
-            </div>
-
-            <div className="flex flex-col gap-4">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={async (e) => {
-                  e.preventDefault()
-                  const dataUrl = await exportAsImage()
-                  if (!dataUrl) return
-                  exportAndShareWhatsApp(dataUrl)
-                }}
-              >
-                <Share />
-              </Button>
-              <p className="text-xs text-center">WhatsApp</p>
+              <p className="text-xs text-center">
+                {shareStatus == "idle" && "Share" }
+                {shareStatus == "pending" && "Sharing..."}
+                {shareStatus == "success" &&  "Shareable"}
+              </p>
             </div>
 
           </div>

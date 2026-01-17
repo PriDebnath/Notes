@@ -197,10 +197,10 @@ body {
   Add custom css  
   */
   /* 
-  li::marker {
-    color: red;
-  }
   */
+  li::marker {
+    color: hsl(var(--foreground)) !important;
+  }
 
  
 }
@@ -210,7 +210,7 @@ body {
   color: hsl(var(--foreground)) !important;
 }
 
-.tiptap :where(p, h1, h2, h3, h4, h5, h6, li, blockquote) {
+.tiptap :where(p, strong, bold, code,  h1, h2, h3, h4, h5, h6, li, blockquote) {
   color: hsl(var(--foreground)) !important;
 }
 

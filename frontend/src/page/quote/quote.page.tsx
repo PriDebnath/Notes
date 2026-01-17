@@ -18,7 +18,8 @@ import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@
 import { addOrGetTag } from '@/db/tag.db'
 import { useBlocker } from "@tanstack/react-router"
 import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
-import ShareBackground from "@/feature/quote/drawer/share.drawer"
+import {ShareBackground } from "@/feature/quote/dialog/share.dialog"
+
 import { toPng } from "html-to-image"
 import { ListTags } from "@/feature/quote/list.tags";
 

@@ -1,13 +1,13 @@
-// @not in use
+
 import {
-  Drawer,
-  DrawerTitle,
-  DrawerClose,
-  DrawerHeader,
-  DrawerContent,
-  DrawerTrigger,
-  DrawerDescription,
-} from "@/components/ui/drawer";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { QuoteFormData } from "@/model/quote.model";
@@ -22,7 +22,7 @@ interface Props {
   quoteFormData: QuoteFormData
 }
 
-export default function ShareBackground(props: Props) {
+export function ShareBackground(props: Props) {
   const { quoteFormData } = props
   const { buildStyle } = useBackground()
   const noteRef = useRef<HTMLDivElement>(null)
@@ -49,47 +49,24 @@ export default function ShareBackground(props: Props) {
   }
 
   return (
-    <Drawer
-    >
-      <DrawerTrigger asChild>
+    <Dialog >
+      <DialogTrigger asChild>
         <Button variant="outline" size="icon">
           <Share />
         </Button>
-      </DrawerTrigger>
+      </DialogTrigger>
 
-      <DrawerContent className="p-4" aria-describedby="Choose Background">
-        <DrawerHeader>
-          <DrawerTitle>Share</DrawerTitle>
-          <DrawerDescription>
+      <DialogContent className="p-4" aria-describedby="Choose Background">
+        <DialogHeader>
+          <DialogTitle>Share</DialogTitle>
+          <DialogDescription>
             Share it with your close one.
-          </DrawerDescription>
-        </DrawerHeader>
+          </DialogDescription>
+        </DialogHeader>
         <div className="flex flex-col gap-4">
 
-          <div className="flex items-center justify-between gap-4 ">
-
-            <div className="flex flex-col gap-4">
-              <Button
-                className=""
-                variant={"outline"}
-                onClick={(e) => {
-                  e.preventDefault()
-                  exportAsImage()
-                }}
-                aria-label="Download quote"
-                size={"lg"}
-              >
-                {downloading ? <LoaderCircle className="animate-spin" /> : <CircleArrowDown />}
-              </Button>
-              <p className="text-xs">
-                {downloading ? "Downloading" : "Download"}
-              </p>
-            </div>
-
-          </div>
-
           {/* Live preview */}
-          <div className="w-full   rounded-lg bg-transparent    overflow-auto max-h-[70dvh]"
+          <div className="w-full   rounded-lg bg-transparent   overflow-auto max-h-[65dvh]"
             ref={noteRef}
           >
             <div
@@ -120,12 +97,32 @@ export default function ShareBackground(props: Props) {
             </div>
           </div>
 
+          {/* Action */}
 
+          <div className="flex items-center justify-between gap-4 ">
+
+            <div className="flex flex-col gap-4">
+              <Button
+                className=""
+                variant={"outline"}
+                onClick={(e) => {
+                  e.preventDefault()
+                  exportAsImage()
+                }}
+                aria-label="Download quote"
+                size={"lg"}
+              >
+                {downloading ? <LoaderCircle className="animate-spin" /> : <CircleArrowDown />}
+              </Button>
+              <p className="text-xs">
+                {downloading ? "Downloading" : "Download"}
+              </p>
+            </div>
+
+          </div>
         </div>
 
-
-
-      </DrawerContent>
-    </Drawer>
+      </DialogContent>
+    </Dialog>
   );
 }

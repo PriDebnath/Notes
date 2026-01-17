@@ -5,8 +5,9 @@ import useBackground from "@/hook/use-background.hook";
 import { cn } from "@/lib/utils";
 import type { Quote, QuoteDetails } from "@/model/quote.model";
 import { Link } from "@tanstack/react-router";
-import { Check, Copy, Maximize2, PenIcon, Trash } from "lucide-react";
-import { useState } from "react";
+import { Check, Copy, Maximize2, PenIcon, Trash , Save,  CircleArrowDown, LoaderCircle } from "lucide-react";
+import { useState, useRef } from "react";
+import { toPng } from "html-to-image"
 
 interface Props {
     quote: QuoteDetails;
@@ -17,8 +18,29 @@ interface Props {
 const QuoteCard = (props: Props) => {
     const { quote, onEdit, onDelete, } = props
     const [copying, setCopying] = useState(false)
+    const [downloading, setDownloading] = useState(false)
     const { buildStyle } = useBackground()
+const noteRef = useRef<HTMLDivElement>(null)
 
+    const cardStyle = buildStyle(quote.texture!, quote.pri_set!)
+const exportAsImage = async () => {
+  if (!noteRef.current) return
+setDownloading(true)
+  const dataUrl = await toPng(noteRef.current, {
+    pixelRatio: 2,        // crisp image
+    //backgroundColor: "#fff"
+    cacheBust: true,
+  backgroundColor: cardStyle.backgroundColor
+  })
+
+  const link = document.createElement("a")
+  link.download = new Date().getTime()+"-note.png"
+  link.href = dataUrl
+  link.click()
+        setTimeout(() => {
+setDownloading(false)
+        }, 500);
+}
     const onCopy = async (text: string) => {
         setCopying(true)
         await window.navigator.clipboard.writeText(text)
@@ -36,7 +58,8 @@ const QuoteCard = (props: Props) => {
             }>
 
             <div
-                style={buildStyle(quote.texture!, quote.pri_set!)}
+             ref={noteRef}
+                style={cardStyle}
                 className={
                     cn(
                         "border p-2  bg-card rounded-xl ",
@@ -87,6 +110,21 @@ const QuoteCard = (props: Props) => {
                             size={"sm"}
                         >
                             {copying ? <Check className="text-green-500" /> : <Copy />}
+                        </Button>
+                        
+                        <Button
+                            className="hover:text-green-600 "
+                            variant={"outline"}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                exportAsImage()
+                            }}
+                            aria-label="Copy quote"
+                            size={"sm"}
+                        >
+                        
+                            {downloading ? <LoaderCircle className="animate-spin" /> : <CircleArrowDown />}
+                
                         </Button>
                         {/*
                         <Button

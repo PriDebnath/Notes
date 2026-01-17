@@ -12,12 +12,13 @@ import Tiptap from '@/components/common/tiptap-customized'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useGetQuoteDetails } from '@/hook/get-quote-details.hook'
 import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/quote.model"
-import { useState, useEffect, useCallback, type Dispatch, type SetStateAction } from "react"
+import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
 import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote_tags.db'
 import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@/db/quote.db'
 import { addOrGetTag } from '@/db/tag.db'
 import { useBlocker } from "@tanstack/react-router"
 import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
+import { toPng } from "html-to-image"
 
 interface Props {
   mode: "add" | "edit";
@@ -26,6 +27,7 @@ interface Props {
 export function QuotePage(props: Props) {
   const { mode } = props
   const navigate = useNavigate()
+const noteRef = useRef<HTMLDivElement>(null)
 
   // Only read params in edit mode
   const params = mode === 'edit' ? Route.useParams() : null
@@ -47,7 +49,7 @@ export function QuotePage(props: Props) {
     texture: quote?.texture,
     pri_set: quote?.pri_set,
   }))
-
+console.log({quoteData})
 
   const onTagChoose = (tag: string) => {
     setQuoteData(prev => {
@@ -99,7 +101,7 @@ export function QuotePage(props: Props) {
 
 
   const handleSubmit = useCallback(async (quote: QuoteFormData) => {
-    console.log({at:"at" ,quote })
+    console.log({at:"at submit" ,quote })
     let quoteId: number | undefined = quote.id
     if (quoteId) { // edit
       await updateQuote({
@@ -169,10 +171,25 @@ export function QuotePage(props: Props) {
   }, [blocker.status, quoteData, handleSubmit])
 
 
+const exportAsImage = async () => {
+  if (!noteRef.current) return
+
+  const dataUrl = await toPng(noteRef.current, {
+    pixelRatio: 2,        // crisp image
+    backgroundColor: "#fff"
+  })
+
+  const link = document.createElement("a")
+  link.download = new Date().getTime()+"-note.png"
+  link.href = dataUrl
+  link.click()
+}
+
 
   return (
 
     <div
+    ref={noteRef}
       className='w-full h-[100dvh] '>
       <AnimatePresence mode="wait">
         <motion.div

@@ -44,6 +44,33 @@ const buildStyle = (texture: TextureKey, pri_set: Pri_set) => {
     return style
 };
 
+const buildStyleString = (texture: TextureKey, pri_set: Pri_set): string => {
+  const preset = colorPresets[pri_set];
+
+  const backgroundImages: string[] = [];
+
+  // overlay on top
+  if (preset?.overlay) {
+    backgroundImages.push(preset.overlay);
+  }
+
+  // texture below overlay
+  if (textures[texture] && preset?.color) {
+    backgroundImages.push(`url(${textures[texture]})`);
+  }
+
+  const style = `
+    background-image: ${backgroundImages.length ? backgroundImages.join(", ") : "none"};
+    background-color: ${preset?.color ?? "transparent"};
+    background-size: cover;
+    background-position: center;
+  `.trim();
+
+  console.log({ style, preset, texture });
+
+  return style;
+};
+
 
 export default function useBackground() {
 
@@ -52,7 +79,8 @@ export default function useBackground() {
     return {
         textures,
         colorPresets,
-        buildStyle
+        buildStyle,
+        buildStyleString
     }
 
 

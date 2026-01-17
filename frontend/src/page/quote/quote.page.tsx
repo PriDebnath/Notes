@@ -232,6 +232,7 @@ const exportAsImage = async () => {
                     <Tiptap
                       key={quoteData?.id ?? "new"}
                       value={quoteData?.text}
+                      quoteFormData={quoteData}
                       onValueUpdate={onValueUpdate} />
                   </div>
                 </div>

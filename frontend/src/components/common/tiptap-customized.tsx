@@ -6,19 +6,25 @@ import type { QuoteFormData } from "@/model/quote.model";
 import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus'
 import TiptapToolbar from '@/components/common/tiptap-toolbar'
 import { useGetKeyBoardHeight } from '@/hook/use-get-keyboard-height.hook'
+import useBackground from "@/hook/use-background.hook";
 
 interface Props {
-  value?: string
+  value?: string;
+  quoteFormData?: QuoteFormData;
   onValueUpdate: (key: keyof QuoteFormData, value: string) => void
 }
 
 const Tiptap = (props: Props) => {
-  const { value, onValueUpdate } = props
+  const { value,quoteFormData, onValueUpdate } = props
+      const { buildStyleString } = useBackground()
+      const styleString = buildStyleString(quoteFormData?.texture!, quoteFormData?.pri_set!)
+  
   const editor = useEditor({
     extensions: [StarterKit], // define your extension array
     content: value,
     editorProps: {
       attributes: {
+        style: styleString,
         class: 'p-2 border  bg-card max-h-64 overflow-auto  rounded-xl   '
       }
     },

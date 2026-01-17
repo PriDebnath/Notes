@@ -40,7 +40,7 @@ export function ListQuote(props: Props) {
     )
   }
 
-  if (!quotes || quotes.length === 0) {
+  if ((!quotes || quotes.length === 0) && !loading) {
     return <p className="w-full text-center text-muted-foreground">No quotes available.</p>
   }
 

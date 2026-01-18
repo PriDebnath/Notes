@@ -56,6 +56,11 @@ const colorPresets = {
     overlay:
       "linear-gradient(to bottom, rgba(139,92,246,0.2), rgba(139,92,246,0.7))",
   } as ColorPresets,
+  pri_set_12: {
+    id: 12,
+    name: "skyblue",
+    color : 'skyblue'
+  } as ColorPresets,
 };
 
 
@@ -67,6 +72,18 @@ const textures = {
     fresh_snow: "src/assets/images/fresh-snow.png",
     dark_wood: "src/assets/images/dark-wood.png",
     cardboard: "src/assets/images/cardboard.png",
+    food: "src/assets/images/food.png",
+    flowers: "src/assets/images/flowers.png",
+    foggy_birds: "src/assets/images/foggy-birds.png",
+    crisp_paper_ruffles: "src/assets/images/crisp-paper-ruffles.png",
+    cartographer: "src/assets/images/cartographer.png",
+    brick_wall: "src/assets/images/brick-wall.png",
+    xv: "src/assets/images/xv.png",
+    snow: "src/assets/images/snow.png",
+    leaves: "src/assets/images/leaves.webp",
+    watercolor: "src/assets/images/watercolor.webp",
+    pink_flowers: "src/assets/images/pink-flowers.webp",
+ 
 };
 
 // build inline style for preview & thumbnails that need composition

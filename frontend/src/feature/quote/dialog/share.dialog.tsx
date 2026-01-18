@@ -160,7 +160,7 @@ export function ShareBackground(props: Props) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="p-4 max-w-2xl max-h-[90vh] overflow-y-auto" aria-describedby="Choose Background">
+      <DialogContent className="p-4 max-h-[90vh] overflow-y-auto" aria-describedby="Choose Background">
         <DialogHeader>
           <DialogTitle>Share</DialogTitle>
           <DialogDescription>

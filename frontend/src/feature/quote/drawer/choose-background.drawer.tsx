@@ -21,7 +21,7 @@ export default function ChooseBackground(props: Props) {
   const { onValueUpdate} = props
   const { textures, colorPresets, buildStyle } = useBackground()
   const [selectedTexture, setSelectedTexture] = useState<TextureKey> ();
-  const [selectedPreset, setSelectedPreset] = useState<Pri_set>('pri_set_0');
+  const [selectedPreset, setSelectedPreset] = useState<Pri_set>('pri_set_12');
 
 
   const handleTextureClick = (key: TextureKey)=>{

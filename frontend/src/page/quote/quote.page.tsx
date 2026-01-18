@@ -18,6 +18,7 @@ import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@
 import { addOrGetTag } from '@/db/tag.db'
 import { useBlocker } from "@tanstack/react-router"
 import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
+import {ShareBackground} from "@/feature/quote/dialog/share.dialog"
 import { toPng } from "html-to-image"
 
 interface Props {
@@ -46,7 +47,7 @@ const noteRef = useRef<HTMLDivElement>(null)
     id: quote?.id,
     text: quote?.text || "",
     tags: quote?.tags?.map((tag) => tag.name) || [],
-    texture: quote?.texture,
+    texture: quote?.texture || "pri_set_12",
     pri_set: quote?.pri_set,
   }))
 console.log({quoteData})
@@ -207,7 +208,8 @@ const exportAsImage = async () => {
                 <ArrowLeftIcon />
               </Button>
             </Link>
-            <div>
+            <div className="flex gap-2" >
+              <ShareBackground quoteFormData={quoteData}/>
               <ChooseBackground onValueUpdate={onValueUpdate}/>
             </div>
           </div>
@@ -231,6 +233,7 @@ const exportAsImage = async () => {
                     <Tiptap
                       key={quoteData?.id ?? "new"}
                       value={quoteData?.text}
+                      quoteFormData={quoteData}
                       onValueUpdate={onValueUpdate} />
                   </div>
                 </div>

@@ -17,6 +17,7 @@ import {
 
 import { ListQuote } from '@/feature/quote/list.quote'
 import DeleteQuoteDialog from '@/feature/quote/dialog/delete.quote.dialog'
+import {SettingComponent} from '@/feature/quote/dialog/setting.dialog'
 
 import type { Quote, QuoteFormData, Tag } from '@/model/quote.model'
 
@@ -117,11 +118,8 @@ export function QuoteListPage() {
   return (
     <div className="p-2 gap-4 flex flex-col">
       {/* Sticky Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="gap-4 flex flex-col sticky top-0 z-20 bg-background rounded-b-2xl"
+      <div
+          className="gap-4 flex flex-col sticky top-0 z-20 bg-background rounded-b-xl"
       >
         <div className="text-right">
           <Button
@@ -132,6 +130,7 @@ export function QuoteListPage() {
           >
             {darkMode ? <LightbulbOff /> : <Lightbulb />}
           </Button>
+          <SettingComponent/>
         </div>
 
         {/* Search */}
@@ -164,7 +163,7 @@ export function QuoteListPage() {
             </Button>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* Content */}
       <main>

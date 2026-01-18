@@ -39,7 +39,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-
+  import { useTheme } from '@/hook/use-dark-or-light-theme.hook'
+  
 
 interface Props {
   
@@ -51,6 +52,11 @@ export function SettingComponent(props: Props) {
   
   const [position, setPosition] = React.useState("bottom")
   const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true)
+  
+  
+  const [appearanceValue, setAppearanceValue] = useState("system")
+  
+  const { theme, setTheme } = useTheme()
   
 
   return (
@@ -72,16 +78,16 @@ export function SettingComponent(props: Props) {
         <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-4">
 Appearance
-<Select>
+<Select value={theme} onValueChange={setTheme}>
   <SelectTrigger className="">
     <SelectValue placeholder="Theme" />
   </SelectTrigger>
   <SelectContent>
-  {/*
+
     <SelectItem value="light">Light</SelectItem>
     <SelectItem value="dark">Dark</SelectItem>
-  */}
-    <SelectItem value="system" selected>System</SelectItem>
+
+    <SelectItem value="system" >System</SelectItem>
   </SelectContent>
 </Select>
         </div>

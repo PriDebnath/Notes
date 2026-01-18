@@ -28,12 +28,10 @@ import {
   deleteAllQuoteTags,
 } from '@/db/quote_tags.db'
 
-import { useDarkOrLightTheme } from '@/hook/use-dark-or-light-theme.hook'
 import { useGetAllQuoteDetails } from '@/hook/get-all-quote-details.hook'
 
 export function QuoteListPage() {
-  const { darkMode, toggleDarkMode } = useDarkOrLightTheme()
-
+  
   /* ------------------ data ------------------ */
 
   const {
@@ -122,6 +120,7 @@ export function QuoteListPage() {
           className="gap-4 flex flex-col sticky top-0 z-20 bg-background rounded-b-xl"
       >
         <div className="text-right">
+            {/*
           <Button
             size="icon"
             variant="outline"
@@ -130,6 +129,7 @@ export function QuoteListPage() {
           >
             {darkMode ? <LightbulbOff /> : <Lightbulb />}
           </Button>
+          */}
           <SettingComponent/>
         </div>
 

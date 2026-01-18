@@ -92,7 +92,7 @@ setDownloading(true)
                             {quote.tags.map((tag, index) => (
                                 <Badge
                                     variant={'outline'}
-                                    className=" bg-primary/10 border-primary/20 text-primary/70"
+                                    className=" text-[0.5rem] bg-primary/10 border-primary/20 text-primary/70"
                                     key={tag.id}
                                 >
                                     #{tag.name}

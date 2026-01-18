@@ -8,5 +8,5 @@ export const useGetAllQuoteDetails = () => {
   })
   console.log({data, error})
   const errorString = (typeof error=="string") ?  error: error?.message
-  return { data, isLoading , error: errorString, refetch}
+  return { data: data?.reverse(), isLoading , error: errorString, refetch}
 }

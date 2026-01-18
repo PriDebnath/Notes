@@ -6,6 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { Separator } from "@/components/ui/separator"
 
 interface TagFilterProps {
   tags: string[]
@@ -44,8 +45,13 @@ export function TagFilter({ tags, value, onChange }: TagFilterProps) {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-64">
-        <div className="flex flex-wrap gap-2">
+      <PopoverContent className="w-40">
+       <div className="sticky top-0 z-10 backdrop-blur-sm">
+                    <div className=" ">Filter by tags</div>
+                    <Separator className="bg-border" />
+                </div>
+      
+        <div className="flex flex-col overflow-auto h-64 gap-2">
           {tags.map(tag => (
             <Button
               key={tag}
@@ -53,7 +59,7 @@ export function TagFilter({ tags, value, onChange }: TagFilterProps) {
               variant={value.includes(tag) ? "default" : "outline"}
               onClick={() => toggleTag(tag)}
             >
-              {tag}
+              #{tag}
             </Button>
           ))}
 

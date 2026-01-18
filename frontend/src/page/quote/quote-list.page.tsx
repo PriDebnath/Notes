@@ -118,31 +118,19 @@ export function QuoteListPage() {
   /* ------------------ ui ------------------ */
 
   return (
-    <div className="p-2 gap-4 flex flex-col">
+    <div className=" flex flex-col">
       {/* Sticky Header */}
       <div
-          className="gap-4 flex flex-col sticky top-0 z-20 bg-background rounded-b-xl"
+          className="gap-2 p-2 flex flex-col sticky top-0 z-20 bg-background rounded-b"
       >
         <div className="flex justify-between">
-            {/*
-          <Button
-            size="icon"
-            variant="outline"
-            className="rounded-full"
-            onClick={toggleDarkMode}
-          >
-            {darkMode ? <LightbulbOff /> : <Lightbulb />}
-          </Button>
-          */}
-<TagFilter
-  tags={allTags}
-  value={activeTags}
-  onChange={setActiveTags}
-/>
-
+          <TagFilter
+            tags={allTags}
+            value={activeTags}
+            onChange={setActiveTags}
+          />
           <SettingComponent/>
         </div>
-
         {/* Search */}
         <InputGroup>
           <InputGroupInput
@@ -154,34 +142,11 @@ export function QuoteListPage() {
             <SearchIcon />
           </InputGroupAddon>
         </InputGroup>
-
-        {/* Tags 
-        */}
-                {/* 
-        <div className="flex gap-2 flex-wrap">
-          <p>Filter by tags: </p>
-          {[...new Set(quotesStored?.flatMap(q =>
-            q.tags?.map(t => t.name) ?? []
-          ))].map(tag => (
-            <Button
-              key={tag}
-              size="sm"
-              variant={
-                activeTags.includes(tag) ? 'default' : 'outline'
-              }
-              onClick={() => toggleTag(tag)}
-            >
-              {tag}
-            </Button>
-          ))}
-        </div>
-                */}
-                
-                
+      
       </div>
 
       {/* Content */}
-      <main>
+      <main className="px-2">
         <ListQuote
           loading={isLoading}
           quotes={quotes}

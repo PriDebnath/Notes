@@ -29,6 +29,7 @@ import {
 } from '@/db/quote_tags.db'
 
 import { useGetAllQuoteDetails } from '@/hook/get-all-quote-details.hook'
+import {TagFilter} from './filter'
 
 export function QuoteListPage() {
   
@@ -40,6 +41,9 @@ export function QuoteListPage() {
     error,
     refetch,
   } = useGetAllQuoteDetails()
+ const allTags =  [...new Set(quotesStored?.flatMap(q =>
+            q.tags?.map(t => t.name) ?? []
+          ))]
 
   const [quotes, setQuotes] = useState<Quote[]>([])
   const [search, setSearch] = useState('')
@@ -119,7 +123,7 @@ export function QuoteListPage() {
       <div
           className="gap-4 flex flex-col sticky top-0 z-20 bg-background rounded-b-xl"
       >
-        <div className="text-right">
+        <div className="flex justify-between">
             {/*
           <Button
             size="icon"
@@ -130,6 +134,12 @@ export function QuoteListPage() {
             {darkMode ? <LightbulbOff /> : <Lightbulb />}
           </Button>
           */}
+<TagFilter
+  tags={allTags}
+  value={activeTags}
+  onChange={setActiveTags}
+/>
+
           <SettingComponent/>
         </div>
 
@@ -145,7 +155,9 @@ export function QuoteListPage() {
           </InputGroupAddon>
         </InputGroup>
 
-        {/* Tags */}
+        {/* Tags 
+        */}
+                {/* 
         <div className="flex gap-2 flex-wrap">
           <p>Filter by tags: </p>
           {[...new Set(quotesStored?.flatMap(q =>
@@ -163,6 +175,9 @@ export function QuoteListPage() {
             </Button>
           ))}
         </div>
+                */}
+                
+                
       </div>
 
       {/* Content */}

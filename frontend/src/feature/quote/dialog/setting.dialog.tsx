@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import type { QuoteFormData, SortOption } from "@/model/quote.model";
+import type { QuoteFormData, SortOption } from "@/model/index.model";
 import {
   Select,
   SelectItem,
@@ -104,7 +104,7 @@ export function SettingComponent(props: Props) {
                   colorThemes.map((pri) => {
                     const yoyo = pri.replace("theme-", "")
                     const yo = capitalize(yoyo)
-                    console.log({ yo, yoyo })
+                    // console.log({ yo, yoyo })
                     return (
                       <SelectItem key={pri} value={pri} className="">
                         {yo}

@@ -19,7 +19,7 @@ import { ListQuote } from '@/feature/quote/list.quote'
 import DeleteQuoteDialog from '@/feature/quote/dialog/delete.dialog'
 import {SettingComponent} from '@/feature/quote/dialog/setting.dialog'
 
-import type { Quote, QuoteFormData, Tag } from '@/model/quote.model'
+import type { Quote, QuoteFormData, Tag } from '@/model/index.model'
 
 import { addOrGetTag } from '@/db/tag.db'
 import { addQuote, updateQuote, deleteQuote } from '@/db/quote.db'

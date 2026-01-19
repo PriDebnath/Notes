@@ -41,7 +41,7 @@ export function TagFilter({ tags, value, onChange }: TagFilterProps) {
             )} />
           {value.length > 0 && (
             <span
-              className="flex items-center justify-center w-4 h-4 aspect-square  absolute -top-1 -right-1 text-sm rounded-full bg-primary ">
+              className="flex items-center justify-center w-4 h-4 aspect-square  absolute -top-1 -right-1 text-xs rounded-full bg-primary ">
               {value.length}
             </span>
           )}

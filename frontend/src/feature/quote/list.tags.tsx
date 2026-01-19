@@ -2,7 +2,7 @@ import React from "react"
 import { motion } from "framer-motion"
 import Masonry from "react-masonry-css"
 import { Badge } from "@/components/ui/badge"
-import type { Quote, Tag } from "@/model/quote.model"
+import type { Quote, Tag } from "@/model/index.model"
 import QuoteCard from "@/feature/quote/card/quote.card"
 import QuoteSkeleton from "@/feature/quote/card/quote-skeleton.card"
 

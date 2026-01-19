@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/drawer";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import type { QuoteFormData } from "@/model/quote.model";
+import type { QuoteFormData } from "@/model/index.model";
 import { ArrowLeftIcon, Save, Shirt } from "lucide-react";
 import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
 import { cn } from "@/lib/utils";

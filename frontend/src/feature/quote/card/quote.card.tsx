@@ -4,7 +4,7 @@ import { sanitizeHTML } from "@/helper/sanitize-html";
 import { htmlToPlainText } from "@/helper/html-to-text";
 import useBackground from "@/hook/use-background.hook";
 import { cn } from "@/lib/utils";
-import type { Quote, QuoteDetails } from "@/model/quote.model";
+import type { Quote, QuoteDetails } from "@/model/index.model";
 import { Link } from "@tanstack/react-router";
 import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCircle } from "lucide-react";
 import { useState, useRef } from "react";
@@ -58,7 +58,7 @@ const QuoteCard = (props: Props) => {
     }
 
     const formatDate = (date: Date) => {
-        return date.toLocaleDateString("en-US", {
+        return date?.toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",
             year: "numeric",

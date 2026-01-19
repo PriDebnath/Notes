@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { cn } from "@/lib/utils";
-import type { Quote } from "@/model/quote.model";
+import type { Quote } from "@/model/index.model";
 import { Check, Copy, PenIcon, Trash, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Label } from "@/components/ui/label"

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import StarterKit from '@tiptap/starter-kit'
 import { BatteryFull, List } from 'lucide-react'
 import { useEditor, EditorContent } from '@tiptap/react'
-import type { QuoteFormData } from "@/model/quote.model";
+import type { QuoteFormData } from "@/model/index.model";
 import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus'
 import TiptapToolbar from '@/components/common/tiptap-toolbar'
 import { useGetKeyBoardHeight } from '@/hook/use-get-keyboard-height.hook'

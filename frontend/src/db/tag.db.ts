@@ -1,5 +1,5 @@
 import { openDB, STORES } from "@/db/db";
-import type { Tag } from "@/model/quote.model";
+import type { Tag } from "@/model/index.model";
 
 const STORE_NAME = STORES.TAGS;
 

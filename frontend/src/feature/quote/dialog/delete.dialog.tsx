@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import type { Quote } from "@/model/quote.model"
+import type { Quote } from "@/model/index.model"
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
 

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import type { QuoteFormData } from "@/model/quote.model";
+import type { QuoteFormData } from "@/model/index.model";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy,Images, LoaderCircle, Save, Share } from "lucide-react";
 import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";

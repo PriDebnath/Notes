@@ -1,5 +1,5 @@
 import { openDB, STORES } from '@/db/db'
-import type { QuoteDetails, QuoteTags, Tag } from '@/model/quote.model'
+import type { QuoteDetails, QuoteTags, Tag } from '@/model/index.model'
 
 const STORE = STORES.QUOTES_TAGS
 

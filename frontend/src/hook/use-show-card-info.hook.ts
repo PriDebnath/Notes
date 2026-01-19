@@ -1,15 +1,23 @@
-import { useEffect, useState } from "react"
-import { useLocalStorage } from "@/hook/use-localstroage.hook"
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
 export type ShowInfo = "tags" | "created_at" | "updated_at"
 
 export const showInfo: ShowInfo[] = ["tags", "created_at", "updated_at"]
 
-export const useShowCardInfo = () => {
-    const [stroredCardInfoTyle, setStroredCardInfoTyle] = useLocalStorage<ShowInfo>("card_info", "updated_at")
-    const [info, setInfo] = useState<ShowInfo>(stroredCardInfoTyle)
-    useEffect(() => {
-        setStroredCardInfoTyle(info)
-    }, [info])
-    return { info, stroredCardInfoTyle, setInfo }
-} 
+type ShowCardInfoStore = {
+  info: ShowInfo
+  setInfo: (info: ShowInfo) => void
+}
+
+export const useShowCardInfo = create<ShowCardInfoStore>()(
+  persist(
+    (set) => ({
+      info: "updated_at",
+      setInfo: (info) => set({ info }),
+    }),
+    {
+      name: "card_info", // localStorage key
+    }
+  )
+)

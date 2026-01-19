@@ -26,7 +26,7 @@
 
 /*  Theme style start  */
 /* @Link followed "https://ui.shadcn.com/themes#themes */
-:root {
+:root.theme-rose {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -61,7 +61,7 @@
   --sidebar-ring: oklch(0.712 0.194 13.428);
 }
 
-.dark {
+.dark.theme-rose {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);

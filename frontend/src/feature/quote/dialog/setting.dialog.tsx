@@ -63,10 +63,8 @@ export function SettingComponent(props: Props) {
                 <SelectValue placeholder="Theme" />
               </SelectTrigger>
               <SelectContent>
-
                 <SelectItem value="light">Light</SelectItem>
                 <SelectItem value="dark">Dark</SelectItem>
-
                 <SelectItem value="system" >System</SelectItem>
               </SelectContent>
             </Select>
@@ -82,7 +80,7 @@ export function SettingComponent(props: Props) {
                 {
                   colorThemes.map((pri) => {
                     return (
-                      <SelectItem value={pri} className="text-capitalize capitalize">{pri}</SelectItem>
+                      <SelectItem key={pri} value={pri} className="text-capitalize capitalize">{pri}</SelectItem>
                     )
                   })
                 }

@@ -6,7 +6,7 @@ import routerPlugin  from '@tanstack/router-plugin/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/Quotes-Keeper-3/", // 👈 EXACT repo name (for github pages)
+  base: "/Notes/", // 👈 EXACT repo name (for github pages)
   plugins: [
     routerPlugin(), // Generate the router code
     react(

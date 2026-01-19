@@ -23,7 +23,7 @@ const QuoteCard = (props: Props) => {
     const [copying, setCopying] = useState(false)
     const [downloading, setDownloading] = useState(false)
     const { buildStyle } = useBackground()
-    const { info: infoType, setInfo } = useShowCardInfo()
+    const { info: infoType, stroredCardInfoTyle } = useShowCardInfo()
 
     const noteRef = useRef<HTMLDivElement>(null)
 
@@ -94,9 +94,7 @@ const QuoteCard = (props: Props) => {
                     <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quote.text) }}></div>
                 </div>
                 {/*
-                <p className="text-base w-full text-card-foreground text-right">-- Pritam</p>
-                            */}
-
+                <p className="text-base w-full text-card-foreground text-right">-- Pritam</p>    */}
                 <div className="flex w-full items-end justify-between gap-2">
                     {infoType == "tags" && <ListTags tags={quote.tags!} />}
                     {infoType == "created_at" && (

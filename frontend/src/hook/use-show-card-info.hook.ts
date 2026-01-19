@@ -11,5 +11,5 @@ export const useShowCardInfo = () => {
     useEffect(() => {
         setStroredCardInfoTyle(info)
     }, [info])
-    return { info, setInfo }
+    return { info, stroredCardInfoTyle, setInfo }
 } 

@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/input-group'
 
 import { ListQuote } from '@/feature/quote/list.quote'
-import DeleteQuoteDialog from '@/feature/quote/dialog/delete.quote.dialog'
+import DeleteQuoteDialog from '@/feature/quote/dialog/delete.dialog'
 import {SettingComponent} from '@/feature/quote/dialog/setting.dialog'
 
 import type { Quote, QuoteFormData, Tag } from '@/model/quote.model'
@@ -28,7 +28,7 @@ import {
   deleteAllQuoteTags,
 } from '@/db/quote_tags.db'
 
-import { useGetAllQuoteDetails } from '@/hook/get-all-quote-details.hook'
+import { useGetAllQuoteDetails } from '@/hook/use-get-all-quote-details.hook'
 import {TagFilter} from '../../feature/quote/popover/filter.popover'
 
 export function QuoteListPage() {

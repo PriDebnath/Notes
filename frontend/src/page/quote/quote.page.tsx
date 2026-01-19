@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { AnimatePresence, motion } from 'framer-motion'
 import Tiptap from '@/components/common/tiptap-customized'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useGetQuoteDetails } from '@/hook/get-quote-details.hook'
+import { useGetQuoteDetails } from '@/hook/use-get-quote-details.hook'
 import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/quote.model"
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
 import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote_tags.db'

@@ -26,12 +26,6 @@ export function TagFilter({ tags, value, onChange }: TagFilterProps) {
     )
   }
 
-  const label = useMemo(() => {
-    if (value.length === 0) return "Filter"
-    if (value.length === 1) return value[0]
-    return `${value.length} tags`
-  }, [value])
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild >

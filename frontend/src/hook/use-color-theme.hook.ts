@@ -24,7 +24,7 @@ export const colorThemes: ColorTheme[] = [
 ]
 
 export const useColorTheme = () => {
-    const [stroredColorTheme, setStroredColorTheme] = useLocalStorage("app_theme", "theme-rose")
+    const [stroredColorTheme, setStroredColorTheme] = useLocalStorage<ColorTheme>("app_theme", "theme-rose")
     const [colorTheme, setColorTheme] = useState<ColorTheme>(stroredColorTheme as ColorTheme)
 
     useEffect(() => {

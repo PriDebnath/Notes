@@ -2,6 +2,7 @@ import { useState } from "react";
 export const STORAGE_KEYS = {
   THEME: "app_theme",
   APPEARANCE: "app_appearance",
+  CARD_INFO: 'card_info'
 } as const;
 
 // union type of all values

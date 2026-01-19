@@ -3,11 +3,13 @@ import { useLocalStorage } from "@/hook/use-localstroage.hook"
 
 export type ThemeMode = "system" | "light" | "dark"
 
+export const themeModes = ["system" , "light" , "dark"]
+
 const getSystemTheme = () =>
   window.matchMedia("(prefers-color-scheme: dark)").matches
 
 export const useTheme = () => {
-      const  [ stroredTheme, setStroredTheme ]= useLocalStorage( 'app_appearance', "system")
+      const  [ stroredTheme, setStroredTheme ]= useLocalStorage<ThemeMode>( 'app_appearance', "system")
 
   const [theme, setTheme] = useState<ThemeMode>(stroredTheme as ThemeMode)
   const [isDark, setIsDark] = useState(false)

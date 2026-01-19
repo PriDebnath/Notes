@@ -9,11 +9,7 @@ export interface Quote {
     updated_at?: Date;
 }
 
-export interface QuoteDetails {
-    id?: number | undefined;
-    text: string;
-    texture?: TextureKey;
-    pri_set?: Pri_set;
+export interface QuoteDetails extends Quote {
     tags?: Tag[]
 }
 
@@ -37,3 +33,6 @@ export interface QuoteFormData {
     texture?: TextureKey;
     pri_set?: Pri_set;
 }
+
+
+export type SortOption = "created_at" | "updated_at"

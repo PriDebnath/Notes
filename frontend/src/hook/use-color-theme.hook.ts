@@ -1,13 +1,31 @@
 import { useEffect, useState } from "react"
-import  { useLocalStorage } from "@/hook/use-localstroage.hook"
+import { useLocalStorage } from "@/hook/use-localstroage.hook"
 
-export type ColorTheme = "theme-neutral" | "theme-rose"
+export type ColorTheme = "theme-neutral"
+    | "theme-rose"
+    | "theme-green"
+    | "theme-default"
+    | "theme-blue"
+    | "theme-orange"
+    | "theme-red"
+    | "theme-violet"
+    | "theme-yellow"
 
-export const colorThemes: ColorTheme[] = ["theme-neutral", "theme-rose"]
+export const colorThemes: ColorTheme[] = [
+    "theme-neutral",
+    "theme-rose",
+    "theme-green",
+    "theme-default",
+    "theme-blue",
+    "theme-orange",
+    "theme-red",
+    "theme-violet",
+    "theme-yellow",
+]
 
 export const useColorTheme = () => {
-    const  [ stroredColorTheme, setStroredColorTheme ]= useLocalStorage( "app_theme", "theme-rose")
-    const [colorTheme, setColorTheme] = useState<ColorTheme>(stroredColorTheme as  ColorTheme)
+    const [stroredColorTheme, setStroredColorTheme] = useLocalStorage("app_theme", "theme-rose")
+    const [colorTheme, setColorTheme] = useState<ColorTheme>(stroredColorTheme as ColorTheme)
 
     useEffect(() => {
         let root = document.documentElement

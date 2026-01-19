@@ -178,7 +178,7 @@ console.log({quoteData})
 
     <div
     ref={noteRef}
-      className='w-full h-[100dvh] '>
+      className='w-full h-dvh '>
       <AnimatePresence mode="wait">
         <motion.div
           key={quoteId}

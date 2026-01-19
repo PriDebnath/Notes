@@ -33,7 +33,7 @@ export default function DeleteQuoteDialog(props: Props) {
         {/* <DialogTrigger asChild>
           <Button variant="outline">Add Quote</Button>
         </DialogTrigger> */}
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="">
           <DialogHeader>
             <DialogTitle>
               Delete              Quote

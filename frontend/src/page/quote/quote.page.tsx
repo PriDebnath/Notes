@@ -47,7 +47,7 @@ const noteRef = useRef<HTMLDivElement>(null)
     id: quote?.id,
     text: quote?.text || "",
     tags: quote?.tags?.map((tag) => tag.name) || [],
-    texture: quote?.texture || "pri_set_12",
+    texture: quote?.texture  ,
     pri_set: quote?.pri_set,
   }))
 console.log({quoteData})
@@ -172,20 +172,7 @@ console.log({quoteData})
   }, [blocker.status, quoteData, handleSubmit])
 
 
-const exportAsImage = async () => {
-  if (!noteRef.current) return
-
-  const dataUrl = await toPng(noteRef.current, {
-    pixelRatio: 2,        // crisp image
-    backgroundColor: "#fff"
-  })
-
-  const link = document.createElement("a")
-  link.download = new Date().getTime()+"-note.png"
-  link.href = dataUrl
-  link.click()
-}
-
+ 
 
   return (
 

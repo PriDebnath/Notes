@@ -12,33 +12,40 @@ import { Button } from "@/components/ui/button";
 import type { QuoteFormData } from "@/model/quote.model";
 import { ArrowLeftIcon, Save, Shirt } from "lucide-react";
 import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
+import { cn } from "@/lib/utils";
 
 interface Props {
   onValueUpdate: (key: keyof QuoteFormData, value: string) => void
 }
 
 export default function ChooseBackground(props: Props) {
-  const { onValueUpdate} = props
+  const { onValueUpdate } = props
+  const [open, setOpen] = useState(false)
+
   const { textures, colorPresets, buildStyle } = useBackground()
-  const [selectedTexture, setSelectedTexture] = useState<TextureKey> ();
+  const [selectedTexture, setSelectedTexture] = useState<TextureKey>();
   const [selectedPreset, setSelectedPreset] = useState<Pri_set>('pri_set_0');
 
 
-  const handleTextureClick = (key: TextureKey)=>{
+  const handleTextureClick = (key: TextureKey) => {
     setSelectedTexture(key)
     onValueUpdate("texture", key)
   }
 
-  const handlePriSetClick = (pri: Pri_set)=>{
+  const handlePriSetClick = (pri: Pri_set) => {
     setSelectedPreset(pri)
     onValueUpdate("pri_set", pri)
   }
 
   return (
-    <Drawer
+    <Drawer open={open} onOpenChange={setOpen}
     >
       <DrawerTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" 
+        className={
+          cn(
+            open ? "text-primary" : ""
+          )}>
           <Shirt />
         </Button>
       </DrawerTrigger>
@@ -85,7 +92,7 @@ export default function ChooseBackground(props: Props) {
               const [key, value] = textureObj
               return (
                 <button
-                  key={ key}
+                  key={key}
                   onClick={() => handleTextureClick(key as TextureKey)}
                   className={`w-28 h-20 rounded-lg shrink-0  focus:outline-none ${selectedTexture === key ? "ring-2 ring-primary" : "border"
                     }`}
@@ -113,7 +120,7 @@ export default function ChooseBackground(props: Props) {
             {Object.entries(colorPresets).map((pri) => {
               const [key, value] = pri
 
-              const isSelected = selectedPreset  === key;
+              const isSelected = selectedPreset === key;
               return (
                 <button
                   key={key}
@@ -130,9 +137,9 @@ export default function ChooseBackground(props: Props) {
                         ? { backgroundImage: value.overlay, backgroundSize: "cover", backgroundPosition: "center" }
                         : { backgroundColor: value.color }),
                     }}
-                  > 
-                  {value.name} 
-                  {/* 
+                  >
+                    {value.name}
+                    {/* 
                   */}
                   </div>
                 </button>

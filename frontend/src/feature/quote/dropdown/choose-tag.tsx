@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { PlusIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
+import { cn } from "@/lib/utils"
 
 interface Props {
     onChoose: (tag: string) => void
@@ -21,6 +23,7 @@ interface Props {
 
 export function ChooseTagDropdown(props: Props) {
     const { onChoose } = props
+  const [open, setOpen] = useState(false)
 
     const CATEGORY_TAGS = {
         emotion: [
@@ -81,12 +84,15 @@ export function ChooseTagDropdown(props: Props) {
     ]
 
     return (
-        <DropdownMenu>
+        <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="outline"
                     size="icon"
-                    className="border-primary/10"
+                     className={
+                              cn("border-primary/10",
+                                open ? "text-primary" : ""
+                              )}
                 >
                     <PlusIcon />
                 </Button>

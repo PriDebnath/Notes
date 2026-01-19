@@ -31,6 +31,7 @@ export function ShareBackground(props: Props) {
   const { quoteFormData } = props
   const { buildStyle } = useBackground()
   const noteRef = useRef<HTMLDivElement>(null)
+  const [open, setOpen] = useState(false)
   
   const [ shareStatus, setShareStatus] = useState<Status>("idle")
   const [ downloadStatus, setDownloadStatus] = useState<Status>("idle")
@@ -114,7 +115,7 @@ export function ShareBackground(props: Props) {
   
   const handleTextCopy = async () => {
         setTextCopyStatus("pending")
-        const text =  htmlToPlainText(quoteFormData.text)
+        const text =  htmlToPlainText(quoteFormData.text!)
         await window.navigator.clipboard.writeText(text!)
         setTextCopyStatus("success")
     
@@ -153,9 +154,14 @@ export function ShareBackground(props: Props) {
   }
 
   return (
-    <Dialog >
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
+                    
+        <Button variant="outline" size="icon"
+        className={
+          cn(
+            open ? "text-primary" : ""
+          )} >
           <Share />
         </Button>
       </DialogTrigger>

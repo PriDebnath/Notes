@@ -50,7 +50,7 @@ const noteRef = useRef<HTMLDivElement>(null)
     texture: quote?.texture  ,
     pri_set: quote?.pri_set,
   }))
-console.log({quoteData})
+// console.log({quoteData})
 
   const onTagChoose = (tag: string) => {
     setQuoteData(prev => {
@@ -120,7 +120,7 @@ console.log({quoteData})
     console.log({ quoteId });
 
     const tags = await getTags(quote.tags!)
-    console.log({ tags })
+    // console.log({ tags })
 
     // Delete all existing tags for this quote
     await deleteAllQuoteTags(quoteId!)

@@ -97,7 +97,7 @@ const buildStyle = (texture: TextureKey, pri_set: Pri_set) => {
         backgroundSize: "cover",
         backgroundPosition: "center",
     };
-    console.log({ style, preset,texture });
+    // console.log({ style, preset,texture });
 
     return style
 };
@@ -124,7 +124,7 @@ const buildStyleString = (texture: TextureKey, pri_set: Pri_set): string => {
     background-position: center;
   `.trim();
 
-  console.log({ style, preset, texture });
+  // console.log({ style, preset, texture });
 
   return style;
 };

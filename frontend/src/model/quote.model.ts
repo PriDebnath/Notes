@@ -5,6 +5,8 @@ export interface Quote {
     text: string;
     texture?: TextureKey;
     pri_set?: Pri_set;
+    created_at?: Date;
+    updated_at?: Date;
 }
 
 export interface QuoteDetails {

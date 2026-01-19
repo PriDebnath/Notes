@@ -2,7 +2,7 @@ import { openDB, STORES } from "@/db/db";
 import type { Quote } from "@/model/quote.model";
 
 const STORE_NAME = STORES.QUOTES;
- 
+
 export const getAllQuotes = async (): Promise<Quote[]> => {
   const db = await openDB();
   const transaction = db.transaction(STORE_NAME, 'readonly');
@@ -26,30 +26,30 @@ export const getAllQuote = async (quoteId: number): Promise<Quote> => {
 };
 
 
-export const addQuote = async (
-  quote: Quote
-): Promise<Quote> => {
-  const db = await openDB()
-  const tx = db.transaction(STORE_NAME, 'readwrite')
-  const store = tx.objectStore(STORE_NAME)
+export const addQuote = async (quote: Quote): Promise<Quote> => {
+  const db = await openDB();
+  const tx = db.transaction(STORE_NAME, 'readwrite');
+  const store = tx.objectStore(STORE_NAME);
 
-  return new Promise(async (resolve, reject) => {
-    const { id, ...data } = quote 
-    const req = store.add(data)
-
-    req.onsuccess = async () => {
-      console.log("resol", quote, req.result)
-      await tx.done
+  const promise = new Promise<Quote>((resolve, reject) => {
+    // IMPORTANT: remove id before add
+    const { id, ...data } = quote;
+    const req = store.add({
+      ...data,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
+    req.onsuccess = () => {
       resolve({
         ...quote,
-        id: req.result as number,
-      })
-    }
+        id: req.result as number, // ✅ GENERATED ID
+      });
+    };
+    req.onerror = () => reject(req.error);
+  });
 
-    req.onerror = () => reject(req.error)
-  })
-}
-
+  return promise
+};
 
 
 
@@ -62,18 +62,20 @@ export const updateQuote = async (quote: Quote): Promise<Quote> => {
   const tx = db.transaction(STORE_NAME, 'readwrite');
   const store = tx.objectStore(STORE_NAME);
 
-  return new Promise(async (resolve, reject) => {
-    const { id, ...data } = quote 
-    const req = store.put(quote)
-
+  const promise = new Promise<Quote>(async (resolve, reject) => {
+    const req = store.put({
+      ...quote,
+      updated_at: new Date(),
+    })
     req.onsuccess = async () => {
-      console.log("resol", quote, req.result)
-      await tx.done
-      resolve(quote)
+      resolve({
+        ...quote,
+      })
     }
-
     req.onerror = () => reject(req.error)
   })
+
+  return promise
 };
 
 

@@ -50,7 +50,7 @@ removed-sm:prose-base
                 removed-xl:prose-2xl
 transition-transform duration-300 ease-out
             ">   {/* IMPORTANT */}
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor}  />
       {/*
       <div className="
           fixed 

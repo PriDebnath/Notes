@@ -10,7 +10,7 @@ import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCi
 import { useState, useRef } from "react";
 import { toPng } from "html-to-image"
 import { ListTags } from "@/feature/quote/list.tags";
-import { useShowCardInfo } from "@/hook/use-show-card-info.hook";
+import { useShowCardInfo } from "@/store/use-card-info.store";
 
 interface Props {
     quote: QuoteDetails;

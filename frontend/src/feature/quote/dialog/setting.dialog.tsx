@@ -24,7 +24,7 @@ import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCir
 import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
 import { useColorThemeStore} from "@/store/use-color-theme.store";
 import { useThemeStore} from "@/store/use-theme.store";
-import { showInfo, useShowCardInfo, type ShowInfo } from "@/hook/use-show-card-info.hook";
+import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
 import { capitalize } from "@/helper/capitalize";
 
 interface SortOptions { key: SortOption, label: string }

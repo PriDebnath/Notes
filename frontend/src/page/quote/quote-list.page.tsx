@@ -29,7 +29,7 @@ import {
 } from '@/db/quote_tags.db'
 
 import { useGetAllQuoteDetails } from '@/hook/get-all-quote-details.hook'
-import {TagFilter} from './filter'
+import {TagFilter} from '../../feature/quote/popover/filter.popover'
 
 export function QuoteListPage() {
   

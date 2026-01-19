@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
 
 interface TagFilterProps {
   tags: string[]
@@ -33,11 +34,19 @@ export function TagFilter({ tags, value, onChange }: TagFilterProps) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant="outline" className="gap-2 relative">
-          <Filter  />
+      <PopoverTrigger asChild >
+        <Button variant="outline" className={
+          cn(
+            "gap-2 relative",
+          )}
+        >
+          <Filter className={
+            cn(
+              "gap-2 relative",
+              open ? "text-primary" : ""
+            )} />
           {value.length > 0 && (
-            <span 
+            <span
               className="flex items-center justify-center w-4 h-4 aspect-square  absolute -top-1 -right-1 text-sm rounded-full bg-primary ">
               {value.length}
             </span>
@@ -46,12 +55,12 @@ export function TagFilter({ tags, value, onChange }: TagFilterProps) {
       </PopoverTrigger>
 
       <PopoverContent className="w-40">
-       <div className="sticky top-0 z-10 backdrop-blur-sm">
-                    <div className=" ">Filter by tags</div>
-                    <Separator className="bg-border" />
-                </div>
-      
-        <div className="flex flex-col overflow-auto h-64 gap-2">
+        <div className="sticky top-0 z-10 backdrop-blur-sm">
+          <div className=" ">Filter by tags</div>
+          <Separator className="bg-border" />
+        </div>
+
+        <div className="flex flex-col overflow-auto max-h-64 gap-2">
           {tags.map(tag => (
             <Button
               key={tag}

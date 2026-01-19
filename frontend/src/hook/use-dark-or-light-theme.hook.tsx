@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-type ThemeMode = "system" | "light" | "dark"
+export type ThemeMode = "system" | "light" | "dark"
 
 const getSystemTheme = () =>
   window.matchMedia("(prefers-color-scheme: dark)").matches

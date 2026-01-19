@@ -21,6 +21,7 @@ import {
 import { useState } from "react";
 import { useTheme, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings } from "lucide-react";
+import { colorThemes, useColorTheme, type ColorTheme } from "@/hook/use-color-theme.hook";
 
 
 interface Props {
@@ -30,18 +31,19 @@ interface Props {
 export function SettingComponent(props: Props) {
 
   const { theme, setTheme } = useTheme()
+  const { colorTheme, setColorTheme } = useColorTheme()
   const [open, setOpen] = useState(false)
 
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-       <DialogTrigger asChild>
+      <DialogTrigger asChild>
         <Button
           variant="outline"
           size="icon"
           className={open ? "  text-primary" : ""}
         >
-          <Settings   />
+          <Settings />
         </Button>
       </DialogTrigger>
 
@@ -70,7 +72,23 @@ export function SettingComponent(props: Props) {
             </Select>
           </div>
           <Separator className="bg-border" />
-
+          <div className="flex justify-between gap-4">
+            Color Theme
+            <Select value={colorTheme} onValueChange={(value) => setColorTheme(value as ColorTheme)}>
+              <SelectTrigger className="">
+                <SelectValue placeholder="Color Theme" />
+              </SelectTrigger>
+              <SelectContent>
+                {
+                  colorThemes.map((pri) => {
+                    return (
+                      <SelectItem value={pri} className="text-capitalize capitalize">{pri}</SelectItem>
+                    )
+                  })
+                }
+              </SelectContent>
+            </Select>
+          </div>
 
 
 

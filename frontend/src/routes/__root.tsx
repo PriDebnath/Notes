@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { useTheme } from '@/hook/use-dark-or-light-theme.hook'
+import { useApplyTheme } from '@/hook/use-dark-or-light-theme.hook'
 import { useApplyColorTheme} from '@/hook/use-color-theme.hook'
 
 export const Route = createRootRoute({
@@ -8,7 +8,7 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
-  useTheme()
+  useApplyTheme()
   useApplyColorTheme()
   return (
     <React.Fragment>

@@ -19,10 +19,11 @@ import {
   SelectTrigger,
 } from "@/components/ui/select"
 import { useState } from "react";
-import { themeModes, useTheme, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
+import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings } from "lucide-react";
 import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
 import { useColorThemeStore} from "@/store/use-color-theme.store";
+import { useThemeStore} from "@/store/use-theme.store";
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/hook/use-show-card-info.hook";
 import { capitalize } from "@/helper/capitalize";
 
@@ -43,8 +44,8 @@ interface Props {
 }
 
 export function SettingComponent(props: Props) {
-  const { theme, setTheme } = useTheme()
-  const [open, setOpen] = useState(false)
+const { theme, setTheme, isDark } = useThemeStore()
+const [open, setOpen] = useState(false)
 const { colorTheme, setColorTheme } = useColorThemeStore()
   const { info, setInfo } = useShowCardInfo()
 

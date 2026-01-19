@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react"
 import { useLocalStorage } from "@/hook/use-localstroage.hook"
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
+import { useColorThemeStore } from "@/store/use-color-theme.store"
 
 export type ColorTheme = "theme-neutral"
     | "theme-rose"
@@ -23,17 +26,16 @@ export const colorThemes: ColorTheme[] = [
     "theme-yellow",
 ]
 
-export const useColorTheme = () => {
-    const [stroredColorTheme, setStroredColorTheme] = useLocalStorage<ColorTheme>("app_theme", "theme-rose")
-    const [colorTheme, setColorTheme] = useState<ColorTheme>(stroredColorTheme as ColorTheme)
+export const useApplyColorTheme = () => {
+  const colorTheme = useColorThemeStore((s) => s.colorTheme)
 
-    useEffect(() => {
-        let root = document.documentElement
-        for (let t of colorThemes) {
-            root.classList.remove(t)
-        }
-        root.classList.add(colorTheme)
-        setStroredColorTheme(colorTheme)
-    }, [colorTheme])
-    return { colorTheme, setColorTheme }
+  useEffect(() => {
+    const root = document.documentElement
+    for (const t of colorThemes) {
+      root.classList.remove(t)
+    }
+    root.classList.add(colorTheme)
+  }, [colorTheme])
 }
+
+

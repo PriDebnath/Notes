@@ -17,6 +17,7 @@ import {
 
 import { ListQuote } from '@/feature/quote/list.quote'
 import DeleteQuoteDialog from '@/feature/quote/dialog/delete.quote.dialog'
+import {SettingComponent} from '@/feature/quote/dialog/setting.dialog'
 
 import type { Quote, QuoteFormData, Tag } from '@/model/quote.model'
 
@@ -27,12 +28,11 @@ import {
   deleteAllQuoteTags,
 } from '@/db/quote_tags.db'
 
-import { useDarkOrLightTheme } from '@/hook/use-dark-or-light-theme.hook'
 import { useGetAllQuoteDetails } from '@/hook/get-all-quote-details.hook'
+import {TagFilter} from './filter'
 
 export function QuoteListPage() {
-  const { darkMode, toggleDarkMode } = useDarkOrLightTheme()
-
+  
   /* ------------------ data ------------------ */
 
   const {
@@ -41,6 +41,9 @@ export function QuoteListPage() {
     error,
     refetch,
   } = useGetAllQuoteDetails()
+ const allTags =  [...new Set(quotesStored?.flatMap(q =>
+            q.tags?.map(t => t.name) ?? []
+          ))]
 
   const [quotes, setQuotes] = useState<Quote[]>([])
   const [search, setSearch] = useState('')
@@ -115,25 +118,19 @@ export function QuoteListPage() {
   /* ------------------ ui ------------------ */
 
   return (
-    <div className="p-2 gap-4 flex flex-col">
+    <div className=" flex flex-col">
       {/* Sticky Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="gap-4 flex flex-col sticky top-0 z-20 bg-background rounded-b-2xl"
+      <div
+          className="gap-2 p-2 flex flex-col sticky top-0 z-20 bg-background rounded-b"
       >
-        <div className="text-right">
-          <Button
-            size="icon"
-            variant="outline"
-            className="rounded-full"
-            onClick={toggleDarkMode}
-          >
-            {darkMode ? <LightbulbOff /> : <Lightbulb />}
-          </Button>
+        <div className="flex justify-between">
+          <TagFilter
+            tags={allTags}
+            value={activeTags}
+            onChange={setActiveTags}
+          />
+          <SettingComponent/>
         </div>
-
         {/* Search */}
         <InputGroup>
           <InputGroupInput
@@ -145,29 +142,11 @@ export function QuoteListPage() {
             <SearchIcon />
           </InputGroupAddon>
         </InputGroup>
-
-        {/* Tags */}
-        <div className="flex gap-2 flex-wrap">
-          <p>Filter by tags: </p>
-          {[...new Set(quotesStored?.flatMap(q =>
-            q.tags?.map(t => t.name) ?? []
-          ))].map(tag => (
-            <Button
-              key={tag}
-              size="sm"
-              variant={
-                activeTags.includes(tag) ? 'default' : 'outline'
-              }
-              onClick={() => toggleTag(tag)}
-            >
-              {tag}
-            </Button>
-          ))}
-        </div>
-      </motion.div>
+      
+      </div>
 
       {/* Content */}
-      <main>
+      <main className="px-2">
         <ListQuote
           loading={isLoading}
           quotes={quotes}

@@ -1,40 +1,49 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
 
-const getDeviceTheme = () =>
-  window.matchMedia('(prefers-color-scheme: dark)').matches
+type ThemeMode = "system" | "light" | "dark"
 
-export const useDarkOrLightTheme = () => {
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return false
-    return getDeviceTheme()
-  })
+const getSystemTheme = () =>
+  window.matchMedia("(prefers-color-scheme: dark)").matches
 
-  /* Apply theme */
+export const useTheme = () => {
+  const [theme, setTheme] = useState<ThemeMode>("system")
+  const [isDark, setIsDark] = useState(false)
+
+  /* Resolve actual theme */
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', darkMode)
-  }, [darkMode])
+    if (typeof window === "undefined") return
 
-  /* Listen to OS theme changes */
+    const resolvedDark =
+      theme === "dark"
+        ? true
+        : theme === "light"
+        ? false
+        : getSystemTheme()
+
+    setIsDark(resolvedDark)
+    document.documentElement.classList.toggle("dark", resolvedDark)
+  }, [theme])
+
+  /* Listen to OS changes (only when system mode) */
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === "undefined") return
 
-    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const media = window.matchMedia("(prefers-color-scheme: dark)")
 
-    const handleChange = (e: MediaQueryListEvent) => {
-      setDarkMode(e.matches)
+    const handler = () => {
+      if (theme === "system") {
+        document.documentElement.classList.toggle("dark", media.matches)
+        setIsDark(media.matches)
+      }
     }
 
-    media.addEventListener('change', handleChange)
-    return () => media.removeEventListener('change', handleChange)
-  }, [])
-
-  /* Optional manual override (session-only) */
-  const toggleDarkMode = () => {
-    setDarkMode(prev => !prev)
-  }
+    media.addEventListener("change", handler)
+    return () => media.removeEventListener("change", handler)
+  }, [theme])
 
   return {
-    darkMode,
-    toggleDarkMode,
+    theme,        // "system" | "light" | "dark"
+    setTheme,
+    isDark,       // resolved boolean (useful)
   }
 }

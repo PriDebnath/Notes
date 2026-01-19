@@ -11,7 +11,7 @@ interface ColorPresets {
 }
 
 const colorPresets = {
-  pri_set_0: { id: 0, name: "default" } as ColorPresets,
+  pri_set_0: { id: 0, name: "none" } as ColorPresets,
 
   pri_set_1: { id: 1, name: "red", color: "red" } as ColorPresets,
 
@@ -56,6 +56,11 @@ const colorPresets = {
     overlay:
       "linear-gradient(to bottom, rgba(139,92,246,0.2), rgba(139,92,246,0.7))",
   } as ColorPresets,
+  pri_set_12: {
+    id: 12,
+    name: "skyblue",
+    color : 'skyblue'
+  } as ColorPresets,
 };
 
 
@@ -64,9 +69,21 @@ export type Pri_set = keyof typeof colorPresets
 export type TextureKey = keyof typeof textures
 
 const textures = {
-    fresh_snow: "src/assets/images/fresh-snow.png",
     dark_wood: "src/assets/images/dark-wood.png",
+    crisp_paper_ruffles: "src/assets/images/crisp-paper-ruffles.png",
+    brick_wall: "src/assets/images/brick-wall.png",
+    snow: "src/assets/images/snow.png",
+    fresh_snow: "src/assets/images/fresh-snow.png",
+    cartographer: "src/assets/images/cartographer.png",
     cardboard: "src/assets/images/cardboard.png",
+    xv: "src/assets/images/xv.png",
+    food: "src/assets/images/food.png",
+    flowers: "src/assets/images/flowers.png",
+    foggy_birds: "src/assets/images/foggy-birds.png",
+    pink_flowers: "src/assets/images/pink-flowers.webp",
+    leaves: "src/assets/images/leaves.webp",
+    watercolor: "src/assets/images/watercolor.webp",
+ 
 };
 
 // build inline style for preview & thumbnails that need composition

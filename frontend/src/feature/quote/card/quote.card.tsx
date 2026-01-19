@@ -1,13 +1,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { sanitizeHTML } from "@/helper/sanitize-html";
+import { htmlToPlainText } from "@/helper/html-to-text";
 import useBackground from "@/hook/use-background.hook";
 import { cn } from "@/lib/utils";
 import type { Quote, QuoteDetails } from "@/model/quote.model";
 import { Link } from "@tanstack/react-router";
-import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCircle } from "lucide-react";
+import { Check, Copy, Maximize2, PenIcon, Trash , Save,  CircleArrowDown, LoaderCircle } from "lucide-react";
 import { useState, useRef } from "react";
-import { ListTags } from "@/feature/quote/list.tags";
+import { toPng } from "html-to-image"
 
 interface Props {
     quote: QuoteDetails;
@@ -18,18 +19,36 @@ interface Props {
 const QuoteCard = (props: Props) => {
     const { quote, onEdit, onDelete, } = props
     const [copying, setCopying] = useState(false)
+    const [downloading, setDownloading] = useState(false)
     const { buildStyle } = useBackground()
-    const noteRef = useRef<HTMLDivElement>(null)
+const noteRef = useRef<HTMLDivElement>(null)
 
     const cardStyle = buildStyle(quote.texture!, quote.pri_set!)
+const exportAsImage = async () => {
+  if (!noteRef.current) return
+setDownloading(true)
+  const dataUrl = await toPng(noteRef.current, {
+    pixelRatio: 2,        // crisp image
+    //backgroundColor: "#fff"
+    cacheBust: true,
+  backgroundColor: cardStyle.backgroundColor
+  })
 
- 
+  const link = document.createElement("a")
+  link.download = new Date().getTime()+"-note.png"
+  link.href = dataUrl
+  link.click()
+        
+     setDownloading(false)
+
+}
     const onCopy = async (text: string) => {
         setCopying(true)
         await window.navigator.clipboard.writeText(text)
-        setTimeout(() => {
-            setCopying(false)
-        }, 500);
+        
+        setTimeout(()=>{
+     setCopying(false)
+    }, 3000)
     }
 
     return (
@@ -41,7 +60,7 @@ const QuoteCard = (props: Props) => {
             }>
 
             <div
-                ref={noteRef}
+             ref={noteRef}
                 style={cardStyle}
                 className={
                     cn(
@@ -59,6 +78,7 @@ const QuoteCard = (props: Props) => {
                 removed-lg:prose-lg
                 removed-xl:prose-2xl
                 removed-prose-foreground
+                line-clamp-3
             ">   {/* IMPORTANT */}
                     <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quote.text) }}></div>
                 </div>
@@ -67,7 +87,19 @@ const QuoteCard = (props: Props) => {
                             */}
 
                 <div className="flex w-full items-end justify-between gap-2">
-                    <ListTags tags={quote?.tags || []}/>
+                    {quote.tags && quote.tags.length > 0 ? (
+                        <div className="flex flex-wrap gap-2">
+                            {quote.tags.map((tag, index) => (
+                                <Badge
+                                    variant={'outline'}
+                                    className=" text-[0.5rem] bg-primary/10 border-primary/20 text-primary/70"
+                                    key={tag.id}
+                                >
+                                    #{tag.name}
+                                </Badge>
+                            ))}
+                        </div>
+                    ) : (<span></span>)}
 
                     <div className="flex items-center gap-2 ">
                         <Button
@@ -75,14 +107,16 @@ const QuoteCard = (props: Props) => {
                             variant={"outline"}
                             onClick={(e) => {
                                 e.preventDefault()
-                                onCopy(quote.text)
+                                const text =  htmlToPlainText(quote.text)
+                                onCopy(text)
                             }}
                             aria-label="Copy quote"
                             size={"sm"}
                         >
                             {copying ? <Check className="text-green-500" /> : <Copy />}
                         </Button>
-
+                        
+                        
                         {/*
                         <Button
                             className="hover:text-yellow-600 "

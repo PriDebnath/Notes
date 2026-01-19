@@ -18,10 +18,8 @@ import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@
 import { addOrGetTag } from '@/db/tag.db'
 import { useBlocker } from "@tanstack/react-router"
 import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
-import {ShareBackground } from "@/feature/quote/dialog/share.dialog"
-
+import {ShareBackground} from "@/feature/quote/dialog/share.dialog"
 import { toPng } from "html-to-image"
-import { ListTags } from "@/feature/quote/list.tags";
 
 interface Props {
   mode: "add" | "edit";
@@ -49,7 +47,7 @@ const noteRef = useRef<HTMLDivElement>(null)
     id: quote?.id,
     text: quote?.text || "",
     tags: quote?.tags?.map((tag) => tag.name) || [],
-    texture: quote?.texture,
+    texture: quote?.texture || "pri_set_12",
     pri_set: quote?.pri_set,
   }))
 console.log({quoteData})
@@ -210,7 +208,7 @@ const exportAsImage = async () => {
                 <ArrowLeftIcon />
               </Button>
             </Link>
-            <div  className='flex gap-4 '>
+            <div className="flex gap-2" >
               <ShareBackground quoteFormData={quoteData}/>
               <ChooseBackground onValueUpdate={onValueUpdate}/>
             </div>
@@ -229,7 +227,9 @@ const exportAsImage = async () => {
               (
                 <div className="grid gap-4">
                   <div className="grid gap-3">
+                  {/*
                     <Label htmlFor="name-1">Quote</Label>
+                    */}
                     <Tiptap
                       key={quoteData?.id ?? "new"}
                       value={quoteData?.text}
@@ -277,8 +277,6 @@ const exportAsImage = async () => {
 
 
             </div>
-
-
 
             {/*
           <Separator className=" bg-border" />

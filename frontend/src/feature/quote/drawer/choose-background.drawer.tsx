@@ -124,14 +124,16 @@ export default function ChooseBackground(props: Props) {
                   title={value.name}
                 >
                   <div
-                    className="w-full flex items-center justify-center h-full rounded-lg"
+                    className="w-full text-xs flex items-center justify-center h-full rounded-lg"
                     style={{
                       ...(value.overlay
                         ? { backgroundImage: value.overlay, backgroundSize: "cover", backgroundPosition: "center" }
                         : { backgroundColor: value.color }),
                     }}
                   > 
-                  {/* {value.name} */}
+                  {value.name} 
+                  {/* 
+                  */}
                   </div>
                 </button>
               );

@@ -39,4 +39,7 @@ export interface QuoteDetails extends Quote {
 
 
 
-export type SortOption = "created_at" | "updated_at"
+
+export type SortOption = "created_at" | "updated_at" | "tags"
+
+export type CardView = "list" | "grid"

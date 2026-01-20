@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -15,17 +16,17 @@ import {
   SelectContent,
   SelectTrigger,
 } from "@/components/ui/select"
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { capitalize } from "@/helper/capitalize";
 import { Separator } from "@/components/ui/separator";
 import { useThemeStore } from "@/store/use-theme.store";
 import { useFontStore, fonts, type Font } from "@/store/use-font.store";
 import { useColorThemeStore } from "@/store/use-color-theme.store";
-import type { QuoteFormData, SortOption } from "@/model/index.model";
+import type { CardView, QuoteFormData, SortOption } from "@/model/index.model";
 import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
 import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
+import { useSortStore } from "@/store/use-sort.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings } from "lucide-react";
 
 interface SortOptions { key: SortOption, label: string }
@@ -39,7 +40,12 @@ const sortOptions: SortOptions[] = [
     key: "updated_at",
     label: "Updated at",
   },
+  {
+    key: "tags",
+    label: "Tags",
+  }
 ]
+
 interface Props {
 
 }
@@ -50,8 +56,7 @@ export function SettingComponent(props: Props) {
   const { colorTheme, setColorTheme } = useColorThemeStore()
   const { info, setInfo } = useShowCardInfo()
   const { font, setFont } = useFontStore()
-
-  const [sortBy, setSortBy] = useState<SortOptions["key"]>("created_at")
+  const { sortBy, setSortBy } = useSortStore()
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

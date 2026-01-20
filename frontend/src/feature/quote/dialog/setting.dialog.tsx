@@ -57,7 +57,7 @@ export function SettingComponent(props: Props) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="p-4  overflow-y-auto" aria-describedby="Settings">
+      <DialogContent className="p-4 gap-2  overflow-auto" aria-describedby="Settings">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>
@@ -205,19 +205,20 @@ export function SettingComponent(props: Props) {
 
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-xs">Other</p>
-          <div className="flex justify-between text-center ">
-            Made with 💙 by Pritam
-          </div>
+
           <div className="flex justify-between text-center ">
             <p className="text-muted-foreground text-xs">
-             Last updated:
+              Last updated
             </p>
             <p className="text-muted-foreground text-xs">
               {lastDeployed}
             </p>
           </div>
         </div>
-
+        <Separator className="bg-border" />
+        <div className=" w-full text-center ">
+          Made with 💙 by Pritam Debnath
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -24,6 +24,7 @@ import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCir
 import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
 import { useColorThemeStore} from "@/store/use-color-theme.store";
 import { useThemeStore} from "@/store/use-theme.store";
+import { useFontStore, fonts} from "@/store/use-font.store";
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
 import { capitalize } from "@/helper/capitalize";
 
@@ -48,6 +49,7 @@ const { theme, setTheme, isDark } = useThemeStore()
 const [open, setOpen] = useState(false)
 const { colorTheme, setColorTheme } = useColorThemeStore()
   const { info, setInfo } = useShowCardInfo()
+  const { font, setFont } = useFontStore()
 
   const [sortBy, setSortBy] = useState<SortOptions["key"]>("created_at")
 
@@ -118,18 +120,20 @@ const { colorTheme, setColorTheme } = useColorThemeStore()
             </Select>
           </div>
           <div className="flex justify-between items-center ">
-            Sort by
-            <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
+            Font
+            <Select value={font} onValueChange={(value) => setFont(value )}>
               <SelectTrigger className="">
-                <SelectValue placeholder="Sort By" />
+                <SelectValue placeholder="Font" />
               </SelectTrigger>
               <SelectContent>
                 {
-                  sortOptions.map((pri) => {
-                    let yo = capitalize(pri.key)
+                  fonts.map((pri) => {
+                    let yoyoyo = pri.replace("font-", "")
+                    let yoyo = yoyoyo.replaceAll("-", " ")
+                    let yo = capitalize(yoyo)
                     return (
-                      <SelectItem key={pri.key} value={pri.key} className="">
-                        {yo.replaceAll('_', " ")}
+                      <SelectItem key={pri} value={pri} className="">
+                        {yo}
                       </SelectItem>
                     )
                   })
@@ -163,6 +167,27 @@ const { colorTheme, setColorTheme } = useColorThemeStore()
               </SelectContent>
             </Select>
           </div>
+                    <div className="flex justify-between items-center ">
+            Sort by
+            <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
+              <SelectTrigger className="">
+                <SelectValue placeholder="Sort By" />
+              </SelectTrigger>
+              <SelectContent>
+                {
+                  sortOptions.map((pri) => {
+                    let yo = capitalize(pri.key)
+                    return (
+                      <SelectItem key={pri.key} value={pri.key} className="">
+                        {yo.replaceAll('_', " ")}
+                      </SelectItem>
+                    )
+                  })
+                }
+              </SelectContent>
+            </Select>
+          </div>
+          
         </div>
 
         <Separator className="bg-border" />

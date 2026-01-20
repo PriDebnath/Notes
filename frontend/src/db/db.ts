@@ -1,5 +1,5 @@
-import type { Quote, QuoteTags, Tag } from "@/model/index.model";
 import Dexie, { type Table } from "dexie";
+import type { Quote, QuoteTags, Tag } from "@/model/index.model";
 
 /**
  * Doc

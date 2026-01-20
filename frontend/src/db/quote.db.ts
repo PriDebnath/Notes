@@ -1,7 +1,7 @@
 import type { Quote } from "@/model/index.model";
 import { db } from "@/db/db";
 
-export const addQuote = async (quote: Quote) => {
+export const addQuote = async (quote: Quote) =>  {
     const { id, ...data } = quote
     const generatedId = await db.quotes.add({
         ...data,

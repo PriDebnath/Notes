@@ -26,25 +26,8 @@ import type { CardView, QuoteFormData, SortOption } from "@/model/index.model";
 import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
 import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
-import { useSortStore } from "@/store/use-sort.store";
+import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings } from "lucide-react";
-
-interface SortOptions { key: SortOption, label: string }
-
-const sortOptions: SortOptions[] = [
-  {
-    key: "created_at",
-    label: "Created at",
-  },
-  {
-    key: "updated_at",
-    label: "Updated at",
-  },
-  {
-    key: "tags",
-    label: "Tags",
-  }
-]
 
 interface Props {
 

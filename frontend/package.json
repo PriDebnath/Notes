@@ -1,5 +1,25 @@
 {
   "name": "frontend",
+  "description": "Notes is a calm, beautiful notes app that turns scattered ideas into a personal library you actually want to revisit.",
+  "keywords": [
+    "notes",
+    "notes app",
+    "notes keeper",
+    "notes organizer",
+    "notes collection",
+    "notes notebook",
+    "personal knowledge base",
+    "note cards",
+    "digital notebook",
+    "writing app",
+    "journaling app"
+  ],
+  "author": "Pritam Debnath",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pridebnath/notes.git"
+  },
+  "homepage": "https://pridebnath.github.io/notes/",
   "private": true,
   "version": "0.0.0",
   "type": "module",

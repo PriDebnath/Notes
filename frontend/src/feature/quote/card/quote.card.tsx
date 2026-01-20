@@ -10,16 +10,17 @@ import useBackground from "@/hook/use-background.hook";
 import { htmlToPlainText } from "@/helper/html-to-text";
 import { useShowCardInfo } from "@/store/use-card-info.store";
 import type { Quote, QuoteDetails } from "@/model/index.model";
-import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCircle } from "lucide-react";
+import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCircle, Pin, PinOff } from "lucide-react";
 
 interface Props {
     quote: QuoteDetails;
     onEdit: (quote: Quote) => void
     onDelete: (quote: Quote) => void
+  onTogglePin: (quote: QuoteDetails) => void
 }
 
 const QuoteCard = (props: Props) => {
-    const { quote, onEdit, onDelete, } = props
+    const { quote, onEdit, onDelete, onTogglePin } = props
     const [copying, setCopying] = useState(false)
     const [downloading, setDownloading] = useState(false)
     const { buildStyle } = useBackground()
@@ -82,6 +83,20 @@ const QuoteCard = (props: Props) => {
                     "flex flex-col justify-between items-start gap-2",
                     "",
                 )}>
+                    <div className="flex justify-end w-full">
+                    <Button
+                            className={cn("hover:text-primary-600", quote.pinned && "text-primary-600")}
+                            variant={"outline"}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                onTogglePin(quote)
+                            }}
+                            aria-label={quote.pinned ? "Unpin note" : "Pin note"}
+                            size={"sm"}
+                        >
+                            {quote.pinned ? <PinOff /> : <Pin />}
+                        </Button>
+                    </div>
                 <div className={cn(
                     "tiptap",
                     "prose-sm",
@@ -109,6 +124,7 @@ const QuoteCard = (props: Props) => {
                         }</p>
                     )}
                     <div className="flex items-center gap-2 ">
+         
                         <Button
                             className="hover:text-green-600 "
                             variant={"outline"}

@@ -9,6 +9,7 @@ export interface Quote {
     pri_set?: Pri_set;
     created_at?: Date;
     updated_at?: Date;
+    pinned?: boolean;
 }
 
 export interface Tag {

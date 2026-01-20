@@ -1,19 +1,20 @@
 import { motion } from "framer-motion"
 import Masonry from "react-masonry-css"
-import type { Quote } from "@/model/index.model"
+import type { QuoteDetails } from "@/model/index.model"
 import QuoteCard from "@/feature/quote/card/quote.card"
 import QuoteSkeleton from "@/feature/quote/card/quote-skeleton.card"
 import { useCardViewStore } from "@/store/use-card-view.store"
 
 interface Props {
   loading: boolean
-  quotes: Quote[]
-  onEdit: (quote: Quote) => void
-  onDelete: (quote: Quote) => void
+  quotes: QuoteDetails[]
+  onEdit: (quote: QuoteDetails) => void
+  onDelete: (quote: QuoteDetails) => void
+  onTogglePin: (quote: QuoteDetails) => void
 }
 
 export function ListQuote(props: Props) {
-  const { loading, quotes, onEdit, onDelete } = props
+  const { loading, quotes, onEdit, onDelete, onTogglePin } = props
 
   const { view } = useCardViewStore()
 
@@ -31,7 +32,7 @@ export function ListQuote(props: Props) {
         className="flex gap-2"
         columnClassName={columnClassName}
       >
-        {Array.from({ length: 3}).map((_, i) => {
+        {Array.from({ length: 3 }).map((_, i) => {
           return (
             <motion.div
               key={i}
@@ -48,7 +49,9 @@ export function ListQuote(props: Props) {
   }
 
   if ((!quotes || quotes.length === 0) && !loading) {
-    return <p className="w-full text-center text-muted-foreground">No quotes available.</p>
+    return <p className="w-full text-center text-muted-foreground">
+      No secrets written. For now.
+    </p>
   }
 
   return (
@@ -70,13 +73,14 @@ export function ListQuote(props: Props) {
               quote={q}
               onEdit={onEdit}
               onDelete={onDelete}
+              onTogglePin={onTogglePin}
             />
           </motion.div>
         ))}
       </Masonry>
 
       <p className="text-center text-muted-foreground  py-16">
-        --- end of everything ---
+        --- You’ve reached the last secret. ---
       </p>
     </div>
   )

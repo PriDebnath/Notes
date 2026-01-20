@@ -18,11 +18,12 @@ import { Suspense, lazy } from 'react'
 const ListQuote = lazy(() => import('@/feature/quote/list.quote').then(mod => ({ default: mod.ListQuote })))
 import { deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { TagFilter } from '@/feature/quote/popover/filter.popover'
-import type { Quote, QuoteFormData, Tag, SortOption } from '@/model/index.model'
+import type { Quote, QuoteDetails, QuoteFormData, Tag, SortOption } from '@/model/index.model'
 const DeleteQuoteDialog = lazy(() => import('@/feature/quote/dialog/delete.dialog'))
 const SettingComponent = lazy(() => import('@/feature/quote/dialog/setting.dialog').then(mod => ({ default: mod.SettingComponent })))
 import { useGetAllQuoteDetails } from '@/api-hook/use-get-all-quote-details.hook'
 import { useSortStore } from '@/store/use-sort.store'
+import { toggleQuotePinned } from '@/db/quote.db'
 
 export function QuoteListPage() {
   const {
@@ -33,7 +34,7 @@ export function QuoteListPage() {
   } = useGetAllQuoteDetails()
 
   const [search, setSearch] = useState('')
-  const [quotes, setQuotes] = useState<Quote[]>([])
+  const [quotes, setQuotes] = useState<QuoteDetails[]>([])
   const [openDelete, setOpenDelete] = useState(false)
   const [activeTags, setActiveTags] = useState<string[]>([])
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
@@ -72,6 +73,12 @@ export function QuoteListPage() {
     if (!quote.id) return
     await deleteQuoteWithLinks(quote.id)
     setOpenDelete(false)
+    refetch()
+  }
+
+  const handleTogglePin = async (quote: QuoteDetails) => {
+    if (!quote.id) return
+    await toggleQuotePinned(quote.id, !quote.pinned)
     refetch()
   }
 
@@ -130,6 +137,7 @@ export function QuoteListPage() {
             quotes={quotes}
             onEdit={() => { }}
             onDelete={openDeleteDialog}
+            onTogglePin={handleTogglePin}
           />
         </Suspense>
       </main>

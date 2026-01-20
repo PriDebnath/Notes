@@ -39,6 +39,11 @@ jobs:
         run: |
           cd frontend
           pnpm run build
+          
+      - name: Inject build timestamp
+        run: |
+          echo '{ "lastDeployed": "'$(date -u +'%Y-%m-%dT%H:%M:%SZ')'" }' \
+          > frontend/dist/last-deployed.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

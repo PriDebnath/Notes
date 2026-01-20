@@ -29,6 +29,7 @@ import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
 import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings } from "lucide-react";
+import { useLastDeployed } from "@/hook/use-last-deployed";
 
 interface Props {
 
@@ -42,6 +43,7 @@ export function SettingComponent(props: Props) {
   const { font, setFont } = useFontStore()
   const { sortBy, setSortBy } = useSortStore()
   const { view, setView } = useCardViewStore()
+  const lastDeployed = useLastDeployed()
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -208,7 +210,10 @@ export function SettingComponent(props: Props) {
           </div>
           <div className="flex justify-between text-center ">
             <p className="text-muted-foreground text-xs">
-              Last hosted on: {new Date().toLocaleDateString()}
+             Last updated:
+            </p>
+            <p className="text-muted-foreground text-xs">
+              {lastDeployed}
             </p>
           </div>
         </div>

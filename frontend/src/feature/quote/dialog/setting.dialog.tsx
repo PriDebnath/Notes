@@ -216,7 +216,7 @@ export function SettingComponent(props: Props) {
           </div>
         </div>
         <Separator className="bg-border" />
-        <div className=" w-full text-center ">
+        <div className=" w-full text-center  text-sm">
           Made with 💙 by Pritam Debnath
         </div>
       </DialogContent>

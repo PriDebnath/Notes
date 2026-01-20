@@ -14,12 +14,13 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
-import { ListQuote } from '@/feature/quote/list.quote'
+import { Suspense, lazy } from 'react'
+const ListQuote = lazy(() => import('@/feature/quote/list.quote').then(mod => ({ default: mod.ListQuote })))
 import { deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { TagFilter } from '@/feature/quote/popover/filter.popover'
 import type { Quote, QuoteFormData, Tag, SortOption } from '@/model/index.model'
-import DeleteQuoteDialog from '@/feature/quote/dialog/delete.dialog'
-import { SettingComponent } from '@/feature/quote/dialog/setting.dialog'
+const DeleteQuoteDialog = lazy(() => import('@/feature/quote/dialog/delete.dialog'))
+const SettingComponent = lazy(() => import('@/feature/quote/dialog/setting.dialog').then(mod => ({ default: mod.SettingComponent })))
 import { useGetAllQuoteDetails } from '@/api-hook/use-get-all-quote-details.hook'
 import { useSortStore } from '@/store/use-sort.store'
 
@@ -103,7 +104,9 @@ export function QuoteListPage() {
             value={activeTags}
             onChange={setActiveTags}
           />
-          <SettingComponent />
+          <Suspense fallback={null}>
+            <SettingComponent />
+          </Suspense>
         </div>
         {/* Search */}
         <InputGroup>
@@ -121,12 +124,14 @@ export function QuoteListPage() {
 
       {/* Content */}
       <main className="px-2">
-        <ListQuote
-          loading={isLoading}
-          quotes={quotes}
-          onEdit={() => { }}
-          onDelete={openDeleteDialog}
-        />
+        <Suspense fallback={null}>
+          <ListQuote
+            loading={isLoading}
+            quotes={quotes}
+            onEdit={() => { }}
+            onDelete={openDeleteDialog}
+          />
+        </Suspense>
       </main>
 
       {/* Floating Add Button */}
@@ -142,12 +147,14 @@ export function QuoteListPage() {
       </nav>
 
       {/* Delete Dialog */}
-      <DeleteQuoteDialog
-        open={openDelete}
-        setOpen={setOpenDelete}
-        quote={selectedQuote}
-        handleDelete={handleDelete}
-      />
+      <Suspense fallback={null}>
+        <DeleteQuoteDialog
+          open={openDelete}
+          setOpen={setOpenDelete}
+          quote={selectedQuote}
+          handleDelete={handleDelete}
+        />
+      </Suspense>
     </div>
   )
 }

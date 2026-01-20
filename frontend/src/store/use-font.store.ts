@@ -23,7 +23,7 @@ export const useFontStore = create<Store>()(
   persist(
     (set) => ({
       // default to system / app default font
-      font: "font-normal",
+      font: "font-playwrite-de-grund",
       setFont: (font) => set({ font })
     }),
     {

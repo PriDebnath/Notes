@@ -1,8 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { QuoteListPage } from '@/page/quote/quote-list.page'
+import { createFileRoute, lazyRouteComponent } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
-  component: QuoteListPage,
+  component: lazyRouteComponent(() =>
+    import('@/page/quote/quote-list.page').then(mod => ({ default: mod.QuoteListPage })),
+  ),
 })
 
  

@@ -10,8 +10,9 @@ import {  addQuote, updateQuote } from '@/db/quote.db'
 import { AnimatePresence, motion } from 'framer-motion'
 import { addOrGetTag } from '@/legacy-indexDB-db/tag.db'
 import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
-import Tiptap from '@/components/common/tiptap-customized'
-import {ShareBackground} from "@/feature/quote/dialog/share.dialog"
+import { lazy, Suspense } from 'react'
+const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
+const ShareBackground = lazy(() => import('@/feature/quote/dialog/share.dialog').then(mod => ({ default: mod.ShareBackground })))
 import { useGetQuoteDetails } from '@/api-hook/use-get-quote-details.hook'
 import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
@@ -93,7 +94,7 @@ const noteRef = useRef<HTMLDivElement>(null)
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Submitted", quoteData)
+    // console.log("Submitted", quoteData)
     if (quoteData && quoteData?.text?.trim()) {
       handleSubmit(quoteData)
     }
@@ -101,7 +102,7 @@ const noteRef = useRef<HTMLDivElement>(null)
 
 
   const handleSubmit = useCallback(async (quote: QuoteFormData) => {
-    console.log({at:"at submit" ,quote })
+    // console.log({at:"at submit" ,quote })
     let quoteId: number | undefined = quote.id
     if (quoteId) { // edit
       await updateQuote({
@@ -116,7 +117,7 @@ const noteRef = useRef<HTMLDivElement>(null)
       quoteId = newQuote.id
     }
 
-    console.log({ quoteId });
+    // console.log({ quoteId });
 
     const tags = await getTags(quote.tags!)
     // console.log({ tags })
@@ -192,7 +193,9 @@ const noteRef = useRef<HTMLDivElement>(null)
               </Button>
             </Link>
             <div className="flex gap-2" >
-              <ShareBackground quoteFormData={quoteData}/>
+              <Suspense fallback={null}>
+                <ShareBackground quoteFormData={quoteData}/>
+              </Suspense>
               <ChooseBackground onValueUpdate={onValueUpdate}/>
             </div>
           </div>
@@ -213,11 +216,13 @@ const noteRef = useRef<HTMLDivElement>(null)
                   {/*
                     <Label htmlFor="name-1">Quote</Label>
                     */}
-                    <Tiptap
-                      key={quoteData?.id ?? "new"}
-                      value={quoteData?.text}
-                      quoteFormData={quoteData}
-                      onValueUpdate={onValueUpdate} />
+                    <Suspense fallback={<div>Loading editor...</div>}>
+                      <Tiptap
+                        key={quoteData?.id ?? "new"}
+                        value={quoteData?.text}
+                        quoteFormData={quoteData}
+                        onValueUpdate={onValueUpdate} />
+                    </Suspense>
                   </div>
                 </div>
               )

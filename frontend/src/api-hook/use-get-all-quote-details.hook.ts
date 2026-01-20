@@ -10,7 +10,7 @@ export const useGetAllQuoteDetails = () => {
     queryFn: () => getAllQuotesDetails(sortBy),
   })
 
-  console.log({ data, error })
+  // console.log({ data, error })
   const errorString = (typeof error == "string") ? error : error?.message
 
   return { data, isLoading, error: errorString, refetch }

@@ -27,7 +27,7 @@ type SortStore = {
 export const useSortStore = create<SortStore>()(
   persist(
     (set) => ({
-      sortBy: "created_at",
+      sortBy: "updated_at",
       setSortBy: (sortBy) => set({ sortBy }),
     }),
     {

@@ -1,0 +1,77 @@
+Contributing to Notes
+=====================
+
+Thank you for your interest in contributing to Notes!
+This document is aimed at developers and contributors who want to work on the project.
+
+
+Project Structure
+-----------------
+
+- Root
+  - `backend`   – Bun/TypeScript backend (database, API, migrations)
+  - `frontend`  – Vite + React frontend (Quotes Keeper UI)
+  - `pnpm-workspace.yaml` – Monorepo configuration
+
+
+Frontend (Vite + React)
+-----------------------
+
+Main tech stack:
+
+- Vite + React + TypeScript
+- @tanstack/router for routing
+- @tanstack/react-query for data fetching and caching
+- Dexie / IndexedDB for local quote and tag storage
+- Styled UI components, theming, and backgrounds for a pleasant reading experience
+
+
+Running the Frontend Locally
+----------------------------
+
+1. Install pnpm if you do not have it:
+   - https://pnpm.io/installation
+
+2. Install dependencies (from the repo root):
+
+   - `cd frontend`
+   - `pnpm install`
+
+3. Start the development server:
+
+   - `pnpm dev`
+
+4. Open the app in your browser (Vite will print the URL, usually http://localhost:5173).
+
+
+Building & Deployment (Frontend)
+--------------------------------
+
+- The app is configured to build with Vite:
+
+  - `cd frontend`
+  - `pnpm run build`
+
+- The GitHub Actions workflow `.github/workflows/deploy_frontend_to_pages.yml` builds the frontend
+  and deploys the contents of `frontend/dist` to GitHub Pages.
+
+- A `last-deployed.json` file is injected during the build and can be read by the app to show
+  the last deployment time in the UI.
+
+
+Backend
+-------
+
+- The `backend` folder contains a Bun/TypeScript API with Drizzle ORM and migrations.
+- You can inspect `backend/package.json` for available scripts (dev, build, etc.) and run them with Bun or pnpm,
+  depending on your setup.
+
+
+Code Style & Guidelines
+------------------------
+
+- Keep components small and focused.
+- Prefer hooks and stores that are already in use (`frontend/src/hook`, `frontend/src/store`).
+- Follow existing naming conventions for files and components.
+- Run linting/formatting tools if configured before opening a pull request.
+

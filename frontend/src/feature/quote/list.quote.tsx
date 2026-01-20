@@ -3,6 +3,7 @@ import Masonry from "react-masonry-css"
 import type { Quote } from "@/model/index.model"
 import QuoteCard from "@/feature/quote/card/quote.card"
 import QuoteSkeleton from "@/feature/quote/card/quote-skeleton.card"
+import { useCardViewStore } from "@/store/use-card-view.store"
 
 interface Props {
   loading: boolean
@@ -14,7 +15,13 @@ interface Props {
 export function ListQuote(props: Props) {
   const { loading, quotes, onEdit, onDelete } = props
 
-  const breakpointCols = { default: 4, 1024: 3, 768: 2, 480: 2, 240: 1 }
+  const { view } = useCardViewStore()
+
+  // when list, use 1 column; otherwise responsive columns
+  const breakpointCols: number | { [key: number]: number; default: number } =
+    view === "list"
+      ? 1
+      : { default: 4, 1024: 3, 768: 2, 480: 2, 240: 1 }
   const columnClassName = "flex flex-col gap-2"
 
   if (loading) {
@@ -68,8 +75,8 @@ export function ListQuote(props: Props) {
         ))}
       </Masonry>
 
-      <p className="text-center text-muted-foreground  p-4">
-        --- end of notes ---
+      <p className="text-center text-muted-foreground  py-16">
+        --- end of everything ---
       </p>
     </div>
   )

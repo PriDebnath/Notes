@@ -1,12 +1,9 @@
-
-
-import { QuotePage } from '@/page/quote/quote.page'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, lazyRouteComponent } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/$quoteId')({
-  component: RouteComponent,
+  component: lazyRouteComponent(() =>
+    import('@/page/quote/quote.page').then(mod => ({
+      default: () => <mod.QuotePage mode="edit" />,
+    })),
+  ),
 })
-
-function RouteComponent() {
-  return <QuotePage mode= "edit"/>
-}

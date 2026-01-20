@@ -662,7 +662,8 @@ body {
   }
 
 .font-normal {
-  font-family: normal;
+  /* System / default font stack */
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .font-merienda {

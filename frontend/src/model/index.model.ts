@@ -1,5 +1,7 @@
 import type { TextureKey, Pri_set } from "@/hook/use-background.hook";
 
+// DB DATA MODELS
+
 export interface Quote {
     id?: number | undefined;
     text: string;
@@ -8,11 +10,6 @@ export interface Quote {
     created_at?: Date;
     updated_at?: Date;
 }
-
-export interface QuoteDetails extends Quote {
-    tags?: Tag[]
-}
-
 
 export interface Tag {
     id?: number | undefined;
@@ -26,6 +23,8 @@ export interface QuoteTags {
 }
 
 
+// EXTRA DATA MODELS
+
 export interface QuoteFormData {
     id?: number | undefined;
     text?: string;
@@ -34,5 +33,13 @@ export interface QuoteFormData {
     pri_set?: Pri_set;
 }
 
+export interface QuoteDetails extends Quote {
+    tags?: Tag[]
+}
 
-export type SortOption = "created_at" | "updated_at"
+
+
+
+export type SortOption = "created_at" | "updated_at" | "tags"
+
+export type CardView = "list" | "grid"

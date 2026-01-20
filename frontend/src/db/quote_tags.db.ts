@@ -1,186 +1,176 @@
-import { openDB, STORES } from '@/db/db'
-import type { QuoteDetails, QuoteTags, Tag } from '@/model/index.model'
+import { db } from "@/db/db";
+import { getOrAddTag } from "@/db/tag.db";
+import type { Tag, SortOption } from "@/model/index.model";
 
-const STORE = STORES.QUOTES_TAGS
+export const linkQuoteTag = async (quoteId: number, tagId: number) => {
+    await db.quotes_tags.add({ quoteId, tagId });
+};
 
-/* ===================== QUOTE ↔ TAG (JUNCTION) ===================== */
+export const addTagToQuote = async (quoteId: number, tagName: string) => {
+    return db.transaction("rw", db.tags, db.quotes_tags, async () => {
+        const tag = await getOrAddTag(tagName);
 
-export const getAllQuoteTags = async (): Promise<QuoteTags[]> => {
-  const db = await openDB()
-  const tx = db.transaction(STORE, 'readonly')
-  const store = tx.objectStore(STORE)
+        await db.quotes_tags.add({
+            quoteId,
+            tagId: tag.id!,
+        });
 
-  return new Promise((resolve, reject) => {
-    const req = store.getAll()
-    req.onsuccess = () => resolve(req.result)
-    req.onerror = () => reject('Failed to get quote tags')
-  })
+        return tag;
+    });
+};
+
+/**
+ * Sort do not support here
+ */
+export const getAllQuotesDetailsOld = async () => {
+    return db.transaction(
+        "r",
+        db.quotes,
+        db.quotes_tags,
+        db.tags,
+        async () => {
+            // #1 Query all tables
+            let quotes = await db.quotes.toArray()
+            let tags = await db.tags.toArray()
+            let quote_tags = await db.quotes_tags.toArray()
+
+            // #2 Store tags by their id
+            const tagsById = new Map<number, Tag>(tags.map(t => [t.id!, t])); // eq: 3 → { id: 3, name: "life" }
+
+            // #3 find links
+            const linksByQuoteId = new Map<number, Tag[]>(); // eq: 1 → [{ id: 3, name: "life" }]
+            for (const link of quote_tags) {
+                const tag = tagsById.get(link.tagId);
+                if (!tag) continue;
+
+                if (!linksByQuoteId.has(link.quoteId)) {
+                    linksByQuoteId.set(link.quoteId, []);
+                }
+                linksByQuoteId.get(link.quoteId)!.push(tag);
+            }
+            // #4 return formated data
+            let quotesResult = quotes.map((q) => {
+                return {
+                    ...q,
+                    tags: linksByQuoteId.get(q?.id!) || []
+                }
+            })
+            return quotesResult
+        })
 }
 
-export const addQuoteTag = async (data: QuoteTags): Promise<QuoteTags> => {
-  const db = await openDB()
-  const tx = db.transaction(STORE, 'readwrite')
-  const store = tx.objectStore(STORE)
 
-  const newQuoteTag: QuoteTags = {
-    quoteId: data.quoteId,
-    tagId: data.tagId,
-  }
-  store.put(newQuoteTag)
+export const getAllQuotesDetails = async (sortBy: SortOption = "created_at") => {
+  return db.transaction(
+    "r",
+    db.quotes,
+    db.quotes_tags,
+    db.tags,
+    async () => {
+      // #1 Query all tables with DB-level ordering where possible
+      let quotes =
+        sortBy === "created_at"
+          ? await db.quotes.orderBy("created_at").reverse().toArray()
+          : sortBy === "updated_at"
+          ? await db.quotes.orderBy("updated_at").reverse().toArray()
+          : await db.quotes.toArray()
 
-  return new Promise((resolve, reject) => {
-    tx.oncomplete = () => resolve(data)
-    tx.onerror = () => reject('Failed to add quote tag')
-  })
-}
+      let tags = await db.tags.toArray()
+      let quote_tags = await db.quotes_tags.toArray()
 
-export const updateQuoteTag = async (
-  data: QuoteTags
-): Promise<QuoteTags> => {
-  if (data.id == null) {
-    throw new Error('QuoteTag id required')
-  }
+      // #2 Store tags by their id
+      const tagsById = new Map<number, Tag>(tags.map(t => [t.id!, t])); // eq: 3 → { id: 3, name: "life" }
 
-  const db = await openDB()
-  const tx = db.transaction(STORE, 'readwrite')
-  const store = tx.objectStore(STORE)
+      // #3 find links
+      const linksByQuoteId = new Map<number, Tag[]>(); // eq: 1 → [{ id: 3, name: "life" }]
+      for (const link of quote_tags) {
+        const tag = tagsById.get(link.tagId);
+        if (!tag) continue;
 
-  return new Promise((resolve, reject) => {
-    const req = store.put(data)
-    req.onsuccess = () => resolve(data)
-    req.onerror = () => reject('Failed to update quote tag')
-  })
-}
-
-export const deleteQuoteTag = async (id: number): Promise<void> => {
-  const db = await openDB()
-  const tx = db.transaction(STORE, 'readwrite')
-  const store = tx.objectStore(STORE)
-
-  store.delete(id)
-
-  return new Promise((resolve, reject) => {
-    tx.oncomplete = () => resolve()
-    tx.onerror = () => reject('Failed to delete quote tag')
-  })
-}
-
-export const deleteAllQuoteTags = async (
-  quoteId: number
-): Promise<void> => {
-  const db = await openDB()
-  const tx = db.transaction(STORE, 'readwrite')
-  const store = tx.objectStore(STORE)
-
-  const req = store.index('quoteId').getAll(quoteId)
-
-  req.onsuccess = () => {
-    req.result.forEach((r) => store.delete(r.id))
-  }
-
-  return new Promise((resolve, reject) => {
-    tx.oncomplete = () => resolve()
-    tx.onerror = () => reject('Failed to delete quote tags')
-  })
-}
-
-/* ===================== READ MODELS ===================== */
-
-export const getQuoteDetails = async (
-  quoteId: number
-): Promise<QuoteDetails | null> => {
-  const db = await openDB()
-
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(
-      [STORES.QUOTES, STORES.TAGS, STORES.QUOTES_TAGS],
-      'readonly'
-    )
-
-    const quotesStore = tx.objectStore(STORES.QUOTES)
-    const tagsStore = tx.objectStore(STORES.TAGS)
-    const junctionStore = tx.objectStore(STORES.QUOTES_TAGS)
-
-    const quoteReq = quotesStore.get(quoteId)
-
-    quoteReq.onsuccess = async () => {
-      const quote = quoteReq.result
-      if (!quote) {
-        resolve(null)
-        return
-      }
-
-      const linkReq = junctionStore
-        .index('quoteId')
-        .getAll(quoteId)
-
-      linkReq.onsuccess = async () => {
-        const tags: Tag[] = []
-
-        for (const link of linkReq.result) {
-          const tagReq = tagsStore.get(link.tagId)
-          const tag = await new Promise<Tag | null>((res) => {
-            tagReq.onsuccess = () => res(tagReq.result ?? null)
-          })
-          if (tag) tags.push(tag)
+        if (!linksByQuoteId.has(link.quoteId)) {
+          linksByQuoteId.set(link.quoteId, []);
         }
-
-        resolve({
-          ...quote,
-          tags,
-        })
+        linksByQuoteId.get(link.quoteId)!.push(tag);
       }
-    }
-
-    tx.onerror = () => reject('Failed to load quote details')
-  })
-}
-
-export const getAllQuotesDetails = async (): Promise<QuoteDetails[]> => {
-  const db = await openDB()
-
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(
-      [STORES.QUOTES, STORES.TAGS, STORES.QUOTES_TAGS],
-      'readonly'
-    )
-
-    const quotesStore = tx.objectStore(STORES.QUOTES)
-    const tagsStore = tx.objectStore(STORES.TAGS)
-    const junctionStore = tx.objectStore(STORES.QUOTES_TAGS)
-
-    const quotesReq = quotesStore.getAll()
-
-    quotesReq.onsuccess = async () => {
-      const result: QuoteDetails[] = []
-
-      for (const quote of quotesReq.result) {
-        const links = await new Promise<QuoteTags[]>((res) => {
-          const r = junctionStore
-            .index('quoteId')
-            .getAll(quote.id)
-          r.onsuccess = () => res(r.result)
-        })
-
-        const tags: Tag[] = []
-
-        for (const l of links) {
-          const tag = await new Promise<Tag | null>((res) => {
-            const r = tagsStore.get(l.tagId)
-            r.onsuccess = () => res(r.result ?? null)
-          })
-          if (tag) tags.push(tag)
+      // #4 join tags
+      let quotesResult = quotes.map((q) => {
+        return {
+          ...q,
+          tags: linksByQuoteId.get(q?.id!) || []
         }
+      })
 
-        result.push({
-          ...quote,
-          tags,
-        })
+      // #5 for tag-based sort, sort in JS (needs joined data)
+      if (sortBy === "tags") {
+        const compareByTags = (aTags?: Tag[], bTags?: Tag[]) => {
+          const aName = aTags && aTags.length > 0 ? aTags[0].name.toLowerCase() : "";
+          const bName = bTags && bTags.length > 0 ? bTags[0].name.toLowerCase() : "";
+          if (aName < bName) return -1;
+          if (aName > bName) return 1;
+          return 0;
+        };
+
+        quotesResult.sort((a, b) => compareByTags(a.tags as any, b.tags as any));
       }
 
-      resolve(result)
-    }
-
-    tx.onerror = () => reject('Failed to load quotes details')
-  })
+      return quotesResult
+    })
 }
+
+
+export const getQuoteDetails = async (quoteId: number) => {
+  return db.transaction("r", db.quotes, db.quotes_tags, db.tags, async () => {
+    const quote = await db.quotes.get(quoteId);
+    if (!quote) return;
+
+    const links = await db.quotes_tags
+      .where("quoteId")
+      .equals(quoteId)
+      .toArray();
+
+    const tagIds = links.map(l => l.tagId);
+
+    const tags =
+      tagIds.length === 0
+        ? []
+        : await db.tags.where("id").anyOf(tagIds).toArray();
+
+    return { ...quote, tags };
+  });
+};
+
+
+export const deleteQuoteWithLinks = async (quoteId: number) => {
+  return db.transaction(
+    "rw",
+    db.quotes,
+    db.quotes_tags,
+    async () => {
+
+      // 1️⃣ delete all links for this quote
+      await db.quotes_tags
+        .where("quoteId")
+        .equals(quoteId)
+        .delete();
+
+      // 2️⃣ delete the quote itself
+      await db.quotes.delete(quoteId);
+    }
+  );
+};
+
+
+export const deleteQuoteTagLinks = async (quoteId: number) => {
+  return db.transaction(
+    "rw",
+    db.quotes_tags,
+    async () => {
+
+      // 1️⃣ delete all links for this quote
+      await db.quotes_tags
+        .where("quoteId")
+        .equals(quoteId)
+        .delete();
+    }
+  );
+};

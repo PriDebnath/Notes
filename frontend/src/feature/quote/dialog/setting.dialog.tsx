@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -15,31 +16,21 @@ import {
   SelectContent,
   SelectTrigger,
 } from "@/components/ui/select"
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { capitalize } from "@/helper/capitalize";
 import { Separator } from "@/components/ui/separator";
 import { useThemeStore } from "@/store/use-theme.store";
 import { useFontStore, fonts, type Font } from "@/store/use-font.store";
 import { useColorThemeStore } from "@/store/use-color-theme.store";
-import type { QuoteFormData, SortOption } from "@/model/index.model";
+import type { CardView, QuoteFormData, SortOption } from "@/model/index.model";
+import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
 import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
 import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
+import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings } from "lucide-react";
+import { useLastDeployed } from "@/hook/use-last-deployed";
 
-interface SortOptions { key: SortOption, label: string }
-
-const sortOptions: SortOptions[] = [
-  {
-    key: "created_at",
-    label: "Created at",
-  },
-  {
-    key: "updated_at",
-    label: "Updated at",
-  },
-]
 interface Props {
 
 }
@@ -50,8 +41,9 @@ export function SettingComponent(props: Props) {
   const { colorTheme, setColorTheme } = useColorThemeStore()
   const { info, setInfo } = useShowCardInfo()
   const { font, setFont } = useFontStore()
-
-  const [sortBy, setSortBy] = useState<SortOptions["key"]>("created_at")
+  const { sortBy, setSortBy } = useSortStore()
+  const { view, setView } = useCardViewStore()
+  const lastDeployed = useLastDeployed()
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -65,7 +57,7 @@ export function SettingComponent(props: Props) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="p-4  overflow-y-auto" aria-describedby="Settings">
+      <DialogContent className="p-4 gap-2  overflow-auto" aria-describedby="Settings">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>
@@ -187,18 +179,46 @@ export function SettingComponent(props: Props) {
               </SelectContent>
             </Select>
           </div>
-
+          <div className="flex justify-between items-center ">
+            View
+            <Select value={view} onValueChange={(value: CardView) => setView(value)}>
+              <SelectTrigger className="">
+                <SelectValue placeholder="View" />
+              </SelectTrigger>
+              <SelectContent>
+                {
+                  cardViewOptions.map((pri) => {
+                    const yo = capitalize(pri.key)
+                    return (
+                      <SelectItem key={pri.key} value={pri.key} className="">
+                        {yo.replaceAll('_', " ")}
+                      </SelectItem>
+                    )
+                  })
+                }
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <Separator className="bg-border" />
 
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-xs">Other</p>
+
           <div className="flex justify-between text-center ">
-            Made with 💙 by Pritam
+            <p className="text-muted-foreground text-xs">
+              Last updated
+            </p>
+            <p className="text-muted-foreground text-xs">
+              {lastDeployed}
+            </p>
           </div>
         </div>
-
+        <Separator className="bg-border" />
+        <div className=" w-full text-center  text-sm">
+          Made with 💙 by Pritam Debnath
+        </div>
       </DialogContent>
     </Dialog>
   );

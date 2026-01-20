@@ -1,9 +1,18 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
-export type Font = "font-merienda" | "font-gabriela" | "font-playwrite-de-grund"
+export type Font =
+  | "font-normal" // system / default font
+  | "font-merienda"
+  | "font-gabriela"
+  | "font-playwrite-de-grund"
 
-export const fonts: Font[] = ["font-merienda", "font-gabriela", "font-playwrite-de-grund"]
+export const fonts: Font[] = [
+  "font-normal",
+  "font-merienda",
+  "font-gabriela",
+  "font-playwrite-de-grund",
+]
 
 type Store = {
   font: Font;
@@ -13,6 +22,7 @@ type Store = {
 export const useFontStore = create<Store>()(
   persist(
     (set) => ({
+      // default to system / app default font
       font: "font-playwrite-de-grund",
       setFont: (font) => set({ font })
     }),

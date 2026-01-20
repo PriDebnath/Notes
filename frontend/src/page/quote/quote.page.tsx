@@ -12,7 +12,7 @@ import { addOrGetTag } from '@/legacy-indexDB-db/tag.db'
 import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
 import Tiptap from '@/components/common/tiptap-customized'
 import {ShareBackground} from "@/feature/quote/dialog/share.dialog"
-import { useGetQuoteDetails } from '@/hook/use-get-quote-details.hook'
+import { useGetQuoteDetails } from '@/api-hook/use-get-quote-details.hook'
 import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"

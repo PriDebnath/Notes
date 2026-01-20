@@ -20,7 +20,7 @@ import { TagFilter } from '@/feature/quote/popover/filter.popover'
 import type { Quote, QuoteFormData, Tag } from '@/model/index.model'
 import DeleteQuoteDialog from '@/feature/quote/dialog/delete.dialog'
 import { SettingComponent } from '@/feature/quote/dialog/setting.dialog'
-import { useGetAllQuoteDetails } from '@/hook/use-get-all-quote-details.hook'
+import { useGetAllQuoteDetails } from '@/api-hook/use-get-all-quote-details.hook'
 
 export function QuoteListPage() {
   const {

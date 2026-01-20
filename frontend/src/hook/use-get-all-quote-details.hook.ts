@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getAllQuotesDetails, getQuoteDetails } from "@/db/quote_tags.db"
+import { getAllQuotesDetails } from "@/db/quote_tags.db"
 
 export const useGetAllQuoteDetails = () => {
     const { data, isLoading, error, refetch} = useQuery({

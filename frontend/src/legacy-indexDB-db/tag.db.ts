@@ -1,4 +1,4 @@
-import { openDB, STORES } from "@/db/db";
+import { openDB, STORES } from "./db";
 import type { Tag } from "@/model/index.model";
 
 const STORE_NAME = STORES.TAGS;

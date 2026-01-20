@@ -1,25 +1,24 @@
 
 
 import { Route } from '@/routes/$quoteId'
-import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Button } from '@/components/ui/button'
+import { useBlocker } from "@tanstack/react-router"
 import TagField from "@/feature/quote/form-field/tag"
-import { Separator } from "@/components/ui/separator"
+import {  addQuote, updateQuote } from '@/db/quote.db'
 import { AnimatePresence, motion } from 'framer-motion'
+import { addOrGetTag } from '@/legacy-indexDB-db/tag.db'
+import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
 import Tiptap from '@/components/common/tiptap-customized'
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import {ShareBackground} from "@/feature/quote/dialog/share.dialog"
 import { useGetQuoteDetails } from '@/hook/use-get-quote-details.hook'
+import { addTagToQuote, deleteQuoteWithLinks } from '@/db/quote_tags.db'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
 import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
-import { addQuoteTag, deleteAllQuoteTags, getAllQuotesDetails } from '@/db/quote_tags.db'
-import { getAllQuotes, addQuote, updateQuote, deleteQuote, getAllQuote } from '@/db/quote.db'
-import { addOrGetTag } from '@/db/tag.db'
-import { useBlocker } from "@tanstack/react-router"
-import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
-import {ShareBackground} from "@/feature/quote/dialog/share.dialog"
-import { toPng } from "html-to-image"
+
 
 interface Props {
   mode: "add" | "edit";
@@ -123,14 +122,11 @@ const noteRef = useRef<HTMLDivElement>(null)
     // console.log({ tags })
 
     // Delete all existing tags for this quote
-    await deleteAllQuoteTags(quoteId!)
+    await deleteQuoteWithLinks(quoteId!)
 
     // Add new tags for this quote
     for (const tag of tags) {
-      await addQuoteTag({
-        quoteId: quoteId!,
-        tagId: tag.id!
-      })
+      await addTagToQuote( quoteId!, tag.name!)
     }
     navigate({
       to: '/'

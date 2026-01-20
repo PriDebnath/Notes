@@ -1,70 +1,51 @@
-import { useEffect, useState } from 'react'
-import { Link } from '@tanstack/react-router'
+
 import {
   PlusIcon,
   Lightbulb,
   LightbulbOff,
   SearchIcon,
 } from 'lucide-react'
-import { motion } from 'framer-motion'
-
-import { Button } from '@/components/ui/button'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group'
-
+import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { Link } from '@tanstack/react-router'
+import { Button } from '@/components/ui/button'
 import { ListQuote } from '@/feature/quote/list.quote'
-import DeleteQuoteDialog from '@/feature/quote/dialog/delete.dialog'
-import {SettingComponent} from '@/feature/quote/dialog/setting.dialog'
-
+import { deleteQuoteWithLinks } from '@/db/quote_tags.db'
+import { TagFilter } from '@/feature/quote/popover/filter.popover'
 import type { Quote, QuoteFormData, Tag } from '@/model/index.model'
-
-import { addOrGetTag } from '@/db/tag.db'
-import { addQuote, updateQuote, deleteQuote } from '@/db/quote.db'
-import {
-  addQuoteTag,
-  deleteAllQuoteTags,
-} from '@/db/quote_tags.db'
-
+import DeleteQuoteDialog from '@/feature/quote/dialog/delete.dialog'
+import { SettingComponent } from '@/feature/quote/dialog/setting.dialog'
 import { useGetAllQuoteDetails } from '@/hook/use-get-all-quote-details.hook'
-import {TagFilter} from '../../feature/quote/popover/filter.popover'
 
 export function QuoteListPage() {
-  
-  /* ------------------ data ------------------ */
-
   const {
     data: quotesStored,
     isLoading,
     error,
     refetch,
   } = useGetAllQuoteDetails()
- const allTags =  [...new Set(quotesStored?.flatMap(q =>
-            q.tags?.map(t => t.name) ?? []
-          ))]
 
-  const [quotes, setQuotes] = useState<Quote[]>([])
   const [search, setSearch] = useState('')
-  const [activeTags, setActiveTags] = useState<string[]>([])
-
-  const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
+  const [quotes, setQuotes] = useState<Quote[]>([])
   const [openDelete, setOpenDelete] = useState(false)
-
-  /* ------------------ sync db → local ------------------ */
+  const [activeTags, setActiveTags] = useState<string[]>([])
+  const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
+  const allTags = [
+    ...new Set(quotesStored?.flatMap(q => q.tags?.map(t => t.name) ?? []
+    ))]
 
   useEffect(() => {
     setQuotes(quotesStored ?? [])
   }, [quotesStored])
 
-  /* ------------------ search + tag filter ------------------ */
-
   useEffect(() => {
     if (!quotesStored) return
-
     let result = quotesStored
-
     // 🔍 search
     if (search.trim()) {
       const term = search.toLowerCase()
@@ -83,7 +64,6 @@ export function QuoteListPage() {
     setQuotes(result)
   }, [quotesStored, search, activeTags])
 
-  /* ------------------ handlers ------------------ */
 
   const openDeleteDialog = (quote: Quote) => {
     setSelectedQuote(quote)
@@ -92,7 +72,7 @@ export function QuoteListPage() {
 
   const handleDelete = async (quote: QuoteFormData) => {
     if (!quote.id) return
-    await deleteQuote(quote.id)
+    await deleteQuoteWithLinks(quote.id)
     setOpenDelete(false)
     refetch()
   }
@@ -105,7 +85,6 @@ export function QuoteListPage() {
     )
   }
 
-  /* ------------------ error ------------------ */
 
   if (error) {
     return (
@@ -115,13 +94,11 @@ export function QuoteListPage() {
     )
   }
 
-  /* ------------------ ui ------------------ */
-
   return (
     <div className=" flex flex-col">
       {/* Sticky Header */}
       <div
-          className="gap-2 p-2 flex flex-col sticky top-0 z-20 bg-background rounded-b"
+        className="gap-2 p-2 flex flex-col sticky top-0 z-20 bg-background rounded-b"
       >
         <div className="flex justify-between">
           <TagFilter
@@ -129,7 +106,7 @@ export function QuoteListPage() {
             value={activeTags}
             onChange={setActiveTags}
           />
-          <SettingComponent/>
+          <SettingComponent />
         </div>
         {/* Search */}
         <InputGroup>
@@ -142,7 +119,7 @@ export function QuoteListPage() {
             <SearchIcon />
           </InputGroupAddon>
         </InputGroup>
-      
+
       </div>
 
       {/* Content */}
@@ -150,7 +127,7 @@ export function QuoteListPage() {
         <ListQuote
           loading={isLoading}
           quotes={quotes}
-          onEdit={() => {}}
+          onEdit={() => { }}
           onDelete={openDeleteDialog}
         />
       </main>

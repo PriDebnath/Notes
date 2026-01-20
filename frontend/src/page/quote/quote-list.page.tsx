@@ -36,14 +36,9 @@ export function QuoteListPage() {
   const [openDelete, setOpenDelete] = useState(false)
   const [activeTags, setActiveTags] = useState<string[]>([])
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
-  const { sortBy } = useSortStore()
   const allTags = [
     ...new Set(quotesStored?.flatMap(q => q.tags?.map(t => t.name) ?? []
     ))]
-
-  useEffect(() => {
-    setQuotes(quotesStored ?? [])
-  }, [quotesStored])
 
   useEffect(() => {
     if (!quotesStored) return
@@ -63,36 +58,8 @@ export function QuoteListPage() {
       )
     }
 
-    // ↕️ sort
-    const compareByDate = (a?: Date | string, b?: Date | string) => {
-      const ta = a ? new Date(a).getTime() : 0
-      const tb = b ? new Date(b).getTime() : 0
-      return tb - ta
-    }
-
-    const compareByTags = (aTags?: Tag[], bTags?: Tag[]) => {
-      const aName = aTags && aTags.length > 0 ? aTags[0].name.toLowerCase() : ''
-      const bName = bTags && bTags.length > 0 ? bTags[0].name.toLowerCase() : ''
-      if (aName < bName) return -1
-      if (aName > bName) return 1
-      return 0
-    }
-
-    result.sort((a, b) => {
-      if (sortBy === 'created_at') {
-        return compareByDate(a.created_at as any, b.created_at as any)
-      }
-      if (sortBy === 'updated_at') {
-        return compareByDate(a.updated_at as any, b.updated_at as any)
-      }
-      if (sortBy === 'tags') {
-        return compareByTags(a.tags as any, b.tags as any)
-      }
-      return 0
-    })
-
     setQuotes(result)
-  }, [quotesStored, search, activeTags, sortBy])
+  }, [quotesStored, search, activeTags])
 
 
   const openDeleteDialog = (quote: Quote) => {

@@ -98,3 +98,19 @@ export const deleteQuoteWithLinks = async (quoteId: number) => {
     }
   );
 };
+
+
+export const deleteQuoteTagLinks = async (quoteId: number) => {
+  return db.transaction(
+    "rw",
+    db.quotes_tags,
+    async () => {
+
+      // 1️⃣ delete all links for this quote
+      await db.quotes_tags
+        .where("quoteId")
+        .equals(quoteId)
+        .delete();
+    }
+  );
+};

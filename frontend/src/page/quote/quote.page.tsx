@@ -13,7 +13,7 @@ import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
 import Tiptap from '@/components/common/tiptap-customized'
 import {ShareBackground} from "@/feature/quote/dialog/share.dialog"
 import { useGetQuoteDetails } from '@/hook/use-get-quote-details.hook'
-import { addTagToQuote, deleteQuoteWithLinks } from '@/db/quote_tags.db'
+import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
 import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
@@ -122,7 +122,7 @@ const noteRef = useRef<HTMLDivElement>(null)
     // console.log({ tags })
 
     // Delete all existing tags for this quote
-    await deleteQuoteWithLinks(quoteId!)
+    await deleteQuoteTagLinks(quoteId!)
 
     // Add new tags for this quote
     for (const tag of tags) {

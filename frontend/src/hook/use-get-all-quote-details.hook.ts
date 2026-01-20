@@ -3,7 +3,7 @@ import { getAllQuotesDetails } from "@/db/quote_tags.db"
 
 export const useGetAllQuoteDetails = () => {
     const { data, isLoading, error, refetch} = useQuery({
-    queryKey: ['all-quote-dtails'],
+    queryKey: ['all-quotebb-dtails'],
     queryFn: () => getAllQuotesDetails(),
   })
   console.log({data, error})

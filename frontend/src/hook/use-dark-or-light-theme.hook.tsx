@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react"
-import { useLocalStorage } from "@/hook/use-localstroage.hook"
 
 export type ThemeMode = "system" | "light" | "dark"
 
 export const themeModes = ["system" , "light" , "dark"]
 
+import { useEffect } from "react"
+import { useThemeStore } from "@/store/use-theme.store"
+
 const getSystemTheme = () =>
   window.matchMedia("(prefers-color-scheme: dark)").matches
 
-export const useTheme = () => {
-      const  [ stroredTheme, setStroredTheme ]= useLocalStorage<ThemeMode>( 'app_appearance', "system")
-
-  const [theme, setTheme] = useState<ThemeMode>(stroredTheme as ThemeMode)
-  const [isDark, setIsDark] = useState(false)
+export const useApplyTheme = () => {
+  const { theme, setIsDark } = useThemeStore()
 
   /* Resolve actual theme */
   useEffect(() => {
@@ -26,30 +24,23 @@ export const useTheme = () => {
         : getSystemTheme()
 
     setIsDark(resolvedDark)
-    setStroredTheme(theme)
     document.documentElement.classList.toggle("dark", resolvedDark)
   }, [theme])
 
-  /* Listen to OS changes (only when system mode) */
+  /* Listen to OS changes (system mode only) */
   useEffect(() => {
     if (typeof window === "undefined") return
+
+    if (theme !== "system") return
 
     const media = window.matchMedia("(prefers-color-scheme: dark)")
 
     const handler = () => {
-      if (theme === "system") {
-        document.documentElement.classList.toggle("dark", media.matches)
-        setIsDark(media.matches)
-      }
+      setIsDark(media.matches)
+      document.documentElement.classList.toggle("dark", media.matches)
     }
 
     media.addEventListener("change", handler)
     return () => media.removeEventListener("change", handler)
   }, [theme])
-
-  return {
-    theme,        // "system" | "light" | "dark"
-    setTheme,
-    isDark,       // resolved boolean (useful)
-  }
 }

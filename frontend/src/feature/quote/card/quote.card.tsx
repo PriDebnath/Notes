@@ -10,7 +10,7 @@ import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCi
 import { useState, useRef } from "react";
 import { toPng } from "html-to-image"
 import { ListTags } from "@/feature/quote/list.tags";
-import { useShowCardInfo } from "@/hook/use-show-card-info.hook";
+import { useShowCardInfo } from "@/store/use-card-info.store";
 
 interface Props {
     quote: QuoteDetails;
@@ -23,11 +23,12 @@ const QuoteCard = (props: Props) => {
     const [copying, setCopying] = useState(false)
     const [downloading, setDownloading] = useState(false)
     const { buildStyle } = useBackground()
-    const { info: infoType, stroredCardInfoTyle } = useShowCardInfo()
+    const { info: infoType } = useShowCardInfo()
 
     const noteRef = useRef<HTMLDivElement>(null)
 
     const cardStyle = buildStyle(quote.texture!, quote.pri_set!)
+  
     const exportAsImage = async () => {
         if (!noteRef.current) return
         setDownloading(true)

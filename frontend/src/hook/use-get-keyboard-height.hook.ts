@@ -10,7 +10,7 @@ export const useGetKeyBoardHeight = () => {
     
     function updateHeight(){
       const innerHeight = window.innerHeight
-      const keyBoardHeightNew = innerHeight - vv.height - vv.offsetTop
+      const keyBoardHeightNew = innerHeight - vv?.height! - vv?.offsetTop!
       const keyBoardHeightNormalized =  keyBoardHeightNew > 0 ? keyBoardHeightNew : 0
       setKeyBoardHeight(keyBoardHeightNormalized)
     }

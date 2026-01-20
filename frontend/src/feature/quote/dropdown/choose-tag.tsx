@@ -12,10 +12,10 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { PlusIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { PlusIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 interface Props {
     onChoose: (tag: string) => void

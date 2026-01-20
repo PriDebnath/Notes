@@ -1,6 +1,6 @@
+import { motion } from "framer-motion"
 import Masonry from "react-masonry-css"
 import type { Quote } from "@/model/index.model"
-import { motion } from "framer-motion"
 import QuoteCard from "@/feature/quote/card/quote.card"
 import QuoteSkeleton from "@/feature/quote/card/quote-skeleton.card"
 

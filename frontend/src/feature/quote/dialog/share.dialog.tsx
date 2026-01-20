@@ -8,18 +8,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import type { QuoteFormData } from "@/model/index.model";
-import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy,Images, LoaderCircle, Save, Share } from "lucide-react";
-import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
-import { sanitizeHTML } from "@/helper/sanitize-html";
-import { htmlToPlainText } from "@/helper/html-to-text";
 import { cn } from "@/lib/utils";
-import { ListTags } from "@/feature/quote/list.tags";
 import { toPng } from "html-to-image"
+import { useRef, useState } from "react";
 import { ResizableBox } from "react-resizable";
+import { Button } from "@/components/ui/button";
+import { ListTags } from "@/feature/quote/list.tags";
+import { sanitizeHTML } from "@/helper/sanitize-html";
 import { Separator } from "@/components/ui/separator";
+import { htmlToPlainText } from "@/helper/html-to-text";
+import type { QuoteFormData } from "@/model/index.model";
+import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
+import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy,Images, LoaderCircle, Save, Share } from "lucide-react";
 
 interface Props {
   quoteFormData: QuoteFormData

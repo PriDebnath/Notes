@@ -1,13 +1,13 @@
-import { useMemo, useState } from "react"
-import { Filter } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
+import { Filter } from "lucide-react"
+import { useMemo, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 
 interface TagFilterProps {
   tags: string[]

@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import StarterKit from '@tiptap/starter-kit'
 import { BatteryFull, List } from 'lucide-react'
+import useBackground from "@/hook/use-background.hook";
 import { useEditor, EditorContent } from '@tiptap/react'
 import type { QuoteFormData } from "@/model/index.model";
 import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus'
 import TiptapToolbar from '@/components/common/tiptap-toolbar'
 import { useGetKeyBoardHeight } from '@/hook/use-get-keyboard-height.hook'
-import useBackground from "@/hook/use-background.hook";
+import { cn } from "@/lib/utils";
 
 interface Props {
   value?: string;
@@ -15,10 +16,10 @@ interface Props {
 }
 
 const Tiptap = (props: Props) => {
-  const { value,quoteFormData, onValueUpdate } = props
-      const { buildStyleString } = useBackground()
-      const styleString = buildStyleString(quoteFormData?.texture!, quoteFormData?.pri_set!)
-  
+  const { value, quoteFormData, onValueUpdate } = props
+  const { buildStyleString } = useBackground()
+  const styleString = buildStyleString(quoteFormData?.texture!, quoteFormData?.pri_set!)
+
   const editor = useEditor({
     extensions: [StarterKit], // define your extension array
     content: value,
@@ -39,18 +40,18 @@ const Tiptap = (props: Props) => {
 
   //console.log({ k: keyBoardHeight })
   return (
-    <div className="
-                tiptap
-                prose
-                prose-foreground
-                
-removed-prose-sm  
-removed-sm:prose-base 
-                removed-lg:prose-lg
-                removed-xl:prose-2xl
-transition-transform duration-300 ease-out
-            ">   {/* IMPORTANT */}
-      <EditorContent editor={editor}  />
+    <div className={cn(
+      "tiptap",
+      "prose",
+      "prose-foreground",
+      "removed-prose-sm ",
+      "removed-sm:prose-base ",
+      "  removed-lg:prose-lg",
+      "  removed-xl:prose-2xl",
+      "transition-transform duration-300 ease-out",
+    )}
+    >   {/* IMPORTANT */}
+      <EditorContent editor={editor} />
       {/*
       <div className="
           fixed 
@@ -69,15 +70,15 @@ transition-transform duration-300 ease-out
       >
       */}
       <motion.div
-        className="
-    fixed 
-    z-50
-    bottom-0
-    left-0
-    right-0
-    border
-    rounded-t-xl
-  "
+        className={cn(
+          "fixed",
+          "  z-50",
+          "   bottom-0",
+          " left-0",
+          "   right-0",
+          "  border",
+          "  rounded-t-xl"
+        )}
         initial={{ scale: 0.8, }}
         animate={{
           y: -keyBoardHeight,

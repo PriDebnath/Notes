@@ -1,16 +1,16 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { sanitizeHTML } from "@/helper/sanitize-html";
-import { htmlToPlainText } from "@/helper/html-to-text";
-import useBackground from "@/hook/use-background.hook";
 import { cn } from "@/lib/utils";
-import type { Quote, QuoteDetails } from "@/model/index.model";
-import { Link } from "@tanstack/react-router";
-import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCircle } from "lucide-react";
-import { useState, useRef } from "react";
 import { toPng } from "html-to-image"
+import { useState, useRef } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import { ListTags } from "@/feature/quote/list.tags";
+import { sanitizeHTML } from "@/helper/sanitize-html";
+import useBackground from "@/hook/use-background.hook";
+import { htmlToPlainText } from "@/helper/html-to-text";
 import { useShowCardInfo } from "@/store/use-card-info.store";
+import type { Quote, QuoteDetails } from "@/model/index.model";
+import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCircle } from "lucide-react";
 
 interface Props {
     quote: QuoteDetails;

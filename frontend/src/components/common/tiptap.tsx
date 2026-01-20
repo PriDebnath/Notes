@@ -1,3 +1,4 @@
+// @Not in use
 // src/Tiptap.tsx
 import { useEditor, EditorContent } from '@tiptap/react'
 import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus'

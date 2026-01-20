@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
-import { useLocalStorage } from "@/hook/use-localstroage.hook"
 import { create } from "zustand"
+import { useEffect, useState } from "react"
 import { persist } from "zustand/middleware"
 import { useFontStore, fonts } from "@/store/use-font.store"
 

@@ -8,9 +8,6 @@ import {
   DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import type { QuoteFormData, SortOption } from "@/model/index.model";
 import {
   Select,
   SelectItem,
@@ -19,14 +16,17 @@ import {
   SelectTrigger,
 } from "@/components/ui/select"
 import { useState } from "react";
-import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
-import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings } from "lucide-react";
-import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
-import { useColorThemeStore} from "@/store/use-color-theme.store";
-import { useThemeStore} from "@/store/use-theme.store";
-import { useFontStore, fonts} from "@/store/use-font.store";
-import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
+import { Button } from "@/components/ui/button";
 import { capitalize } from "@/helper/capitalize";
+import { Separator } from "@/components/ui/separator";
+import { useThemeStore } from "@/store/use-theme.store";
+import { useFontStore, fonts, type Font } from "@/store/use-font.store";
+import { useColorThemeStore } from "@/store/use-color-theme.store";
+import type { QuoteFormData, SortOption } from "@/model/index.model";
+import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
+import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
+import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
+import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings } from "lucide-react";
 
 interface SortOptions { key: SortOption, label: string }
 
@@ -45,9 +45,9 @@ interface Props {
 }
 
 export function SettingComponent(props: Props) {
-const { theme, setTheme, isDark } = useThemeStore()
-const [open, setOpen] = useState(false)
-const { colorTheme, setColorTheme } = useColorThemeStore()
+  const { theme, setTheme, isDark } = useThemeStore()
+  const [open, setOpen] = useState(false)
+  const { colorTheme, setColorTheme } = useColorThemeStore()
   const { info, setInfo } = useShowCardInfo()
   const { font, setFont } = useFontStore()
 
@@ -77,7 +77,7 @@ const { colorTheme, setColorTheme } = useColorThemeStore()
           <p className="text-muted-foreground text-xs">App Style</p>
           <div className="flex justify-between items-center ">
             Appearance
-            <Select value={theme} onValueChange={(value) => setTheme(value as ThemeMode)}>
+            <Select value={theme} onValueChange={(value: ThemeMode) => setTheme(value)}>
               <SelectTrigger className="">
                 <SelectValue placeholder="Appearance" />
               </SelectTrigger>
@@ -99,7 +99,7 @@ const { colorTheme, setColorTheme } = useColorThemeStore()
             Color Theme
             <Select
               value={colorTheme}
-              onValueChange={(value) => setColorTheme(value as ColorTheme)}>
+              onValueChange={(value: ColorTheme) => setColorTheme(value)}>
               <SelectTrigger className="">
                 <SelectValue placeholder="Color Theme" className="text-capitalize capitalize" />
               </SelectTrigger>
@@ -121,7 +121,7 @@ const { colorTheme, setColorTheme } = useColorThemeStore()
           </div>
           <div className="flex justify-between items-center ">
             Font
-            <Select value={font} onValueChange={(value) => setFont(value )}>
+            <Select value={font} onValueChange={(value: Font) => setFont(value)}>
               <SelectTrigger className="">
                 <SelectValue placeholder="Font" />
               </SelectTrigger>
@@ -149,7 +149,7 @@ const { colorTheme, setColorTheme } = useColorThemeStore()
           <p className="text-muted-foreground text-xs">Card Style</p>
           <div className="flex justify-between items-center ">
             Show Info
-            <Select value={info} onValueChange={(value) => setInfo(value as ShowInfo)}>
+            <Select value={info} onValueChange={(value: ShowInfo) => setInfo(value)}>
               <SelectTrigger className="">
                 <SelectValue placeholder="Show Info" />
               </SelectTrigger>
@@ -167,7 +167,7 @@ const { colorTheme, setColorTheme } = useColorThemeStore()
               </SelectContent>
             </Select>
           </div>
-                    <div className="flex justify-between items-center ">
+          <div className="flex justify-between items-center ">
             Sort by
             <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
               <SelectTrigger className="">
@@ -187,7 +187,7 @@ const { colorTheme, setColorTheme } = useColorThemeStore()
               </SelectContent>
             </Select>
           </div>
-          
+
         </div>
 
         <Separator className="bg-border" />

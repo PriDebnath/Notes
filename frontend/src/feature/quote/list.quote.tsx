@@ -76,7 +76,7 @@ export function ListQuote(props: Props) {
       </Masonry>
 
       <p className="text-center text-muted-foreground  p-4">
-        --- end of notes ---
+        --- end of everything ---
       </p>
     </div>
   )

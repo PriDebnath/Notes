@@ -1,90 +1,33 @@
-/* # THINGS TO REMEMBER
-* Every IndexedDB schema change = DB_VERSION++
-* Schema changes include:
-* - new object store
-* - new index
-* - keyPath change
-*/
-const DB_NAME = 'quotes_keeper_db_by_pri';
-const DB_VERSION = 7
+import type { Quote, QuoteTags, Tag } from "@/model/index.model";
+import Dexie, { type Table } from "dexie";
 
-export const STORES = {
-  QUOTES: 'quotes',
-  TAGS: 'tags',
-  QUOTES_TAGS: 'quotes_tags', // many to many relationship
-} as const
+/**
+ * Doc
+ * ---
+| IndexedDB                    | Dexie        |
+| ---------------------------- | ------------ |
+| `keyPath: id, autoIncrement` | `++id`       |
+| index                        | `field`      |
+| unique index                 | `&field`     |
+| compound index               | `&[a+b]`     |
+| DB_VERSION                   | `version(n)` |
 
+ */
+export class DB extends Dexie {
+  quotes!: Table<Quote, number>;
+  tags!: Table<Tag, number>;
+  quotes_tags!: Table<QuoteTags, number>;
 
-const createQuotesStore = (db: IDBDatabase) => {
-  if (!db.objectStoreNames.contains(STORES.QUOTES)) {
-    db.createObjectStore(STORES.QUOTES, {
-      keyPath: 'id',
-      autoIncrement: true,
-    })
+  constructor() {
+    super("db_by_pri");
+
+    /* version = DB_VERSION */
+    this.version(1).stores({
+      quotes: "++id, text, texture, pri_set, created_at, updated_at",
+      tags: "++id, &name", 
+      quotes_tags: "++id, quoteId, tagId, &[quoteId+tagId]",       
+    });
   }
 }
 
-const createTagsStore = (db: IDBDatabase) => {
-  if (!db.objectStoreNames.contains(STORES.TAGS)) {
-    const store = db.createObjectStore(STORES.TAGS, {
-      keyPath: 'id',
-      autoIncrement: true,
-    })
-
-    // tag name must be unique
-    store.createIndex('name', 'name', { unique: true })
-  }
-}
-
-const createQuotesTagsStore = (db: IDBDatabase) => {
-  if (!db.objectStoreNames.contains(STORES.QUOTES_TAGS)) {
-    const store = db.createObjectStore(STORES.QUOTES_TAGS, {
-      keyPath: 'id',
-      autoIncrement: true,
-    })
-
-    store.createIndex('quoteId', 'quoteId')
-    store.createIndex('tagId', 'tagId')
-
-    // prevent duplicate links
-    store.createIndex(
-      'quoteId_tagId',
-      ['quoteId', 'tagId'],
-      { unique: true }
-    )
-  }
-}
-
-/* ===================== DB OPEN ===================== */
-
-export const openDB = (): Promise<IDBDatabase> => {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION)
-
-    request.onupgradeneeded = () => {
-      const db = request.result
-
-      // delete all stores(@TODO: should not use in production, plan migration)
-      deleteStores(db) 
-
-      createQuotesStore(db)
-      createTagsStore(db)
-      createQuotesTagsStore(db)
-    }
-
-    request.onerror = () => reject('Failed to open IndexedDB')
-    request.onsuccess = () => resolve(request.result)
-  })
-}
-
-const deleteStores = (db: IDBDatabase) => {
-  if (db.objectStoreNames.contains(STORES.QUOTES)) {
-    db.deleteObjectStore(STORES.QUOTES)
-  }
-  if (db.objectStoreNames.contains(STORES.TAGS)) {
-    db.deleteObjectStore(STORES.TAGS)
-  }
-  if (db.objectStoreNames.contains(STORES.QUOTES_TAGS)) {
-    db.deleteObjectStore(STORES.QUOTES_TAGS)
-  }
-}
+export const db = new DB();

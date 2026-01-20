@@ -3,6 +3,7 @@ import Masonry from "react-masonry-css"
 import type { Quote } from "@/model/index.model"
 import QuoteCard from "@/feature/quote/card/quote.card"
 import QuoteSkeleton from "@/feature/quote/card/quote-skeleton.card"
+import { useCardViewStore } from "@/store/use-card-view.store"
 
 interface Props {
   loading: boolean
@@ -14,10 +15,31 @@ interface Props {
 export function ListQuote(props: Props) {
   const { loading, quotes, onEdit, onDelete } = props
 
+  const { view } = useCardViewStore()
+
   const breakpointCols = { default: 4, 1024: 3, 768: 2, 480: 2, 240: 1 }
   const columnClassName = "flex flex-col gap-2"
 
   if (loading) {
+    if (view === "list") {
+      return (
+        <div className="flex flex-col gap-2">
+          {Array.from({ length: 3 }).map((_, i) => {
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 * i }}
+              >
+                <QuoteSkeleton />
+              </motion.div>
+            )
+          })}
+        </div>
+      )
+    }
+
     return (
       <Masonry
         breakpointCols={breakpointCols}
@@ -42,6 +64,34 @@ export function ListQuote(props: Props) {
 
   if ((!quotes || quotes.length === 0) && !loading) {
     return <p className="w-full text-center text-muted-foreground">No quotes available.</p>
+  }
+
+  if (view === "list") {
+    return (
+      <div>
+        <div className="flex flex-col gap-2">
+          {quotes.map((q, i) => (
+            <motion.div
+              key={q.id}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.4, delay: 0.1 * i }}
+            >
+              <QuoteCard
+                quote={q}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        <p className="text-center text-muted-foreground  p-4">
+          --- end of notes ---
+        </p>
+      </div>
+    )
   }
 
   return (

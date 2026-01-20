@@ -23,6 +23,7 @@ import { useThemeStore } from "@/store/use-theme.store";
 import { useFontStore, fonts, type Font } from "@/store/use-font.store";
 import { useColorThemeStore } from "@/store/use-color-theme.store";
 import type { CardView, QuoteFormData, SortOption } from "@/model/index.model";
+import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
 import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
 import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
@@ -40,6 +41,7 @@ export function SettingComponent(props: Props) {
   const { info, setInfo } = useShowCardInfo()
   const { font, setFont } = useFontStore()
   const { sortBy, setSortBy } = useSortStore()
+  const { view, setView } = useCardViewStore()
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -175,7 +177,26 @@ export function SettingComponent(props: Props) {
               </SelectContent>
             </Select>
           </div>
-
+          <div className="flex justify-between items-center ">
+            View
+            <Select value={view} onValueChange={(value: CardView) => setView(value)}>
+              <SelectTrigger className="">
+                <SelectValue placeholder="View" />
+              </SelectTrigger>
+              <SelectContent>
+                {
+                  cardViewOptions.map((pri) => {
+                    const yo = capitalize(pri.key)
+                    return (
+                      <SelectItem key={pri.key} value={pri.key} className="">
+                        {yo.replaceAll('_', " ")}
+                      </SelectItem>
+                    )
+                  })
+                }
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <Separator className="bg-border" />
@@ -184,6 +205,11 @@ export function SettingComponent(props: Props) {
           <p className="text-muted-foreground text-xs">Other</p>
           <div className="flex justify-between text-center ">
             Made with 💙 by Pritam
+          </div>
+          <div className="flex justify-between text-center ">
+            <p className="text-muted-foreground text-xs">
+              Last hosted on: {new Date().toLocaleDateString()}
+            </p>
           </div>
         </div>
 

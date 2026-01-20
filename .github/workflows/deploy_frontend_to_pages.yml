@@ -42,7 +42,7 @@ jobs:
           
       - name: Inject build timestamp
         run: |
-          echo '{ "lastDeployed": "'$(date -u +'%Y-%m-%dT%H:%M:%SZ')'" }' \
+          echo '{ "lastDeployed": "'$(date -u +'%Y-%m-%dT%H:%M:%SZ')'", "deployedBy": "Pritam Debnath" }' \
           > frontend/dist/last-deployed.json
 
       - name: Setup Pages

@@ -22,10 +22,18 @@ export class DB extends Dexie {
     super("db_by_pri");
 
     /* version = DB_VERSION */
+    // v1 - initial schema
     this.version(1).stores({
       quotes: "++id, text, texture, pri_set, created_at, updated_at",
-      tags: "++id, &name", 
-      quotes_tags: "++id, quoteId, tagId, &[quoteId+tagId]",       
+      tags: "++id, &name",
+      quotes_tags: "++id, quoteId, tagId, &[quoteId+tagId]",
+    });
+
+    // v2 - add `pinned` flag for quotes
+    this.version(2).stores({
+      quotes: "++id, text, texture, pri_set, created_at, updated_at, pinned",
+      tags: "++id, &name",
+      quotes_tags: "++id, quoteId, tagId, &[quoteId+tagId]",
     });
   }
 }

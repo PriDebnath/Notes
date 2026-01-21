@@ -113,7 +113,11 @@ export const getAllQuotesDetails = async (sortBy: SortOption = "created_at") => 
         quotesResult.sort((a, b) => compareByTags(a.tags as any, b.tags as any));
       }
 
-      return quotesResult
+      // #6 move pinned notes to the top, preserving relative order
+      const pinned = quotesResult.filter(q => q.pinned);
+      const unpinned = quotesResult.filter(q => !q.pinned);
+
+      return [...pinned, ...unpinned];
     })
 }
 

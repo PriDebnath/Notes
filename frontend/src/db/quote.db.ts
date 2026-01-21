@@ -1,15 +1,16 @@
 import type { Quote } from "@/model/index.model";
 import { db } from "@/db/db";
 
-export const addQuote = async (quote: Quote) =>  {
-    const { id, ...data } = quote
-    const generatedId = await db.quotes.add({
-        ...data,
-        created_at: new Date(),
-        updated_at: new Date(),
-    });
+export const addQuote = async (quote: Quote) => {
+  const { id, ...data } = quote;
+  const generatedId = await db.quotes.add({
+    ...data,
+    pinned: data.pinned ?? false,
+    created_at: new Date(),
+    updated_at: new Date(),
+  });
 
-    return { ...quote, id: generatedId };
+  return { ...quote, id: generatedId };
 };
 
 export const updateQuote = async (quote: Quote) => {
@@ -22,3 +23,10 @@ export const updateQuote = async (quote: Quote) => {
 
   return quote;
 };
+
+export const toggleQuotePinned = async (id: number, pinned: boolean) => {
+  await db.quotes.update(id, {
+    pinned,
+    updated_at: new Date(),
+  });
+}

@@ -16,7 +16,7 @@ interface Props {
     quote: QuoteDetails;
     onEdit: (quote: Quote) => void
     onDelete: (quote: Quote) => void
-  onTogglePin: (quote: QuoteDetails) => void
+    onTogglePin: (quote: QuoteDetails) => void
 }
 
 const QuoteCard = (props: Props) => {
@@ -29,7 +29,7 @@ const QuoteCard = (props: Props) => {
     const noteRef = useRef<HTMLDivElement>(null)
 
     const cardStyle = buildStyle(quote.texture!, quote.pri_set!)
-  
+
     const exportAsImage = async () => {
         if (!noteRef.current) return
         setDownloading(true)
@@ -83,7 +83,7 @@ const QuoteCard = (props: Props) => {
                     "flex flex-col justify-between items-start gap-2",
                     "",
                 )}>
-                    <div className="flex justify-end w-full">
+                {/* <div className="flex justify-end w-full">
                     <Button
                             className={cn("hover:text-primary-600", quote.pinned && "text-primary-600")}
                             variant={"outline"}
@@ -96,7 +96,7 @@ const QuoteCard = (props: Props) => {
                         >
                             {quote.pinned ? <PinOff /> : <Pin />}
                         </Button>
-                    </div>
+                    </div> */}
                 <div className={cn(
                     "tiptap",
                     "prose-sm",
@@ -124,8 +124,8 @@ const QuoteCard = (props: Props) => {
                         }</p>
                     )}
                     <div className="flex items-center gap-2 ">
-         
-                        <Button
+
+                        {/* <Button
                             className="hover:text-green-600 "
                             variant={"outline"}
                             onClick={(e) => {
@@ -137,8 +137,20 @@ const QuoteCard = (props: Props) => {
                             size={"sm"}
                         >
                             {copying ? <Check className="text-green-500" /> : <Copy />}
-                        </Button>
+                        </Button> */}
 
+                        <Button
+                            className={cn("hover:text-primary", quote.pinned && "text-primary")}
+                            variant={"outline"}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                onTogglePin(quote)
+                            }}
+                            aria-label={quote.pinned ? "Unpin note" : "Pin note"}
+                            size={"sm"}
+                        >
+                            {quote.pinned ? <PinOff /> : <Pin />}
+                        </Button>
 
                         {/*
                         <Button

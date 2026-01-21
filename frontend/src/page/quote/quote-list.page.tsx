@@ -147,7 +147,7 @@ export function QuoteListPage() {
         <Link to="/new">
           <Button
             size="icon-lg"
-            className="fixed bottom-8 rounded-full aspect-square scale-150"
+            className="fixed bottom-8  -translate-x-8 rounded-full aspect-square scale-150"
           >
             <PlusIcon />
           </Button>

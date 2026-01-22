@@ -4,6 +4,8 @@ import {
   ToolbarSeparator,
 } from '@/components/tiptap-ui-primitive/toolbar'
 import { Button } from '@/components/tiptap-ui-primitive/button'
+import TaskList from "@tiptap/extension-task-list";
+import TaskItem from "@tiptap/extension-task-item";
 
 import {
   BoldIcon,

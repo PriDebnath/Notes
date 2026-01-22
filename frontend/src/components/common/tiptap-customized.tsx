@@ -13,6 +13,7 @@ import TaskItem from "@tiptap/extension-task-item";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
 import { TableKit } from '@tiptap/extension-table'
+import { TextStyle, FontSize } from '@tiptap/extension-text-style'
 
 
 
@@ -31,6 +32,8 @@ const Tiptap = (props: Props) => {
     extensions: [
       StarterKit,
       Highlight,
+      TextStyle, 
+      FontSize,
       TextAlign.configure({
     types: ["heading", "paragraph"],
   }),

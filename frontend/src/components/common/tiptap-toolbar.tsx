@@ -79,6 +79,7 @@ export default function TiptapToolbar({ editor }: Props) {
       {/* TEXT MARKS */}
       <ToolbarGroup className="" >
       <HeadingDropdown editor={editor} />
+      <FontSizeDropdown editor={editor} />
         <Button  className="  " 
           data-active-state={state.bold ? 'on' : 'off'} 
           onClick={() => editor.chain().focus().toggleBold().run()}>
@@ -206,6 +207,39 @@ function HeadingDropdown({ editor }: { editor: Editor }) {
         <SelectItem value="h2">H2</SelectItem>
         <SelectItem value="h3">H3</SelectItem>
         <SelectItem value="p">P</SelectItem>
+      </SelectContent>
+    </Select>
+  )
+}
+
+const SIZES = [
+  { label: "8px", value: "8px" },
+  { label: "10px", value: "10px" },
+  { label: "12px", value: "12px" },
+  { label: "14px", value: "14px" },
+  { label: "18px", value: "18px" },
+  { label: "24px", value: "24px" },
+  { label: "32px", value: "32px" },
+]
+
+
+function FontSizeDropdown({ editor }: { editor: Editor }) {
+  return (
+    <Select
+      onValueChange={(value) =>
+        editor.chain().focus().setFontSize(value).run()
+      }
+    >
+      <SelectTrigger className="">
+        <SelectValue placeholder="Font size" />
+      </SelectTrigger>
+
+      <SelectContent>
+        {SIZES.map(size => (
+          <SelectItem key={size.value} value={size.value}>
+            {size.label}
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   )

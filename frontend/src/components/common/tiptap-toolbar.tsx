@@ -77,6 +77,10 @@ export default function TiptapToolbar({ editor }: Props) {
     <Toolbar variant="floating" 
     className="rounded! bg-card  flex-wrap gap-1">
       {/* TEXT MARKS */}
+            <ToolbarSeparator />
+            <TableControls editor={editor}/>
+            <ToolbarSeparator />
+            
       <ToolbarGroup className="" >
       <HeadingDropdown editor={editor} />
       <FontSizeDropdown editor={editor} />
@@ -169,6 +173,8 @@ export default function TiptapToolbar({ editor }: Props) {
         <Button onClick={() => editor.chain().focus().clearContent().run()}><TrashIcon /></Button>
       </ToolbarGroup>
 
+
+
     </Toolbar>
   )
 }
@@ -211,6 +217,31 @@ function HeadingDropdown({ editor }: { editor: Editor }) {
     </Select>
   )
 }
+
+function TableControls({ editor }: { editor: Editor }) {
+  if (!editor.isActive("table")) return null
+
+  return (
+    <ToolbarGroup>
+      <Button onClick={() => editor.chain().focus().addRowBefore().run()}>
+        +Row ↑
+      </Button>
+      <Button onClick={() => editor.chain().focus().addRowAfter().run()}>
+        +Row ↓
+      </Button>
+      <Button onClick={() => editor.chain().focus().addColumnBefore().run()}>
+        +Col ←
+      </Button>
+      <Button onClick={() => editor.chain().focus().addColumnAfter().run()}>
+        +Col →
+      </Button>
+      <Button onClick={() => editor.chain().focus().deleteTable().run()}>
+        Delete
+      </Button>
+    </ToolbarGroup>
+  )
+}
+
 
 const SIZES = [
   { label: "8px", value: "8px" },

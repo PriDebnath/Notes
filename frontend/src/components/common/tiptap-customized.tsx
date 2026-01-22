@@ -8,6 +8,14 @@ import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus'
 import TiptapToolbar from '@/components/common/tiptap-toolbar'
 import { useGetKeyBoardHeight } from '@/hook/use-get-keyboard-height.hook'
 import { cn } from "@/lib/utils";
+import TaskList from "@tiptap/extension-task-list";
+import TaskItem from "@tiptap/extension-task-item";
+import TextAlign from "@tiptap/extension-text-align";
+import Highlight from "@tiptap/extension-highlight";
+import { TableKit } from '@tiptap/extension-table'
+import { TextStyle, FontSize } from '@tiptap/extension-text-style'
+
+
 
 interface Props {
   value?: string;
@@ -21,7 +29,21 @@ const Tiptap = (props: Props) => {
   const styleString = buildStyleString(quoteFormData?.texture!, quoteFormData?.pri_set!)
 
   const editor = useEditor({
-    extensions: [StarterKit], // define your extension array
+    extensions: [
+      StarterKit,
+      Highlight,
+      TextStyle, 
+      FontSize,
+      TextAlign.configure({
+    types: ["heading", "paragraph"],
+  }),
+    TaskList,
+  TaskItem.configure({
+    nested: true,
+  }),
+  TableKit,
+  
+  ], // define your extension array
     content: value,
     editorProps: {
       attributes: {

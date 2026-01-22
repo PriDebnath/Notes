@@ -10,6 +10,7 @@ import { useGetKeyBoardHeight } from '@/hook/use-get-keyboard-height.hook'
 import { cn } from "@/lib/utils";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
+import TextAlign from "@tiptap/extension-text-align";
 
 interface Props {
   value?: string;
@@ -25,6 +26,9 @@ const Tiptap = (props: Props) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      TextAlign.configure({
+    types: ["heading", "paragraph"],
+  }),
     TaskList,
   TaskItem.configure({
     nested: true,

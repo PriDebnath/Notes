@@ -1,11 +1,16 @@
+import React from 'react'
+import type { Editor } from '@tiptap/react'
+import { useEditorState } from '@tiptap/react'
+
 import {
   Toolbar,
   ToolbarGroup,
   ToolbarSeparator,
 } from '@/components/tiptap-ui-primitive/toolbar'
-import { Button } from '@/components/tiptap-ui-primitive/button'
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
+import { ToolbarButton } from './tiptap-toolbar-button'
+
+import { FontSizeDropdown } from './font-size'
+import { HeadingDropdown } from './html-tag'
 
 import {
   BoldIcon,
@@ -14,9 +19,6 @@ import {
   StrikethroughIcon,
   CodeIcon,
   HighlighterIcon,
-  Heading1,
-  Heading2,
-  Heading3,
   ListIcon,
   ListOrderedIcon,
   CheckSquareIcon,
@@ -37,51 +39,121 @@ import {
   EraserIcon,
   TrashIcon,
 } from 'lucide-react'
+import { Separator } from '@radix-ui/react-dropdown-menu'
 
-import type { Editor } from '@tiptap/react'
-import { useEditorState } from '@tiptap/react'
-import { FontSizeDropdown } from './font-size';
-import { HeadingDropdown } from './html-tag';
-import { ToolbarButton } from './tiptap-toolbar-button';
+/* ------------------------------------------------------------------ */
+/* Types */
+/* ------------------------------------------------------------------ */
 
-const TEXT_MARKS = [
-  { key: 'bold', icon: <BoldIcon />, action: (e: Editor) =>e.chain().focus().toggleBold().run() },
-  { key: 'italic', icon: <ItalicIcon />, action: (e: Editor) =>e.chain().focus().toggleItalic().run() },
-  { key: 'underline', icon: <UnderlineIcon />, action: (e: Editor) =>e.chain().focus().toggleUnderline().run() },
-  { key: 'strike', icon: <StrikethroughIcon />, action: (e: Editor) =>e.chain().focus().toggleStrike().run() },
-  { key: 'code', icon: <CodeIcon />, action: (e: Editor) =>e.chain().focus().toggleCode().run() },
-  { key: 'highlight', icon: <HighlighterIcon />, action: (e: Editor) =>e.chain().focus().toggleHighlight().run() },
-]
-
-const LISTS = [
-  { key: 'bulletList', icon: <ListIcon />, action: (e: Editor) =>e.chain().focus().toggleBulletList().run() },
-  { key: 'orderedList', icon: <ListOrderedIcon />, action: (e: Editor) =>e.chain().focus().toggleOrderedList().run() },
-  { key: 'taskList', icon: <CheckSquareIcon />, action: (e: Editor) =>e.chain().focus().toggleTaskList().run() },
-  { key: 'sink', icon: '→', action: (e: Editor) =>e.chain().focus().sinkListItem('listItem').run() },
-  { key: 'lift', icon: '←', action: (e: Editor) =>e.chain().focus().liftListItem('listItem').run() },
-]
-
-
-const BLOCKS = [
-  { key: 'blockquote', icon: <QuoteIcon />, action: (e: Editor) =>e.chain().focus().toggleBlockquote().run() },
-  { key: 'codeBlock', icon: <CodeSquareIcon />, action: (e: Editor) =>e.chain().focus().toggleCodeBlock().run() },
-  { key: 'hr', icon: <MinusIcon />, action: (e: Editor) =>e.chain().focus().setHorizontalRule().run() },
-  { key: 'hardBreak', icon: <CornerDownLeftIcon />, action: (e: Editor) =>e.chain().focus().setHardBreak().run() },
-]
-
-const ALIGNMENT = [
-  { key: 'alignLeft', icon: <AlignLeftIcon />, value: 'left' },
-  { key: 'alignCenter', icon: <AlignCenterIcon />, value: 'center' },
-  { key: 'alignRight', icon: <AlignRightIcon />, value: 'right' },
-  { key: 'alignJustify', icon: <AlignJustifyIcon />, value: 'justify' },
-]
-
-
-interface Props {
-  editor: Editor
+type ToolbarBtn = {
+  key: string
+  icon: React.ReactNode
+  active?: (state: any) => boolean
+  disabled?: (state: any) => boolean
+  action: (editor: Editor) => void
 }
 
-export default function TiptapToolbar({ editor }: Props) {
+/* ------------------------------------------------------------------ */
+/* Button Groups */
+/* ------------------------------------------------------------------ */
+
+const TEXT_MARKS: ToolbarBtn[] = [
+  { key: 'bold', icon: <BoldIcon />, active: s => s.bold, action: e => e.chain().focus().toggleBold().run() },
+  { key: 'italic', icon: <ItalicIcon />, active: s => s.italic, action: e => e.chain().focus().toggleItalic().run() },
+  { key: 'underline', icon: <UnderlineIcon />, active: s => s.underline, action: e => e.chain().focus().toggleUnderline().run() },
+  { key: 'strike', icon: <StrikethroughIcon />, active: s => s.strike, action: e => e.chain().focus().toggleStrike().run() },
+  { key: 'code', icon: <CodeIcon />, active: s => s.code, action: e => e.chain().focus().toggleCode().run() },
+  { key: 'highlight', icon: <HighlighterIcon />, active: s => s.highlight, action: e => e.chain().focus().toggleHighlight().run() },
+]
+
+const LISTS: ToolbarBtn[] = [
+  { key: 'bulletList', icon: <ListIcon />, active: s => s.bulletList, action: e => e.chain().focus().toggleBulletList().run() },
+  { key: 'orderedList', icon: <ListOrderedIcon />, active: s => s.orderedList, action: e => e.chain().focus().toggleOrderedList().run() },
+  { key: 'taskList', icon: <CheckSquareIcon />, active: s => s.taskList, action: e => e.chain().focus().toggleTaskList().run() },
+  { key: 'sink', icon: '→', action: e => e.chain().focus().sinkListItem('listItem').run() },
+  { key: 'lift', icon: '←', action: e => e.chain().focus().liftListItem('listItem').run() },
+]
+
+const BLOCKS: ToolbarBtn[] = [
+  { key: 'blockquote', icon: <QuoteIcon />, active: s => s.blockquote, action: e => e.chain().focus().toggleBlockquote().run() },
+  { key: 'codeBlock', icon: <CodeSquareIcon />, active: s => s.codeBlock, action: e => e.chain().focus().toggleCodeBlock().run() },
+  { key: 'hr', icon: <MinusIcon />, action: e => e.chain().focus().setHorizontalRule().run() },
+  { key: 'hardBreak', icon: <CornerDownLeftIcon />, action: e => e.chain().focus().setHardBreak().run() },
+]
+
+const ALIGNMENT: ToolbarBtn[] = [
+  { key: 'alignLeft', icon: <AlignLeftIcon />, active: s => s.alignLeft, action: e => e.chain().focus().setTextAlign('left').run() },
+  { key: 'alignCenter', icon: <AlignCenterIcon />, active: s => s.alignCenter, action: e => e.chain().focus().setTextAlign('center').run() },
+  { key: 'alignRight', icon: <AlignRightIcon />, active: s => s.alignRight, action: e => e.chain().focus().setTextAlign('right').run() },
+  { key: 'alignJustify', icon: <AlignJustifyIcon />, active: s => s.alignJustify, action: e => e.chain().focus().setTextAlign('justify').run() },
+]
+
+const LINKS_MEDIA: ToolbarBtn[] = [
+  {
+    key: 'link',
+    icon: <LinkIcon />,
+    active: s => s.link,
+    action: e => e.chain().focus().setLink({ href: prompt('URL') || '' }).run(),
+  },
+  { key: 'unlink', icon: <UnlinkIcon />, action: e => e.chain().focus().unsetLink().run() },
+  { key: 'image', icon: <ImageIcon />, action: e => e.chain().focus().setImage({ src: prompt('Image URL') || '' }).run() },
+  {
+    key: 'table',
+    icon: <TableIcon />,
+    action: e => e.commands.insertTable({ rows: 3, cols: 3, withHeaderRow: true }),
+  },
+]
+
+const HISTORY: ToolbarBtn[] = [
+  { key: 'undo', icon: <UndoIcon />, disabled: s => !s.canUndo, action: e => e.chain().focus().undo().run() },
+  { key: 'redo', icon: <RedoIcon />, disabled: s => !s.canRedo, action: e => e.chain().focus().redo().run() },
+  { key: 'clearMarks', icon: <EraserIcon />, action: e => e.chain().focus().unsetAllMarks().clearNodes().run() },
+  { key: 'clearAll', icon: <TrashIcon />, action: e => e.chain().focus().clearContent().run() },
+]
+
+/* ------------------------------------------------------------------ */
+/* Helpers */
+/* ------------------------------------------------------------------ */
+
+function RenderGroup({
+  editor,
+  state,
+  items,
+}: {
+  editor: Editor
+  state: any
+  items: ToolbarBtn[]
+}) {
+  return (
+    <ToolbarGroup>
+      {items.map(btn => (
+        <ToolbarButton
+          key={btn.key}
+          title={btn.key}
+          active={btn.active?.(state)}
+          disabled={btn.disabled?.(state)}
+          onClick={() => btn.action(editor)}
+        >
+          {btn.icon}
+        </ToolbarButton>
+      ))}
+    </ToolbarGroup>
+  )
+}
+
+function ToolbarRow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex w-full items-center gap-1 flex-wrap">
+      {children}
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Main Toolbar */
+/* ------------------------------------------------------------------ */
+
+export default function TiptapToolbar({ editor }: { editor: Editor }) {
   const state = useEditorState({
     editor,
     selector: ({ editor }) => ({
@@ -96,9 +168,6 @@ export default function TiptapToolbar({ editor }: Props) {
       taskList: editor.isActive('taskList'),
       blockquote: editor.isActive('blockquote'),
       codeBlock: editor.isActive('codeBlock'),
-      h1: editor.isActive('heading', { level: 1 }),
-      h2: editor.isActive('heading', { level: 2 }),
-      h3: editor.isActive('heading', { level: 3 }),
       alignLeft: editor.isActive({ textAlign: 'left' }),
       alignCenter: editor.isActive({ textAlign: 'center' }),
       alignRight: editor.isActive({ textAlign: 'right' }),
@@ -110,127 +179,43 @@ export default function TiptapToolbar({ editor }: Props) {
   })
 
   return (
-    <Toolbar variant="floating"
-      className="rounded! bg-card  flex-wrap gap-1">
+    <Toolbar variant="floating" className="rounded bg-card flex-wrap gap-1">
 
-      <ToolbarGroup className="" >
-        <HeadingDropdown editor={editor} />
-        <FontSizeDropdown editor={editor} />
-        {TEXT_MARKS.map(btn => (
-          <ToolbarButton
-            key={btn.key}
-            title={btn.key}
-            active={state[btn.key as keyof typeof state]}
-            onClick={() => btn.action(editor)}
-          >
-            {btn.icon}
-          </ToolbarButton>
-        ))}
-      </ToolbarGroup>
-      
+      {/* ROW 1 — Text / Headings */}
+      <ToolbarRow>
+        <ToolbarGroup>
+          <HeadingDropdown editor={editor} />
+          <FontSizeDropdown editor={editor} />
+          <RenderGroup editor={editor} state={state} items={TEXT_MARKS} />
+        </ToolbarGroup>
+      </ToolbarRow>
+
+      {/* ROW 2 — Lists & Blocks */}
+      <ToolbarRow>
+        <RenderGroup editor={editor} state={state} items={ALIGNMENT} />
         <ToolbarSeparator />
-
-        {/* HEADINGS */}
-      <ToolbarGroup>
-        {/*
-        <Button data-active-state={state.h1 ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}><Heading1 /></Button>
-        <Button data-active-state={state.h2 ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}><Heading2 /></Button>
-        <Button data-active-state={state.h3 ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}><Heading3 /></Button>
-        <Button onClick={() => editor.chain().focus().setParagraph().run()}>P</Button>
-      */}
-      </ToolbarGroup>
-      <ToolbarSeparator />
-
-      {/* LISTS */}
-      {/*
-      */}
-      <ToolbarGroup>
-        <Button data-active-state={state.bulletList ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleBulletList().run()}><ListIcon /></Button>
-        <Button data-active-state={state.orderedList ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleOrderedList().run()}><ListOrderedIcon /></Button>
-        <Button data-active-state={state.taskList ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleTaskList().run()}><CheckSquareIcon /></Button>
-        <Button onClick={() => editor.chain().focus().sinkListItem('listItem').run()}>→</Button>
-        <Button onClick={() => editor.chain().focus().liftListItem('listItem').run()}>←</Button>
-        {/*
-      </ToolbarGroup>
-      */}
-
+        <RenderGroup editor={editor} state={state} items={LISTS} />
         <ToolbarSeparator />
+        <RenderGroup editor={editor} state={state} items={BLOCKS} />
+      </ToolbarRow>
 
-        {/* BLOCKS */}
-        {/*
-      <ToolbarGroup>
-      */}
-        <Button data-active-state={state.blockquote ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleBlockquote().run()}><QuoteIcon /></Button>
-        <Button data-active-state={state.codeBlock ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleCodeBlock().run()}><CodeSquareIcon /></Button>
-        <Button onClick={() => editor.chain().focus().setHorizontalRule().run()}><MinusIcon /></Button>
-        <Button onClick={() => editor.chain().focus().setHardBreak().run()}><CornerDownLeftIcon /></Button>
-        {/*
-      */}
-      </ToolbarGroup>
+      {/* ROW 3 — Alignment */}
+      {/* <ToolbarRow>
+        <RenderGroup editor={editor} state={state} items={ALIGNMENT} />
+      </ToolbarRow> */}
 
-      {/*
-      <ToolbarSeparator />
-      */}
+      {/* ROW 4 — Links / Media */}
+      <ToolbarRow>
+        <RenderGroup editor={editor} state={state} items={LINKS_MEDIA} />
+        <ToolbarSeparator />
+        <RenderGroup editor={editor} state={state} items={HISTORY} />
+      </ToolbarRow>
 
-      {/* ALIGNMENT */}
-      {/*
-      */}
-      <ToolbarGroup>
-        <Button data-active-state={state.alignLeft ? 'on' : 'off'} onClick={() => editor.chain().focus().setTextAlign('left').run()}><AlignLeftIcon /></Button>
-        <Button data-active-state={state.alignCenter ? 'on' : 'off'} onClick={() => editor.chain().focus().setTextAlign('center').run()}><AlignCenterIcon /></Button>
-        <Button data-active-state={state.alignRight ? 'on' : 'off'} onClick={() => editor.chain().focus().setTextAlign('right').run()}><AlignRightIcon /></Button>
-        <Button data-active-state={state.alignJustify ? 'on' : 'off'} onClick={() => editor.chain().focus().setTextAlign('justify').run()}><AlignJustifyIcon /></Button>
-      </ToolbarGroup>
-
-      <ToolbarSeparator />
-
-      {/* LINK / MEDIA */}
-      <ToolbarGroup>
-        <Button data-active-state={state.link ? 'on' : 'off'} onClick={() => editor.chain().focus().setLink({ href: prompt('URL') || '' }).run()}><LinkIcon /></Button>
-        <Button onClick={() => editor.chain().focus().unsetLink().run()}><UnlinkIcon /></Button>
-        <Button onClick={() => editor.chain().focus().setImage({ src: prompt('Image URL') || '' }).run()}><ImageIcon /></Button>
-        <Button onClick={() => editor.commands.insertTable({ rows: 3, cols: 3, withHeaderRow: true })}><TableIcon /></Button>
-      </ToolbarGroup>
-
-      <ToolbarSeparator />
-
-      {/* HISTORY / CLEANUP */}
-      <ToolbarGroup>
-        <Button disabled={!state.canUndo} onClick={() => editor.chain().focus().undo().run()}><UndoIcon /></Button>
-        <Button disabled={!state.canRedo} onClick={() => editor.chain().focus().redo().run()}><RedoIcon /></Button>
-        <Button onClick={() => editor.chain().focus().unsetAllMarks().clearNodes().run()}><EraserIcon /></Button>
-        <Button onClick={() => editor.chain().focus().clearContent().run()}><TrashIcon /></Button>
-      </ToolbarGroup>
-
-
+      {/* ROW 5 — History / Cleanup */}
+      {/* <ToolbarRow> */}
+        {/* <RenderGroup editor={editor} state={state} items={HISTORY} /> */}
+      {/* </ToolbarRow> */}
 
     </Toolbar>
-  )
-}
-
-
-
-
-function TableControls({ editor }: { editor: Editor }) {
-  if (!editor.isActive("table")) return null
-
-  return (
-    <ToolbarGroup>
-      <Button onClick={() => editor.chain().focus().addRowBefore().run()}>
-        +Row ↑
-      </Button>
-      <Button onClick={() => editor.chain().focus().addRowAfter().run()}>
-        +Row ↓
-      </Button>
-      <Button onClick={() => editor.chain().focus().addColumnBefore().run()}>
-        +Col ←
-      </Button>
-      <Button onClick={() => editor.chain().focus().addColumnAfter().run()}>
-        +Col →
-      </Button>
-      <Button onClick={() => editor.chain().focus().deleteTable().run()}>
-        Delete
-      </Button>
-    </ToolbarGroup>
   )
 }

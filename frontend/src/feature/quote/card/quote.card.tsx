@@ -61,7 +61,7 @@ const QuoteCard = (props: Props) => {
 
     const formatDate = (date: Date) => {
         return date?.toLocaleDateString("en-US", {
-            month: "long",
+            month: "short",
             day: "numeric",
             year: "numeric",
         })

@@ -41,6 +41,61 @@ import {
 import type { Editor } from '@tiptap/react'
 import { useEditorState } from '@tiptap/react'
 
+const TEXT_MARKS = [
+  {
+    key: 'bold',
+    icon: <BoldIcon />,
+    action: (e: Editor) => e.chain().focus().toggleBold().run(),
+  },
+  {
+    key: 'italic',
+    icon: <ItalicIcon />,
+    action: (e: Editor) => e.chain().focus().toggleItalic().run(),
+  },
+  {
+    key: 'underline',
+    icon: <UnderlineIcon />,
+    action: (e: Editor) => e.chain().focus().toggleUnderline().run(),
+  },
+  {
+    key: 'highlight',
+    icon: <HighlighterIcon />,
+    action: (e: Editor) => e.chain().focus().toggleHighlight().run(),
+  },
+]
+
+const LISTS = [
+  {
+    key: 'bulletList',
+    icon: <ListIcon />,
+    action: (e: Editor) => e.chain().focus().toggleBulletList().run(),
+  },
+  {
+    key: 'orderedList',
+    icon: <ListOrderedIcon />,
+    action: (e: Editor) => e.chain().focus().toggleOrderedList().run(),
+  },
+  {
+    key: 'taskList',
+    icon: <CheckSquareIcon />,
+    action: (e: Editor) => e.chain().focus().toggleTaskList().run(),
+  },
+]
+
+const BLOCKS = [
+  {
+    key: 'blockquote',
+    icon: <QuoteIcon />,
+    action: (e: Editor) => e.chain().focus().toggleBlockquote().run(),
+  },
+  {
+    key: 'codeBlock',
+    icon: <CodeSquareIcon />,
+    action: (e: Editor) => e.chain().focus().toggleCodeBlock().run(),
+  },
+]
+
+
 interface Props {
   editor: Editor
 }
@@ -74,36 +129,36 @@ export default function TiptapToolbar({ editor }: Props) {
   })
 
   return (
-    <Toolbar variant="floating" 
-    className="rounded! bg-card  flex-wrap gap-1">
-      {/* TEXT MARKS */}
-            <ToolbarSeparator />
-            <TableControls editor={editor}/>
-            <ToolbarSeparator />
-            
+    <Toolbar variant="floating"
+      className="rounded! bg-card  flex-wrap gap-1">
+
       <ToolbarGroup className="" >
-      <HeadingDropdown editor={editor} />
-      <FontSizeDropdown editor={editor} />
-        <Button  className="  " 
-          data-active-state={state.bold ? 'on' : 'off'} 
-          onClick={() => editor.chain().focus().toggleBold().run()}>
-        <BoldIcon />
-        </Button>
-        <Button data-active-state={state.italic ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleItalic().run()}><ItalicIcon /></Button>
-        <Button data-active-state={state.underline ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleUnderline().run()}><UnderlineIcon /></Button>
+        <HeadingDropdown editor={editor} />
+        <FontSizeDropdown editor={editor} />
+
+        {TEXT_MARKS.map(btn => (
+          <ToolbarButton
+            key={btn.key}
+            title={btn.key}
+            active={state[btn.key as keyof typeof state]}
+            onClick={() => btn.action(editor)}
+          >
+            {btn.icon}
+          </ToolbarButton>
+        ))}
+
         <Button data-active-state={state.strike ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleStrike().run()}><StrikethroughIcon /></Button>
         <Button data-active-state={state.code ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleCode().run()}><CodeIcon /></Button>
-        <Button data-active-state={state.highlight ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleHighlight().run()}><HighlighterIcon /></Button>
-  {/*   
+        {/*   
       </ToolbarGroup>
   */}
-  <ToolbarSeparator />
+        <ToolbarSeparator />
 
-      {/* HEADINGS */}
-  {/*   
+        {/* HEADINGS */}
+        {/*   
       <ToolbarGroup>
   */}
-      {/*
+        {/*
         <Button data-active-state={state.h1 ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}><Heading1 /></Button>
         <Button data-active-state={state.h2 ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}><Heading2 /></Button>
         <Button data-active-state={state.h3 ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}><Heading3 /></Button>
@@ -121,21 +176,21 @@ export default function TiptapToolbar({ editor }: Props) {
         <Button data-active-state={state.taskList ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleTaskList().run()}><CheckSquareIcon /></Button>
         <Button onClick={() => editor.chain().focus().sinkListItem('listItem').run()}>→</Button>
         <Button onClick={() => editor.chain().focus().liftListItem('listItem').run()}>←</Button>
-      {/*
+        {/*
       </ToolbarGroup>
       */}
 
-      <ToolbarSeparator />
+        <ToolbarSeparator />
 
-      {/* BLOCKS */}
-      {/*
+        {/* BLOCKS */}
+        {/*
       <ToolbarGroup>
       */}
         <Button data-active-state={state.blockquote ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleBlockquote().run()}><QuoteIcon /></Button>
         <Button data-active-state={state.codeBlock ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleCodeBlock().run()}><CodeSquareIcon /></Button>
         <Button onClick={() => editor.chain().focus().setHorizontalRule().run()}><MinusIcon /></Button>
         <Button onClick={() => editor.chain().focus().setHardBreak().run()}><CornerDownLeftIcon /></Button>
-      {/*
+        {/*
       */}
       </ToolbarGroup>
 
@@ -186,13 +241,14 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select"
+import { ToolbarButton } from './tiptap-toolbar-button';
 
 function HeadingDropdown({ editor }: { editor: Editor }) {
   const value =
     editor.isActive("heading", { level: 1 }) ? "h1" :
-    editor.isActive("heading", { level: 2 }) ? "h2" :
-    editor.isActive("heading", { level: 3 }) ? "h3" :
-    "p"
+      editor.isActive("heading", { level: 2 }) ? "h2" :
+        editor.isActive("heading", { level: 3 }) ? "h3" :
+          "p"
 
   return (
     <Select

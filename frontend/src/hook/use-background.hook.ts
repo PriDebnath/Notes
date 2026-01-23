@@ -1,19 +1,19 @@
 
-import dark_wood from "../assets/images/dark-wood.png";
-import crisp_paper_ruffles from "../assets/images/crisp-paper-ruffles.png";
-import brick_wall from "../assets/images/brick-wall.png";
-import snow from "../assets/images/snow.png";
-import fresh_snow from "../assets/images/fresh-snow.png";
+import dark_wood from "../../public/images/dark-wood.png";
+import crisp_paper_ruffles from "../../public/images/crisp-paper-ruffles.png";
+import brick_wall from "../../public/images/brick-wall.png";
+import snow from "../../public/images/snow.png";
+import fresh_snow from "../../public/images/fresh-snow.png";
 
-import cartographer from "../assets/images/cartographer.png";
-import cardboard from "../assets/images/cardboard.png";
-import xv from "../assets/images/xv.png";
-import food from "../assets/images/food.png";
-import flowers from "../assets/images/flowers.png";
-import foggy_birds from "../assets/images/foggy-birds.png";
-import pink_flowers from "../assets/images/pink-flowers.webp";
-import leaves from "../assets/images/leaves.webp";
-import watercolor from "../assets/images/watercolor.webp";
+import cartographer from "../../public/images/cartographer.png";
+import cardboard from "../../public/images/cardboard.png";
+import xv from "../../public/images/xv.png";
+import food from "../../public/images/food.png";
+import flowers from "../../public/images/flowers.png";
+import foggy_birds from "../../public/images/foggy-birds.png";
+import pink_flowers from "../../public/images/pink-flowers.webp";
+import leaves from "../../public/images/leaves.webp";
+import watercolor from "../../public/images/watercolor.webp";
 
 
 interface ColorPresets {

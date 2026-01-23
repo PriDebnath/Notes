@@ -11,7 +11,10 @@
 
 [Notes - 23-01-2026.webm](https://github.com/user-attachments/assets/8afe9ded-c1a5-4208-9565-64d6343029a0)
 
-⬇️[Demo Video Download](frontend/public/app-demo/Notes-23-01-2026.webm)
+⬇️ <a href="frontend/public/app-demo/Notes-23-01-2026.webm" download="Notes-by-pri.webm">
+  Download Demo Video
+</a>
+
 
 
 ### 🔴 ↗️ Link

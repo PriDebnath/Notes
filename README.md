@@ -3,7 +3,7 @@
 ### 🔴 🖼️ Screenshot
 
 <a href="https://pridebnath.github.io/Notes">
-<img height="480" src="frontend/public/images/list.page.png" />
+<img height="480" src="frontend/public/app-demo/list.page.png" />
 </a>
 
 

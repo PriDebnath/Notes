@@ -40,6 +40,9 @@ import {
 
 import type { Editor } from '@tiptap/react'
 import { useEditorState } from '@tiptap/react'
+import { FontSizeDropdown } from './font-size';
+import { HeadingDropdown } from './html-tag';
+import { ToolbarButton } from './tiptap-toolbar-button';
 
 const TEXT_MARKS = [
   { key: 'bold', icon: <BoldIcon />, action: (e: Editor) =>e.chain().focus().toggleBold().run() },
@@ -205,45 +208,8 @@ export default function TiptapToolbar({ editor }: Props) {
   )
 }
 
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select"
-import { ToolbarButton } from './tiptap-toolbar-button';
 
-function HeadingDropdown({ editor }: { editor: Editor }) {
-  const value =
-    editor.isActive("heading", { level: 1 }) ? "h1" :
-      editor.isActive("heading", { level: 2 }) ? "h2" :
-        editor.isActive("heading", { level: 3 }) ? "h3" :
-          "p"
 
-  return (
-    <Select
-      value={value}
-      onValueChange={(v) => {
-        const chain = editor.chain().focus()
-        if (v === "p") chain.setParagraph().run()
-        if (v === "h1") chain.setHeading({ level: 1 }).run()
-        if (v === "h2") chain.setHeading({ level: 2 }).run()
-        if (v === "h3") chain.setHeading({ level: 3 }).run()
-      }}
-    >
-      <SelectTrigger className="">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="h1">H1</SelectItem>
-        <SelectItem value="h2">H2</SelectItem>
-        <SelectItem value="h3">H3</SelectItem>
-        <SelectItem value="p">P</SelectItem>
-      </SelectContent>
-    </Select>
-  )
-}
 
 function TableControls({ editor }: { editor: Editor }) {
   if (!editor.isActive("table")) return null
@@ -266,39 +232,5 @@ function TableControls({ editor }: { editor: Editor }) {
         Delete
       </Button>
     </ToolbarGroup>
-  )
-}
-
-
-const SIZES = [
-  { label: "8px", value: "8px" },
-  { label: "10px", value: "10px" },
-  { label: "12px", value: "12px" },
-  { label: "14px", value: "14px" },
-  { label: "18px", value: "18px" },
-  { label: "24px", value: "24px" },
-  { label: "32px", value: "32px" },
-]
-
-
-function FontSizeDropdown({ editor }: { editor: Editor }) {
-  return (
-    <Select
-      onValueChange={(value) =>
-        editor.chain().focus().setFontSize(value).run()
-      }
-    >
-      <SelectTrigger className="">
-        <SelectValue placeholder="Font size" />
-      </SelectTrigger>
-
-      <SelectContent>
-        {SIZES.map(size => (
-          <SelectItem key={size.value} value={size.value}>
-            {size.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
   )
 }

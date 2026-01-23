@@ -14,8 +14,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
 import { TableKit } from '@tiptap/extension-table'
 import { TextStyle, FontSize } from '@tiptap/extension-text-style'
-
-
+import Image from '@tiptap/extension-image'
 
 
 interface Props {
@@ -35,6 +34,12 @@ const Tiptap = (props: Props) => {
       Highlight,
       TextStyle, 
       FontSize,
+      Image.configure({
+        resize: {
+          enabled: true,
+          alwaysPreserveAspectRatio: true,
+        },
+      }),
       TextAlign.configure({
     types: ["heading", "paragraph"],
   }),

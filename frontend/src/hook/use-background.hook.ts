@@ -1,6 +1,19 @@
 
+import dark_wood from "../assets/images/dark-wood.png";
+import crisp_paper_ruffles from "../assets/images/crisp-paper-ruffles.png";
+import brick_wall from "../assets/images/brick-wall.png";
+import snow from "../assets/images/snow.png";
+import fresh_snow from "../assets/images/fresh-snow.png";
 
-
+import cartographer from "../assets/images/cartographer.png";
+import cardboard from "../assets/images/cardboard.png";
+import xv from "../assets/images/xv.png";
+import food from "../assets/images/food.png";
+import flowers from "../assets/images/flowers.png";
+import foggy_birds from "../assets/images/foggy-birds.png";
+import pink_flowers from "../assets/images/pink-flowers.webp";
+import leaves from "../assets/images/leaves.webp";
+import watercolor from "../assets/images/watercolor.webp";
 
 
 interface ColorPresets {
@@ -69,22 +82,22 @@ export type Pri_set = keyof typeof colorPresets
 export type TextureKey = keyof typeof textures
 
 const textures = {
-    dark_wood: "src/assets/images/dark-wood.png",
-    crisp_paper_ruffles: "src/assets/images/crisp-paper-ruffles.png",
-    brick_wall: "src/assets/images/brick-wall.png",
-    snow: "src/assets/images/snow.png",
-    fresh_snow: "src/assets/images/fresh-snow.png",
-    cartographer: "src/assets/images/cartographer.png",
-    cardboard: "src/assets/images/cardboard.png",
-    xv: "src/assets/images/xv.png",
-    food: "src/assets/images/food.png",
-    flowers: "src/assets/images/flowers.png",
-    foggy_birds: "src/assets/images/foggy-birds.png",
-    pink_flowers: "src/assets/images/pink-flowers.webp",
-    leaves: "src/assets/images/leaves.webp",
-    watercolor: "src/assets/images/watercolor.webp",
- 
+  dark_wood,
+  crisp_paper_ruffles,
+  brick_wall,
+  snow,
+  fresh_snow,
+  cartographer,
+  cardboard,
+  xv,
+  food,
+  flowers,
+  foggy_birds,
+  pink_flowers,
+  leaves,
+  watercolor,
 };
+
 
 // build inline style for preview & thumbnails that need composition
 const buildStyle = (texture: TextureKey, pri_set: Pri_set) => {

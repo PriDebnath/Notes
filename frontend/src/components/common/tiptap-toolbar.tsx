@@ -42,57 +42,35 @@ import type { Editor } from '@tiptap/react'
 import { useEditorState } from '@tiptap/react'
 
 const TEXT_MARKS = [
-  {
-    key: 'bold',
-    icon: <BoldIcon />,
-    action: (e: Editor) => e.chain().focus().toggleBold().run(),
-  },
-  {
-    key: 'italic',
-    icon: <ItalicIcon />,
-    action: (e: Editor) => e.chain().focus().toggleItalic().run(),
-  },
-  {
-    key: 'underline',
-    icon: <UnderlineIcon />,
-    action: (e: Editor) => e.chain().focus().toggleUnderline().run(),
-  },
-  {
-    key: 'highlight',
-    icon: <HighlighterIcon />,
-    action: (e: Editor) => e.chain().focus().toggleHighlight().run(),
-  },
+  { key: 'bold', icon: <BoldIcon />, action: (e: Editor) =>e.chain().focus().toggleBold().run() },
+  { key: 'italic', icon: <ItalicIcon />, action: (e: Editor) =>e.chain().focus().toggleItalic().run() },
+  { key: 'underline', icon: <UnderlineIcon />, action: (e: Editor) =>e.chain().focus().toggleUnderline().run() },
+  { key: 'strike', icon: <StrikethroughIcon />, action: (e: Editor) =>e.chain().focus().toggleStrike().run() },
+  { key: 'code', icon: <CodeIcon />, action: (e: Editor) =>e.chain().focus().toggleCode().run() },
+  { key: 'highlight', icon: <HighlighterIcon />, action: (e: Editor) =>e.chain().focus().toggleHighlight().run() },
 ]
 
 const LISTS = [
-  {
-    key: 'bulletList',
-    icon: <ListIcon />,
-    action: (e: Editor) => e.chain().focus().toggleBulletList().run(),
-  },
-  {
-    key: 'orderedList',
-    icon: <ListOrderedIcon />,
-    action: (e: Editor) => e.chain().focus().toggleOrderedList().run(),
-  },
-  {
-    key: 'taskList',
-    icon: <CheckSquareIcon />,
-    action: (e: Editor) => e.chain().focus().toggleTaskList().run(),
-  },
+  { key: 'bulletList', icon: <ListIcon />, action: (e: Editor) =>e.chain().focus().toggleBulletList().run() },
+  { key: 'orderedList', icon: <ListOrderedIcon />, action: (e: Editor) =>e.chain().focus().toggleOrderedList().run() },
+  { key: 'taskList', icon: <CheckSquareIcon />, action: (e: Editor) =>e.chain().focus().toggleTaskList().run() },
+  { key: 'sink', icon: '→', action: (e: Editor) =>e.chain().focus().sinkListItem('listItem').run() },
+  { key: 'lift', icon: '←', action: (e: Editor) =>e.chain().focus().liftListItem('listItem').run() },
 ]
 
+
 const BLOCKS = [
-  {
-    key: 'blockquote',
-    icon: <QuoteIcon />,
-    action: (e: Editor) => e.chain().focus().toggleBlockquote().run(),
-  },
-  {
-    key: 'codeBlock',
-    icon: <CodeSquareIcon />,
-    action: (e: Editor) => e.chain().focus().toggleCodeBlock().run(),
-  },
+  { key: 'blockquote', icon: <QuoteIcon />, action: (e: Editor) =>e.chain().focus().toggleBlockquote().run() },
+  { key: 'codeBlock', icon: <CodeSquareIcon />, action: (e: Editor) =>e.chain().focus().toggleCodeBlock().run() },
+  { key: 'hr', icon: <MinusIcon />, action: (e: Editor) =>e.chain().focus().setHorizontalRule().run() },
+  { key: 'hardBreak', icon: <CornerDownLeftIcon />, action: (e: Editor) =>e.chain().focus().setHardBreak().run() },
+]
+
+const ALIGNMENT = [
+  { key: 'alignLeft', icon: <AlignLeftIcon />, value: 'left' },
+  { key: 'alignCenter', icon: <AlignCenterIcon />, value: 'center' },
+  { key: 'alignRight', icon: <AlignRightIcon />, value: 'right' },
+  { key: 'alignJustify', icon: <AlignJustifyIcon />, value: 'justify' },
 ]
 
 
@@ -135,7 +113,6 @@ export default function TiptapToolbar({ editor }: Props) {
       <ToolbarGroup className="" >
         <HeadingDropdown editor={editor} />
         <FontSizeDropdown editor={editor} />
-
         {TEXT_MARKS.map(btn => (
           <ToolbarButton
             key={btn.key}
@@ -146,18 +123,12 @@ export default function TiptapToolbar({ editor }: Props) {
             {btn.icon}
           </ToolbarButton>
         ))}
-
-        <Button data-active-state={state.strike ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleStrike().run()}><StrikethroughIcon /></Button>
-        <Button data-active-state={state.code ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleCode().run()}><CodeIcon /></Button>
-        {/*   
       </ToolbarGroup>
-  */}
+      
         <ToolbarSeparator />
 
         {/* HEADINGS */}
-        {/*   
       <ToolbarGroup>
-  */}
         {/*
         <Button data-active-state={state.h1 ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}><Heading1 /></Button>
         <Button data-active-state={state.h2 ? 'on' : 'off'} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}><Heading2 /></Button>

@@ -33,11 +33,11 @@ jobs:
           npx cap sync android
 
       # 5️⃣ Setup Java
-      - name: Setup Java 17
+      - name: Setup Java  
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
 
       # 6️⃣ Make gradlew executable
       - name: Make gradlew executable

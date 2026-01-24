@@ -1,30 +1,28 @@
-name: Android Build
+name: Android Release
 
 on:
-  workflow_dispatch:   # Manual trigger
+  release:
+    types: [published]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build-android:
+  android-release:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repo
       - uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node
       - uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      # 3️⃣ Setup PNPM
       - uses: pnpm/action-setup@v3
         with:
           version: 9
 
-      # 4️⃣ Install frontend deps & build
       - name: Build Web & Sync Capacitor
         run: |
           cd frontend
@@ -32,26 +30,21 @@ jobs:
           pnpm run build
           npx cap sync android
 
-      # 5️⃣ Setup Java
-      - name: Setup Java  
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
 
-      # 6️⃣ Make gradlew executable
       - name: Make gradlew executable
         run: chmod +x frontend/android/gradlew
 
-      # 7️⃣ Build debug APK
       - name: Build Debug APK
         run: |
           cd frontend/android
           ./gradlew assembleDebug
 
-      # 8️⃣ Upload APK as artifact
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload APK to Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: Notes-Android-APK
-          path: frontend/android/app/build/outputs/apk/debug/app-debug.apk
+          files: frontend/android/app/build/outputs/apk/debug/app-debug.apk

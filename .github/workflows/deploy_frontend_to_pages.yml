@@ -56,3 +56,65 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+  build-android:
+    runs-on: ubuntu-latest
+    needs: deploy   # wait for pages deploy (optional but clean)
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install frontend deps
+        working-directory: frontend
+        run: pnpm install
+
+      - name: Build web app
+        working-directory: frontend
+        run: pnpm run build
+
+      - name: Sync Capacitor
+        working-directory: frontend
+        run: npx cap sync android
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build Debug APK
+        working-directory: frontend/android
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Notes-Android-APK
+          path: frontend/android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Update README with APK link
+        run: |
+          APK_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          sed -i "/## 📱 Android App/,+2c\\## 📱 Android App\n\n⬇️ **Latest APK:**  \n$APK_URL" README.md
+
+      - name: Commit README update
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add README.md
+          git commit -m "chore: update Android APK link" || echo "No changes"
+          git push
+          

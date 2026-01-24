@@ -48,4 +48,8 @@ Notes turns your ideas, quotes, and short writings into a personal library you e
 * Thinkers and journalers who enjoy short-form notes
 
 ---
+## 📱 Android App
+
+⬇️ **Latest APK:**  
+(Updated automatically)
 

@@ -15,35 +15,46 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Use Node 20 for sharp compatibility
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
 
       - uses: pnpm/action-setup@v3
         with:
           version: 9
 
-      - name: Build Web & Sync Capacitor
+      # Build frontend and generate Capacitor assets (icons/splash)
+      - name: Build Web & Generate Assets
         run: |
           cd frontend
           pnpm install
           pnpm run build
+          npx @capacitor/assets generate \
+            --android \
+            --assetPath public/logo \
+            --iconBackgroundColor "#eeeeee" \
+            --iconBackgroundColorDark "#222222"
           npx cap sync android
 
+      # Setup Java for Gradle
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
 
+      # Make Gradle executable
       - name: Make gradlew executable
         run: chmod +x frontend/android/gradlew
 
+      # Build APK
       - name: Build Debug APK
         run: |
           cd frontend/android
           ./gradlew assembleDebug
 
+      # Upload APK to GitHub Release
       - name: Upload APK to Release
         uses: softprops/action-gh-release@v2
         with:

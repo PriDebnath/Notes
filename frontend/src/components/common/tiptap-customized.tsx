@@ -15,6 +15,10 @@ import Highlight from "@tiptap/extension-highlight";
 import { TableKit } from '@tiptap/extension-table'
 import { TextStyle, FontSize } from '@tiptap/extension-text-style'
 import Image from '@tiptap/extension-image'
+// import Table from "@tiptap/extension-table"
+// import TableRow from "@tiptap/extension-table-row"
+// import TableCell from "@tiptap/extension-table-cell"
+// import TableHeader from "@tiptap/extension-table-header"
 
 
 interface Props {
@@ -35,6 +39,9 @@ const Tiptap = (props: Props) => {
       TextStyle, 
       FontSize,
       Image.configure({
+        inline: false,
+        allowBase64: true,
+        resizable: true,
         resize: {
           enabled: true,
           alwaysPreserveAspectRatio: true,
@@ -48,7 +55,9 @@ const Tiptap = (props: Props) => {
     nested: true,
   }),
   TableKit,
-  
+//   Table.configure({
+//   resizable: true,
+// })
   ], // define your extension array
     content: value,
     editorProps: {

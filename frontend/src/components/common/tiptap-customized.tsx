@@ -104,8 +104,8 @@ const Tiptap = (props: Props) => {
           "   bottom-0",
           " left-0",
           "   right-0",
-          "  border",
-          "  rounded-t-xl"
+          "  ",
+          " "
         )}
         initial={{ scale: 0.8, }}
         animate={{
@@ -118,7 +118,9 @@ const Tiptap = (props: Props) => {
           damping: 30,    // how quickly it settles
         }}
       >
+        <div className="flex justify-self-center w-full md:w-3/4 border  rounded-t-xl">
         <TiptapToolbar editor={editor} />
+        </div>
       </motion.div>
       {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
       <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}

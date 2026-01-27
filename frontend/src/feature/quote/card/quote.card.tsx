@@ -114,12 +114,12 @@ const QuoteCard = (props: Props) => {
                 <div className="flex w-full items-end justify-between gap-2">
                     {infoType == "tags" && <ListTags tags={quote.tags!} />}
                     {infoType == "created_at" && (
-                        <p className="p-0 text-xs text-muted-foreground">  {
+                        <p className="p-0 text-[0.615rem] text-muted-foreground">  {
                             formatDate(quote.created_at!)
                         }</p>
                     )}
                     {infoType == "updated_at" && (
-                        <p className="p-0 text-xs text-muted-foreground">  {
+                        <p className="p-0 text-[0.615rem] text-muted-foreground">  {
                             formatDate(quote.updated_at!)
                         }</p>
                     )}

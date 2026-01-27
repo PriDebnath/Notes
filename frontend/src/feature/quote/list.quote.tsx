@@ -49,7 +49,7 @@ export function ListQuote(props: Props) {
   }
 
   if ((!quotes || quotes.length === 0) && !loading) {
-    return <p className="w-full text-center text-muted-foreground">
+    return <p className="w-full flex items-center justify-center h-48 text-muted-foreground">
       No secrets written. For now.
     </p>
   }

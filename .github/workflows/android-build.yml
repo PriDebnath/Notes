@@ -15,10 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Use Node 20 for sharp compatibility
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - uses: pnpm/action-setup@v3
         with:
@@ -30,12 +29,9 @@ jobs:
           cd frontend
           pnpm install
           pnpm run build
-          npx @capacitor/assets generate \
-            --android \
-            --assetPath public/logo \
-            --iconBackgroundColor "#eeeeee" \
-            --iconBackgroundColorDark "#222222"
-          npx cap sync android
+          pnpm run android:assets:generate 
+          pnpm run android:sync 
+            
 
       # Setup Java for Gradle
       - name: Setup Java

@@ -32,12 +32,13 @@
     "build:github": "vite build --mode github",
     "lint": "eslint .",
     "preview": "vite preview",
-    "android:assets:generate":  "npx @capacitor/assets generate --android --assetPath public/logo --iconBackgroundColor \"#eeeeee\" --iconBackgroundColorDark \"#222222\"",
+    "android:assets:generate": "npx @capacitor/assets generate --android --assetPath public/logo --iconBackgroundColor \"#eeeeee\" --iconBackgroundColorDark \"#222222\"",
     "android:sync": "npx cap sync android",
     "android:open": "npx cap open android"
   },
   "dependencies": {
     "@capacitor/android": "^8.0.1",
+    "@capacitor/app": "^8.0.0",
     "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.0.1",
     "@capacitor/core": "^8.0.1",

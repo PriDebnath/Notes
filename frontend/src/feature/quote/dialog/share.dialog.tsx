@@ -17,27 +17,27 @@ import { ListTags } from "@/feature/quote/list.tags";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { Separator } from "@/components/ui/separator";
 import { htmlToPlainText } from "@/helper/html-to-text";
-import type { QuoteFormData } from "@/model/index.model";
+import type { QuoteFormData, Status } from "@/model/index.model";
 import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
-import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy,Images, LoaderCircle, Save, Share } from "lucide-react";
+import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share } from "lucide-react";
+import { exportAsImage } from "@/helper/html-to-image";
+import { ShareButton } from "@/feature/quote/dialog/component/share-button";
 
 interface Props {
   quoteFormData: QuoteFormData
 }
 
-type Status = "idle" | "pending" | "success"
 
 export function ShareBackground(props: Props) {
   const { quoteFormData } = props
   const { buildStyle } = useBackground()
   const noteRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
-  
-  const [ shareStatus, setShareStatus] = useState<Status>("idle")
-  const [ downloadStatus, setDownloadStatus] = useState<Status>("idle")
-  const [ textCopyStatus, setTextCopyStatus] = useState<Status>("idle")
-  const [ imageCopyStatus, setImageCopyStatus] = useState<Status>("idle")
-  
+
+  const [downloadStatus, setDownloadStatus] = useState<Status>("idle")
+  const [textCopyStatus, setTextCopyStatus] = useState<Status>("idle")
+  const [imageCopyStatus, setImageCopyStatus] = useState<Status>("idle")
+
   const [dimensions, setDimensions] = useState({ width: 320, height: 240 })
   const cardStyle = buildStyle(quoteFormData.texture!, quoteFormData.pri_set!)
 
@@ -60,73 +60,31 @@ export function ShareBackground(props: Props) {
     setDimensions({ width: ratio.width, height: ratio.height })
   }
 
-  const exportAsImage = async () => {
-    if (!noteRef.current) return
-    const dataUrl = await toPng(noteRef.current, {
-      pixelRatio: 2,        // crisp image
-      //backgroundColor: "#fff"
-      cacheBust: true,
-      backgroundColor: cardStyle.backgroundColor
-    })
 
-    const link = document.createElement("a")
-    const fileName = "note-by-pri-" + new Date().getTime() + "-.png"
-    link.download = fileName
-    link.href = dataUrl
-    link.click()
-
-    return dataUrl
-  }
-
-  const exportAndShare = async (dataUrl: string) => {
-    // dataUrl is base64 
-    // convert base64 → Blob → File
-    const res = await fetch(dataUrl)
-    const blob = await res.blob()
-    const fileName = "note-by-pri-" + new Date().getTime() + "-.png"
-    const file = new File([blob], fileName, { type: "image/png" })
-
-    // mobile share
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({
-        files: [file],
-        title: "Note 💙",
-        text: "Sharing a quote 💙",
-      })
-    } else {
-      // fallback download
-      const link = document.createElement("a")
-      const fileName = "note-by-pri-" + new Date().getTime() + "-.png"
-      link.download = fileName
-      link.href = dataUrl
-      link.click()
-    }
-  }
-  
-  const handleDownload = async ()=>{
+  const handleDownload = async () => {
     setDownloadStatus("pending")
-    await exportAsImage()
+    await exportAsImage(noteRef.current, { backgroundColor: cardStyle.backgroundColor! })
     setDownloadStatus("success")
-    
-    setTimeout(()=>{
-     setDownloadStatus("idle") 
+
+    setTimeout(() => {
+      setDownloadStatus("idle")
     }, 3000)
   }
-  
+
   const handleTextCopy = async () => {
-        setTextCopyStatus("pending")
-        const text =  htmlToPlainText(quoteFormData.text!)
-        await window.navigator.clipboard.writeText(text!)
-        setTextCopyStatus("success")
-    
-        setTimeout(()=>{
-         setTextCopyStatus("idle") 
-        }, 3000)
-    }
-    
+    setTextCopyStatus("pending")
+    const text = htmlToPlainText(quoteFormData.text!)
+    await window.navigator.clipboard.writeText(text!)
+    setTextCopyStatus("success")
+
+    setTimeout(() => {
+      setTextCopyStatus("idle")
+    }, 3000)
+  }
+
   const handleImageCopy = async () => {
     setImageCopyStatus("pending")
-    const dataUrl = await exportAsImage()
+    const dataUrl = await exportAsImage(noteRef.current, { backgroundColor: cardStyle.backgroundColor! })
     if (!dataUrl) return
     const res = await fetch(dataUrl)
     const blob = await res.blob()
@@ -135,33 +93,21 @@ export function ShareBackground(props: Props) {
     ])
     setImageCopyStatus("success")
 
-    setTimeout(()=>{
-     setImageCopyStatus("idle") 
+    setTimeout(() => {
+      setImageCopyStatus("idle")
     }, 3000)
   }
-  
-  const handleShare = async ()=>{
-    setShareStatus("pending")
-    const dataUrl = await exportAsImage()
-    if (!dataUrl) return
-    exportAndShare(dataUrl)
-  
-    setShareStatus("success")
 
-    setTimeout(()=>{
-     setShareStatus("idle") 
-    }, 3000)
-  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-                    
+
         <Button variant="outline" size="icon"
-        className={
-          cn(
-            open ? "text-primary" : ""
-          )} >
+          className={
+            cn(
+              open ? "text-primary" : ""
+            )} >
           <Share />
         </Button>
       </DialogTrigger>
@@ -254,17 +200,17 @@ export function ShareBackground(props: Props) {
                 aria-label="Download quote"
                 size={"lg"}
               >
-                {downloadStatus == "idle" && <CircleArrowDown /> }
-                {downloadStatus == "pending" && <LoaderCircle className="animate-spin" /> }
-                {downloadStatus == "success" && <CircleCheckBig className="text-green-500" /> }
+                {downloadStatus == "idle" && <CircleArrowDown />}
+                {downloadStatus == "pending" && <LoaderCircle className="animate-spin" />}
+                {downloadStatus == "success" && <CircleCheckBig className="text-green-500" />}
               </Button>
               <p className="text-xs text-center">
-                {downloadStatus == "idle" && "Download" }
+                {downloadStatus == "idle" && "Download"}
                 {downloadStatus == "pending" && "Downloading"}
-                {downloadStatus == "success" &&  "Downloaded"}
+                {downloadStatus == "success" && "Downloaded"}
               </p>
             </div>
-            
+
             <div className="flex flex-col gap-4 items-center">
               <Button
                 variant="outline"
@@ -274,17 +220,17 @@ export function ShareBackground(props: Props) {
                   handleTextCopy()
                 }}
               >
-                {textCopyStatus == "idle" && <Copy /> }
-                {textCopyStatus == "pending" && <LoaderCircle className="animate-spin" /> }
-                {textCopyStatus == "success" && <CircleCheckBig className="text-green-500" /> }
+                {textCopyStatus == "idle" && <Copy />}
+                {textCopyStatus == "pending" && <LoaderCircle className="animate-spin" />}
+                {textCopyStatus == "success" && <CircleCheckBig className="text-green-500" />}
               </Button>
-              
+
               <p className="text-xs text-center">
-                {textCopyStatus == "idle" && "Copy Text" }
+                {textCopyStatus == "idle" && "Copy Text"}
                 {textCopyStatus == "pending" && "Copying..."}
-                {textCopyStatus == "success" &&  "Copied Text"}
+                {textCopyStatus == "success" && "Copied Text"}
               </p>
-           
+
             </div>
 
             <div className="flex flex-col gap-4  items-center">
@@ -296,35 +242,24 @@ export function ShareBackground(props: Props) {
                   handleImageCopy()
                 }}
               >
-                {imageCopyStatus == "idle" && <Images /> }
-                {imageCopyStatus == "pending" && <LoaderCircle className="animate-spin" /> }
-                {imageCopyStatus == "success" && <CircleCheckBig className="text-green-500" /> }
+                {imageCopyStatus == "idle" && <Images />}
+                {imageCopyStatus == "pending" && <LoaderCircle className="animate-spin" />}
+                {imageCopyStatus == "success" && <CircleCheckBig className="text-green-500" />}
               </Button>
               <p className="text-xs text-center">
-                {imageCopyStatus == "idle" && "Copy Image" }
+                {imageCopyStatus == "idle" && "Copy Image"}
                 {imageCopyStatus == "pending" && "Copying..."}
-                {imageCopyStatus == "success" &&  "Copied Image"}
+                {imageCopyStatus == "success" && "Copied Image"}
               </p>
             </div>
 
             <div className="flex flex-col gap-4 items-center">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={async (e) => {
-                  e.preventDefault()
-                  handleShare()
-                }}
-              >
-                {shareStatus == "idle" && <Share /> }
-                {shareStatus == "pending" && <LoaderCircle className="animate-spin" /> }
-                {shareStatus == "success" && <CircleCheckBig className="text-green-500" /> }
-              </Button>
-              <p className="text-xs text-center">
-                {shareStatus == "idle" && "Share" }
-                {shareStatus == "pending" && "Sharing..."}
-                {shareStatus == "success" &&  "Shareable"}
-              </p>
+
+              <ShareButton
+                elementRef={noteRef}
+                option={{ backgroundColor: cardStyle.backgroundColor! }}
+                key={'ShareButton'}
+              />
             </div>
 
           </div>
@@ -334,3 +269,4 @@ export function ShareBackground(props: Props) {
     </Dialog>
   );
 }
+

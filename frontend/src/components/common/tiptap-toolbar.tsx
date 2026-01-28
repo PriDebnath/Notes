@@ -40,7 +40,7 @@ import {
   TrashIcon,
 } from 'lucide-react'
 import { Separator } from '@radix-ui/react-dropdown-menu'
-import TableSelect from './table-select'
+import TableSelect from '@/components/common/table-select'
 
 /* ------------------------------------------------------------------ */
 /* Types */
@@ -98,11 +98,11 @@ const LINKS_MEDIA: ToolbarBtn[] = [
   },
   { key: 'unlink', icon: <UnlinkIcon />, action: e => e.chain().focus().unsetLink().run() },
   { key: 'image', icon: <ImageIcon />, action: e => e.chain().focus().setImage({ src: prompt('Image URL') || '' }).run() },
-  {
-    key: 'table',
-    icon: <TableIcon />,
-    action: e => e.commands.insertTable({ rows: 3, cols: 3, withHeaderRow: true }),
-  },
+  // {
+  //   key: 'table',
+  //   icon: <TableIcon />,
+  //   action: e => e.commands.insertTable({ rows: 3, cols: 3, withHeaderRow: true }),
+  // },
 ]
 
 const HISTORY: ToolbarBtn[] = [

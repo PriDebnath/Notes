@@ -12,13 +12,9 @@ import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
-import { TableKit } from '@tiptap/extension-table'
+import { Table, TableCell, TableHeader, TableKit, TableRow } from '@tiptap/extension-table'
 import { TextStyle, FontSize } from '@tiptap/extension-text-style'
 import Image from '@tiptap/extension-image'
-// import Table from "@tiptap/extension-table"
-// import TableRow from "@tiptap/extension-table-row"
-// import TableCell from "@tiptap/extension-table-cell"
-// import TableHeader from "@tiptap/extension-table-header"
 
 
 interface Props {
@@ -41,7 +37,6 @@ const Tiptap = (props: Props) => {
       Image.configure({
         inline: false,
         allowBase64: true,
-        resizable: true,
         resize: {
           enabled: true,
           alwaysPreserveAspectRatio: true,
@@ -54,10 +49,10 @@ const Tiptap = (props: Props) => {
   TaskItem.configure({
     nested: true,
   }),
-  TableKit,
-//   Table.configure({
-//   resizable: true,
-// })
+
+             TableKit.configure({
+        table: { resizable: true },
+      }),
   ], // define your extension array
     content: value,
     editorProps: {

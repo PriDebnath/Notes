@@ -91,7 +91,9 @@ const TableSelect = ({ editor }: TableSelectProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 m-0 p-0 " align="start">
         {/* <div className="sticky top-0 z-10 backdrop-blur-sm">
-          <DropdownMenuLabel className=" ">Tags</DropdownMenuLabel>
+          <DropdownMenuLabel className="flex items-center gap-2">
+             <Table />  Table
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
         </div> */}
         {TABLE_OPERATIONS.map((option) => (

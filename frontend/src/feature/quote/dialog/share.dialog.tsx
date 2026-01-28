@@ -24,6 +24,7 @@ import { exportAsImage } from "@/helper/html-to-image";
 import { ShareButton } from "@/feature/quote/dialog/component/share-button";
 import { DownloadButton } from "@/feature/quote/dialog/component/download-button";
 import { CopyTextButton } from "@/feature/quote/dialog/component/copy-text-button";
+import { CopyImageButton } from "@/feature/quote/dialog/component/copy-image-button";
 
 interface Props {
   quoteFormData: QuoteFormData
@@ -36,7 +37,6 @@ export function ShareBackground(props: Props) {
   const noteRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
 
-  const [imageCopyStatus, setImageCopyStatus] = useState<Status>("idle")
 
   const [dimensions, setDimensions] = useState({ width: 320, height: 240 })
   const cardStyle = buildStyle(quoteFormData.texture!, quoteFormData.pri_set!)
@@ -65,21 +65,6 @@ export function ShareBackground(props: Props) {
 
 
 
-  const handleImageCopy = async () => {
-    setImageCopyStatus("pending")
-    const dataUrl = await exportAsImage(noteRef.current, { backgroundColor: cardStyle.backgroundColor! })
-    if (!dataUrl) return
-    const res = await fetch(dataUrl)
-    const blob = await res.blob()
-    await navigator.clipboard.write([
-      new ClipboardItem({ "image/png": blob })
-    ])
-    setImageCopyStatus("success")
-
-    setTimeout(() => {
-      setImageCopyStatus("idle")
-    }, 3000)
-  }
 
 
   return (
@@ -171,41 +156,28 @@ export function ShareBackground(props: Props) {
           <Separator className="bg-border" />
           {/* Action */}
 
-          <div className="flex items-center   gap-6 ">
+          <section className="flex items-center   gap-6 ">
             <div className="flex flex-col gap-4 items-center">
-          <DownloadButton
-            elementRef={noteRef}
+              <DownloadButton
+                elementRef={noteRef}
                 option={{ backgroundColor: cardStyle.backgroundColor! }}
                 key={'DownloadButton'}
-           />
+              />
             </div>
 
             <div className="flex flex-col gap-4 items-center">
-       <CopyTextButton text={quoteFormData.text!} />
+              <CopyTextButton text={quoteFormData.text!} />
             </div>
 
             <div className="flex flex-col gap-4  items-center">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={async (e) => {
-                  e.preventDefault()
-                  handleImageCopy()
-                }}
-              >
-                {imageCopyStatus == "idle" && <Images />}
-                {imageCopyStatus == "pending" && <LoaderCircle className="animate-spin" />}
-                {imageCopyStatus == "success" && <CircleCheckBig className="text-green-500" />}
-              </Button>
-              <p className="text-xs text-center">
-                {imageCopyStatus == "idle" && "Copy Image"}
-                {imageCopyStatus == "pending" && "Copying..."}
-                {imageCopyStatus == "success" && "Copied Image"}
-              </p>
+              <CopyImageButton
+                elementRef={noteRef}
+                option={{ backgroundColor: cardStyle.backgroundColor! }}
+                key={'CopyImageButton'}
+              />
             </div>
 
             <div className="flex flex-col gap-4 items-center">
-
               <ShareButton
                 elementRef={noteRef}
                 option={{ backgroundColor: cardStyle.backgroundColor! }}
@@ -213,7 +185,7 @@ export function ShareBackground(props: Props) {
               />
             </div>
 
-          </div>
+          </section>
         </div>
 
       </DialogContent>

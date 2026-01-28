@@ -40,6 +40,7 @@ import {
   TrashIcon,
 } from 'lucide-react'
 import { Separator } from '@radix-ui/react-dropdown-menu'
+import TableSelect from './table-select'
 
 /* ------------------------------------------------------------------ */
 /* Types */
@@ -207,6 +208,7 @@ export default function TiptapToolbar({ editor }: { editor: Editor }) {
       {/* ROW 4 — Links / Media */}
       <ToolbarRow>
         <RenderGroup editor={editor} state={state} items={LINKS_MEDIA} />
+        <TableSelect editor={editor}/>
         <ToolbarSeparator />
         <RenderGroup editor={editor} state={state} items={HISTORY} />
       </ToolbarRow>

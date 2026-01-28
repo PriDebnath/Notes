@@ -81,7 +81,7 @@ const QuoteCard = (props: Props) => {
                 className={cn(
                     "border p-2  bg-card rounded-xl ",
                     "flex flex-col justify-between items-start gap-2",
-                    "",
+                    "overflow-hidden",
                 )}>
                 {/* <div className="flex justify-end w-full">
                     <Button

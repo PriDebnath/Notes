@@ -16,12 +16,6 @@ export const exportAsImage = async (element: HTMLDivElement | null, option: Opti
     backgroundColor: option.backgroundColor
   })
 
-  const link = document.createElement("a")
-  const fileName = "note-by-pri-" + new Date().getTime() + "-.png"
-  link.download = fileName
-  link.href = dataUrl
-  link.click()
-
   return dataUrl
 }
 

@@ -23,6 +23,7 @@ import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCir
 import { exportAsImage } from "@/helper/html-to-image";
 import { ShareButton } from "@/feature/quote/dialog/component/share-button";
 import { DownloadButton } from "@/feature/quote/dialog/component/download-button";
+import { CopyTextButton } from "@/feature/quote/dialog/component/copy-text-button";
 
 interface Props {
   quoteFormData: QuoteFormData
@@ -35,7 +36,6 @@ export function ShareBackground(props: Props) {
   const noteRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
 
-  const [textCopyStatus, setTextCopyStatus] = useState<Status>("idle")
   const [imageCopyStatus, setImageCopyStatus] = useState<Status>("idle")
 
   const [dimensions, setDimensions] = useState({ width: 320, height: 240 })
@@ -63,16 +63,7 @@ export function ShareBackground(props: Props) {
 
 
 
-  const handleTextCopy = async () => {
-    setTextCopyStatus("pending")
-    const text = htmlToPlainText(quoteFormData.text!)
-    await window.navigator.clipboard.writeText(text!)
-    setTextCopyStatus("success")
 
-    setTimeout(() => {
-      setTextCopyStatus("idle")
-    }, 3000)
-  }
 
   const handleImageCopy = async () => {
     setImageCopyStatus("pending")
@@ -190,25 +181,7 @@ export function ShareBackground(props: Props) {
             </div>
 
             <div className="flex flex-col gap-4 items-center">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleTextCopy()
-                }}
-              >
-                {textCopyStatus == "idle" && <Copy />}
-                {textCopyStatus == "pending" && <LoaderCircle className="animate-spin" />}
-                {textCopyStatus == "success" && <CircleCheckBig className="text-green-500" />}
-              </Button>
-
-              <p className="text-xs text-center">
-                {textCopyStatus == "idle" && "Copy Text"}
-                {textCopyStatus == "pending" && "Copying..."}
-                {textCopyStatus == "success" && "Copied Text"}
-              </p>
-
+       <CopyTextButton text={quoteFormData.text!} />
             </div>
 
             <div className="flex flex-col gap-4  items-center">

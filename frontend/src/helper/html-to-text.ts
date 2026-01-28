@@ -1,6 +1,8 @@
 export function htmlToPlainText(html: string) {
-  if (!html) return ""
-
+  if (!html) {
+    console.warn('No html found')
+    return ""
+  }
   const BLOCK_TAGS =
     /<\/(p|div|h1|h2|h3|h4|h5|h6|li|ul|ol|blockquote|pre|section|article|header|footer|tr|table)>/gi
 

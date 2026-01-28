@@ -1,5 +1,9 @@
 import DOMPurify from 'dompurify'
 
-export const sanitizeHTML = (html: string): string =>{
- return  DOMPurify.sanitize(html)
+export const sanitizeHTML = (html: string): string => {
+    if (!html) {
+        console.warn('No html found')
+        return ""
+    }
+    return DOMPurify.sanitize(html)
 }

@@ -29,6 +29,11 @@ jobs:
           pnpm install
           pnpm run build
 
+      - name: Inject build timestamp
+        run: |
+          echo '{ "lastDeployed": "'$(date -u +'%Y-%m-%dT%H:%M:%SZ')'", "deployedBy": "Pritam Debnath" }' \
+          > frontend/dist/last-deployed.json
+          
       # 👇 Generate Android project fresh
       - name: Generate Android project
         run: |

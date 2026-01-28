@@ -57,7 +57,9 @@ export function SettingComponent(props: Props) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="p-4 gap-2  overflow-auto" aria-describedby="Settings">
+      <DialogContent 
+      className="p-4 gap-2  max-h-[90vh] overflow-auto"
+       aria-describedby="Settings">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>

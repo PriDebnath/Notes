@@ -22,6 +22,7 @@ import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-backgro
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share } from "lucide-react";
 import { exportAsImage } from "@/helper/html-to-image";
 import { ShareButton } from "@/feature/quote/dialog/component/share-button";
+import { DownloadButton } from "@/feature/quote/dialog/component/download-button";
 
 interface Props {
   quoteFormData: QuoteFormData
@@ -34,7 +35,6 @@ export function ShareBackground(props: Props) {
   const noteRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
 
-  const [downloadStatus, setDownloadStatus] = useState<Status>("idle")
   const [textCopyStatus, setTextCopyStatus] = useState<Status>("idle")
   const [imageCopyStatus, setImageCopyStatus] = useState<Status>("idle")
 
@@ -61,15 +61,7 @@ export function ShareBackground(props: Props) {
   }
 
 
-  const handleDownload = async () => {
-    setDownloadStatus("pending")
-    await exportAsImage(noteRef.current, { backgroundColor: cardStyle.backgroundColor! })
-    setDownloadStatus("success")
 
-    setTimeout(() => {
-      setDownloadStatus("idle")
-    }, 3000)
-  }
 
   const handleTextCopy = async () => {
     setTextCopyStatus("pending")
@@ -190,25 +182,11 @@ export function ShareBackground(props: Props) {
 
           <div className="flex items-center   gap-6 ">
             <div className="flex flex-col gap-4 items-center">
-              <Button
-                className=""
-                variant={"outline"}
-                onClick={async (e) => {
-                  e.preventDefault()
-                  handleDownload()
-                }}
-                aria-label="Download quote"
-                size={"lg"}
-              >
-                {downloadStatus == "idle" && <CircleArrowDown />}
-                {downloadStatus == "pending" && <LoaderCircle className="animate-spin" />}
-                {downloadStatus == "success" && <CircleCheckBig className="text-green-500" />}
-              </Button>
-              <p className="text-xs text-center">
-                {downloadStatus == "idle" && "Download"}
-                {downloadStatus == "pending" && "Downloading"}
-                {downloadStatus == "success" && "Downloaded"}
-              </p>
+          <DownloadButton
+            elementRef={noteRef}
+                option={{ backgroundColor: cardStyle.backgroundColor! }}
+                key={'DownloadButton'}
+           />
             </div>
 
             <div className="flex flex-col gap-4 items-center">

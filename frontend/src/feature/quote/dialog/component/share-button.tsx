@@ -1,8 +1,8 @@
-import React, { useState, type RefObject } from "react"
 import { Button } from "@/components/ui/button"
 import type { Status } from "@/model/index.model"
-import { exportAsImage, exportAndShare } from "@/helper/html-to-image"
+import React, { useState, type RefObject } from "react"
 import { Share, LoaderCircle, CircleCheckBig } from "lucide-react"
+import { exportAsImage, exportAndShare } from "@/helper/html-to-image"
 
 
 interface Option {

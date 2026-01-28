@@ -21,30 +21,37 @@ export const ShareButton = (props: Props) => {
     const [shareStatus, setShareStatus] = useState<Status>("idle")
 
     const shareImageAndroid = async (dataUrl: string) => {
-        setShareStatus("pending")
+        try {
+            setShareStatus("pending")
 
-        // split base64
-        const base64 = dataUrl.split(",")[1]
-        const fileName = "note-by-pri-" + new Date().getTime() + "-.png"
+            const base64 = dataUrl.split(",")[1]
+            if (!base64) throw new Error("Invalid data URL")
 
-        // save file
-        const saved = await Filesystem.writeFile({
-            path: fileName,
-            data: base64,
-            directory: Directory.Cache,
-        })
+            const fileName = `note-by-pri-${Date.now()}.png`
 
-        // share file URI
-        await Share.share({
-            title: "Note 💙",
-            text: "Sharing a note 💙",
-            url: saved.uri,
-            dialogTitle: "Share Note",
-        })
-        setShareStatus("success")
-        setTimeout(() => {
+            const saved = await Filesystem.writeFile({
+                path: fileName,
+                data: base64,
+                directory: Directory.Cache,
+            })
+
+            const result = await Share.share({
+                title: "Note 💙",
+                text: "Sharing a note 💙",
+                url: saved.uri,
+                dialogTitle: "Share Note",
+            })
+
+            // only success if actually shared
+            if (result?.activityType) {
+                setShareStatus("success")
+            } else {
+                setShareStatus("idle")
+            }
+        } catch (err) {
+            console.error(err)
             setShareStatus("idle")
-        }, 3000)
+        }
     }
 
 

@@ -2,7 +2,10 @@ import { Button } from "@/components/ui/button"
 import type { Status } from "@/model/index.model"
 import React, { useState, type RefObject } from "react"
 import { exportAsImage, exportAndShare } from "@/helper/html-to-image"
-import { Share, LoaderCircle, CircleCheckBig, CircleArrowDown } from "lucide-react"
+import { ShareIcon, LoaderCircle, CircleCheckBig, CircleArrowDown } from "lucide-react"
+import { Capacitor } from "@capacitor/core"
+import { Directory, Filesystem } from "@capacitor/filesystem"
+import { Share } from "@capacitor/share"
 
 
 interface Option {
@@ -27,25 +30,46 @@ export const DownloadButton = (props: Props) => {
             const dataUrl = await exportAsImage(elementRef.current, {
                 backgroundColor: option.backgroundColor,
             })
-            if (!dataUrl) {
-                console.warn('No dataUrl found')
-                return
+
+            if (!dataUrl) throw new Error("No image generated")
+
+            const fileName = `note-by-pri-${Date.now()}.png`
+
+            // 🟢 WEB
+            if (!Capacitor.isNativePlatform()) {
+                const link = document.createElement("a")
+                link.href = dataUrl
+                link.download = fileName
+                link.click()
             }
-            const link = document.createElement("a")
-            const fileName = "note-by-pri-" + new Date().getTime() + "-.png"
-            link.download = fileName
-            link.href = dataUrl
-            link.click()
+            // 🟢 ANDROID / NATIVE
+            else {
+                const base64 = dataUrl.split(",")[1]
+                if (!base64) throw new Error("Invalid base64")
+
+                const saved = await Filesystem.writeFile({
+                    path: fileName,
+                    data: base64,
+                    directory: Directory.Cache,
+                })
+
+                await Share.share({
+                    title: "Note 💙",
+                    text: "Sharing a note 💙",
+                    url: saved.uri,
+                    dialogTitle: "Share Note",
+                })
+            }
+
             setDownloadStatus("success")
         } catch (err) {
             console.error("Download failed", err)
             setDownloadStatus("idle")
         }
 
-        setTimeout(() => {
-            setDownloadStatus("idle")
-        }, 3000)
+        setTimeout(() => setDownloadStatus("idle"), 3000)
     }
+
     return (
         <React.Fragment>
             <Button

@@ -3,6 +3,25 @@
   :first-child {
     margin-top: 0;
   }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    border-radius: var(--radius);
+    overflow: hidden; 
+    
+    th,
+    td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.75rem;
+    }
+
+    th {
+      background: var(--muted);
+      font-weight: 500;
+    }
+  }
 
   /* List styles */
   ul,

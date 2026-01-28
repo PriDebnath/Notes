@@ -23,34 +23,34 @@ jobs:
         with:
           version: 9
 
-      # Build frontend and generate Capacitor assets (icons/splash)
-      - name: Build Web & Generate Assets
+      - name: Install deps & build web
         run: |
           cd frontend
           pnpm install
           pnpm run build
-          pnpm run android:assets:generate 
-          pnpm run android:sync 
-            
 
-      # Setup Java for Gradle
+      # 👇 Generate Android project fresh
+      - name: Generate Android project
+        run: |
+          cd frontend
+          rm -rf android
+          npx cap add android
+          npx cap sync android
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
 
-      # Make Gradle executable
       - name: Make gradlew executable
         run: chmod +x frontend/android/gradlew
 
-      # Build APK
       - name: Build Debug APK
         run: |
           cd frontend/android
           ./gradlew assembleDebug
 
-      # Upload APK to GitHub Release
       - name: Upload APK to Release
         uses: softprops/action-gh-release@v2
         with:

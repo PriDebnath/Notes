@@ -79,7 +79,7 @@ export default function ChooseBackground(props: Props) {
           </div>
 
           {/* Live preview */}
-          <div className="w-full h-48 rounded-lg mb-4 overflow-hidden shadow">
+          <div className="w-full h-48 rounded-lg mb-4 overflow-hidden shadow border">
             <div
               className="w-full h-full"
               style={buildStyle(selectedTexture!, selectedPreset)}

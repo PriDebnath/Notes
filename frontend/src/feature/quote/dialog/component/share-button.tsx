@@ -77,10 +77,10 @@ export const ShareButton = (props: Props) => {
     }
 
     return (
-        <React.Fragment>
+        <div className="flex flex-col gap-2 items-center">
             <Button
                 variant="outline"
-                size="lg"
+                size="sm"
                 onClick={async (e) => {
                     e.preventDefault()
                     handleShare()
@@ -90,10 +90,11 @@ export const ShareButton = (props: Props) => {
                 {shareStatus == "pending" && <LoaderCircle className="animate-spin" />}
                 {shareStatus == "success" && <CircleCheckBig className="text-green-500" />}
             </Button>
-            <p className="text-xs text-center">
+            <p className="text-[0.5rem] text-center">
                 {shareStatus == "idle" && "Share"}
                 {shareStatus == "pending" && "Sharing..."}
                 {shareStatus == "success" && "Shareable"}
             </p>
-        </React.Fragment>)
+        </div>
+    )
 }

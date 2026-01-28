@@ -47,17 +47,11 @@ export const DownloadButton = (props: Props) => {
                 const base64 = dataUrl.split(",")[1]
                 if (!base64) throw new Error("Invalid base64")
 
-                const saved = await Filesystem.writeFile({
-                    path: fileName,
+                await Filesystem.writeFile({
+                    path: `Saved Notes/${fileName}`, // 👈 folder here
                     data: base64,
-                    directory: Directory.Cache,
-                })
-
-                await Share.share({
-                    title: "Note 💙",
-                    text: "Sharing a note 💙",
-                    url: saved.uri,
-                    dialogTitle: "Share Note",
+                    directory: Directory.Documents, // 👈 important
+                    recursive: true, // 👈 ensures folder is created
                 })
             }
 
@@ -71,7 +65,7 @@ export const DownloadButton = (props: Props) => {
     }
 
     return (
-        <React.Fragment>
+        <div className="flex flex-col gap-2 items-center">
             <Button
                 className=""
                 variant={"outline"}
@@ -80,16 +74,17 @@ export const DownloadButton = (props: Props) => {
                     handleDownload()
                 }}
                 aria-label="Download quote"
-                size={"lg"}
+                size={"sm"}
             >
                 {downloadStatus == "idle" && <CircleArrowDown />}
                 {downloadStatus == "pending" && <LoaderCircle className="animate-spin" />}
                 {downloadStatus == "success" && <CircleCheckBig className="text-green-500" />}
             </Button>
-            <p className="text-xs text-center">
+            <p className="text-[0.5rem] text-center">
                 {downloadStatus == "idle" && "Download"}
                 {downloadStatus == "pending" && "Downloading"}
                 {downloadStatus == "success" && "Downloaded"}
             </p>
-        </React.Fragment>)
+        </div>
+    )
 }

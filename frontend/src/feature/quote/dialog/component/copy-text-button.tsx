@@ -25,10 +25,10 @@ export const CopyTextButton = (props: Props) => {
   }
 
   return (
-    <React.Fragment>
+            <div className="flex flex-col gap-2 items-center">
       <Button
         variant="outline"
-        size="lg"
+        size="sm"
         onClick={(e) => {
           e.preventDefault()
           handleTextCopy()
@@ -39,11 +39,11 @@ export const CopyTextButton = (props: Props) => {
         {textCopyStatus == "success" && <CircleCheckBig className="text-green-500" />}
       </Button>
 
-      <p className="text-xs text-center">
+      <p className="text-[0.5rem] text-center">
         {textCopyStatus == "idle" && "Copy Text"}
         {textCopyStatus == "pending" && "Copying..."}
         {textCopyStatus == "success" && "Copied Text"}
       </p>
 
-    </React.Fragment>)
+    </div>)
 }

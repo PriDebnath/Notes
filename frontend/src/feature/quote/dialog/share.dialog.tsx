@@ -37,8 +37,7 @@ export function ShareBackground(props: Props) {
   const noteRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
 
-
-  const [dimensions, setDimensions] = useState({ width: 320, height: 240 })
+  const [dimensions, setDimensions] = useState({ width: 200, height: 400 })
   const cardStyle = buildStyle(quoteFormData.texture!, quoteFormData.pri_set!)
 
   const aspectRatios = [
@@ -60,17 +59,9 @@ export function ShareBackground(props: Props) {
     setDimensions({ width: ratio.width, height: ratio.height })
   }
 
-
-
-
-
-
-
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-
         <Button variant="outline" size="icon"
           className={
             cn(
@@ -155,36 +146,23 @@ export function ShareBackground(props: Props) {
 
           <Separator className="bg-border" />
           {/* Action */}
-
-          <section className="flex items-center   gap-6 ">
-            <div className="flex flex-col gap-4 items-center">
-              <DownloadButton
-                elementRef={noteRef}
-                option={{ backgroundColor: cardStyle.backgroundColor! }}
-                key={'DownloadButton'}
-              />
-            </div>
-
-            <div className="flex flex-col gap-4 items-center">
-              <CopyTextButton text={quoteFormData.text!} />
-            </div>
-
-            <div className="flex flex-col gap-4  items-center">
-              <CopyImageButton
-                elementRef={noteRef}
-                option={{ backgroundColor: cardStyle.backgroundColor! }}
-                key={'CopyImageButton'}
-              />
-            </div>
-
-            <div className="flex flex-col gap-4 items-center">
-              <ShareButton
-                elementRef={noteRef}
-                option={{ backgroundColor: cardStyle.backgroundColor! }}
-                key={'ShareButton'}
-              />
-            </div>
-
+          <section className="flex items-center justify-between   gap-2 ">
+            <DownloadButton
+              elementRef={noteRef}
+              option={{ backgroundColor: cardStyle.backgroundColor! }}
+              key={'DownloadButton'}
+            />
+            <CopyTextButton text={quoteFormData.text!} />
+            <CopyImageButton
+              elementRef={noteRef}
+              option={{ backgroundColor: cardStyle.backgroundColor! }}
+              key={'CopyImageButton'}
+            />
+            <ShareButton
+              elementRef={noteRef}
+              option={{ backgroundColor: cardStyle.backgroundColor! }}
+              key={'ShareButton'}
+            />
           </section>
         </div>
 

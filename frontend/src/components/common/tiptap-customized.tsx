@@ -32,31 +32,37 @@ const Tiptap = (props: Props) => {
     extensions: [
       StarterKit,
       Highlight,
-      TextStyle, 
+      TextStyle,
       FontSize,
+      // ListItem.configure({
+      //   HTMLAttributes: {
+      //     class: 'list-item',
+      //   },
+      // })
+      // ,
       Image.configure({
         inline: false,
         allowBase64: true,
         resize: {
           enabled: true,
-           directions: ['top', 'bottom', 'left', 'right'], // can be any direction or diagonal combination
-    minWidth: 50,
-    minHeight: 50,
+          directions: ['top', 'bottom', 'left', 'right'], // can be any direction or diagonal combination
+          minWidth: 50,
+          minHeight: 50,
           alwaysPreserveAspectRatio: true,
         },
       }),
       TextAlign.configure({
-    types: ["heading", "paragraph"],
-  }),
-    TaskList,
-  TaskItem.configure({
-    nested: true,
-  }),
+        types: ["heading", "paragraph"],
+      }),
+      TaskList,
+      TaskItem.configure({
+        nested: true,
+      }),
 
-             TableKit.configure({
+      TableKit.configure({
         table: { resizable: true },
       }),
-  ], // define your extension array
+    ], // define your extension array
     content: value,
     editorProps: {
       attributes: {
@@ -126,7 +132,7 @@ const Tiptap = (props: Props) => {
         }}
       >
         <div className="flex justify-self-center w-full md:w-3/4 border  rounded-t-xl">
-        <TiptapToolbar editor={editor} />
+          <TiptapToolbar editor={editor} />
         </div>
       </motion.div>
       {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>

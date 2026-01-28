@@ -121,12 +121,13 @@ function RenderGroup({
   state,
   items,
 }: {
-  editor: Editor
-  state: any
-  items: ToolbarBtn[]
+  editor: Editor;
+  state: any;
+  items: ToolbarBtn[];
+
 }) {
   return (
-    <ToolbarGroup>
+    <ToolbarGroup className=' '>
       {items.map(btn => (
         <ToolbarButton
           key={btn.key}
@@ -184,15 +185,26 @@ export default function TiptapToolbar({ editor }: { editor: Editor }) {
 
       {/* ROW 1 — Text / Headings */}
       <ToolbarRow>
-        <ToolbarGroup>
+        <ToolbarGroup className='flex flex-wrap'>
           <HeadingDropdown editor={editor} />
           <FontSizeDropdown editor={editor} />
-          <RenderGroup editor={editor} state={state} items={TEXT_MARKS} />
+          {TEXT_MARKS.map(btn => (
+            <ToolbarButton
+              key={btn.key}
+              title={btn.key}
+              active={btn.active?.(state)}
+              disabled={btn.disabled?.(state)}
+              onClick={() => btn.action(editor)}
+            >
+              {btn.icon}
+            </ToolbarButton>
+          ))}
         </ToolbarGroup>
       </ToolbarRow>
 
       {/* ROW 2 — Lists & Blocks */}
       <ToolbarRow>
+        <ToolbarSeparator />
         <RenderGroup editor={editor} state={state} items={ALIGNMENT} />
         <ToolbarSeparator />
         <RenderGroup editor={editor} state={state} items={LISTS} />
@@ -207,15 +219,16 @@ export default function TiptapToolbar({ editor }: { editor: Editor }) {
 
       {/* ROW 4 — Links / Media */}
       <ToolbarRow>
+        <ToolbarSeparator />
         <RenderGroup editor={editor} state={state} items={LINKS_MEDIA} />
-        <TableSelect editor={editor}/>
+        <TableSelect editor={editor} />
         <ToolbarSeparator />
         <RenderGroup editor={editor} state={state} items={HISTORY} />
       </ToolbarRow>
 
       {/* ROW 5 — History / Cleanup */}
       {/* <ToolbarRow> */}
-        {/* <RenderGroup editor={editor} state={state} items={HISTORY} /> */}
+      {/* <RenderGroup editor={editor} state={state} items={HISTORY} /> */}
       {/* </ToolbarRow> */}
 
     </Toolbar>

@@ -9,6 +9,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+*{
+  /* border: 1px solid rgba(218, 2, 2, 0.3); */
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

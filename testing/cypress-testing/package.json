@@ -22,8 +22,7 @@
     "android:sync": "npx cap sync android",
     "android:open": "npx cap open android"
   },
-  "dependencies": {
-      },
   "devDependencies": {
-    }
+    "cypress": "^15.10.0"
+  }
 }

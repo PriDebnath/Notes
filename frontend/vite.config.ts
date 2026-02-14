@@ -5,7 +5,6 @@ import tailwindcss from '@tailwindcss/vite'
 import routerPlugin from '@tanstack/router-plugin/vite'
 import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa'
 
-
 const vitePWAOptions: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
 
@@ -54,7 +53,7 @@ export default defineConfig(({ mode }) => {
     test: {
       globals: true, // Setting globals: true exposes the describe and it functions on the global object, so you don't need to import them in every test file. 
       environment: 'jsdom',
-      // setupFiles: './src/test/setup.js',
+      // setupFiles: './test-setup.ts',
     },
     plugins: [
       react({

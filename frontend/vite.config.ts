@@ -53,6 +53,8 @@ export default defineConfig(({ mode }) => {
     test: {
       globals: true, // Setting globals: true exposes the describe and it functions on the global object, so you don't need to import them in every test file. 
       environment: 'jsdom',
+        //  reporters: ["default", "html"]
+
       // setupFiles: './test-setup.ts',
     },
     plugins: [

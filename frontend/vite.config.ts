@@ -2,8 +2,8 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import routerPlugin from '@tanstack/router-plugin/vite'
 import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa'
+import routerPlugin, { tanstackRouter } from '@tanstack/router-plugin/vite'
 
 const vitePWAOptions: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
@@ -50,13 +50,6 @@ export default defineConfig(({ mode }) => {
     // Android → "./"
     // GitHub Pages → "/Notes/"
     base: isGithub ? '/Notes/' : './',
-    test: {
-      globals: true, // Setting globals: true exposes the describe and it functions on the global object, so you don't need to import them in every test file. 
-      environment: 'jsdom',
-        //  reporters: ["default", "html"]
-
-      // setupFiles: './test-setup.ts',
-    },
     plugins: [
       react({
         babel: {
@@ -65,8 +58,24 @@ export default defineConfig(({ mode }) => {
       }),
       tailwindcss(),
       routerPlugin(),
+      // tanstackRouter({
+      //   // Configure for test environment
+      //   routesDirectory: './src/routes',
+      //   generatedRouteTree: './src/routeTree.gen.ts',
+      //   // disableLogging: true,
+      // }),
       VitePWA(vitePWAOptions),
     ],
+
+    test: {
+      globals: true, // Setting globals: true exposes the describe and it functions on the global object, so you don't need to import them in every test file. 
+      environment: 'jsdom',
+      //  reporters: ["default", "html"]
+      typecheck: { enabled: true },
+      watch: true,
+      // Ensure route tree is generated before tests
+      setupFiles: ['./src/test/test-utils.ts'],
+    },
 
     resolve: {
       alias: {

@@ -144,7 +144,7 @@ export function QuoteListPage() {
 
       {/* Floating Add Button */}
       <nav className="flex justify-center">
-        <Link to="/new">
+        <Link to="/new" title='new'>
           <Button
             size="icon-lg"
             className="fixed bottom-8  -translate-x-8 rounded-full aspect-square scale-150"

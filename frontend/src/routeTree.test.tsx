@@ -1,7 +1,7 @@
 // https://tanstack.com/router/latest/docs/how-to/test-file-based-routing
 import { routeTree } from './routeTree.gen'
 import { describe, it, expect } from 'vitest'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { QuoteListPage } from "@/page/quote/quote-list.page"
 import { router } from './provider/tanstack-router.provider'
 import { renderWithFileRoutes } from '@/test/file-route-utils';
@@ -42,6 +42,12 @@ describe('Individual Route Components', async () => {
         await router.navigate({ to: '/' })
         await renderWithFileRoutes(<QuoteListPage />)
         expect(await screen.getByTitle('new')).toBeInTheDocument()
+        expect(await screen.findByLabelText("loading-list")).toBeInTheDocument()
+
+        act(async () => {
+            //   /* finish loading suspended data */
+            expect(await screen.findByLabelText("list")).toBeInTheDocument()
+        });
     })
 })
 

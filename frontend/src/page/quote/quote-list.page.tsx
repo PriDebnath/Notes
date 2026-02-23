@@ -15,15 +15,16 @@ import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Suspense, lazy } from 'react'
-const ListQuote = lazy(() => import('@/feature/quote/list.quote').then(mod => ({ default: mod.ListQuote })))
 import { deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { TagFilter } from '@/feature/quote/popover/filter.popover'
 import type { Quote, QuoteDetails, QuoteFormData, Tag, SortOption } from '@/model/index.model'
-const DeleteQuoteDialog = lazy(() => import('@/feature/quote/dialog/delete.dialog'))
-const SettingComponent = lazy(() => import('@/feature/quote/dialog/setting.dialog').then(mod => ({ default: mod.SettingComponent })))
 import { useGetAllQuoteDetails } from '@/api-hook/use-get-all-quote-details.hook'
 import { useSortStore } from '@/store/use-sort.store'
 import { toggleQuotePinned } from '@/db/quote.db'
+
+const DeleteQuoteDialog = lazy(() => import('@/feature/quote/dialog/delete.dialog'))
+const ListQuote = lazy(() => import('@/feature/quote/list.quote').then(mod => ({ default: mod.ListQuote })))
+const SettingComponent = lazy(() => import('@/feature/quote/dialog/setting.dialog').then(mod => ({ default: mod.SettingComponent })))
 
 export function QuoteListPage() {
   const {
@@ -131,7 +132,7 @@ export function QuoteListPage() {
 
       {/* Content */}
       <main className="px-2">
-        <Suspense fallback={null}>
+        <Suspense fallback={<div aria-label='loading-list'>Loading list...</div>}>
           <ListQuote
             loading={isLoading}
             quotes={quotes}

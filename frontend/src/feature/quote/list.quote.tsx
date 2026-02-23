@@ -55,7 +55,7 @@ export function ListQuote(props: Props) {
   }
 
   return (
-    <div>
+    <div aria-label='list'>
       <Masonry
         breakpointCols={breakpointCols}
         className="flex gap-2"

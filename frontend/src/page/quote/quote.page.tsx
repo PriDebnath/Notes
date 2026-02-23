@@ -177,6 +177,7 @@ export function QuotePage(props: Props) {
     <div
       ref={noteRef}
       className='w-full h-dvh flex justify-self-center md:w-3/4'>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={quoteId}

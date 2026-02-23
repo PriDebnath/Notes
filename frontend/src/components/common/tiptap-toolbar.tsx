@@ -132,6 +132,7 @@ function RenderGroup({
         <ToolbarButton
           key={btn.key}
           title={btn.key}
+          aria-label={btn.key}
           active={btn.active?.(state)}
           disabled={btn.disabled?.(state)}
           onClick={() => btn.action(editor)}
@@ -192,6 +193,7 @@ export default function TiptapToolbar({ editor }: { editor: Editor }) {
             <ToolbarButton
               key={btn.key}
               title={btn.key}
+              aria-label={btn.key}
               active={btn.active?.(state)}
               disabled={btn.disabled?.(state)}
               onClick={() => btn.action(editor)}

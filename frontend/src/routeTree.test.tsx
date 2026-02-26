@@ -41,16 +41,16 @@ describe('Individual Route Components', async () => {
     it('should test home route component', async () => {
         await router.navigate({ to: '/' })
         await renderWithFileRoutes(<QuoteListPage />)
-        const addButton = await screen.getByTitle('new')
+        const addButton = screen.getByTitle('new')
         expect(addButton).toBeInTheDocument()
 
-        const loader = screen.findByLabelText("loading-list")
+        const loader = await screen.findByLabelText("loading-list")
         if (loader) {
             expect(await loader).toBeInTheDocument()
             await waitForElementToBeRemoved(loader, { timeout: 8000 })
         }
 
-        const list = screen.findByLabelText("list")
+        const list = await screen.findByLabelText("list")
         expect(await list).toBeInTheDocument()
     })
 })

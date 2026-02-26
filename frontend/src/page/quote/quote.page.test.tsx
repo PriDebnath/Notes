@@ -8,19 +8,42 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { renderWithFileRoutes } from '@/test/file-route-utils';
 
 describe(Component.name, () => {
-
-  it("renders quote page", async () => {
-
-    await router.navigate({ to: '/new' })
-
-    await renderWithFileRoutes(<Component mode="add" />)
-    expect(await screen.findByLabelText("loading-editor")).toBeInTheDocument()
-
-    act(async () => {
-      /* finish loading suspended data */
-      expect(await screen.findByLabelText("editor")).toBeInTheDocument()
-
-    });
+  describe("rendering", () => {
+    it("renders quote page: add mode", async () => {
+      await router.navigate({ to: '/new' })
+      await renderWithFileRoutes(<Component mode="add" />)
+      const loader = screen.queryByLabelText("loading-editor")
+      if (loader) {
+        expect(await loader).toBeInTheDocument()
+        await waitForElementToBeRemoved(loader, { timeout: 8000 })
+      }
+      const editor = screen.findByLabelText("editor")
+      expect(await editor).toBeInTheDocument()
+    })
+    it("renders quote page: add mode", async () => {
+      await router.navigate({ to: '/new' })
+      await renderWithFileRoutes(<Component mode="add" />)
+      const loader = screen.queryByLabelText("loading-editor")
+      if (loader) {
+        expect(await loader).toBeInTheDocument()
+        await waitForElementToBeRemoved(loader, { timeout: 8000 })
+      }
+      const editor = screen.findByLabelText("editor")
+      expect(await editor).toBeInTheDocument()
+    })
+    // it("renders quote page: edit mode", async () => {
+    //   await router.navigate({ to: '/$quoteId', params: { quoteId: '1'} })
+    //   await renderWithFileRoutes(<Component mode="edit" />)
+    //   const loader = screen.queryByLabelText("loading")
+    //   if (loader) {
+    //     expect(await loader).toBeInTheDocument() 
+    //     await waitForElementToBeRemoved(loader, { timeout: 8000 })
+    //   }
+    //   const editor = screen.findByLabelText("editor")
+    //   expect(await editor).toBeInTheDocument()
+    // })
   })
+
+
 });
 

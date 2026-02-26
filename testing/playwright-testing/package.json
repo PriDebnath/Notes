@@ -1,0 +1,29 @@
+{
+  "name": "playwright-testing",
+  "author": "Pritam Debnath",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pridebnath/notes.git"
+  },
+  "homepage": "https://pridebnath.github.io/notes/",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "install:packages": "pnpm install",
+    "install:packages:lockfile": "pnpm install --frozen-lockfile",
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "build:github": "vite build --mode github",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "android:assets:generate": "npx @capacitor/assets generate --android --assetPath public/logo --iconBackgroundColor \"#eeeeee\" --iconBackgroundColorDark \"#222222\"",
+    "android:sync": "npx cap sync android",
+    "android:open": "npx cap open android"
+  },
+  "dependencies": {
+      },
+  "devDependencies": {
+    }
+}

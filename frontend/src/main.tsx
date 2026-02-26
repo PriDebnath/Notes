@@ -1,15 +1,12 @@
 import './index.css'
 import './tiptap.scss'
 // import App from './App.tsx'
-import { StrictMode } from 'react'
+import { StrictMode, type JSX } from 'react'
 import { createRoot } from 'react-dom/client'
-import { TanstackRouterProvider } from '@/provider/tanstack-router.provider.tsx'
-import { TanstackQueryClientProvider } from '@/provider/query-client.provider.tsx'
+import { MainProvider } from '@/provider/main.provider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <TanstackQueryClientProvider>
-      <TanstackRouterProvider />
-    </TanstackQueryClientProvider>
+    <MainProvider />
   </StrictMode>,
 )

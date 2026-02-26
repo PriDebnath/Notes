@@ -1,24 +1,28 @@
 
 
+import { lazy, Suspense } from 'react'
 import { Route } from '@/routes/$quoteId'
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Button } from '@/components/ui/button'
 import { useBlocker } from "@tanstack/react-router"
 import TagField from "@/feature/quote/form-field/tag"
-import {  addQuote, updateQuote } from '@/db/quote.db'
+import { addQuote, updateQuote } from '@/db/quote.db'
 import { AnimatePresence, motion } from 'framer-motion'
 import { addOrGetTag } from '@/legacy-indexDB-db/tag.db'
 import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
-import { lazy, Suspense } from 'react'
-const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
-const ShareBackground = lazy(() => import('@/feature/quote/dialog/share.dialog').then(mod => ({ default: mod.ShareBackground })))
 import { useGetQuoteDetails } from '@/api-hook/use-get-quote-details.hook'
-import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
 import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
+import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
+
+const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
+const ShareBackground = lazy(
+  () => import('@/feature/quote/dialog/share.dialog')
+    .then(mod => ({ default: mod.ShareBackground }))
+)
 
 
 interface Props {
@@ -28,7 +32,7 @@ interface Props {
 export function QuotePage(props: Props) {
   const { mode } = props
   const navigate = useNavigate()
-const noteRef = useRef<HTMLDivElement>(null)
+  const noteRef = useRef<HTMLDivElement>(null)
 
   // Only read params in edit mode
   const params = mode === 'edit' ? Route.useParams() : null
@@ -47,10 +51,10 @@ const noteRef = useRef<HTMLDivElement>(null)
     id: quote?.id,
     text: quote?.text || "",
     tags: quote?.tags?.map((tag) => tag.name) || [],
-    texture: quote?.texture  ,
+    texture: quote?.texture,
     pri_set: quote?.pri_set,
   }))
-// console.log({quoteData})
+  // console.log({quoteData})
 
   const onTagChoose = (tag: string) => {
     setQuoteData(prev => {
@@ -127,7 +131,7 @@ const noteRef = useRef<HTMLDivElement>(null)
 
     // Add new tags for this quote
     for (const tag of tags) {
-      await addTagToQuote( quoteId!, tag.name!)
+      await addTagToQuote(quoteId!, tag.name!)
     }
     navigate({
       to: '/'
@@ -169,13 +173,14 @@ const noteRef = useRef<HTMLDivElement>(null)
   }, [blocker.status, quoteData, handleSubmit])
 
 
- 
+
 
   return (
 
     <div
-    ref={noteRef}
+      ref={noteRef}
       className='w-full h-dvh flex justify-self-center md:w-3/4'>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={quoteId}
@@ -194,13 +199,13 @@ const noteRef = useRef<HTMLDivElement>(null)
             </Link>
             <div className="flex gap-2" >
               <Suspense fallback={null}>
-                <ShareBackground quoteFormData={quoteData}/>
+                <ShareBackground quoteFormData={quoteData} />
               </Suspense>
-              <ChooseBackground onValueUpdate={onValueUpdate}/>
+              <ChooseBackground onValueUpdate={onValueUpdate} />
             </div>
           </div>
 
-          {isLoading && <div>Loading...</div>}
+          {isLoading && <div aria-label="loading" >Loading...</div>}
 
           {error && <div className="text-destructive">Error: {error}</div>}
 
@@ -213,15 +218,17 @@ const noteRef = useRef<HTMLDivElement>(null)
               (
                 <div className="grid gap-4">
                   <div className="grid gap-3">
-                  {/*
+                    {/*
                     <Label htmlFor="name-1">Quote</Label>
                     */}
-                    <Suspense fallback={<div>Loading editor...</div>}>
-                      <Tiptap
-                        key={quoteData?.id ?? "new"}
-                        value={quoteData?.text}
-                        quoteFormData={quoteData}
-                        onValueUpdate={onValueUpdate} />
+                    <Suspense fallback={<div aria-label='loading-editor'>Loading editor...</div>}>
+                      <div aria-label="editor" >
+                        <Tiptap
+                          key={quoteData?.id ?? "new"}
+                          value={quoteData?.text}
+                          quoteFormData={quoteData}
+                          onValueUpdate={onValueUpdate} />
+                      </div>
                     </Suspense>
                   </div>
                 </div>

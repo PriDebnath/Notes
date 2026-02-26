@@ -1,0 +1,20 @@
+{
+  "name": "cypress-testing",
+  "author": "Pritam Debnath",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pridebnath/notes.git"
+  },
+  "homepage": "https://pridebnath.github.io/notes/",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "initial:install": "pnpm exec cypress install",
+    "start": "pnpm cypress open",
+    "open": "pnpm cypress open"
+  },
+  "devDependencies": {
+    "cypress": "^15.10.0"
+  }
+}

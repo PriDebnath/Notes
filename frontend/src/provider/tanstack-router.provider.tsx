@@ -14,7 +14,7 @@ if (redirectPath && redirectPath !== window.location.pathname + window.location.
 const basepath = import.meta.env.BASE_URL; // auto matches Vite base
 console.log({basepath});
 
-const router = createRouter({
+export const router = createRouter({
   routeTree,
   basepath,
 });

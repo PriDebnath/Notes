@@ -1,6 +1,7 @@
-import { vi } from "vitest"
 import '@testing-library/jest-dom';
-
+import { afterEach, vi } from "vitest"
+import { cleanup } from "@testing-library/react"
+ 
 // // Official jsdom polyfill for matchMedia
 if (!window.matchMedia) {
   Object.defineProperty(window, "matchMedia", {
@@ -18,9 +19,9 @@ if (!window.matchMedia) {
   })
 }
 
-// afterEach(() => {
-//   cleanup();
-// });
+afterEach(() => {
+  cleanup();
+});
 
 
 

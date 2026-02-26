@@ -1,7 +1,7 @@
-// https://tanstack.com/router/latest/docs/how-to/test-file-based-routing
+// // https://tanstack.com/router/latest/docs/how-to/test-file-based-routing
 import { routeTree } from './routeTree.gen'
 import { describe, it, expect } from 'vitest'
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitForElementToBeRemoved } from '@testing-library/react'
 import { QuoteListPage } from "@/page/quote/quote-list.page"
 import { router } from './provider/tanstack-router.provider'
 import { renderWithFileRoutes } from '@/test/file-route-utils';
@@ -41,13 +41,17 @@ describe('Individual Route Components', async () => {
     it('should test home route component', async () => {
         await router.navigate({ to: '/' })
         await renderWithFileRoutes(<QuoteListPage />)
-        expect(await screen.getByTitle('new')).toBeInTheDocument()
-        expect(await screen.findByLabelText("loading-list")).toBeInTheDocument()
+        const addButton = await screen.getByTitle('new')
+        expect(addButton).toBeInTheDocument()
 
-        act(async () => {
-            //   /* finish loading suspended data */
-            expect(await screen.findByLabelText("list")).toBeInTheDocument()
-        });
+        const loader = screen.findByLabelText("loading-list")
+        if (loader) {
+            expect(await loader).toBeInTheDocument()
+            await waitForElementToBeRemoved(loader, { timeout: 8000 })
+        }
+
+        const list = screen.findByLabelText("list")
+        expect(await list).toBeInTheDocument()
     })
 })
 

@@ -1,10 +1,10 @@
 // // https://tanstack.com/router/latest/docs/how-to/test-file-based-routing
 import { routeTree } from './routeTree.gen'
 import { describe, it, expect } from 'vitest'
-import { act, screen, waitForElementToBeRemoved } from '@testing-library/react'
-import { QuoteListPage } from "@/page/quote/quote-list.page"
 import { router } from './provider/tanstack-router.provider'
 import { renderWithFileRoutes } from '@/test/file-route-utils';
+import { QuoteListPage } from "@/page/quote/quote-list/quote-list.page"
+import { act, screen, waitForElementToBeRemoved } from '@testing-library/react'
 
 describe('Generated Route Tree', () => {
     it('should generate route tree from file structure', () => {
@@ -29,7 +29,6 @@ describe('Generated Route Tree', () => {
 
         const routePaths = getAllRoutePaths(routeTree)
         console.log({ routePaths });
-
 
         // Test that expected routes are present
         expect(routePaths)?.toContain('/')

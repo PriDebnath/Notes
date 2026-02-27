@@ -207,7 +207,7 @@ export function QuotePage(props: Props) {
 
           {isLoading && <div aria-label="loading" >Loading...</div>}
 
-          {error && <div className="text-destructive">Error: {error}</div>}
+          {error && <div aria-label="error" className="text-destructive">Error: {error}</div>}
 
 
           <div className="p-4 flex flex-col gap-4">
@@ -239,7 +239,9 @@ export function QuotePage(props: Props) {
   */}
             <div className="">
               <TagField onChoose={onTagChoose} />
-              <div className="flex flex-wrap gap-2">
+              <div
+                aria-label='tag-list'
+                className="flex flex-wrap gap-2">
                 {
                   quoteData?.tags && quoteData?.tags.length > 0 && (
                     quoteData?.tags.map((tag) => {
@@ -255,9 +257,8 @@ export function QuotePage(props: Props) {
                           }}
                         >
                           <Badge
-
                             variant={'outline'}
-
+                            aria-label={tag}
                             className=" bg-primary/10 border-primary/30 text-primary/90"
                           >
                             #{tag}

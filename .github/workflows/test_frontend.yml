@@ -35,7 +35,7 @@ jobs:
           cd frontend
           pnpm install
 
-      - name: tes5 frontend
+      - name: test frontend
         run: |
           cd frontend
           pnpm run test

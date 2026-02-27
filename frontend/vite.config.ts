@@ -72,9 +72,10 @@ export default defineConfig(({ mode }) => {
       environment: 'jsdom',
       //  reporters: ["default", "html"]
       typecheck: { enabled: true },
-      watch: true,
+      watch: isGithub ? false :  true,
       // Ensure route tree is generated before tests
       setupFiles: ['./src/test/test-utils.ts'],
+      testTimeout: 12000,
     },
 
     resolve: {

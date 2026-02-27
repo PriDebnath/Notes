@@ -23,7 +23,7 @@ interface Props {
 
 export function ChooseTagDropdown(props: Props) {
     const { onChoose } = props
-  const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false)
 
     const CATEGORY_TAGS = {
         emotion: [
@@ -85,19 +85,25 @@ export function ChooseTagDropdown(props: Props) {
 
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild
+                aria-label="add-tag"
+            >
                 <Button
+
                     variant="outline"
                     size="icon"
-                     className={
-                              cn("border-primary/10",
-                                open ? "text-primary" : ""
-                              )}
+                    className={
+                        cn("border-primary/10",
+                            open ? "text-primary" : ""
+                        )}
                 >
                     <PlusIcon />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 m-0 p-0 " align="start">
+            <DropdownMenuContent
+                aria-label="tags"
+                className="w-56 m-0 p-0 "
+                align="start">
                 <div className="sticky top-0 z-10 backdrop-blur-sm">
                     <DropdownMenuLabel className=" ">Tags</DropdownMenuLabel>
                     <DropdownMenuSeparator />
@@ -114,9 +120,12 @@ export function ChooseTagDropdown(props: Props) {
                                             return (
                                                 <DropdownMenuItem
                                                     key={tag}
+
                                                     onClick={() => onChoose(tag)}
                                                 >
-                                                    # {tag}
+                                                    <span aria-label={tag}>
+                                                        # {tag}
+                                                    </span>
                                                 </DropdownMenuItem>
                                             )
                                         })}
@@ -132,7 +141,7 @@ export function ChooseTagDropdown(props: Props) {
                                 onClick={() => onChoose(tag)}
                                 className="flex align-center"
                             >
-                                # {tag} 
+                                # {tag}
                             </DropdownMenuItem>
                         ))
                     }

@@ -12,7 +12,8 @@
   "scripts": {
     "initial:install": "pnpm exec cypress install",
     "start": "pnpm cypress open",
-    "open": "pnpm cypress open"
+    "open": "pnpm cypress open",
+    "convert:puppeteer": "node puppeteer-to-cypress.js input.puppeteer.js > output.puppeteer.js"
   },
   "devDependencies": {
     "cypress": "^15.10.0"

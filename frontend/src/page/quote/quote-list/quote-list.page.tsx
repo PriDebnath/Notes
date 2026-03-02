@@ -105,6 +105,7 @@ export function QuoteListPage() {
     <div className=" flex flex-col">
       {/* Sticky Header */}
       <div
+      aria-label='sticky-header'
         className="gap-2 p-2 flex flex-col sticky top-0 z-20 bg-background rounded-b"
       >
         <div className="flex justify-between">
@@ -121,11 +122,12 @@ export function QuoteListPage() {
         <InputGroup>
           <InputGroupInput
             placeholder="Search..."
+            aria-label='search-note'
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
           <InputGroupAddon>
-            <SearchIcon />
+            <SearchIcon aria-label='search-icon'/>
           </InputGroupAddon>
         </InputGroup>
 

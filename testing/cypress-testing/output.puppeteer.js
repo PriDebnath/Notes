@@ -1,16 +1,14 @@
-describe("Recorded flow", () => {
-  it("replays user actions", () => {
-    // viewport recorded: 802x633
-cy.viewport(802, 633);
-    cy.visit("http://localhost:5173/");
-    cy.contains("new")   [role="\button\"].click(29, 26);
-    cy.contains("editor")   [role="\paragraph\"].click(113.875, 13);
-    cy.get("div.flex-col > div.grid > div > div > div > div:nth-of-type(1) > div")
-  .clear()
-  .type("cypress content");
-    cy.get("html").click(681, 325);
-    cy.contains("# simple").click(84, 17);
-    cy.contains("cypress contentPFont size→← TableTag#simple").click(389.875, 314);
-    cy.get("[role=\"\link\\"]   [role=\"\button\\"]").click(14.875, 13);
-  });
-});
+
+describe('Converted Puppeteer Test', () => {
+  it('runs converted steps', () => {
+    Cypress.config('defaultCommandTimeout', 5000)
+    cy.viewport(802, 633)
+    cy.visit("http://localhost:5173/")
+    cy.get("nav button").click(41, 26)
+    cy.get("div.flex-col > div.grid > div > div > div > div:nth-of-type(1) > div").click(232.875, 76)
+    cy.get("div.flex-col > div.grid > div > div > div > div:nth-of-type(1) > div").type("cypress test")
+    cy.get("html").click(666, 333)
+    cy.get("body > div:nth-of-type(2) div:nth-of-type(6)").click(83, 25)
+    cy.get("a > button").click(10.875, 24)
+  })
+})

@@ -27,8 +27,8 @@ export function TagFilter({ tags, value, onChange }: TagFilterProps) {
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild >
+    <Popover  open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild  aria-label="open-filter">
         <Button variant="outline" className={
           cn(
             "gap-2 relative",
@@ -48,7 +48,7 @@ export function TagFilter({ tags, value, onChange }: TagFilterProps) {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-40">
+      <PopoverContent className="w-40" aria-label={'filter-by'}>
         <div className="sticky top-0 z-10 backdrop-blur-sm">
           <div className=" ">Filter by tags</div>
           <Separator className="bg-border" />
@@ -58,6 +58,7 @@ export function TagFilter({ tags, value, onChange }: TagFilterProps) {
           {tags.map(tag => (
             <Button
               key={tag}
+              aria-label={'filter-by-'+tag}
               size="sm"
               variant={value.includes(tag) ? "default" : "outline"}
               onClick={() => toggleTag(tag)}

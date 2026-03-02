@@ -11,11 +11,19 @@
   "type": "module",
   "scripts": {
     "initial:install": "pnpm exec cypress install",
-    "start": "pnpm cypress open",
+    "start": "pnpm cypress run",
     "open": "pnpm cypress open",
-    "convert:puppeteer": "node puppeteer-to-cypress.js input.puppeteer.js > output.puppeteer.js"
+    "cy:open": "npx cypress open",
+    "cy:run": "npx cypress run",
+    "convert:puppeteer": "node puppeteer-to-cypress.js input.puppeteer.js  output.puppeteer.js"
   },
   "devDependencies": {
     "cypress": "^15.10.0"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.29.1",
+    "@babel/parser": "^7.29.0",
+    "@babel/traverse": "^7.29.0",
+    "cypress-xpath": "^2.0.1"
   }
 }

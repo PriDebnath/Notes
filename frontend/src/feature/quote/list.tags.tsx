@@ -19,6 +19,7 @@ export function ListTags(props: Props) {
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <Badge
+            
               variant={'outline'}
               className=" bg-primary/10 border-primary/20 text-primary/70"
               key={tag.id}

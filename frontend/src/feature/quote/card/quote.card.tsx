@@ -172,7 +172,7 @@ const QuoteCard = (props: Props) => {
                                 e.preventDefault()
                                 onDelete(quote)
                             }}
-                            aria-label="Delete quote"
+                            aria-label={"delete-" + quote.id}
                             size={"sm"}
                         >
                             {<Trash />}

@@ -1,0 +1,257 @@
+import { QuoteListPage as Component } from "./quote-list.page"
+import { userEvent } from "@testing-library/user-event"
+import { router } from "@/provider/tanstack-router.provider"
+import { renderWithFileRoutes } from "@/test/file-route-utils"
+import { beforeEach, describe, expect, it, vi } from "vitest"
+import { logDOM, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react"
+
+// hooks
+import { useGetAllQuoteDetails } from "@/api-hook/use-get-all-quote-details.hook"
+
+// db actions
+import { deleteQuoteWithLinks } from "@/db/quote_tags.db"
+import { toggleQuotePinned } from "@/db/quote.db"
+
+// store
+import { useSortStore } from "@/store/use-sort.store"
+import type { QuoteDetails } from "@/model/index.model"
+
+vi.mock("@/api-hook/use-get-all-quote-details.hook")
+const mockUseGetAllQuoteDetails = vi.mocked(useGetAllQuoteDetails)
+type GetAllQuotesReturn = ReturnType<typeof useGetAllQuoteDetails>
+
+vi.mock('@/db/quote_tags.db')
+const mockDeleteQuoteWithLinks = vi.mocked(deleteQuoteWithLinks)
+
+beforeEach(() => {
+  ///reset mock value
+  mockUseGetAllQuoteDetails.mockReturnValue({
+    data: undefined,
+    isLoading: false,
+    error: undefined,
+    refetch: vi.fn()
+  })
+})
+ 
+describe(Component.name, () => {
+  describe("rendering", () => {
+    it("renders page with header and search", async () => {
+      await router.navigate({ to: "/" })
+      await renderWithFileRoutes(<Component />)
+      const loader = await screen.queryByLabelText("loading-list")
+      if (loader) {
+        expect(await loader).toBeInTheDocument()
+        await waitForElementToBeRemoved(loader, { timeout: 8000 })
+      }
+
+      const list = await screen.queryByLabelText("list")
+      expect(await list).toBeInTheDocument()
+
+      expect(await screen?.findByLabelText("sticky-header")).toBeInTheDocument()
+      expect(await screen?.findByLabelText("search-note")).toBeInTheDocument()
+      expect(await screen?.findByLabelText("search-icon")).toBeInTheDocument()
+      expect(await screen?.findByLabelText("settings-button")).toBeInTheDocument()
+    })
+
+    it("renders loading list", async () => {
+      mockUseGetAllQuoteDetails.mockReturnValue({
+        data: undefined,
+        isLoading: true,
+        error: undefined,
+        refetch: vi.fn(),
+      }  )
+
+      await router.navigate({ to: "/" })
+      await renderWithFileRoutes(<Component />)
+
+      const loaderList = await screen.queryByLabelText("loading-list")
+      if (loaderList) {
+        expect(await loaderList).toBeInTheDocument()
+        await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
+      }
+
+      const loader = await screen.queryByLabelText("loading")
+      expect(await loader).toBeInTheDocument()
+      logDOM(loader!)
+    })
+
+    it("renders quotes when data exists", async () => {
+      const testContent = "test quote" 
+      mockUseGetAllQuoteDetails.mockReturnValue({
+        data: [
+          {
+            id: 1,
+            text: testContent,
+            pinned: false,
+            tags: [{ id: 1, name: "life" }],
+          },
+        ],
+        isLoading: false,
+        error: undefined,
+        refetch: vi.fn(),
+      }  )
+
+      await router.navigate({ to: "/" })
+      await renderWithFileRoutes(<Component />)
+
+         const loaderList = await screen.queryByLabelText("loading-list")
+      if (loaderList) {
+        expect(await loaderList).toBeInTheDocument()
+        await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
+      }
+
+      expect(await screen.findByText(testContent)).toBeInTheDocument()
+    })
+
+    it("shows error state", async () => {
+      const errorMessage = "something went wrong"
+
+      mockUseGetAllQuoteDetails.mockReturnValue({
+        data: undefined,
+        isLoading: false,
+        error: errorMessage,
+        refetch: vi.fn(),
+      }  )
+
+      await router.navigate({ to: "/" })
+      await renderWithFileRoutes(<Component />)
+    const loaderList = await screen.queryByLabelText("loading-list")
+      if (loaderList) {
+        expect(await loaderList).toBeInTheDocument()
+        await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
+      }
+      expect(await screen.findByText(errorMessage, {exact: false})).toBeInTheDocument()
+    })
+
+    it("renders add new button with navigation link", async () => {
+      await router.navigate({ to: "/" })
+      await renderWithFileRoutes(<Component />)
+
+      expect(await screen.findByLabelText("new")).toBeInTheDocument()
+    })
+  })
+
+  describe("search filtering", () => {
+    it("filters quotes by search text", async () => {
+      mockUseGetAllQuoteDetails.mockReturnValue({
+        data: [
+          { id: 1, text: "hello world", tags: [] },
+          { id: 2, text: "goodbye world", tags: [] },
+        ],
+        isLoading: false,
+        error: undefined,
+        refetch: vi.fn(),
+      }  )
+
+      await router.navigate({ to: "/" })
+      await renderWithFileRoutes(<Component />)
+
+      const searchInput = await screen.findByLabelText("search-note")
+      await userEvent.type(searchInput, "hello")
+
+      await waitFor(() => {
+        expect(screen.getByText("hello world")).toBeInTheDocument()
+        expect(screen.queryByText("goodbye world")).not.toBeInTheDocument()
+      })
+    })
+  })
+
+  describe("tag filtering", () => {
+    it("filters quotes by tag", async () => {
+      const mockedData = {
+        data: [
+          {
+            id: 1,
+            text: "quote one",
+            tags: [{ id: 1, name: "life" }],
+          },
+          {
+            id: 2,
+            text: "quote two",
+            tags: [{ id: 2, name: "love" }],
+          },
+        ],
+        isLoading: false,
+        error: undefined,
+        refetch: vi.fn(),
+      }
+      mockUseGetAllQuoteDetails.mockReturnValue(mockedData)
+
+      await router.navigate({ to: "/" })
+      await renderWithFileRoutes(<Component />)
+      const loaderList = await screen.queryByLabelText("loading-list")
+      if (loaderList) {
+        expect(await loaderList).toBeInTheDocument()
+        await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
+      }
+
+      const firstText = screen.queryByText(mockedData.data[0].text)
+      const secondText = screen.queryByText(mockedData.data[1].text)
+
+      await expect(firstText).toBeInTheDocument()
+      await expect(secondText).toBeInTheDocument()
+
+      const openFilter = await screen.queryByLabelText("open-filter")
+      expect(await openFilter).toBeInTheDocument()
+      await userEvent.click(openFilter!, {})
+
+      const tagBox = await screen.queryByLabelText("filter-by")
+      expect(await tagBox).toBeInTheDocument()
+
+      const tagButton = await screen.queryByLabelText(
+        "filter-by-" + mockedData.data[0].tags[0].name
+      )
+      await userEvent.click(tagButton!)
+      const list = await screen.queryByLabelText("list")
+
+      expect(firstText).toBeInTheDocument()
+      expect(secondText).not.toBeInTheDocument()
+    })
+  })
+
+  describe("interaction", () => {
+    it("opens delete dialog and deletes quote", async () => {
+      const firstItem = { id: 1, text: "delete me", tags: [{ id: 1, name: "life" }] }
+      const mockedData: GetAllQuotesReturn = {
+        data: [firstItem],
+        isLoading: false,
+        error: undefined,
+        // refetch: vi.fn()
+        refetch: vi.fn(async () => {
+          mockedData.data = []
+          return {} as Awaited<ReturnType<GetAllQuotesReturn["refetch"]>>
+        })
+      }
+      mockUseGetAllQuoteDetails.mockReturnValue(mockedData)
+
+      await router.navigate({ to: "/" })
+      await renderWithFileRoutes(<Component />)
+      const loaderList = await screen.queryByLabelText("loading-list")
+      if (loaderList) {
+        expect(await loaderList).toBeInTheDocument()
+        await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
+      }
+
+      const list = await screen.queryByLabelText("list")
+      const firstText = screen.queryByText(mockedData?.data?.[0]?.text!)
+      await expect(firstText).toBeInTheDocument()
+
+      const deleteBtn = await screen.findByLabelText("delete-" + firstItem.id)
+      await userEvent.click(deleteBtn)
+      // logDOM(deleteBtn!)
+
+      const deletePopup = await screen.findByLabelText("delete")
+      await expect(deletePopup).toBeInTheDocument()
+ 
+      await userEvent.click(deletePopup, {})
+     
+      await expect(mockDeleteQuoteWithLinks).toHaveBeenCalledWith(firstItem.id)
+      await expect(mockedData.refetch).toHaveBeenCalled()
+
+      await expect(deletePopup).not.toBeInTheDocument()
+      await expect(firstText).not.toBeInTheDocument()
+    })
+
+   
+  })
+})

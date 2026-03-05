@@ -30,6 +30,7 @@ export function ListQuote(props: Props) {
       <Masonry
         breakpointCols={breakpointCols}
         className="flex gap-2"
+        aria-label="loading"
         columnClassName={columnClassName}
       >
         {Array.from({ length: 3 }).map((_, i) => {
@@ -55,7 +56,7 @@ export function ListQuote(props: Props) {
   }
 
   return (
-    <div aria-label='list'>
+    <div aria-label='list-box'>
       <Masonry
         breakpointCols={breakpointCols}
         className="flex gap-2"

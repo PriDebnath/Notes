@@ -46,8 +46,11 @@ export function SettingComponent(props: Props) {
   const lastDeployed = useLastDeployed()
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}
+    
+    >
+      <DialogTrigger asChild
+      aria-label="settings-button">
         <Button
           variant="outline"
           size="icon"
@@ -59,7 +62,8 @@ export function SettingComponent(props: Props) {
 
       <DialogContent 
       className="p-4 gap-2  max-h-[90vh] overflow-auto"
-       aria-describedby="Settings">
+       aria-describedby="Settings"
+       aria-label="settings">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>

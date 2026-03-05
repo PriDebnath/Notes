@@ -95,7 +95,9 @@ export function QuoteListPage() {
 
   if (error) {
     return (
-      <p className="w-full text-center text-destructive">
+      <p 
+          aria-label='error'
+      className="w-full text-center text-destructive">
         Error: {error}
       </p>
     )
@@ -108,7 +110,7 @@ export function QuoteListPage() {
       aria-label='sticky-header'
         className="gap-2 p-2 flex flex-col sticky top-0 z-20 bg-background rounded-b"
       >
-        <div className="flex justify-between">
+        <aside className="flex justify-between">
           <TagFilter
             tags={allTags}
             value={activeTags}
@@ -117,7 +119,7 @@ export function QuoteListPage() {
           <Suspense fallback={null}>
             <SettingComponent />
           </Suspense>
-        </div>
+        </aside>
         {/* Search */}
         <InputGroup>
           <InputGroupInput

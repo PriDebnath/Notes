@@ -15,10 +15,12 @@
     "open": "pnpm cypress open",
     "cy:open": "npx cypress open",
     "cy:run": "npx cypress run",
-    "convert:puppeteer": "node puppeteer-to-cypress.js input.puppeteer.js  output.puppeteer.js"
+    "convert:puppeteer": "node puppeteer-to-cypress.js input.puppeteer.js  output.puppeteer.ts"
   },
   "devDependencies": {
-    "cypress": "^15.10.0"
+    "@types/node": "^24.10.9",
+    "cypress": "^15.10.0",
+    "typescript": "~5.9.3"
   },
   "dependencies": {
     "@babel/generator": "^7.29.1",

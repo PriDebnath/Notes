@@ -8,7 +8,7 @@ const traverse = traverseModule.default
 const generate = generatorModule.default
 
 const inputFile = process.argv[2]
-const outputFile = process.argv[3] || 'output.puppeteer.cy.js'
+const outputFile = process.argv[3] || 'output.puppeteer.cy.ts'
 
 if (!inputFile) {
   console.log('Usage: node puppeteer-to-cypress.js input.js output.js')
@@ -136,7 +136,7 @@ function convertSelector(selector) {
   }
 
   // normal CSS
-  return `cy.get(${JSON.stringify(selector)})`
+  return `cy.get(${JSON.stringify(selector)}).eq(0).should('exist')`
 }
 
 // ================================

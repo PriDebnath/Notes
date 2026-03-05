@@ -267,6 +267,12 @@ importers:
       '@babel/traverse':
         specifier: ^7.29.0
         version: 7.29.0
+      '@babel/types':
+        specifier: ^7.29.0
+        version: 7.29.0
+      '@types/babel__traverse':
+        specifier: ^7.28.0
+        version: 7.28.0
       cypress-xpath:
         specifier: ^2.0.1
         version: 2.0.1
@@ -9192,7 +9198,7 @@ snapshots:
 
   '@types/babel__traverse@7.28.0':
     dependencies:
-      '@babel/types': 7.28.6
+      '@babel/types': 7.29.0
 
   '@types/chai@5.2.3':
     dependencies:

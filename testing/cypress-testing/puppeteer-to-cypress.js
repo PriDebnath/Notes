@@ -96,6 +96,24 @@ function convertSelector(selector) {
   selector = stripQuotes(selector)
   selector = normalizeDeepSelector(selector)
 
+// chained aria selectors
+if (selector.includes('::-p-aria') && selector.includes('>>>')) {
+  const parts = selector.split(/>>>>>|>>>>|>>>/).map(p => p.trim())
+
+  const first = parts[0]
+  const second = parts[1]
+
+  const nameMatch = first.match(/::-p-aria\((.*?)\)/)
+  const attrMatch = second?.match(/::-p-aria\((.*?)\)/)
+
+  if (nameMatch && attrMatch) {
+    const name = stripQuotes(nameMatch[1])
+    const attr = stripQuotes(attrMatch[1])
+
+    return `cy.contains(${JSON.stringify(name)}).find(${JSON.stringify(attr)})`
+  }
+}
+
   // ::-p-text(text) -> cy.contains(text)
   if (selector.includes('::-p-text(')) {
     const match = selector.match(/::-p-text\(([\s\S]*?)\)/)
@@ -142,6 +160,7 @@ function convertSelector(selector) {
 // ================================
 // PICK BEST SELECTOR FROM race()
 // ================================
+
 function pickBestSelector(raceElements) {
   if (!raceElements?.length) return null
 
@@ -152,37 +171,46 @@ function pickBestSelector(raceElements) {
 
   if (!selectors.length) return null
 
-  // remove :scope >>> etc first
   const cleaned = selectors.map(normalizeDeepSelector)
 
-  // 1️⃣ prefer REAL CSS selectors (no puppeteer pseudo)
-  const css = cleaned.find(s => !s.includes('::-p-'))
-  if (css) return css
+  // 1️⃣ Prefer ARIA names (most stable)
+  const ariaName = cleaned.find(s => {
+    if (!s.includes('::-p-aria(')) return false
+    const match = s.match(/::-p-aria\((.*?)\)/)
+    if (!match) return false
 
-  // 2️⃣ prefer meaningful text selectors (avoid "#", empty etc)
+    const content = stripQuotes(match[1]).trim()
+
+    // ignore attribute selectors and roles
+    if (content.startsWith('[')) return false
+    if (content.includes('role=')) return false
+
+    return content.length > 1
+  })
+  if (ariaName) return ariaName
+
+  // 2️⃣ Prefer meaningful visible text
   const ptext = cleaned.find(s => {
     if (!s.includes('::-p-text')) return false
     const match = s.match(/::-p-text\((.*?)\)/)
     if (!match) return false
 
     const text = stripQuotes(match[1]).trim()
-
-    // ignore weak text like "#" or empty
     return text.length > 1 && !/^#/.test(text)
   })
   if (ptext) return ptext
 
-  // 3️⃣ aria selectors but avoid generic roles
-  const aria = cleaned.find(s => {
-    if (!s.includes('::-p-aria')) return false
-    return !s.includes('role=')
-  })
-  if (aria) return aria
+  // 3️⃣ Prefer real CSS selectors
+  const css = cleaned.find(s => !s.includes('::-p-'))
+  if (css) return css
 
-  // 4️⃣ fallback
+  // 4️⃣ aria role fallback
+  const ariaRole = cleaned.find(s => s.includes('role='))
+  if (ariaRole) return ariaRole
+
+  // 5️⃣ fallback
   return cleaned[0]
 }
-
 // ================================
 // MAIN CONVERSION
 // ================================

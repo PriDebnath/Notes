@@ -97,20 +97,24 @@ function convertSelector(selector) {
   selector = normalizeDeepSelector(selector)
 
 // chained aria selectors
-if (selector.includes('::-p-aria') && selector.includes('>>>')) {
+if (selector.includes('>>>') && selector.includes('::-p-aria')) {
   const parts = selector.split(/>>>>>|>>>>|>>>/).map(p => p.trim())
 
   const first = parts[0]
   const second = parts[1]
 
-  const nameMatch = first.match(/::-p-aria\((.*?)\)/)
-  const attrMatch = second?.match(/::-p-aria\((.*?)\)/)
+  const firstMatch = first.match(/::-p-aria\((.*?)\)/)
+  const secondMatch = second?.match(/::-p-aria\((.*?)\)/)
 
-  if (nameMatch && attrMatch) {
-    const name = stripQuotes(nameMatch[1])
-    const attr = stripQuotes(attrMatch[1])
+  if (firstMatch && secondMatch) {
+    const parent = stripQuotes(firstMatch[1])
+    const child = stripQuotes(secondMatch[1])
 
-    return `cy.contains(${JSON.stringify(name)}).find(${JSON.stringify(attr)})`
+    if (child.startsWith('[')) {
+      return `cy.get('[aria-label="${parent}"]').find(${JSON.stringify(child)})`
+    }
+
+    return `cy.get('[aria-label="${parent}"]').find('[aria-label="${child}"]')`
   }
 }
 
@@ -123,28 +127,28 @@ if (selector.includes('::-p-aria') && selector.includes('>>>')) {
   }
 
   // ::-p-aria(...)
-  if (selector.includes('::-p-aria(')) {
-    const match = selector.match(/::-p-aria\(([\s\S]*?)\)/)
-    if (!match) return null
+if (selector.includes('::-p-aria(')) {
+  const match = selector.match(/::-p-aria\(([\s\S]*?)\)/)
+  if (!match) return null
 
-    const content = stripQuotes(match[1].trim())
+  const content = stripQuotes(match[1].trim())
 
-    // attribute selector
-    if (content.startsWith('[') && content.endsWith(']')) {
-      return `cy.get(${JSON.stringify(content)})`
-    }
-
-    // role=button → [role="button"]
-    if (content.includes('role=')) {
-      const roleMatch = content.match(/role\s*=\s*["']?([^"'\]]+)["']?/)
-      if (roleMatch) {
-        return `cy.get(${JSON.stringify(`[role="${roleMatch[1]}"]`)})`
-      }
-    }
-
-    // fallback → visible text
-    return `cy.contains(${JSON.stringify(content)})`
+  // attribute selector already
+  if (content.startsWith('[') && content.endsWith(']')) {
+    return `cy.get(${JSON.stringify(content)})`
   }
+
+  // role=button → [role="button"]
+  if (content.includes('role=')) {
+    const roleMatch = content.match(/role\s*=\s*["']?([^"'\]]+)["']?/)
+    if (roleMatch) {
+      return `cy.get(${JSON.stringify(`[role="${roleMatch[1]}"]`)})`
+    }
+  }
+
+  // accessible name → aria-label
+  return `cy.get(${JSON.stringify(`[aria-label="${content}"]`)})`
+}
 
   // xpath → TODO (requires plugin)
   if (selector.includes('::-p-xpath(')) {
@@ -233,7 +237,8 @@ traverse(ast, {
 
     // page.setDefaultTimeout(...)
     if (callee?.property?.name === 'setDefaultTimeout') {
-      const val = nodeToString(path.node.arguments?.[0])
+      // const val = nodeToString(path.node.arguments?.[0])
+      const val =  10000 //milisec
       cypressCommands.push(
         `Cypress.config('defaultCommandTimeout', ${val})`
       )
@@ -244,6 +249,8 @@ traverse(ast, {
     if (callee?.property?.name === 'goto') {
       const val = nodeToString(path.node.arguments?.[0])
       cypressCommands.push(`cy.visit(${val})`)
+      cypressCommands.push(`cy.visit(${val})`)
+
       return
     }
 

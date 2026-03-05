@@ -30,9 +30,11 @@ export default function DeleteQuoteDialog(props: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <form onSubmit={handleFormSubmit} aria-label="delete-note-form">
-        {/* <DialogTrigger asChild>
-          <Button variant="outline">Add Quote</Button>
-        </DialogTrigger> */}
+        {/* 
+          <DialogTrigger asChild>
+            <Button variant="outline">Add Quote</Button>
+          </DialogTrigger>
+        */}
         <DialogContent className="">
           <DialogHeader>
             <DialogTitle>
@@ -52,7 +54,7 @@ export default function DeleteQuoteDialog(props: Props) {
             <Button 
             type="submit"
              onClick={handleFormSubmit}
-             aria-label="delete-note"
+             aria-label="delete"
               variant={'destructive'} 
               className="">
               Delete Quote

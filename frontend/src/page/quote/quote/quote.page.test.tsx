@@ -1,12 +1,12 @@
 
 import { QuotePage as Component } from './quote.page';
+import { userEvent } from '@testing-library/user-event';
 import { createMemoryHistory } from '@tanstack/react-router';
 import { router } from '@/provider/tanstack-router.provider';
 import { renderWithFileRoutes } from '@/test/file-route-utils';
 import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { act, logDOM, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
 
 /// mock hook
 import { useGetQuoteDetails } from '@/api-hook/use-get-quote-details.hook';
@@ -29,7 +29,7 @@ describe(Component.name, () => {
     it("renders quote page: add mode", async () => {
       await router.navigate({ to: '/new' })
       await renderWithFileRoutes(<Component mode="add" />)
-      const loader = screen.queryByLabelText("loading-editor")
+      const loader = await screen.queryByLabelText("loading-editor")
       if (loader) {
         expect(await loader).toBeInTheDocument()
         await waitForElementToBeRemoved(loader, { timeout: 8000 })
@@ -53,7 +53,8 @@ describe(Component.name, () => {
       await router.navigate({ to: '/$quoteId', params: { quoteId: "1" } })
       await renderWithFileRoutes(<Component mode="edit" />)
 
-      const loader = screen.queryByLabelText("loading")
+      const loader =await screen.queryByLabelText("loading")
+
       if (loader) {
         expect(await loader).toBeInTheDocument()
         await waitForElementToBeRemoved(loader, { timeout: 8000 })

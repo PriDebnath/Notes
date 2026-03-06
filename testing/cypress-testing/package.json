@@ -14,7 +14,9 @@
     "start": "pnpm cypress run",
     "open": "pnpm cypress open",
     "cy:open": "npx cypress open",
+    "cy:open:github": "npx cypress open --env mode=github",
     "cy:run": "npx cypress run",
+    "cy:run:github": "npx cypress run --env mode=github",
     "convert:puppeteer": "node puppeteer-to-cypress.js input.puppeteer.js  output.puppeteer.ts"
   },
   "devDependencies": {

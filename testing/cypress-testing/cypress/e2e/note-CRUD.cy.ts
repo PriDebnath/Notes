@@ -1,7 +1,7 @@
 describe('Note CRUD', () => {
-
+let { baseUrl} = Cypress.config()
   const testApp = {
-    url: "http://localhost:5173/"
+    url: baseUrl
   }
   const testData = {
     note_text: "cypress test content",
@@ -20,7 +20,7 @@ describe('Note CRUD', () => {
     cy.get("div.flex-col > div.grid > div > div > div > div:nth-of-type(1) > div").eq(0).should('exist').type(testData.note_text)
     cy.get("#root > div > div").eq(0).should('exist').click(522, 450)
     cy.get("html").click(695, 325)
-    cy.get(`[aria-label="${testData.tag_1}"]`).click()
+    cy.get(`[aria-label="${testData.tag_1}"]`).eq(0).should("exist").scrollIntoView().click()
     cy.get("a > button").eq(0).should('exist').click(10.875, 24)
   })
 

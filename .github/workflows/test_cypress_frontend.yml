@@ -30,14 +30,15 @@ jobs:
         with:
           version: 9
 
-      - name: Install dependencies
-        run: |
-          pnpm install
+      # - name: Install dependencies
+      #   run: |
+      #     npm install
 
       - name: test frontend
         run: |
           cd testing/cypress-testing
-          pnpm run cy:run:github
+          npm install
+          npm run cy:run:github
           
 
 

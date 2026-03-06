@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  android-release:
+  android_build:
     runs-on: ubuntu-latest
 
     steps:

@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 jobs:
-  test-frontend:
+  test_cypress_frontend:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -32,7 +32,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd testing/cypress-testing
           pnpm install
 
       - name: test frontend

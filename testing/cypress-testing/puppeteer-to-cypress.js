@@ -132,22 +132,23 @@ if (selector.includes('::-p-aria(')) {
   if (!match) return null
 
   const content = stripQuotes(match[1].trim())
+const commonMethod = ".eq(0).should('exist').scrollIntoView()"
 
   // attribute selector already
   if (content.startsWith('[') && content.endsWith(']')) {
-    return `cy.get(${JSON.stringify(content)})`
+    return `cy.get('${content}')` + commonMethod
   }
 
   // role=button → [role="button"]
   if (content.includes('role=')) {
     const roleMatch = content.match(/role\s*=\s*["']?([^"'\]]+)["']?/)
     if (roleMatch) {
-      return `cy.get(${JSON.stringify(`[role="${roleMatch[1]}"]`)})`
+      return `cy.get('[role="${roleMatch[1]}"]')` + commonMethod
     }
   }
 
   // accessible name → aria-label
-  return `cy.get(${JSON.stringify(`[aria-label="${content}"]`)})`
+  return `cy.get('[aria-label="${content}"]')` + commonMethod
 }
 
   // xpath → TODO (requires plugin)
@@ -158,7 +159,7 @@ if (selector.includes('::-p-aria(')) {
   }
 
   // normal CSS
-  return `cy.get(${JSON.stringify(selector)}).eq(0).should('exist')`
+  return `cy.get(${JSON.stringify(selector)})` + commonMethod
 }
 
 // ================================
@@ -249,7 +250,6 @@ traverse(ast, {
     if (callee?.property?.name === 'goto') {
       const val = nodeToString(path.node.arguments?.[0])
       cypressCommands.push(`cy.visit(${val})`)
-      cypressCommands.push(`cy.visit(${val})`)
 
       return
     }
@@ -333,9 +333,9 @@ traverse(ast, {
         }
 
         if (x != null && y != null) {
-          cypressCommands.push(`${cySelector}.click(${x}, ${y})`)
+          cypressCommands.push(`${cySelector}.click(${x}, ${y}, {force: true})`)
         } else {
-          cypressCommands.push(`${cySelector}.click()`)
+          cypressCommands.push(`${cySelector}.click({force: true})`)
         }
       }
 

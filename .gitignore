@@ -140,3 +140,12 @@ vite.config.ts.timestamp-*
 "frontend/android/" 
 
 **/cypress/screenshots/
+
+
+# Playwright
+node_modules/
+**test-results/
+**playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

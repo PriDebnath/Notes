@@ -10,20 +10,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "install:packages": "pnpm install",
-    "install:packages:lockfile": "pnpm install --frozen-lockfile",
-    "start": "vite",
-    "dev": "vite",
-    "build": "vite build",
-    "build:github": "vite build --mode github",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "android:assets:generate": "npx @capacitor/assets generate --android --assetPath public/logo --iconBackgroundColor \"#eeeeee\" --iconBackgroundColorDark \"#222222\"",
-    "android:sync": "npx cap sync android",
-    "android:open": "npx cap open android"
+    "start": "pnpm exec playwright test",
+    "open": "pnpm exec playwright test --ui",
+    "convert:puppeteer": "node puppeteer-to-playwright.js input.puppeteer.js  output.puppeteer.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
-    "@types/node": "^24.10.9"
+    "@types/node": "^24.10.9",
+        "@babel/generator": "^7.29.1",
+    "@babel/parser": "^7.29.0",
+    "@babel/traverse": "^7.29.0",
+    "@babel/types": "^7.29.0",
+    "@types/babel__traverse": "^7.28.0",
+    "typescript": "~5.9.3"
   }
 }

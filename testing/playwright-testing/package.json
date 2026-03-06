@@ -22,8 +22,8 @@
     "android:sync": "npx cap sync android",
     "android:open": "npx cap open android"
   },
-  "dependencies": {
-      },
   "devDependencies": {
-    }
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^24.10.9"
+  }
 }

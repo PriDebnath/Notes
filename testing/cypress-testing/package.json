@@ -14,16 +14,22 @@
     "start": "pnpm cypress run",
     "open": "pnpm cypress open",
     "cy:open": "npx cypress open",
+    "cy:open:github": "npx cypress open --env mode=github",
     "cy:run": "npx cypress run",
-    "convert:puppeteer": "node puppeteer-to-cypress.js input.puppeteer.js  output.puppeteer.js"
+    "cy:run:github": "npx cypress run --env mode=github",
+    "convert:puppeteer": "node puppeteer-to-cypress.js input.puppeteer.js  output.puppeteer.ts"
   },
   "devDependencies": {
-    "cypress": "^15.10.0"
+    "@types/node": "^24.10.9",
+    "cypress": "^15.10.0",
+    "typescript": "~5.9.3"
   },
   "dependencies": {
     "@babel/generator": "^7.29.1",
     "@babel/parser": "^7.29.0",
     "@babel/traverse": "^7.29.0",
+    "@babel/types": "^7.29.0",
+    "@types/babel__traverse": "^7.28.0",
     "cypress-xpath": "^2.0.1"
   }
 }

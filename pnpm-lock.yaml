@@ -267,13 +267,25 @@ importers:
       '@babel/traverse':
         specifier: ^7.29.0
         version: 7.29.0
+      '@babel/types':
+        specifier: ^7.29.0
+        version: 7.29.0
+      '@types/babel__traverse':
+        specifier: ^7.28.0
+        version: 7.28.0
       cypress-xpath:
         specifier: ^2.0.1
         version: 2.0.1
     devDependencies:
+      '@types/node':
+        specifier: ^24.10.9
+        version: 24.10.9
       cypress:
         specifier: ^15.10.0
         version: 15.10.0
+      typescript:
+        specifier: ~5.9.3
+        version: 5.9.3
 
 packages:
 
@@ -7474,7 +7486,7 @@ snapshots:
       '@babel/parser': 7.29.0
       '@babel/template': 7.28.6
       '@babel/types': 7.29.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -9186,7 +9198,7 @@ snapshots:
 
   '@types/babel__traverse@7.28.0':
     dependencies:
-      '@babel/types': 7.28.6
+      '@babel/types': 7.29.0
 
   '@types/chai@5.2.3':
     dependencies:

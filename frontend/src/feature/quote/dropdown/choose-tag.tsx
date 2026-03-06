@@ -138,6 +138,7 @@ export function ChooseTagDropdown(props: Props) {
                         FREE_TAGS.map((tag) => (
                             <DropdownMenuItem
                                 key={tag}
+                                aria-label={tag}
                                 onClick={() => onChoose(tag)}
                                 className="flex align-center"
                             >

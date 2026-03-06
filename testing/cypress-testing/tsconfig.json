@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+        "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "baseUrl": ".",
+    "target": "es6",
+    "lib": ["es6", "dom"],
+    "types": ["cypress", "node"]
+  },
+}

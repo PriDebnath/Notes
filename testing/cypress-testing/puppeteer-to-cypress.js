@@ -8,7 +8,7 @@ const traverse = traverseModule.default
 const generate = generatorModule.default
 
 const inputFile = process.argv[2]
-const outputFile = process.argv[3] || 'output.puppeteer.cy.js'
+const outputFile = process.argv[3] || 'output.puppeteer.cy.ts'
 
 if (!inputFile) {
   console.log('Usage: node puppeteer-to-cypress.js input.js output.js')
@@ -96,6 +96,28 @@ function convertSelector(selector) {
   selector = stripQuotes(selector)
   selector = normalizeDeepSelector(selector)
 
+// chained aria selectors
+if (selector.includes('>>>') && selector.includes('::-p-aria')) {
+  const parts = selector.split(/>>>>>|>>>>|>>>/).map(p => p.trim())
+
+  const first = parts[0]
+  const second = parts[1]
+
+  const firstMatch = first.match(/::-p-aria\((.*?)\)/)
+  const secondMatch = second?.match(/::-p-aria\((.*?)\)/)
+
+  if (firstMatch && secondMatch) {
+    const parent = stripQuotes(firstMatch[1])
+    const child = stripQuotes(secondMatch[1])
+
+    if (child.startsWith('[')) {
+      return `cy.get('[aria-label="${parent}"]').find(${JSON.stringify(child)})`
+    }
+
+    return `cy.get('[aria-label="${parent}"]').find('[aria-label="${child}"]')`
+  }
+}
+
   // ::-p-text(text) -> cy.contains(text)
   if (selector.includes('::-p-text(')) {
     const match = selector.match(/::-p-text\(([\s\S]*?)\)/)
@@ -105,28 +127,29 @@ function convertSelector(selector) {
   }
 
   // ::-p-aria(...)
-  if (selector.includes('::-p-aria(')) {
-    const match = selector.match(/::-p-aria\(([\s\S]*?)\)/)
-    if (!match) return null
+if (selector.includes('::-p-aria(')) {
+  const match = selector.match(/::-p-aria\(([\s\S]*?)\)/)
+  if (!match) return null
 
-    const content = stripQuotes(match[1].trim())
+  const content = stripQuotes(match[1].trim())
+const commonMethod = ".eq(0).should('exist').scrollIntoView()"
 
-    // attribute selector
-    if (content.startsWith('[') && content.endsWith(']')) {
-      return `cy.get(${JSON.stringify(content)})`
-    }
-
-    // role=button → [role="button"]
-    if (content.includes('role=')) {
-      const roleMatch = content.match(/role\s*=\s*["']?([^"'\]]+)["']?/)
-      if (roleMatch) {
-        return `cy.get(${JSON.stringify(`[role="${roleMatch[1]}"]`)})`
-      }
-    }
-
-    // fallback → visible text
-    return `cy.contains(${JSON.stringify(content)})`
+  // attribute selector already
+  if (content.startsWith('[') && content.endsWith(']')) {
+    return `cy.get('${content}')` + commonMethod
   }
+
+  // role=button → [role="button"]
+  if (content.includes('role=')) {
+    const roleMatch = content.match(/role\s*=\s*["']?([^"'\]]+)["']?/)
+    if (roleMatch) {
+      return `cy.get('[role="${roleMatch[1]}"]')` + commonMethod
+    }
+  }
+
+  // accessible name → aria-label
+  return `cy.get('[aria-label="${content}"]')` + commonMethod
+}
 
   // xpath → TODO (requires plugin)
   if (selector.includes('::-p-xpath(')) {
@@ -136,12 +159,13 @@ function convertSelector(selector) {
   }
 
   // normal CSS
-  return `cy.get(${JSON.stringify(selector)})`
+  return `cy.get(${JSON.stringify(selector)})` + commonMethod
 }
 
 // ================================
 // PICK BEST SELECTOR FROM race()
 // ================================
+
 function pickBestSelector(raceElements) {
   if (!raceElements?.length) return null
 
@@ -152,37 +176,46 @@ function pickBestSelector(raceElements) {
 
   if (!selectors.length) return null
 
-  // remove :scope >>> etc first
   const cleaned = selectors.map(normalizeDeepSelector)
 
-  // 1️⃣ prefer REAL CSS selectors (no puppeteer pseudo)
-  const css = cleaned.find(s => !s.includes('::-p-'))
-  if (css) return css
+  // 1️⃣ Prefer ARIA names (most stable)
+  const ariaName = cleaned.find(s => {
+    if (!s.includes('::-p-aria(')) return false
+    const match = s.match(/::-p-aria\((.*?)\)/)
+    if (!match) return false
 
-  // 2️⃣ prefer meaningful text selectors (avoid "#", empty etc)
+    const content = stripQuotes(match[1]).trim()
+
+    // ignore attribute selectors and roles
+    if (content.startsWith('[')) return false
+    if (content.includes('role=')) return false
+
+    return content.length > 1
+  })
+  if (ariaName) return ariaName
+
+  // 2️⃣ Prefer meaningful visible text
   const ptext = cleaned.find(s => {
     if (!s.includes('::-p-text')) return false
     const match = s.match(/::-p-text\((.*?)\)/)
     if (!match) return false
 
     const text = stripQuotes(match[1]).trim()
-
-    // ignore weak text like "#" or empty
     return text.length > 1 && !/^#/.test(text)
   })
   if (ptext) return ptext
 
-  // 3️⃣ aria selectors but avoid generic roles
-  const aria = cleaned.find(s => {
-    if (!s.includes('::-p-aria')) return false
-    return !s.includes('role=')
-  })
-  if (aria) return aria
+  // 3️⃣ Prefer real CSS selectors
+  const css = cleaned.find(s => !s.includes('::-p-'))
+  if (css) return css
 
-  // 4️⃣ fallback
+  // 4️⃣ aria role fallback
+  const ariaRole = cleaned.find(s => s.includes('role='))
+  if (ariaRole) return ariaRole
+
+  // 5️⃣ fallback
   return cleaned[0]
 }
-
 // ================================
 // MAIN CONVERSION
 // ================================
@@ -205,7 +238,8 @@ traverse(ast, {
 
     // page.setDefaultTimeout(...)
     if (callee?.property?.name === 'setDefaultTimeout') {
-      const val = nodeToString(path.node.arguments?.[0])
+      // const val = nodeToString(path.node.arguments?.[0])
+      const val =  10000 //milisec
       cypressCommands.push(
         `Cypress.config('defaultCommandTimeout', ${val})`
       )
@@ -216,6 +250,7 @@ traverse(ast, {
     if (callee?.property?.name === 'goto') {
       const val = nodeToString(path.node.arguments?.[0])
       cypressCommands.push(`cy.visit(${val})`)
+
       return
     }
 
@@ -298,9 +333,9 @@ traverse(ast, {
         }
 
         if (x != null && y != null) {
-          cypressCommands.push(`${cySelector}.click(${x}, ${y})`)
+          cypressCommands.push(`${cySelector}.click(${x}, ${y}, {force: true})`)
         } else {
-          cypressCommands.push(`${cySelector}.click()`)
+          cypressCommands.push(`${cySelector}.click({force: true})`)
         }
       }
 

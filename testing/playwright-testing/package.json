@@ -12,7 +12,7 @@
   "scripts": {
     "start": "pnpm exec playwright test",
     "test": "pnpm exec playwright test",
-    "test:github": "cross-env MODE=github pnpm exec playwright test",
+    "test:github": "cross-env MODE=github  playwright test",
     "test:ui": "pnpm exec playwright test --ui",
     "convert:puppeteer": "node puppeteer-to-playwright.js input.puppeteer.js  output.puppeteer.ts"
   },

@@ -20,6 +20,13 @@
 ### 🔴 ↗️ Link
 https://pridebnath.github.io/Notes
 
+
+
+### 📱 Android App
+
+⬇️ Download APK  
+https://github.com/PriDebnath/Notes/releases/latest/download/app-debug.apk
+
  
 ---
 
@@ -47,9 +54,36 @@ Notes turns your ideas, quotes, and short writings into a personal library you e
 * Writers collecting ideas and snippets
 * Thinkers and journalers who enjoy short-form notes
 
+
 ---
-## 📱 Android App
 
-⬇️ Download APK  
-https://github.com/PriDebnath/Notes/releases/latest/download/app-debug.apk
+## 🧠 Engineering & Technology
 
+Built with a focus on **modern engineering practices, maintainability, and reliability**, following **production-level development standards**.
+
+### ⚙️ Frontend
+
+* Modern **component-driven architecture**
+* Clean separation of concerns
+* Focus on **performance, accessibility, and responsive UI**
+* Structured for **scalability and maintainability**
+
+### 🛠️ Backend
+
+* Clean **API design and modular services**
+* Organized data flow
+* Built for **stability and future extensibility**
+
+### 🧪 Testing
+
+* **Integration testing** for module interaction
+* **End-to-End testing** using **Cypress** and **Playwright**
+* Covers key user flows like creating, editing, and organizing notes
+
+### 🚀 Development Standards
+
+* Consistent project structure and formatting
+* Automated tests for critical features
+* Focus on **long-term maintainability**
+
+---

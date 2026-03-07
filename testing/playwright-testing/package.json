@@ -11,17 +11,20 @@
   "type": "module",
   "scripts": {
     "start": "pnpm exec playwright test",
-    "open": "pnpm exec playwright test --ui",
+    "test": "pnpm exec playwright test",
+    "test:github": "cross-env MODE=github pnpm exec playwright test",
+    "test:ui": "pnpm exec playwright test --ui",
     "convert:puppeteer": "node puppeteer-to-playwright.js input.puppeteer.js  output.puppeteer.ts"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.2",
-    "@types/node": "^24.10.9",
     "@babel/generator": "^7.29.1",
     "@babel/parser": "^7.29.0",
     "@babel/traverse": "^7.29.0",
     "@babel/types": "^7.29.0",
+    "@playwright/test": "^1.58.2",
     "@types/babel__traverse": "^7.28.0",
+    "@types/node": "^24.10.9",
+    "cross-env": "^10.1.0",
     "typescript": "~5.9.3"
   }
 }

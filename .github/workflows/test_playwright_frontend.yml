@@ -30,10 +30,15 @@ jobs:
         with:
           version: 9
 
-      - name: test frontend
+      - name: Install dependencies
         run: |
           cd testing/playwright-testing
           npm install
+          npx playwright install --with-deps
+
+      - name: Run tests
+        run: |
+          cd testing/playwright-testing
           npm run test:github
           
 

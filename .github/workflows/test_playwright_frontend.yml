@@ -33,8 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd testing/playwright-testing
-          npm install
-          npx playwright install --with-deps
+          pnpm install
 
       - name: Run tests
         run: |

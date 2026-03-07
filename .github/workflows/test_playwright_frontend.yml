@@ -34,7 +34,8 @@ jobs:
         run: |
           cd testing/playwright-testing
           pnpm install
-
+          pnpm exec playwright install
+          
       - name: Run tests
         run: |
           cd testing/playwright-testing

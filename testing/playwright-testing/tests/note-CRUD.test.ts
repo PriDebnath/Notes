@@ -1,10 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
-
-const baseUrl = process.env.BASE_URL || 'http://localhost:5173';
-
-const testApp = {
-  url: baseUrl
-};
+import { test, expect, Page, TestInfo } from '@playwright/test';
 
 const testData = {
   note_text: "playwright test content",
@@ -51,12 +45,12 @@ async function readNote(page: Page, name: string) {
     await note.click({ force: true });
 
     await expect(note).toBeVisible();
-      const saveBtn = page.locator("a > button").nth(0);
+    const saveBtn = page.locator("a > button").nth(0);
     await expect(saveBtn).toBeVisible();
     await saveBtn.click({ position: { x: 10.875, y: 24 } });
   })
 }
-// 8972077847/
+
 async function updateNote(page: Page, name: string) {
   await test.step(name, async () => {
     await page.locator("div:nth-of-type(1) > div:nth-of-type(1) > a > div").click();
@@ -107,9 +101,10 @@ async function deleteNote(page: Page, name: string) {
 }
 
 test.describe('Note CRUD', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo: TestInfo) => {
+    const baseUrl = testInfo.project.use.baseURL
     await page.setViewportSize({ width: 716, height: 633 });
-    await page.goto(testApp.url);
+    await page.goto(baseUrl);
   });
 
   test('Note CRUD test', async ({ page }) => {

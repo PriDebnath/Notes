@@ -12,8 +12,10 @@
   "scripts": {
     "initial:install": "pnpm exec cypress install",
     "start": "pnpm cypress run",
+    "test": "pnpm cypress run",
     "open": "pnpm cypress open",
     "cy:open": "npx cypress open",
+    "test:github": "npx cypress open --env mode=github",
     "cy:open:github": "npx cypress open --env mode=github",
     "cy:run": "npx cypress run",
     "cy:run:github": "npx cypress run --env mode=github",

@@ -1,5 +1,5 @@
 packages:
   - frontend # should match the name in the project-name/package.json
-  - backend # should match the name in the project-name/package.json
-  - cypress-testing # should match the name in the project-name/package.json
-  - playwright-testing # should match the name in the project-name/package.json
+  - backend
+  - testing/cypress-testing
+  - testing/playwright-testing

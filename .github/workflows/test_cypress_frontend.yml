@@ -36,7 +36,7 @@ jobs:
       - name: test frontend
         run: |
           cd testing/cypress-testing
-          npm install
+          pnpm install
           npm run cy:run:github
           
 

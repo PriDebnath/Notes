@@ -22,7 +22,7 @@ https://pridebnath.github.io/Notes
 
 
 
-### 📱 Android App
+### 🔴 📱 Android App
 
 ⬇️ Download APK  
 https://github.com/PriDebnath/Notes/releases/latest/download/app-debug.apk
@@ -36,7 +36,6 @@ https://github.com/PriDebnath/Notes/releases/latest/download/app-debug.apk
 
 Notes turns your ideas, quotes, and short writings into a personal library you enjoy browsing — not just storing.
 
----
 
 ## What you get
 
@@ -46,7 +45,6 @@ Notes turns your ideas, quotes, and short writings into a personal library you e
 * **Simple organization** using tags, filters, and sorting
 * **Fast, local-first performance** that stays smooth as you grow
 
----
 
 ## Great for
 

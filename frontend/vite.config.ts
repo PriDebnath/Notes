@@ -66,13 +66,13 @@ export default defineConfig(({ mode }) => {
       // }),
       VitePWA(vitePWAOptions),
     ],
-
+    envDir: "../",
     test: {
       globals: true, // Setting globals: true exposes the describe and it functions on the global object, so you don't need to import them in every test file. 
       environment: 'jsdom',
       //  reporters: ["default", "html"]
       typecheck: { enabled: true },
-      watch: isGithub ? false :  true,
+      watch: isGithub ? false : true,
       // Ensure route tree is generated before tests
       setupFiles: ['./src/test/test-utils.ts'],
       testTimeout: 12000,

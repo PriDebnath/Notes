@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -20,22 +20,22 @@ import { Button } from "@/components/ui/button";
 import { capitalize } from "@/helper/capitalize";
 import { Separator } from "@/components/ui/separator";
 import { useThemeStore } from "@/store/use-theme.store";
-import { useFontStore, fonts, type Font } from "@/store/use-font.store";
+import { useLastDeployed } from "@/hook/use-last-deployed";
+import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { useColorThemeStore } from "@/store/use-color-theme.store";
+import { useFontStore, fonts, type Font } from "@/store/use-font.store";
+import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
 import type { CardView, QuoteFormData, SortOption } from "@/model/index.model";
 import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
-import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
 import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
-import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings } from "lucide-react";
-import { useLastDeployed } from "@/hook/use-last-deployed";
 
 interface Props {
 
 }
 
-export function SettingComponent(props: Props) {
+function SettingComponent(props: Props) {
   const { theme, setTheme, isDark } = useThemeStore()
   const [open, setOpen] = useState(false)
   const { colorTheme, setColorTheme } = useColorThemeStore()
@@ -229,3 +229,6 @@ export function SettingComponent(props: Props) {
     </Dialog>
   );
 }
+
+export  default memo(SettingComponent)
+

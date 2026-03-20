@@ -25,7 +25,7 @@ import React from 'react'
 
 const DeleteQuoteDialog = lazy(() => import('@/feature/quote/dialog/delete.dialog'))
 const ListQuote = lazy(() => import('@/feature/quote/list.quote').then(mod => ({ default: mod.ListQuote })))
-const SettingComponent = lazy(() => import('@/feature/quote/dialog/setting.dialog').then(mod => ({ default: mod.SettingComponent })))
+const SettingComponent = lazy(() => import('@/feature/quote/dialog/setting.dialog').then(mod => ({ default: mod.default })))
 
 export function QuoteListPage() {
   const {

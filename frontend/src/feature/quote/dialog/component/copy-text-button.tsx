@@ -6,11 +6,14 @@ import { exportAsImage, exportAndShare } from "@/helper/html-to-image"
 import { Share, LoaderCircle, CircleCheckBig, CircleArrowDown, Copy } from "lucide-react"
 
 interface Props {
-  text: string
+  text: string;
+  buttonClassName?: string;
+  isLoaderText?: boolean;
+
 }
 
 export const CopyTextButton = (props: Props) => {
-  const { text } = props
+  const { text, isLoaderText, buttonClassName } = props
   const [textCopyStatus, setTextCopyStatus] = useState<Status>("idle")
 
   const handleTextCopy = async () => {
@@ -25,10 +28,11 @@ export const CopyTextButton = (props: Props) => {
   }
 
   return (
-            <div className="flex flex-col gap-2 items-center">
+    <div className="flex flex-col gap-2 items-center">
       <Button
         variant="outline"
         size="sm"
+        className={buttonClassName}
         onClick={(e) => {
           e.preventDefault()
           handleTextCopy()
@@ -38,12 +42,16 @@ export const CopyTextButton = (props: Props) => {
         {textCopyStatus == "pending" && <LoaderCircle className="animate-spin" />}
         {textCopyStatus == "success" && <CircleCheckBig className="text-green-500" />}
       </Button>
+      {
+        isLoaderText && (
+          <p className="text-[0.5rem] text-center">
+            {textCopyStatus == "idle" && "Copy Text"}
+            {textCopyStatus == "pending" && "Copying..."}
+            {textCopyStatus == "success" && "Copied Text"}
+          </p>
+        )
+      }
 
-      <p className="text-[0.5rem] text-center">
-        {textCopyStatus == "idle" && "Copy Text"}
-        {textCopyStatus == "pending" && "Copying..."}
-        {textCopyStatus == "success" && "Copied Text"}
-      </p>
-
-    </div>)
+    </div>
+  )
 }

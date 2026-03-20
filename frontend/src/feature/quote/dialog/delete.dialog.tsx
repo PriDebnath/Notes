@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button"
 import type { Quote } from "@/model/index.model"
 import { sanitizeHTML } from "@/helper/sanitize-html";
-import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
+import { useState, useEffect, type Dispatch, type SetStateAction, memo } from "react"
 
 interface Props {
   open: boolean;
@@ -18,7 +18,9 @@ interface Props {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function DeleteQuoteDialog(props: Props) {
+export default memo(DeleteQuoteDialog)
+
+function DeleteQuoteDialog(props: Props) {
 
   const { quote, open, setOpen, handleDelete } = props
 

@@ -152,7 +152,7 @@ export function ShareBackground(props: Props) {
               option={{ backgroundColor: cardStyle.backgroundColor! }}
               key={'DownloadButton'}
             />
-            <CopyTextButton text={quoteFormData.text!} />
+            <CopyTextButton text={quoteFormData.text!} isLoaderText={true} />
             <CopyImageButton
               elementRef={noteRef}
               option={{ backgroundColor: cardStyle.backgroundColor! }}

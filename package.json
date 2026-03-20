@@ -1,5 +1,5 @@
 {
-  "name": "quotes-keeper",
+  "name":  "notes",
   "private": true,
   "scripts": {
     "corepack:enable": "corepack enable",

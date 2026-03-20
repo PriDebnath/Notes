@@ -1,3 +1,4 @@
+import { useAiApiKeyStore } from "@/store/use-ai-api-key";
 import { useState, useRef } from "react";
 
 interface Param {
@@ -5,9 +6,8 @@ interface Param {
   content: string;
 }
 
-const VITE_GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
-
 export const useStreamSummarize = () => {
+  const { key: AI_API_KEY } = useAiApiKeyStore.getState()
   const [loading, setLoading] = useState(false);
   const controllerRef = useRef<AbortController | null>(null);
 
@@ -28,7 +28,7 @@ export const useStreamSummarize = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${VITE_GROQ_API_KEY}`,
+            Authorization: `Bearer ${AI_API_KEY}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -36,7 +36,9 @@ export const useStreamSummarize = () => {
             messages: [
               {
                 role: "user",
-                content: `${userQuery}:\n${content}`,
+                content: `${userQuery}:\n
+                Content:
+                ${content}`,
               },
             ],
             stream: true,
@@ -44,7 +46,7 @@ export const useStreamSummarize = () => {
           signal: controller.signal,
         }
       );
-      
+
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
 
@@ -78,11 +80,11 @@ export const useStreamSummarize = () => {
           }
 
           const errorPrefix = `{"error`
-                 if (trimmed.startsWith(errorPrefix)) {                  
+          if (trimmed.startsWith(errorPrefix)) {
             const json = JSON.parse(trimmed);
             const token = json?.error?.message
             if (token) {
-              onChunk(token );
+              onChunk(token);
             }
           }
         }

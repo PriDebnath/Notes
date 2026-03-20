@@ -43,7 +43,6 @@ export function ChatSheet(props: Props) {
         if (!userQuery) return;
         if (!text) return;
         const data = { userQuery, content: text }
-        console.log({ data, messages });
 
         // 1️⃣ Add user message (right side)
         setMessages((prev) => {

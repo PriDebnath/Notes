@@ -120,8 +120,14 @@ function SheetDescription({
   className,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Description>) {
+  /*  
+  SheetPrimitive.Description (Radix) renders a <p> tag by default.
+  <div> inside <p> = ❌ invalid → React throws validateDOMNesting warning.
+  @asChild fixes it.
+  */ 
   return (
     <SheetPrimitive.Description
+      asChild 
       data-slot="sheet-description"
       className={cn("text-sm text-muted-foreground", className)}
       {...props}

@@ -46,3 +46,8 @@ export type SortOption = "created_at" | "updated_at" | "tags"
 export type CardView = "list" | "grid"
 
 export type Status = "idle" | "pending" | "success"
+
+export type ContentChatMessage = {
+    role: "user" | "assistant";
+    content: string;
+}

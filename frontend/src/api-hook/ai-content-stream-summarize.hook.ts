@@ -44,7 +44,7 @@ export const useStreamSummarize = () => {
           signal: controller.signal,
         }
       );
-
+      
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
 
@@ -54,6 +54,7 @@ export const useStreamSummarize = () => {
 
       while (true) {
         const { value, done } = await reader.read();
+
         if (done) break;
 
         buffer += decoder.decode(value, { stream: true });
@@ -63,14 +64,25 @@ export const useStreamSummarize = () => {
 
         for (const line of lines) {
           const trimmed = line.trim();
-          if (!trimmed || trimmed === "data: [DONE]") continue;
 
-          if (trimmed.startsWith("data: ")) {
-            const json = JSON.parse(trimmed.replace("data: ", ""));
+          const dataDanePrefix = "data: [DONE]"
+          if (!trimmed || trimmed === dataDanePrefix) continue;
+
+          const dataPrefix = "data: "
+          if (trimmed.startsWith(dataPrefix)) {
+            const json = JSON.parse(trimmed.replace(dataPrefix, ""));
             const token = json?.choices?.[0]?.delta?.content;
-
             if (token) {
               onChunk(token);
+            }
+          }
+
+          const errorPrefix = `{"error`
+                 if (trimmed.startsWith(errorPrefix)) {                  
+            const json = JSON.parse(trimmed);
+            const token = json?.error?.message
+            if (token) {
+              onChunk(token );
             }
           }
         }

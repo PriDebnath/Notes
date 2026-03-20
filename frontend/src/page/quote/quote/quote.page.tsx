@@ -281,8 +281,8 @@ export function QuotePage(props: Props) {
             </div>
 
 
-            <Separator className=" bg-border" />
-            {/*    */}
+             {/*     <Separator className=" bg-border" />
+       
 
             <div className="flex">
               <Button variant="secondary" className='text-xs'
@@ -290,7 +290,7 @@ export function QuotePage(props: Props) {
                 Summrise
               </Button>
             </div>
-
+   */}
           </div>
 
         </motion.div>

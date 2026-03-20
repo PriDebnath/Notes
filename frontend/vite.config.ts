@@ -66,7 +66,7 @@ export default defineConfig(({ mode }) => {
       // }),
       VitePWA(vitePWAOptions),
     ],
-    envDir: "../",
+    // envDir: "../",
     test: {
       globals: true, // Setting globals: true exposes the describe and it functions on the global object, so you don't need to import them in every test file. 
       environment: 'jsdom',

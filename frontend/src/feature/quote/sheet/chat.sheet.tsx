@@ -1,58 +1,203 @@
+import { useStreamSummarize } from "@/api-hook/ai-content-stream-summarize.hook"
+import { useGetSummarize } from "@/api-hook/ai-content-summarize.hook"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Field } from "@/components/ui/field"
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
 } from "@/components/ui/sheet"
+import { sanitizeHTML } from "@/helper/sanitize-html"
+import { cn } from "@/lib/utils"
+import { BotMessageSquare, Send } from "lucide-react"
+import { useState, type ChangeEvent } from "react"
+import { toast } from "sonner"
+import { CopyTextButton } from "@/feature/quote/dialog/component/copy-text-button"
 
+type Message = {
+    role: "user" | "assistant";
+    content: string;
+}
 
-export function ChatSheet() {
-  return (
-    <div className="flex flex-wrap gap-2">
-        <Sheet key={'right'}>
-          <SheetTrigger asChild>
-            <Button variant="outline" className="capitalize">
-              {'right'}
-            </Button>
-          </SheetTrigger>
-          <SheetContent
-            side={'right'}
-            className="data-[side=bottom]:max-h-[50vh] data-[side=top]:max-h-[50vh]"
-          >
-            <SheetHeader>
-              <SheetTitle>Edit profile</SheetTitle>
-              <SheetDescription>
-                Make changes to your profile here. Click save when you&apos;re
-                done.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="no-scrollbar overflow-y-auto px-4">
-              {Array.from({ length: 10 }).map((_, index) => (
-                <p key={index} className="mb-2 leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.
-                </p>
-              ))}
-            </div>
-            <SheetFooter>
-              <Button type="submit">Save changes</Button>
-              <SheetClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </SheetClose>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
-    </div>
-  )
+interface Props {
+    query?: string;
+    text: string;
+}
+
+export function ChatSheet(props: Props) {
+    const { text, query } = props
+    const [userQuery, setUserQuery] = useState(query ? query : "")
+    const [open, setOpen] = useState(false)
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            content: "ppd0",
+            role: 'assistant'
+        },
+        {
+            content: "ppd0",
+            role: 'user'
+        }
+    ]);
+    const { startStream, loading } = useStreamSummarize();
+
+    const clearUserQuery = async () => {
+        setUserQuery("")
+    }
+
+    const handleSummrise = async () => {
+        if (!userQuery) return;
+        if (!text) return;
+        const data = { userQuery, content: text }
+        console.log({ data, messages });
+
+        // 1️⃣ Add user message (right side)
+        setMessages((prev) => {
+            return [
+                ...prev,
+                { role: "user", content: userQuery },
+            ]
+        });
+
+        // 2️⃣ Add empty assistant message (left side)
+        setMessages((prev) => {
+            return [
+                ...prev,
+                { role: "assistant", content: "" },
+            ]
+        });
+
+        clearUserQuery()
+        // 3️⃣ Stream into last assistant message
+        await startStream(data, (chunk) => {
+            setMessages((prev) => {
+                const updated = [...prev];
+                const lastIndex = updated.length - 1;
+
+                updated[lastIndex] = {
+                    ...updated[lastIndex],
+                    content: updated[lastIndex].content + chunk,
+                };
+
+                return updated;
+            });
+        });
+    };
+    return (
+        <div className="flex flex-wrap gap-2">
+            <Sheet key={'right'} open={open} onOpenChange={setOpen}>
+                <SheetTrigger asChild>
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        className={
+                            cn("border-primary/10",
+                                open ? "text-primary" : ""
+                            )}
+                    >
+                        <BotMessageSquare />
+                    </Button>
+                </SheetTrigger>
+                <SheetContent
+                    side={'right'}
+                    className="data-[side=bottom]:max-h-[50vh] data-[side=top]:max-h-[50vh]"
+                >
+                    <SheetHeader>
+                        <SheetTitle className="flex items-center">
+                            <BotMessageSquare
+                                className={
+                                    cn(
+                                        open ? "text-primary" : ""
+                                    )} />
+                            <span className="px-4">Chat</span>
+                        </SheetTitle>
+                        <SheetDescription>
+                            <div className="flex gap-1  flex-row">
+                                <div>
+                                    Content:
+                                </div>
+                                <div className="line-clamp-1 text-ellipsis"
+                                    dangerouslySetInnerHTML={{ __html: sanitizeHTML(text!) }}></div>
+                            </div>
+                        </SheetDescription>
+                    </SheetHeader>
+                    <div>
+
+                        <div className="flex flex-col gap-3 p-4 max-h-[60vh] overflow-y-auto">
+                            {messages?.length > 0 && messages.map((msg, i) => {
+
+                                return (
+
+                                    <div key={i}
+                                        className={
+                                            cn(
+                                                "max-w-[75%] ",
+                                                msg.role === "user"
+                                                    ? "ml-auto  "
+                                                    : "mr-auto  "
+                                            )
+                                        } >
+
+                                        <div
+                                            className={cn(
+                                                " rounded-2xl px-4 py-2 text-sm relative",
+                                                msg.role === "user" ? "  bg-primary text-white" : " bg-muted"
+                                            )}
+                                        >
+
+                                            {
+                                                msg?.role == 'assistant' && (
+                                                    <BotMessageSquare className="absolute -top-5 left-2 text-primary bg-muted rounded-2xl p-1" />
+                                                )
+                                            }
+                                            {msg.content || (msg.role === "assistant" && loading && (
+                                                <div className="animate-pulse  bg-gray-300 w-4 h-4 rounded-full">           </div>
+                                            ))}
+
+                                        </div>
+                                        <div className="flex justify-end  m-1">
+                                            <CopyTextButton
+                                                text={msg.content}
+                                                isLoaderText={false}
+                                                buttonClassName="scale-75" />
+                                        </div>
+
+                                    </div>
+
+                                )
+                            })}
+                        </div>        {/* {loading && <p>Streaming...</p>}
+        <p>{data}</p> 👈 updates live */}
+                    </div>
+                    <div className="no-scrollbar overflow-y-auto px-4">
+
+                    </div>
+                    <SheetFooter>
+
+                        <Field orientation="horizontal">
+                            <Input type="chat" placeholder="Summrize the conent..."
+                                value={userQuery}
+                                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                    setUserQuery(event.target.value)
+                                }}
+                            />
+                            <Button onClick={handleSummrise}>
+                                <Send />
+                            </Button>
+                        </Field>
+
+                        {/* <Button type="submit" onClick={handleSummrise}>Send</Button> */}
+                        <SheetClose asChild>
+                            {/* <Button variant="outline">Cancel</Button> */}
+                        </SheetClose>
+                    </SheetFooter>
+                </SheetContent>
+            </Sheet>
+        </div>
+    )
 }

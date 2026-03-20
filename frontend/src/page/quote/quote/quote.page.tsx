@@ -1,5 +1,4 @@
-
-
+import { toast } from "sonner"
 import { lazy, Suspense } from 'react'
 import { Route } from '@/routes/$quoteId'
 import { Label } from "@/components/ui/label"
@@ -7,16 +6,19 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from '@/components/ui/button'
 import { useBlocker } from "@tanstack/react-router"
 import TagField from "@/feature/quote/form-field/tag"
+import { Separator } from '@/components/ui/separator'
 import { addQuote, updateQuote } from '@/db/quote.db'
 import { AnimatePresence, motion } from 'framer-motion'
 import { addOrGetTag } from '@/legacy-indexDB-db/tag.db'
 import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
+import { useGetSummarize } from '@/api-hook/ai-content-summarize.hook'
 import { useGetQuoteDetails } from '@/api-hook/use-get-quote-details.hook'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
 import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
 import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
+import { ChatSheet } from "@/feature/quote/sheet/chat.sheet"
 
 const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
 const ShareBackground = lazy(
@@ -33,6 +35,7 @@ export function QuotePage(props: Props) {
   const { mode } = props
   const navigate = useNavigate()
   const noteRef = useRef<HTMLDivElement>(null)
+  const { getSummarize ,isPending:loadingSummarize, error: errorGetSummarize} = useGetSummarize()
 
   // Only read params in edit mode
   const params = mode === 'edit' ? Route.useParams() : null
@@ -54,7 +57,6 @@ export function QuotePage(props: Props) {
     texture: quote?.texture,
     pri_set: quote?.pri_set,
   }))
-  // console.log({quoteData})
 
   const onTagChoose = (tag: string) => {
     setQuoteData(prev => {
@@ -96,17 +98,19 @@ export function QuotePage(props: Props) {
     return result;
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // console.log("Submitted", quoteData)
-    if (quoteData && quoteData?.text?.trim()) {
-      handleSubmit(quoteData)
-    }
+  const handleSummrise = async() => {
+  let res = await  getSummarize(quote?.text!)
+  
+  let errorMessage = res?.error?.message
+  if (errorMessage) {
+    toast.error(errorMessage, { position: "top-center" })
+  }
+  console.log({res, errorGetSummarize, error,});
+  
   }
 
 
   const handleSubmit = useCallback(async (quote: QuoteFormData) => {
-    // console.log({at:"at submit" ,quote })
     let quoteId: number | undefined = quote.id
     if (quoteId) { // edit
       await updateQuote({
@@ -173,8 +177,6 @@ export function QuotePage(props: Props) {
   }, [blocker.status, quoteData, handleSubmit])
 
 
-
-
   return (
 
     <div
@@ -192,9 +194,9 @@ export function QuotePage(props: Props) {
         >
 
           <div className='flex p-4 bg-background flex-row sticky top-0 z-10  justify-between items-center'>
-            <Link to="/" 
-            aria-label="link-to-home"
-            className='flex items-center gap-2'
+            <Link to="/"
+              aria-label="link-to-home"
+              className='flex items-center gap-2'
             >
               <Button variant="outline" size="icon">
                 <ArrowLeftIcon />
@@ -205,6 +207,7 @@ export function QuotePage(props: Props) {
                 <ShareBackground quoteFormData={quoteData} />
               </Suspense>
               <ChooseBackground onValueUpdate={onValueUpdate} />
+              <ChatSheet text={quoteData?.text!} query="Summarize this note"/>
             </div>
           </div>
 
@@ -237,9 +240,9 @@ export function QuotePage(props: Props) {
                 </div>
               )
             }
-            {/*
-          <Separator className="  bg-border" />
-  */}
+
+            <Separator className="  bg-border" />
+            {/* */}
             <div className="">
               <TagField onChoose={onTagChoose} />
               <div
@@ -277,9 +280,17 @@ export function QuotePage(props: Props) {
 
             </div>
 
-            {/*
-          <Separator className=" bg-border" />
-          */}
+
+            <Separator className=" bg-border" />
+            {/*    */}
+
+            <div className="flex">
+              <Button variant="secondary" className='text-xs'
+              onClick={handleSummrise} >
+                Summrise
+              </Button>
+            </div>
+
           </div>
 
         </motion.div>

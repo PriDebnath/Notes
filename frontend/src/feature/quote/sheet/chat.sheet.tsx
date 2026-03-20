@@ -19,7 +19,7 @@ import { BotMessageSquare, Send, X } from "lucide-react"
 import ChatMessage from "@/feature/quote/sheet/chat-message"
 import type { ContentChatMessage } from "@/model/index.model"
 import { useEffect, useRef, useState, type ChangeEvent } from "react"
-import { useStreamSummarize } from "@/api-hook/ai-content-stream-summarize.hook"
+import {  useAiContentStream } from "@/api-hook/ai-content-stream.hook"
 import ChatSetting from "./chat-setting"
 
 interface Props {
@@ -33,7 +33,7 @@ export function ChatSheet(props: Props) {
     const bottomRef = useRef<HTMLDivElement>(null)
     const [open, setOpen] = useState(false)
     const [messages, setMessages] = useState<ContentChatMessage[]>([]);
-    const { startStream, loading } = useStreamSummarize();
+    const { startStream, loading } = useAiContentStream();
 
     const clearUserQuery = async () => {
         setUserQuery("")

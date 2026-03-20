@@ -1,4 +1,6 @@
+// not in use
 import { useMutation, useQuery } from "@tanstack/react-query";
+
 
 const VITE_GROQ_API_KEY =  import.meta.env.VITE_GROQ_API_KEY
 

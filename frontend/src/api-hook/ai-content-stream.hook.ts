@@ -6,7 +6,7 @@ interface Param {
   content: string;
 }
 
-export const useStreamSummarize = () => {
+export const useAiContentStream = () => {
   const { key: AI_API_KEY } = useAiApiKeyStore.getState()
   const [loading, setLoading] = useState(false);
   const controllerRef = useRef<AbortController | null>(null);

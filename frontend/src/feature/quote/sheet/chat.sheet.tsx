@@ -16,9 +16,10 @@ import {
 import { sanitizeHTML } from "@/helper/sanitize-html"
 import { cn } from "@/lib/utils"
 import { BotMessageSquare, Send } from "lucide-react"
-import { useState, type ChangeEvent } from "react"
+import { useEffect, useRef, useState, type ChangeEvent } from "react"
 import { toast } from "sonner"
 import { CopyTextButton } from "@/feature/quote/dialog/component/copy-text-button"
+import { MarkdownRenderer } from "@/components/common/markdown-renderer"
 
 type Message = {
     role: "user" | "assistant";
@@ -33,7 +34,9 @@ interface Props {
 export function ChatSheet(props: Props) {
     const { text, query } = props
     const [userQuery, setUserQuery] = useState(query ? query : "")
+    const bottomRef = useRef<HTMLDivElement>(null)
     const [open, setOpen] = useState(false)
+
     const [messages, setMessages] = useState<Message[]>([
         {
             content: "ppd0",
@@ -42,7 +45,20 @@ export function ChatSheet(props: Props) {
         {
             content: "ppd0",
             role: 'user'
-        }
+        },
+        {
+            content: `
+            # Heading
+**bold**
+- lists
+ 
+
+---
+
+  `,
+
+            role: 'assistant'
+        },
     ]);
     const { startStream, loading } = useStreamSummarize();
 
@@ -73,21 +89,27 @@ export function ChatSheet(props: Props) {
         });
 
         clearUserQuery()
-        // 3️⃣ Stream into last assistant message
-        await startStream(data, (chunk) => {
-            setMessages((prev) => {
-                const updated = [...prev];
-                const lastIndex = updated.length - 1;
 
-                updated[lastIndex] = {
-                    ...updated[lastIndex],
-                    content: updated[lastIndex].content + chunk,
-                };
+        //// 3️⃣ Stream into last assistant message
+        // await startStream(data, (chunk) => {
+        //     setMessages((prev) => {
+        //         const updated = [...prev];
+        //         const lastIndex = updated.length - 1;
 
-                return updated;
-            });
-        });
+        //         updated[lastIndex] = {
+        //             ...updated[lastIndex],
+        //             content: updated[lastIndex].content + chunk,
+        //         };
+
+        //         return updated;
+        //     });
+        // });
     };
+
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
     return (
         <div className="flex flex-wrap gap-2">
             <Sheet key={'right'} open={open} onOpenChange={setOpen}>
@@ -128,7 +150,7 @@ export function ChatSheet(props: Props) {
                     </SheetHeader>
                     <div>
 
-                        <div className="flex flex-col gap-3 p-4 max-h-[60vh] overflow-y-auto">
+                        <div className="flex flex-col gap-3 p-4 max-h-[70vh] overflow-y-auto">
                             {messages?.length > 0 && messages.map((msg, i) => {
 
                                 return (
@@ -155,9 +177,14 @@ export function ChatSheet(props: Props) {
                                                     <BotMessageSquare className="absolute -top-5 left-2 text-primary bg-muted rounded-2xl p-1" />
                                                 )
                                             }
-                                            {msg.content || (msg.role === "assistant" && loading && (
+                                            {
+                                            (
+                                                msg.content && <MarkdownRenderer  content={msg.content}/>)
+                                             || (msg.role === "assistant" && loading && (
                                                 <div className="animate-pulse  bg-gray-300 w-4 h-4 rounded-full">           </div>
-                                            ))}
+                                            )
+                                        )
+                                            }
 
                                         </div>
                                         <div className="flex justify-end  m-1">
@@ -171,26 +198,28 @@ export function ChatSheet(props: Props) {
 
                                 )
                             })}
-                        </div>        {/* {loading && <p>Streaming...</p>}
-        <p>{data}</p> 👈 updates live */}
-                    </div>
-                    <div className="no-scrollbar overflow-y-auto px-4">
+                            <div ref={bottomRef} ></div>
+                        </div>
 
                     </div>
                     <SheetFooter>
-
-                        <Field orientation="horizontal">
-                            <Input type="chat" placeholder="Summrize the conent..."
-                                value={userQuery}
-                                onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                                    setUserQuery(event.target.value)
-                                }}
-                            />
-                            <Button onClick={handleSummrise}>
-                                <Send />
-                            </Button>
-                        </Field>
-
+                        <form onSubmit={(e) => {
+                            e.preventDefault()
+                            handleSummrise()
+                        }
+                        } className="">
+                            <Field orientation="horizontal">
+                                <Input type="chat" placeholder="Summrize the conent..."
+                                    value={userQuery}
+                                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                        setUserQuery(event.target.value)
+                                    }}
+                                />
+                                <Button onClick={handleSummrise}>
+                                    <Send />
+                                </Button>
+                            </Field>
+                        </form>
                         {/* <Button type="submit" onClick={handleSummrise}>Send</Button> */}
                         <SheetClose asChild>
                             {/* <Button variant="outline">Cancel</Button> */}

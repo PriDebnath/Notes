@@ -29,7 +29,9 @@ export default function  TagFilter({ tags, value, onChange }: TagFilterProps) {
   return (
     <Popover  open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild  aria-label="open-filter">
-        <Button variant="outline" className={
+        <Button variant="outline" 
+        aria-label="filter"
+        className={
           cn(
             "gap-2 relative",
           )}

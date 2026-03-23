@@ -160,6 +160,8 @@ export function QuoteListPage() {
         <Link to="/new" title='new' aria-label="new" >
           <Button
             size="icon-lg"
+            aria-label='add-note'
+            title='add-note'
             className="fixed bottom-8  -translate-x-8 rounded-full aspect-square scale-150"
           >
             <PlusIcon />

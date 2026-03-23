@@ -42,6 +42,7 @@ export default function ChooseBackground(props: Props) {
     >
       <DrawerTrigger asChild>
         <Button variant="outline" size="icon"
+        aria-label="change-background"
           className={
             cn(
               open ? "text-primary" : ""
@@ -94,6 +95,7 @@ export default function ChooseBackground(props: Props) {
                 const [key, value] = textureObj
                 return (
                   <button
+                  aria-label={key}
                     key={key}
                     onClick={() => handleTextureClick(key as TextureKey)}
                     className={`w-28 h-20 rounded-lg shrink-0  focus:outline-none ${selectedTexture === key ? "ring-2 ring-primary" : "border"

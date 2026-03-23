@@ -31,6 +31,7 @@ export const CopyTextButton = (props: Props) => {
     <div className="flex flex-col gap-2 items-center">
       <Button
         variant="outline"
+        aria-label="copy-text"
         size="sm"
         className={buttonClassName}
         onClick={(e) => {

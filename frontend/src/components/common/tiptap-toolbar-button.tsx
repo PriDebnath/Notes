@@ -18,6 +18,7 @@ export function ToolbarButton({
   return (
     <Button
       title={title}
+      aria-label={title}
       disabled={disabled}
       data-active-state={active ? 'on' : 'off'}
       onClick={onClick}

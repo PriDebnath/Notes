@@ -105,6 +105,7 @@ function InputGroupButton({
   VariantProps<typeof inputGroupButtonVariants>) {
   return (
     <Button
+      aria-label="input-group"
       type={type}
       data-size={size}
       variant={variant}

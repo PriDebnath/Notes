@@ -26,7 +26,7 @@ const ChatSetting = (props: Props) => {
             <form aria-label="delete-note-form">
 
                 <DialogTrigger asChild>
-                    <Button variant="outline" size={'sm'}>
+                    <Button variant="outline" aria-label="chat-setting" size={'sm'}>
                         <Settings />
                     </Button>
                 </DialogTrigger>
@@ -54,7 +54,7 @@ const ChatSetting = (props: Props) => {
                                 setKey(event.target.value)
                             }}
                         />
-                          <Button onClick={()=>setIsInputType((pre)=>!pre)}>
+                          <Button aria-label="show-hide-key" onClick={()=>setIsInputType((pre)=>!pre)}>
                                     {isInputType? <Eye />: <EyeClosed />}
                                 </Button>
                         </Field>

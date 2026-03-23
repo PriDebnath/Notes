@@ -53,13 +53,13 @@ function DeleteQuoteDialog(props: Props) {
             {/* <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose> */}
-            <Button 
-            type="submit"
-             onClick={handleFormSubmit}
-             aria-label="delete"
-              variant={'destructive'} 
+            <Button
+              type="submit"
+              onClick={handleFormSubmit}
+              aria-label="delete"
+              variant={'destructive'}
               className="">
-              Delete Quote
+              Delete
             </Button>
           </DialogFooter>
         </DialogContent>

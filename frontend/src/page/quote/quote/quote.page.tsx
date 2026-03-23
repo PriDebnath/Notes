@@ -194,7 +194,9 @@ export function QuotePage(props: Props) {
               aria-label="link-to-home"
               className='flex items-center gap-2'
             >
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon"
+                aria-label='go-to-home'
+                title='go-to-home'>
                 <ArrowLeftIcon />
               </Button>
             </Link>
@@ -213,7 +215,7 @@ export function QuotePage(props: Props) {
             </div>
           </div>
 
-          {isLoading && <div aria-label="loading" ><EditorSkeleton/></div>}
+          {isLoading && <div aria-label="loading" ><EditorSkeleton /></div>}
 
           {error && <div aria-label="error" className="text-destructive">Error: {error}</div>}
 
@@ -229,7 +231,7 @@ export function QuotePage(props: Props) {
                     {/*
                     <Label htmlFor="name-1">Quote</Label>
                     */}
-                    <Suspense fallback={<EditorSkeleton/>}>
+                    <Suspense fallback={<EditorSkeleton />}>
                       <div aria-label="editor" >
                         <Tiptap
                           key={quoteData?.id ?? "new"}

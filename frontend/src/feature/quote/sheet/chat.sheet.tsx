@@ -19,7 +19,7 @@ import { BotMessageSquare, Send, X } from "lucide-react"
 import ChatMessage from "@/feature/quote/sheet/chat-message"
 import type { ContentChatMessage } from "@/model/index.model"
 import { useEffect, useRef, useState, type ChangeEvent } from "react"
-import {  useAiContentStream } from "@/api-hook/ai-content-stream.hook"
+import { useAiContentStream } from "@/api-hook/ai-content-stream.hook"
 import ChatSetting from "./chat-setting"
 
 interface Props {
@@ -87,6 +87,7 @@ export function ChatSheet(props: Props) {
             <Sheet key={'right'} open={open} onOpenChange={setOpen} >
                 <SheetTrigger asChild>
                     <Button
+                        aria-label="chat-button"
                         variant="outline"
                         size="icon"
                         className={
@@ -98,26 +99,26 @@ export function ChatSheet(props: Props) {
                     </Button>
                 </SheetTrigger>
                 <SheetContent
-                showCloseButton={false}
+                    showCloseButton={false}
                     side={'right'}
                     className="data-[side=bottom]:max-h-[50vh] data-[side=top]:max-h-[50vh]"
                 >
                     <SheetHeader>
                         <SheetTitle className="flex  items-center">
                             <div className="flex justify-between items-center w-full ">
-                                <div  className="flex items-center gap-2">   
-                                      <BotMessageSquare
-                                    className={
-                                        cn(
-                                            open ? "text-primary" : ""
-                                        )} />
+                                <div className="flex items-center gap-2">
+                                    <BotMessageSquare
+                                        className={
+                                            cn(
+                                                open ? "text-primary" : ""
+                                            )} />
                                     <span className="">Chat</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                                                    <ChatSetting />
- <SheetClose asChild>
-                             <Button variant="outline" size={'sm'}><X/></Button> 
-                        </SheetClose> 
+                                    <ChatSetting />
+                                    <SheetClose asChild>
+                                        <Button variant="outline" size={'sm'}><X /></Button>
+                                    </SheetClose>
                                 </div>
 
                             </div>
@@ -150,18 +151,18 @@ export function ChatSheet(props: Props) {
 
                     </div>
                     <SheetFooter>
-                        <form 
-                        onSubmit={(e) => {
-                            e.preventDefault()
-                            handleSummrise()
-                        }
-                        } 
-                        className="" >
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault()
+                                handleSummrise()
+                            }
+                            }
+                            className="" >
                             <Field orientation="horizontal">
                                 <Input
-                                autoFocus
-                                 type="text" 
-                                placeholder="Summrize the conent..."
+                                    autoFocus
+                                    type="text"
+                                    placeholder="Summrize the conent..."
                                     value={userQuery}
                                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                                         setUserQuery(event.target.value)

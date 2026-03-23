@@ -89,7 +89,7 @@ export function ChooseTagDropdown(props: Props) {
                 aria-label="add-tag"
             >
                 <Button
-
+aria-label="choose-tag"
                     variant="outline"
                     size="icon"
                     className={

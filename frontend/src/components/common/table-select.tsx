@@ -84,7 +84,11 @@ const TableSelect = ({ editor }: TableSelectProps) => {
     >
       <DropdownMenuTrigger asChild>
 
-        <Button variant="ghost" className="text-primary-text" type="button">
+        <Button 
+          aria-label='table-select'
+        variant="ghost"
+         className="text-primary-text"
+          type="button">
           <Table /> Table
           <ChevronDown />
         </Button>

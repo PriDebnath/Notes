@@ -62,7 +62,10 @@ export function ShareBackground(props: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon"
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label="share"
           className={
             cn(
               open ? "text-primary" : ""

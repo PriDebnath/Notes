@@ -40,6 +40,7 @@ export const CopyImageButton = (props: Props) => {
             <Button
                 variant="outline"
                 size="sm"
+                aria-label="image-copy"
                 onClick={async (e) => {
                     e.preventDefault()
                     handleImageCopy()

@@ -47,10 +47,10 @@ function SettingComponent(props: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}
-    
+
     >
       <DialogTrigger asChild
-      aria-label="settings-button">
+        aria-label="settings-button">
         <Button
           variant="outline"
           size="icon"
@@ -60,10 +60,10 @@ function SettingComponent(props: Props) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent 
-      className="p-4 gap-2  max-h-[90vh] overflow-auto"
-       aria-describedby="Settings"
-       aria-label="settings">
+      <DialogContent
+        className="p-4 gap-2  max-h-[90vh] overflow-auto"
+        aria-describedby="Settings"
+        aria-label="settings">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>
@@ -230,5 +230,5 @@ function SettingComponent(props: Props) {
   );
 }
 
-export  default memo(SettingComponent)
+export default memo(SettingComponent)
 

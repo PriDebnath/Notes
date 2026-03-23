@@ -6,6 +6,8 @@ function ButtonLoader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <Button
       variant="outline"
+      aria-label='button-loader'
+      title='button-loader'
       disabled
       className="gap-2 opacity-70"
     >

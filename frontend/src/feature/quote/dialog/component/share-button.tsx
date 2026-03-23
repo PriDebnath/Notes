@@ -81,6 +81,7 @@ export const ShareButton = (props: Props) => {
             <Button
                 variant="outline"
                 size="sm"
+                aria-label="share"
                 onClick={async (e) => {
                     e.preventDefault()
                     handleShare()

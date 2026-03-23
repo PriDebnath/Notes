@@ -1,7 +1,8 @@
 import path from 'path'
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { defineConfig, type PluginOption } from 'vite'
+import { visualizer } from "rollup-plugin-visualizer";
 import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa'
 import routerPlugin, { tanstackRouter } from '@tanstack/router-plugin/vite'
 
@@ -42,7 +43,18 @@ const vitePWAOptions: Partial<VitePWAOptions> = {
   },
 }
 
-export default defineConfig(({ mode }) => {
+const visualizerTyped = () => {
+  return visualizer({
+    emitFile: true,
+    filename: "stats.html",
+    open: true,
+    gzipSize: true,
+    brotliSize: true
+  }) as PluginOption
+}
+
+export default defineConfig((config) => {
+  const { mode } = config
   const isGithub = mode === 'github'
 
   return {
@@ -65,6 +77,7 @@ export default defineConfig(({ mode }) => {
       //   // disableLogging: true,
       // }),
       VitePWA(vitePWAOptions),
+      visualizerTyped(),
     ],
     // envDir: "../",
     test: {

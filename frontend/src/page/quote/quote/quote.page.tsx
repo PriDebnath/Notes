@@ -14,16 +14,24 @@ import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
 import { useGetSummarize } from '@/api-hook/ai-content-summarize.hook'
 import { useGetQuoteDetails } from '@/api-hook/use-get-quote-details.hook'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import ChooseBackground from "@/feature/quote/drawer/choose-background.drawer"
 import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
 import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
-import { ChatSheet } from "@/feature/quote/sheet/chat.sheet"
+import { ButtonLoader } from "@/components/ui/button-loader"
+import EditorSkeleton from "@/feature/quote/skeleton/editor.skeleton"
 
 const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
 const ShareBackground = lazy(
   () => import('@/feature/quote/dialog/share.dialog')
     .then(mod => ({ default: mod.ShareBackground }))
+)
+const ChooseBackground = lazy(
+  () => import('@/feature/quote/drawer/choose-background.drawer')
+    .then(mod => ({ default: mod.default }))
+)
+const ChatSheet = lazy(
+  () => import('@/feature/quote/sheet/chat.sheet')
+    .then(mod => ({ default: mod.ChatSheet }))
 )
 
 
@@ -35,7 +43,7 @@ export function QuotePage(props: Props) {
   const { mode } = props
   const navigate = useNavigate()
   const noteRef = useRef<HTMLDivElement>(null)
-  const { getSummarize ,isPending:loadingSummarize, error: errorGetSummarize} = useGetSummarize()
+  const { getSummarize, isPending: loadingSummarize, error: errorGetSummarize } = useGetSummarize()
 
   // Only read params in edit mode
   const params = mode === 'edit' ? Route.useParams() : null
@@ -97,18 +105,6 @@ export function QuotePage(props: Props) {
     }
     return result;
   };
-
-  const handleSummrise = async() => {
-  let res = await  getSummarize(quote?.text!)
-  
-  let errorMessage = res?.error?.message
-  if (errorMessage) {
-    toast.error(errorMessage, { position: "top-center" })
-  }
-  console.log({res, errorGetSummarize, error,});
-  
-  }
-
 
   const handleSubmit = useCallback(async (quote: QuoteFormData) => {
     let quoteId: number | undefined = quote.id
@@ -203,15 +199,21 @@ export function QuotePage(props: Props) {
               </Button>
             </Link>
             <div className="flex gap-2" >
-              <Suspense fallback={null}>
+              <Suspense fallback={<ButtonLoader />}>
                 <ShareBackground quoteFormData={quoteData} />
               </Suspense>
-              <ChooseBackground onValueUpdate={onValueUpdate} />
-              <ChatSheet text={quoteData?.text!} query="Summarize this note"/>
+
+              <Suspense fallback={<ButtonLoader />}>
+                <ChooseBackground onValueUpdate={onValueUpdate} />
+              </Suspense>
+
+              <Suspense fallback={<ButtonLoader />}>
+                <ChatSheet text={quoteData?.text!} query="Summarize this note" />
+              </Suspense>
             </div>
           </div>
 
-          {isLoading && <div aria-label="loading" >Loading...</div>}
+          {isLoading && <div aria-label="loading" ><EditorSkeleton/></div>}
 
           {error && <div aria-label="error" className="text-destructive">Error: {error}</div>}
 
@@ -227,7 +229,7 @@ export function QuotePage(props: Props) {
                     {/*
                     <Label htmlFor="name-1">Quote</Label>
                     */}
-                    <Suspense fallback={<div aria-label='loading-editor'>Loading editor...</div>}>
+                    <Suspense fallback={<EditorSkeleton/>}>
                       <div aria-label="editor" >
                         <Tiptap
                           key={quoteData?.id ?? "new"}
@@ -281,7 +283,7 @@ export function QuotePage(props: Props) {
             </div>
 
 
-             {/*     <Separator className=" bg-border" />
+            {/*     <Separator className=" bg-border" />
        
 
             <div className="flex">

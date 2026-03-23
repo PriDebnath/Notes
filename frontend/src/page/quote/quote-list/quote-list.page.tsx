@@ -4,6 +4,7 @@ import {
   Lightbulb,
   LightbulbOff,
   SearchIcon,
+  Loader2,
 } from 'lucide-react'
 import {
   InputGroup,
@@ -16,16 +17,18 @@ import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Suspense, lazy } from 'react'
 import { deleteQuoteWithLinks } from '@/db/quote_tags.db'
-import { TagFilter } from '@/feature/quote/popover/filter.popover'
 import type { Quote, QuoteDetails, QuoteFormData, Tag, SortOption } from '@/model/index.model'
 import { useGetAllQuoteDetails } from '@/api-hook/use-get-all-quote-details.hook'
 import { useSortStore } from '@/store/use-sort.store'
 import { toggleQuotePinned } from '@/db/quote.db'
 import React from 'react'
+import {  ButtonLoader } from '@/components/ui/button-loader'
+import { Loader } from '@/components/ui/loader'
 
 const DeleteQuoteDialog = lazy(() => import('@/feature/quote/dialog/delete.dialog'))
 const ListQuote = lazy(() => import('@/feature/quote/list.quote').then(mod => ({ default: mod.ListQuote })))
 const SettingComponent = lazy(() => import('@/feature/quote/dialog/setting.dialog').then(mod => ({ default: mod.default })))
+const TagFilterComponent = lazy(() => import('@/feature/quote/popover/filter.popover').then(mod => ({ default: mod.default })))
 
 export function QuoteListPage() {
   const {
@@ -95,9 +98,9 @@ export function QuoteListPage() {
 
   if (error) {
     return (
-      <p 
-          aria-label='error'
-      className="w-full text-center text-destructive">
+      <p
+        aria-label='error'
+        className="w-full text-center text-destructive">
         Error: {error}
       </p>
     )
@@ -107,16 +110,18 @@ export function QuoteListPage() {
     <div className=" flex flex-col">
       {/* Sticky Header */}
       <div
-      aria-label='sticky-header'
+        aria-label='sticky-header'
         className="gap-2 p-2 flex flex-col sticky top-0 z-20 bg-background rounded-b"
       >
         <aside className="flex justify-between">
-          <TagFilter
-            tags={allTags}
-            value={activeTags}
-            onChange={setActiveTags}
-          />
-          <Suspense fallback={null}>
+          <Suspense fallback={<ButtonLoader />}>
+            <TagFilterComponent
+              tags={allTags}
+              value={activeTags}
+              onChange={setActiveTags}
+            />
+          </Suspense>
+          <Suspense fallback={<ButtonLoader />}>
             <SettingComponent />
           </Suspense>
         </aside>
@@ -129,7 +134,7 @@ export function QuoteListPage() {
             onChange={e => setSearch(e.target.value)}
           />
           <InputGroupAddon>
-            <SearchIcon aria-label='search-icon'/>
+            <SearchIcon aria-label='search-icon' />
           </InputGroupAddon>
         </InputGroup>
 
@@ -137,16 +142,16 @@ export function QuoteListPage() {
 
       {/* Content */}
       <main className="px-2">
-        <Suspense fallback={<div aria-label='loading-list'>Loading list...</div>}>
-        <div aria-label='list'>
-          <ListQuote
-            loading={isLoading}
-            quotes={quotes}
-            onEdit={() => { }}
-            onDelete={openDeleteDialog}
-            onTogglePin={handleTogglePin}
-          />
-        </div>
+        <Suspense fallback={<Loader aria-label='loading-list'/>}>
+          <div aria-label='list'>
+            <ListQuote
+              loading={isLoading}
+              quotes={quotes}
+              onEdit={() => { }}
+              onDelete={openDeleteDialog}
+              onTogglePin={handleTogglePin}
+            />
+          </div>
         </Suspense>
       </main>
 

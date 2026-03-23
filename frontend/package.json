@@ -39,7 +39,7 @@
     "test:github": "vitest --mode github",
     "test:ui": "vitest --ui",
     "coverage": "vitest --coverage",
-    "visualize:app": "start dist/stats.html"
+    "visualize": "start dist/stats.html"
   },
   "dependencies": {
     "@capacitor/android": "^8.0.1",

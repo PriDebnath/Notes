@@ -11,9 +11,10 @@ interface Props {
 }
 
 const ChatMessage = (props: Props) => {
-    const { message,   loadingContent } = props
+    const { message, loadingContent } = props
+    
     return (
-        <div  
+        <div
             className={
                 cn(
                     "max-w-[75%] ",
@@ -50,14 +51,6 @@ const ChatMessage = (props: Props) => {
                             : <>{message.content}</>
                     )
                 }
-                {/* {
-                                                msg?.role == 'assistant' && (
-                                                    <>  
-                                                        <div className="absolute -bottom-2 left-2 text-primary bg-muted h-4 w-2 rounded-2xl " />
-                                                        <div className="absolute -bottom-2 left-5 text-primary bg-muted h-4 w-2 rounded-2xl " />
-                                                    </>
-                                                )
-                                            } */}
             </div>
             <div className="flex justify-end  m-1">
                 <CopyTextButton

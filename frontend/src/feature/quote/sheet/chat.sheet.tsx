@@ -88,6 +88,7 @@ export function ChatSheet(props: Props) {
                 <SheetTrigger asChild>
                     <Button
                         aria-label="chat-button"
+                        title="chat-button"
                         variant="outline"
                         size="icon"
                         className={

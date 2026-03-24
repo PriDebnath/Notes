@@ -191,12 +191,12 @@ export function QuotePage(props: Props) {
 
           <div className='flex p-4 bg-background flex-row sticky top-0 z-10  justify-between items-center'>
             <Link to="/"
-              aria-label="link-to-home"
+              aria-label="link-to-home-link"
               className='flex items-center gap-2'
             >
               <Button variant="outline" size="icon"
-                aria-label='go-to-home'
-                title='go-to-home'>
+                aria-label='go-to-home-button'
+                title='go-to-home-button'>
                 <ArrowLeftIcon />
               </Button>
             </Link>

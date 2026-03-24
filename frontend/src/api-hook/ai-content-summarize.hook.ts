@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 const VITE_GROQ_API_KEY =  import.meta.env.VITE_GROQ_API_KEY
 
 if (!VITE_GROQ_API_KEY) {
-    console.warn("GROQ API KEY not found, ai powered features may not work")
+    // console.warn("GROQ API KEY not found, ai powered features may not work")
 }
 
 const getSummarize = async (content: string) => {

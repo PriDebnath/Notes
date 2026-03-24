@@ -19,14 +19,18 @@ interface Props {
 const ChatSetting = (props: Props) => {
     const { key, setKey } = useAiApiKeyStore()
     const { } = props
-        const [isInputType, setIsInputType] = useState(false)
-    
+    const [isInputType, setIsInputType] = useState(false)
+
     return (
         <Dialog>
             <form aria-label="delete-note-form">
 
                 <DialogTrigger asChild>
-                    <Button variant="outline" aria-label="chat-setting" size={'sm'}>
+                    <Button variant="outline"
+                        id="chat-setting-button"
+                        title="chat-setting-button"
+                        aria-label="chat-setting-button"
+                        size={'sm'}>
                         <Settings />
                     </Button>
                 </DialogTrigger>
@@ -44,19 +48,19 @@ const ChatSetting = (props: Props) => {
                         <Label htmlFor="ai-api-key">
                             AI API key (groq)
                         </Label>
-                            <Field orientation="horizontal" className="py-2">
-                        <Input
-                        id="ai-api-key"
-                            type={isInputType?"text":"password"}
-                            placeholder="Add your AI API key here..."
-                            value={key}
-                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                                setKey(event.target.value)
-                            }}
-                        />
-                          <Button aria-label="show-hide-key" onClick={()=>setIsInputType((pre)=>!pre)}>
-                                    {isInputType? <Eye />: <EyeClosed />}
-                                </Button>
+                        <Field orientation="horizontal" className="py-2">
+                            <Input
+                                id="ai-api-key"
+                                type={isInputType ? "text" : "password"}
+                                placeholder="Add your AI API key here..."
+                                value={key}
+                                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                    setKey(event.target.value)
+                                }}
+                            />
+                            <Button aria-label="show-hide-key" onClick={() => setIsInputType((pre) => !pre)}>
+                                {isInputType ? <Eye /> : <EyeClosed />}
+                            </Button>
                         </Field>
                     </div>
                     <DialogFooter>

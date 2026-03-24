@@ -22,7 +22,7 @@ import { useGetAllQuoteDetails } from '@/api-hook/use-get-all-quote-details.hook
 import { useSortStore } from '@/store/use-sort.store'
 import { toggleQuotePinned } from '@/db/quote.db'
 import React from 'react'
-import {  ButtonLoader } from '@/components/ui/button-loader'
+import { ButtonLoader } from '@/components/ui/button-loader'
 import { Loader } from '@/components/ui/loader'
 
 const DeleteQuoteDialog = lazy(() => import('@/feature/quote/dialog/delete.dialog'))
@@ -142,7 +142,7 @@ export function QuoteListPage() {
 
       {/* Content */}
       <main className="px-2">
-        <Suspense fallback={<Loader aria-label='loading-list'/>}>
+        <Suspense fallback={<Loader aria-label='loading-list' />}>
           <div aria-label='list'>
             <ListQuote
               loading={isLoading}
@@ -157,10 +157,10 @@ export function QuoteListPage() {
 
       {/* Floating Add Button */}
       <nav className="flex justify-center">
-        <Link to="/new" title='new' aria-label="new" >
+        <Link to="/new" title='new' aria-label="add-new-note-link" >
           <Button
             size="icon-lg"
-            aria-label='add-note'
+            aria-label='add-note-button'
             title='add-note'
             className="fixed bottom-8  -translate-x-8 rounded-full aspect-square scale-150"
           >

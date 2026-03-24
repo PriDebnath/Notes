@@ -32,7 +32,7 @@ https://github.com/PriDebnath/Notes/releases/latest/download/app-debug.apk
 
 # Notes
 
-**A calm, intelligent space to capture thoughts — and explore them with AI.**
+**A calm, intelligent space to capture thoughts — and explore them with AI 🤖.**
 
 Notes turns your ideas, quotes, and short writings into a personal library you enjoy browsing — not just storing.
 
@@ -44,7 +44,8 @@ Notes turns your ideas, quotes, and short writings into a personal library you e
 * **Clean, distraction-free writing** with focus on your words
 * **Simple organization** using tags, filters, and sorting
 * **Fast, local-first performance with intelligent enhancements** that stays smooth as you grow
-
+* **Summarize notes instantly** — get the essence without rereading everything
+* **Context-aware responses** — AI understands the specific note you're viewing
 
 ## Great for
 
@@ -77,6 +78,12 @@ Built with a focus on **modern engineering practices, maintainability, and relia
 * **Integration testing** for module interaction
 * **End-to-End testing** using **Cypress** and **Playwright**
 * Covers key user flows like creating, editing, and organizing notes
+
+### 🤖 AI Integration
+* Context-aware AI responses based on active note content
+* Designed to keep interactions relevant and scoped, avoiding generic outputs
+* Clean separation between AI layer and core note system
+* Built to support future extensions like semantic search and embeddings
 
 ### 🚀 Development Standards
 

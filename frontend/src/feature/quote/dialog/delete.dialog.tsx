@@ -40,7 +40,7 @@ function DeleteQuoteDialog(props: Props) {
         <DialogContent className="">
           <DialogHeader>
             <DialogTitle>
-              Delete              Quote
+              Delete  
             </DialogTitle>
             <DialogDescription>
               Are you sure you want to delete ?

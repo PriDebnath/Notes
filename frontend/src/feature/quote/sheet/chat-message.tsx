@@ -32,7 +32,7 @@ const ChatMessage = (props: Props) => {
             >
                 {
                     (
-                        loadingContent && (
+                        (loadingContent && message?.role == 'assistant') && (
                             <div className="animate-pulse  bg-gray-300 w-4 h-4 rounded-full"></div>
                         )
                     )

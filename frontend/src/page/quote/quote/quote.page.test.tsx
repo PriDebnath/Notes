@@ -53,7 +53,7 @@ describe(Component.name, () => {
       await router.navigate({ to: '/$quoteId', params: { quoteId: "1" } })
       await renderWithFileRoutes(<Component mode="edit" />)
 
-      const loader =await screen.queryByLabelText("loading")
+      const loader = await screen.queryByLabelText("loading")
 
       if (loader) {
         expect(await loader).toBeInTheDocument()
@@ -120,9 +120,15 @@ describe(Component.name, () => {
       const editor = await screen.findByLabelText("editor")
       expect(await editor).toBeInTheDocument()
 
-      const addTag = screen.queryByLabelText("add-tag")
-      expect(await addTag).toBeInTheDocument()
-      await userEvent.click(addTag!)
+      const tagList = screen.queryByLabelText("tag-list")
+      expect(await tagList).toBeInTheDocument()
+
+      const tagField =  screen.queryByLabelText("tag-field")
+      expect(await tagField).toBeInTheDocument()
+    
+      const chooseTag = screen.queryByLabelText("choose-tag")
+      expect(await chooseTag).toBeInTheDocument()
+      await userEvent.click(chooseTag!)
 
       const tags = screen.queryByLabelText("tags")
       expect(await tags).toBeInTheDocument()

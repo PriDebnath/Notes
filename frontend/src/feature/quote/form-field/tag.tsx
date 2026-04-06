@@ -9,7 +9,7 @@ const TagField = (props: Props) => {
   const { onChoose } = props
 
   return (
-      <div className="py-2 flex items-center justify-between ">
+      <div className="py-2 flex items-center justify-between " aria-label="tag-field">
         <Label htmlFor="tag" className="text-foreground">Tag</Label>
         <ChooseTagDropdown onChoose={onChoose} />
       </div>

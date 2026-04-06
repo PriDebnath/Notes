@@ -15,7 +15,7 @@ interface TagFilterProps {
   onChange: (tags: string[]) => void
 }
 
-export default function  TagFilter({ tags, value, onChange }: TagFilterProps) {
+export default function TagFilter({ tags, value, onChange }: TagFilterProps) {
   const [open, setOpen] = useState(false)
 
   const toggleTag = (tag: string) => {
@@ -27,14 +27,14 @@ export default function  TagFilter({ tags, value, onChange }: TagFilterProps) {
   }
 
   return (
-    <Popover  open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild  aria-label="open-filter">
-        <Button variant="outline" 
-        aria-label="filter"
-        className={
-          cn(
-            "gap-2 relative",
-          )}
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild  >
+        <Button variant="outline"
+          aria-label="open-filter"
+          className={
+            cn(
+              "gap-2 relative",
+            )}
         >
           <Filter className={
             cn(
@@ -60,7 +60,7 @@ export default function  TagFilter({ tags, value, onChange }: TagFilterProps) {
           {tags.map(tag => (
             <Button
               key={tag}
-              aria-label={'filter-by-'+tag}
+              aria-label={'filter-by-' + tag}
               size="sm"
               variant={value.includes(tag) ? "default" : "outline"}
               onClick={() => toggleTag(tag)}

@@ -127,7 +127,7 @@ describe(Component.name, () => {
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
 
-      expect(await screen.findByLabelText("new")).toBeInTheDocument()
+      expect(await screen.findByLabelText("add-new-note-link")).toBeInTheDocument()
     })
   })
 

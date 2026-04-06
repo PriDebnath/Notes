@@ -143,8 +143,8 @@ export function QuoteListPage() {
       {/* Content */}
       <main className="px-2">
         <Suspense fallback={
-          <div className='flex items-center justify-center'>
-            <Loader aria-label='loading-list' />
+          <div className='flex items-center justify-center' aria-label='loading-list'>
+            <Loader />
           </div>
         }>
           <div aria-label='list'>

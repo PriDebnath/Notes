@@ -86,10 +86,9 @@ export function ChooseTagDropdown(props: Props) {
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild
-                aria-label="add-tag"
             >
                 <Button
-aria-label="choose-tag"
+                    aria-label="choose-tag"
                     variant="outline"
                     size="icon"
                     className={

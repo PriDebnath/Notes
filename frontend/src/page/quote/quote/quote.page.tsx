@@ -286,24 +286,11 @@ export function QuotePage(props: Props) {
 
             </div>
 
-
-            {/*     <Separator className=" bg-border" />
-       
-
-            <div className="flex">
-              <Button variant="secondary" className='text-xs'
-              onClick={handleSummrise} >
-                Summrise
-              </Button>
-            </div>
-   */}
           </div>
 
         </motion.div>
       </AnimatePresence>
-      {/*
-  </div>
-  */}
+ 
     </div>
   )
 }

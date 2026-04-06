@@ -1,10 +1,13 @@
-import  { TanstackQueryClientProvider } from "./query-client.provider"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { TanstackRouterProvider } from "./tanstack-router.provider"
+import { TanstackQueryClientProvider } from "./query-client.provider"
 
-export const MainProvider  = () => {
+export const MainProvider = () => {
   return (
-    <TanstackQueryClientProvider>
-      <TanstackRouterProvider />
-    </TanstackQueryClientProvider>
+    <TooltipProvider>
+      <TanstackQueryClientProvider>
+        <TanstackRouterProvider />
+      </TanstackQueryClientProvider>
+    </TooltipProvider>
   )
 }

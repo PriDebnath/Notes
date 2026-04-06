@@ -1,6 +1,6 @@
 import React, { useState, type ChangeEvent } from "react";
 import { cn } from "@/lib/utils";
-import { BotMessageSquare, Eye, EyeClosed, Settings } from "lucide-react";
+import { BotMessageSquare, CircleQuestionMarkIcon, Eye, EyeClosed, Settings } from "lucide-react";
 import type { ContentChatMessage } from "@/model/index.model";
 import { MarkdownRenderer } from "@/components/common/markdown-renderer";
 import { CopyTextButton } from "@/feature/quote/dialog/component/copy-text-button"
@@ -11,6 +11,11 @@ import { useAiApiKeyStore } from "@/store/use-ai-api-key";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/ui/field";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface Props {
 
@@ -46,7 +51,7 @@ const ChatSetting = (props: Props) => {
                     </DialogHeader>
                     <div className="">
                         <Label htmlFor="ai-api-key">
-                            AI API key (groq)
+                            AI API key (groq) <ApiInfoTooltip />
                         </Label>
                         <Field orientation="horizontal" className="py-2">
                             <Input
@@ -72,6 +77,22 @@ const ChatSetting = (props: Props) => {
                 </DialogContent>
             </form>
         </Dialog>
+    )
+}
+
+function ApiInfoTooltip() {
+    return (
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <CircleQuestionMarkIcon className="h-4 w-4 cursor-help text-muted-foreground" />
+            </TooltipTrigger>
+            <TooltipContent className="max-w-2xs">
+                <p>
+                    Your API key is used only to make requests directly to the provider.
+                    It is never stored or shared.
+                </p>
+            </TooltipContent>
+        </Tooltip>
     )
 }
 

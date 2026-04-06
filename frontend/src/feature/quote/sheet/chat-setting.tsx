@@ -16,6 +16,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface Props {
 
@@ -80,20 +81,23 @@ const ChatSetting = (props: Props) => {
     )
 }
 
-function ApiInfoTooltip() {
+export function ApiInfoTooltip() {
     return (
-        <Tooltip>
-            <TooltipTrigger asChild>
-                <CircleQuestionMarkIcon className="h-4 w-4 cursor-help text-muted-foreground" />
-            </TooltipTrigger>
-            <TooltipContent className="max-w-2xs">
+        <Popover>
+            <PopoverTrigger asChild>
+                <button type="button">
+                    <CircleQuestionMarkIcon className="h-4 w-4" />
+                </button>
+            </PopoverTrigger>
+            <PopoverContent className="max-w-xs">
                 <p>
                     Your API key is used only to make requests directly to the provider.
                     It is never stored or shared.
                 </p>
-            </TooltipContent>
-        </Tooltip>
+            </PopoverContent>
+        </Popover>
     )
 }
+
 
 export default React.memo(ChatSetting)

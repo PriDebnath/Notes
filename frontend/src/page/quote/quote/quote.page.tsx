@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { useBlocker } from "@tanstack/react-router"
 import TagField from "@/feature/quote/form-field/tag"
 import { Separator } from '@/components/ui/separator'
-import { addQuote, updateQuote } from '@/db/quote.db'
 import { AnimatePresence, motion } from 'framer-motion'
 import { addOrGetTag } from '@/legacy-indexDB-db/tag.db'
 import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
@@ -19,6 +18,8 @@ import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/q
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
 import { ButtonLoader } from "@/components/ui/button-loader"
 import EditorSkeleton from "@/feature/quote/skeleton/editor.skeleton"
+import {  useCreateQuoteDetails } from "@/api-hook/use-create-quote-details.hook"
+import {   useUpdateQuoteDetails  } from "@/api-hook/use-update-quote-details.hook"
 
 const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
 const ShareBackground = lazy(
@@ -43,7 +44,6 @@ export function QuotePage(props: Props) {
   const { mode } = props
   const navigate = useNavigate()
   const noteRef = useRef<HTMLDivElement>(null)
-  const { getSummarize, isPending: loadingSummarize, error: errorGetSummarize } = useGetSummarize()
 
   // Only read params in edit mode
   const params = mode === 'edit' ? Route.useParams() : null
@@ -57,6 +57,8 @@ export function QuotePage(props: Props) {
   } = useGetQuoteDetails(
     mode === 'edit' ? Number(quoteId) : undefined
   )
+  const { updateQuote } = useUpdateQuoteDetails()
+  const { createQuote } = useCreateQuoteDetails()
 
   const [quoteData, setQuoteData] = useState<QuoteFormData>(() => ({
     id: quote?.id,
@@ -114,7 +116,7 @@ export function QuotePage(props: Props) {
         text: quote.text || "Empty"
       })
     } else {
-      const newQuote = await addQuote({
+      const newQuote = await createQuote({
         ...quote,
         text: quote.text || "Empty",
       })

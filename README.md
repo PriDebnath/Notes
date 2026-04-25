@@ -13,7 +13,7 @@
 
 [chat-with-ai-about-note](https://github.com/user-attachments/assets/8b7edad4-395d-47d6-a811-aa2123f16f79)
 
-⬇️ <a href="frontend/public/app-demo/Notes-23-01-2026.webm" download="Notes-by-pri.webm">
+⬇️ <a id="video-link" href="frontend/public/app-demo/Notes-23-01-2026.webm" download="Notes-by-pri.webm">
   Download Demo Video
 </a>
 

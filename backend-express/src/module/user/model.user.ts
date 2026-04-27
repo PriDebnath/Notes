@@ -5,7 +5,8 @@ let userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        index: true
+        index: true,
+        unique: true,
     },
     password: { type: String, required: true }
 },

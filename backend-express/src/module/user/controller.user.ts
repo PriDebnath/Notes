@@ -26,9 +26,12 @@ export const getOne = async (req: Request, res: Response) => {
 export const updateOne = async (req: Request, res: Response) => {
     const f: Type = req.body
     const { _id } =req.params
+    console.log({_id});
+    
     const item = await Model.findByIdAndUpdate(_id,{
         ...f
     })
+    console.log({item});
     res.send(item)
 }
 

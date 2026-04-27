@@ -1,5 +1,5 @@
 import cors from "cors"
-import express, { Express } from "express"
+import express, { Express,  } from "express"
 import swaggerUi from "swagger-ui-express"
 import { swaggerUiApp } from "./utils/swagger-config";
 import { router as routerUsers } from "./module/user/router.user";
@@ -9,8 +9,10 @@ const app: Express = express()
 app.use(cors())
 app.use(express.json())
 
+// Swagger for API docs
 app.use("/docs", swaggerUi.serve, swaggerUiApp);
 
+// Routers
 app.use("/users", routerUsers);
 
 app.get("/", (req, res) => {

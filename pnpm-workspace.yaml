@@ -1,5 +1,6 @@
 packages:
-  - frontend # should match the name in the project-name/package.json
+  - frontend # should match the name propert's value in "project-name/package.json"
   - backend
+  - backend-express/backend-express
   - testing/cypress-testing
   - testing/playwright-testing

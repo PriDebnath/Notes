@@ -179,15 +179,15 @@ export function QuotePage(props: Props) {
 
     <div
       ref={noteRef}
-      className='w-full h-dvh flex justify-self-center md:w-3/4'>
+      className='w-full h-dvh flex justify-self-center md:w-3/4 overflow-hidden'>
 
       <AnimatePresence mode="wait">
         <motion.div
           key={quoteId}
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.8, opacity: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
+          initial={{ x: 120, opacity: 1 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: 120, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
           className="w-full "
         >
 

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { AnimatePresence, motion } from "framer-motion"
-import { ArrowLeftIcon, ArrowUpCircleIcon, ArrowUpRightFromCircleIcon, CloudBackupIcon } from "lucide-react"
+import { ArrowLeftIcon, ArrowUpCircleIcon, ArrowUpRightFromCircleIcon, CloudBackupIcon, LockIcon } from "lucide-react"
 import { Link } from "@tanstack/react-router"
 import React from "react"
 import { Controller, useForm } from "react-hook-form"
@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import { useAuthTokenStore } from "@/store/use-auth-token.store"
+import {  useAuthStore } from "@/feature/auth/store/auth.store"
 
 const profileFormSchema = z.object({
   name: z.string().min(1, "name should not be empty"),
@@ -18,7 +18,7 @@ const profileFormSchema = z.object({
 
 const Me = () => {
 
-  const { token} = useAuthTokenStore()
+  const { token} = useAuthStore()
   const reactForm = useForm({
     resolver: zodResolver(profileFormSchema)
   })
@@ -148,14 +148,19 @@ const Me = () => {
           </div>
   ) : (
  <div className="p-4 flex flex-col gap-4">
+  <div className="bg-muted-foreground rounded h-20 flex items-center justify-center">
+<LockIcon/>
+  </div>
+            <Separator className="bg-border" />
+
             <div className="flex items-center justify-center">
-   <Link to="/"
+   <Link to="/auth/sign-in"
               aria-label="link-to-home-link"
               className='flex items-center gap-2'
             >
               <Button 
-                aria-label='go-to-home-button'
-                title='go-to-home-button'>
+                aria-label='go-to-log-button'
+                title='go-to-login-button'>
                 Login 
               </Button>
             </Link>

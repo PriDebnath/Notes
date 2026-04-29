@@ -13,6 +13,6 @@ export const createUser = async (item: User) => {
 }
 
 export const getUserByEmail = async (email: string) => {
-    const item = await Model.findOne({ email })
-    return item
+const item = await Model.findOne({ email })
+return item;
 }

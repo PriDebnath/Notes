@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { createOne, deleteOne, getAll, getOne, updateOne } from "./controller.user";
+import { validatedJwtToken } from "../../middleware/jwt.middleware";
 
 const router: Router = Router()
 
@@ -66,7 +67,7 @@ router.get('/',getAll)
  *       200:
  *         description: Item
  */
-router.get('/:_id',getOne)
+router.get('/:_id',validatedJwtToken, getOne)
 
 /**
  * @swagger

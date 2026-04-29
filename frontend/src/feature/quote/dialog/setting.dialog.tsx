@@ -220,7 +220,7 @@ function SettingComponent(props: Props) {
                 variant="link"
                 size="icon"
               >
-                Go
+                Visit
                 <ArrowUpRight />
               </Button>
             </Link>

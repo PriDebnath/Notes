@@ -1,15 +1,17 @@
 import { Button } from "@/components/ui/button"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowLeftIcon, ArrowUpCircleIcon, ArrowUpRightFromCircleIcon, CloudBackupIcon, LockIcon } from "lucide-react"
-import { Link } from "@tanstack/react-router"
-import React from "react"
+import { Link, useNavigate } from "@tanstack/react-router"
+import React, { useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { z, } from "zod"
+import { useJwt } from "react-jwt";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import {  useAuthStore } from "@/feature/auth/store/auth.store"
+import { useAuthStore } from "@/feature/auth/store/auth.store"
+import { useGetUser, type User } from "@/feature/user/hook/use-get-user.hook"
 
 const profileFormSchema = z.object({
   name: z.string().min(1, "name should not be empty"),
@@ -18,13 +20,39 @@ const profileFormSchema = z.object({
 
 const Me = () => {
 
-  const { token} = useAuthStore()
-  const reactForm = useForm({
+  const navigate = useNavigate()
+  const { token, setToken } = useAuthStore()
+  const { decodedToken, isExpired } = useJwt<User>(token);
+  console.log({ decodedToken });
+
+  const { data: user, isPending } = useGetUser({ _id: decodedToken?._id })
+
+  const { control, reset, formState: { isDirty }, handleSubmit } = useForm({
+    defaultValues: {
+      name: '',
+      email: ''
+    },
     resolver: zodResolver(profileFormSchema)
   })
 
+  useEffect(() => {
+    if (user) {
+      reset({
+        name: user.name || "",
+        email: user.email || "",
+      })
+    }
+  }, [user])
+
   const onSubmit = (values: z.infer<typeof profileFormSchema>) => {
 
+  }
+
+  const onLogout = () => {
+    setToken('')
+    navigate({
+      to: '/auth/sign-in'
+    })
   }
 
   return (
@@ -39,7 +67,6 @@ const Me = () => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="w-full "
         >
-
           <div className='flex p-4 bg-background flex-row sticky top-0 z-10  justify-between items-center'>
             <Link to="/"
               aria-label="link-to-home-link"
@@ -52,123 +79,139 @@ const Me = () => {
               </Button>
             </Link>
           </div>
-                      <Separator className="bg-border" />
+          <Separator className="bg-border" />
 
 
-{
-  token ? (
-   <div className="p-4 flex flex-col gap-4">
+          {
+            user ? (
+              <div className="p-4 flex flex-col gap-4">
+                <Separator className="bg-border" />
+                <div className="flex flex-col gap-1">
+                  <div className="flex justify-between items-center">
+                    <p className="text-muted-foreground text-xs py-2">
+                      Profile
+                    </p>
 
-            <Separator className="bg-border" />
-            <div className="flex flex-col gap-1">
-              <div className="flex justify-between items-center">
-                 <p className="text-muted-foreground text-xs">
-                Profile
-              </p>
-              {
-                reactForm?.formState?.isDirty && (
-                    <Button variant="outline" size="icon"
-                aria-label='save-profile-button'
-                title='save-profile-button'>
-                Save changes
-              </Button>
-                )
-              }
-              </div>
-             
-              <form onSubmit={reactForm.handleSubmit(onSubmit)}
-               className="flex flex-col gap-4">
+                    <div>
+                      <Button
+                        variant="link"
+                        size={'sm'}
+                        className="text-xs px-2 py-0"
+                        aria-label='logout-button'
+                        title='logout-button'
+                        onClick={onLogout}
+                      >
+                        Logout
+                      </Button>
+                      {/* {
+                        (isDirty) && (
+                          <Button
+                            variant="outline"
+                            size={'sm'}
+                            className="text-xs px-2 py-0"
+                            aria-label='save-profile-button'
+                            title='save-profile-button'>
+                            Save changes
+                          </Button>
+                        )
+                      } */}
+                    </div>
 
-                <Controller
-                  name="name"
-                  control={reactForm.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid} className="gap-1">
-                      <FieldLabel htmlFor={field.name} className="capitalize text-sm">
-                        {field.name}
-                      </FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        aria-invalid={fieldState.invalid}
-                        placeholder={"Enter " + field.name + " here..."}
-                        autoComplete="on"
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
+                  </div>
+
+                  <form onSubmit={handleSubmit(onSubmit)}
+                    className="flex flex-col gap-4">
+
+                    <Controller
+                      name="name"
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="gap-1">
+                          <FieldLabel htmlFor={field.name} className="capitalize text-sm">
+                            {field.name}
+                          </FieldLabel>
+                          <Input
+                            {...field}
+                            id={field.name}
+                            aria-invalid={fieldState.invalid}
+                            placeholder={"Enter " + field.name + " here..."}
+                            autoComplete="on"
+                          />
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
                       )}
-                    </Field>
-                  )}
-                />
-                <Controller
-                  name="email"
-                  disabled={true}
-                  control={reactForm.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid} className="gap-1">
-                      <FieldLabel htmlFor={field.name} className="capitalize text-sm">
-                        {field.name}
-                      </FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        aria-invalid={fieldState.invalid}
-                        placeholder={"Enter " + field.name + " here..."}
-                        autoComplete="on"
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
+                    />
+                    <Controller
+                      name="email"
+                      disabled={true}
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="gap-1">
+                          <FieldLabel htmlFor={field.name} className="capitalize text-sm">
+                            {field.name}
+                          </FieldLabel>
+                          <Input
+                            {...field}
+                            id={field.name}
+                            aria-invalid={fieldState.invalid}
+                            placeholder={"Enter " + field.name + " here..."}
+                            autoComplete="on"
+                          />
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
                       )}
-                    </Field>
-                  )}
-                />
+                    />
 
-              </form>
-            </div>
+                  </form>
+                </div>
 
 
-            <Separator className="bg-border" />
+                <Separator className="bg-border" />
 
-            <div className="flex flex-col gap-1">
-              <p className=" text-muted-foreground text-xs">
-                Sync
-              </p>
-              <div className="flex justify-between items-center text-center ">
-                <p className=" text-sm">
-                  Last synced: {'today'}
-                </p>
-                 <Button variant="outline" size="icon"
-                aria-label='sync-button'
-                title='sync-button'>
-                <CloudBackupIcon />
-              </Button>
+                <div className="flex flex-col gap-1">
+                  <p className=" text-muted-foreground text-xs">
+                    Sync
+                  </p>
+                  <div className="flex justify-between items-center text-center ">
+                    <p className=" text-sm">
+                      Last synced: {'today'}
+                    </p>
+                    {/* <Button variant="outline" size="icon"
+                      aria-label='sync-button'
+                      title='sync-button'>
+                      <CloudBackupIcon />
+                    </Button> */}
+                  </div>
+
+                </div>
               </div>
+            ) : (
+              <div className="p-4 flex flex-col gap-4">
+                <div className="bg-muted-foreground rounded h-20 flex items-center justify-center">
+                  <LockIcon />
+                </div>
+                <Separator className="bg-border" />
 
-            </div>
-          </div>
-  ) : (
- <div className="p-4 flex flex-col gap-4">
-  <div className="bg-muted-foreground rounded h-20 flex items-center justify-center">
-<LockIcon/>
-  </div>
-            <Separator className="bg-border" />
+                <div className="flex items-center justify-center">
+                  <Link to="/auth/sign-in"
+                    aria-label="link-to-home-link"
+                    className='flex items-center gap-2'
+                  >
+                    <Button
+                      aria-label='go-to-log-button'
+                      title='go-to-login-button'>
+                      Login
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )
+          }
 
-            <div className="flex items-center justify-center">
-   <Link to="/auth/sign-in"
-              aria-label="link-to-home-link"
-              className='flex items-center gap-2'
-            >
-              <Button 
-                aria-label='go-to-log-button'
-                title='go-to-login-button'>
-                Login 
-              </Button>
-            </Link>
-            </div>
-            </div>
-  )
-}
-       
 
         </motion.div>
       </AnimatePresence>

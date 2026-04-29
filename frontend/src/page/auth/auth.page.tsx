@@ -1,12 +1,15 @@
 import { z } from "zod";
 import { memo } from "react";
 import { motion } from "framer-motion";
-import { Outlet } from "@tanstack/react-router";
+import { Link, Outlet } from "@tanstack/react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldValues } from "react-hook-form";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuthSignIn, type SignInParam } from "@/feature/auth/hook/use-sign-in.auth.hook";
+import { Button } from "@/components/ui/button";
+import { ArrowLeftIcon } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 const authSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }),
@@ -29,8 +32,24 @@ function AuthLayout() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background">
-      <div className="w-full max-w-md border rounded-2xl bg-muted! overflow-hidden">
+    <div className="flex flex-col  min-h-screen bg-background">
+        <div className='flex p-4 bg-background flex-row sticky top-0 z-10  justify-between items-center'>
+                  <Link to="/"
+                    aria-label="link-to-home-link"
+                    className='flex items-center gap-2'
+                  >
+                    <Button variant="outline" size="icon"
+                      aria-label='go-to-home-button'
+                      title='go-to-home-button'>
+                      <ArrowLeftIcon />
+                    </Button>
+                  </Link>
+                </div>
+                          <Separator className="bg-border" />
+                
+                <div  className="flex flex-col justify-center items-center    flex-1">
+
+        <div className="w-full max-w-md border rounded-2xl bg-muted! overflow-hidden">
         <Tabs
           value={isSignIn ? authPath.signin : authPath.signup}
           onValueChange={handleTabChange}
@@ -53,6 +72,7 @@ function AuthLayout() {
             <Outlet />
           </motion.div>
         </div>
+      </div>
       </div>
     </div>
   );

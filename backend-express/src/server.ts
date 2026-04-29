@@ -1,4 +1,4 @@
-import {app} from "./app"
+import  app  from "./app"
 import { connectDB } from "./utils/connect-db";
 import {  getEnv, loadEnv } from "./utils/load-env";
 

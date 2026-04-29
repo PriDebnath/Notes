@@ -8,7 +8,7 @@ import { toastConfig } from "@/components/ui/sonner";
 export type SignInParam = { email: string; password: string }
 
 const signIn = (data: SignInParam) =>
-  apiClient<{ token: string }>("/api/auth/sign-in", {
+  apiClient<{ token: string }>("/api/v1/auth/sign-in", {
     method: "POST",
     body: JSON.stringify(data),
   })

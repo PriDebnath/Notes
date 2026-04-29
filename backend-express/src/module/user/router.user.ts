@@ -39,7 +39,7 @@ router.post('/', createOne);
 
 /**
  * @swagger
- * /users:
+ * /api/v1/users:
  *   get:
  *     summary: Get all users
  *     tags: [Users]
@@ -51,7 +51,7 @@ router.get('/',getAll)
 
 /**
  * @swagger
- * /users/{_id}:
+ * /api/v1/users/{_id}:
  *   get:
  *     summary: Get a user
  *     tags: [Users]
@@ -70,7 +70,7 @@ router.get('/:_id',getOne)
 
 /**
  * @swagger
- * /users/{_id}:
+ * /api/v1/users/{_id}:
  *   patch:
  *     summary: Update a user
  *     tags: [Users]
@@ -109,7 +109,7 @@ router.patch('/:_id',updateOne)
 
 /**
  * @swagger
- * /users/{_id}:
+ * /api/v1/users/{_id}:
  *   delete:
  *     summary: Delete a user
  *     tags: [Users]

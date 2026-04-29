@@ -1,14 +1,12 @@
 import { ObjectId } from "mongoose"
 import { Request, Response } from "express"
 import { userModel as Model, User as Type } from "./model.user"
+import { createUser } from "./service"
 
 export const createOne = async (req: Request, res: Response) => {
-    const f: Type = req.body
-    const item = await Model.create({
-        ...f
-    })
-    await item.save()
-    res.send(item)
+         const item: Type = req.body
+    const newItem = await createUser(item)
+    res.send(newItem)   
 }
 
 export const getAll = async (req: Request, res: Response) => {

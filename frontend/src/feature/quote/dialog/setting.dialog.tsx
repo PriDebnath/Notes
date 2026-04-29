@@ -215,14 +215,11 @@ function SettingComponent(props: Props) {
           <p className="text-muted-foreground text-xs">My Profile</p>
           <div className="flex justify-between items-center text-sm ">
             Profile
-            <Link to="/me" title='me' aria-label="me-link" >
-              <Button
-                variant="link"
-                size="icon"
-              >
+            <Link to="/me" title='me' aria-label="me-link" className="text-primary">
+              <span className="flex items-center">
                 Visit
                 <ArrowUpRight />
-              </Button>
+              </span>
             </Link>
           </div>
         </div>

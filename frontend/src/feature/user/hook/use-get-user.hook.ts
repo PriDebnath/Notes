@@ -1,8 +1,8 @@
 import { apiClient } from "@/lib/apiClient"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 export type Param = {
-        _id?: string;
+    _id?: string;
 }
 
 export type User = {
@@ -22,10 +22,16 @@ const getUser = (data: Param) =>
 export const useGetUserKey = "get-user"
 
 export const useGetUser = (param: Param) => {
+    const queryClient = useQueryClient()
+    const invalidateQueries = () => {
+        queryClient.invalidateQueries({
+            queryKey: [useGetUserKey]
+        })
+    }
     const data = useQuery({
-        queryFn:()=> getUser(param),
-        queryKey: [useGetUserKey],
-        enabled: Boolean(param._id)
+        queryFn: () => getUser(param),
+        queryKey: [useGetUserKey, param._id],
+        enabled: Boolean(param._id),
     })
-    return data
+    return { ...data, invalidateQueries }
 }

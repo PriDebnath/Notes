@@ -34,7 +34,7 @@ export async function apiClient<T>(
     // 🔐 Handle auth errors
     if (res.status === 401) {
       setToken("");
-      window.location.href = "/";
+      // window.location.href = "/";
     }
     if (res.status === 400) {
           let message = "API Error";

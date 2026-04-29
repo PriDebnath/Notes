@@ -25,7 +25,7 @@ const Me = () => {
   const { decodedToken, isExpired } = useJwt<User>(token);
   console.log({ decodedToken });
 
-  const { data: user, isPending } = useGetUser({ _id: decodedToken?._id })
+  const { data: user, isPending, invalidateQueries } = useGetUser({ _id: decodedToken?._id })
 
   const { control, reset, formState: { isDirty }, handleSubmit } = useForm({
     defaultValues: {
@@ -36,12 +36,10 @@ const Me = () => {
   })
 
   useEffect(() => {
-    if (user) {
-      reset({
-        name: user.name || "",
-        email: user.email || "",
+       reset({
+        name: user?.name || "",
+        email: user?.email || "",
       })
-    }
   }, [user])
 
   const onSubmit = (values: z.infer<typeof profileFormSchema>) => {
@@ -50,6 +48,7 @@ const Me = () => {
 
   const onLogout = () => {
     setToken('')
+invalidateQueries()
     navigate({
       to: '/auth/sign-in'
     })

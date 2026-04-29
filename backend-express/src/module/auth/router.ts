@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerUser } from "./controller";
+import { loginUser, registerUser } from "./controller";
 
 
 const router: Router = Router()
@@ -41,5 +41,38 @@ const router: Router = Router()
  *         description: Invalid input
  */
 router.post("/sign-up", registerUser)
+
+/**
+ * @swagger
+ * /api/v1/auth/sign-in:
+ *   post:
+ *     summary: User user
+ *     tags: [Auth]
+ *     requestBody: #@important to see body in ui.
+ *       required: true
+ *       description: User credentials
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: debnathpritam0802@gmail.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: strongPassword123
+ *     responses: #@important to see response in ui.
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: Invalid input
+ */
+router.post("/sign-in", loginUser)
 
 export {router}

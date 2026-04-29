@@ -36,7 +36,15 @@ export async function apiClient<T>(
       setToken("");
       window.location.href = "/";
     }
+    if (res.status === 400) {
+          let message = "API Error";
+      try {
+        const error = await res.json();
+        message = error.message || message;
+      } catch { }
 
+      throw new Error(message);
+    }
     if (res.status === 404) {
       throw new Error("Not found");
     }

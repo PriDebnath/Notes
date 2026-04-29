@@ -17,7 +17,8 @@ import { Eye, EyeOff, Loader, Loader2 } from "lucide-react"
 import { useAuthSignUp } from "@/feature/auth/hook/use-sign-up.auth.hook"
 
 const formSchema = z.object({
-  email: z.string().email("Invalid email"),
+  email: z.email("Invalid email"),
+  name: z.string().min(3, "Minimum 3 characters"),
   password: z.string().min(4, "Minimum 4 characters"),
 })
 
@@ -50,6 +51,27 @@ function SignUp() {
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
+     <Controller
+          name="name"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name} className="capitalize">
+                {field.name}
+              </FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                  placeholder={`Enter ${field.name} here...`}
+                autoComplete="on"
+              />
+              {fieldState.invalid && (
+                <FieldError errors={[fieldState.error]} />
+              )}
+            </Field>
+          )}
+        />
         <Controller
           name="email"
           control={form.control}
@@ -62,7 +84,7 @@ function SignUp() {
                 {...field}
                 id={field.name}
                 aria-invalid={fieldState.invalid}
-                placeholder="Enter email here..."
+                  placeholder={`Enter ${field.name} here...`}
                 autoComplete="on"
               />
               {fieldState.invalid && (
@@ -86,7 +108,7 @@ function SignUp() {
                   {...field}
                   id={field.name}
                   aria-invalid={fieldState.invalid}
-                  placeholder="Enter password here..."
+                  placeholder={`Enter ${field.name} here...`}
                   autoComplete="on"
                   type={showPassword ? "text" : "password"}
                   className="pr-10"

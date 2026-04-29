@@ -30,8 +30,7 @@ export const useAuthSignUp = () => {
       return res
     },
     onSuccess: (data) => {
-      setToken(data.token);
-      navigate({ to: "/" });
+      navigate({ to: "/auth/sign-in" });
     },
     onError: (error) => {
       // toast.error(error?.message ? error?.message : error?.stack, {

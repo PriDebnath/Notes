@@ -4,11 +4,13 @@ let BASE_API_URL: string;
 
 switch (import.meta.env.MODE) {
   case "github":
-    BASE_API_URL = "https://notes-backend.onrender.com";
+    BASE_API_URL = "https://notes-backend-k37u.onrender.com";
     break;
 
   default:
-    BASE_API_URL = "http://localhost:8000";
+    // BASE_API_URL = "http://localhost:8000";
+    BASE_API_URL = "https://notes-backend-k37u.onrender.com";
+
     break;
 }
 

@@ -149,7 +149,7 @@ function SettingComponent(props: Props) {
 
         <Separator className="bg-border" />
 
-        <div className={cn("flex flex-col gap-1", )}>
+        <div className={cn("flex flex-col gap-1",)}>
           <p className={cn("text-muted-foreground ", fontClassXxs)}>Card Style</p>
           <div className="flex justify-between items-center text-xs">
             Show Info
@@ -252,7 +252,10 @@ function SettingComponent(props: Props) {
 
         <Separator className="bg-border" />
         <div className=" w-full text-center  text-sm">
-          Made with 💙 by Pritam Debnath
+          <a href="https://pridebnath.github.io/portfolio-v2/" target="_blank"
+           className="hover:underline focus:underline active:underline">
+            Made with 💙 by Pritam Debnath
+          </a>
         </div>
       </DialogContent>
     </Dialog>

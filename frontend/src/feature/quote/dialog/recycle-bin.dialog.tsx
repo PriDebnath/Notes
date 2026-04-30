@@ -29,12 +29,13 @@ import type { CardView, Quote, QuoteFormData, SortOption } from "@/model/index.m
 import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
 import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
-import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw } from "lucide-react";
+import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { useGetAllDeletedQuoteDetails } from "@/api-hook/use-get-all-delete-quote-details.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { useUpdateQuoteDetails } from "@/api-hook/use-update-quote-details.hook";
+import { deleteQuoteWithLinks } from "@/db/quote_tags.db";
 
 interface Props {
 
@@ -55,6 +56,13 @@ function RecycleBinComponent(props: Props) {
     })
     refetch()
   }
+
+  const handleHardDelete = async (quote: Quote) => {
+    if (!quote.id) return
+    await await deleteQuoteWithLinks(quote.id)
+    refetch()
+  }
+
 
   return (
     <Dialog open={open} onOpenChange={setOpen}
@@ -86,15 +94,16 @@ function RecycleBinComponent(props: Props) {
         <div
           className=" overflow-y-auto rounded-xl  h-40 min-h-0 flex flex-col gap-1 border-2  p-2">
           {data?.map((quote, i) => (
-            <div className="flex justify-between border-2 rounded-lg p-2">
+            <div key={'bin' + quote.id}
+              className="flex justify-between border-2 rounded-lg p-2">
               <div
-                key={'bin' + quote.id}
+
                 className=" "
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(quote?.text!)
                 }}
               />
-              <div>
+              <div className="flex items-center gap-2">
                 <Button
                   className={cn("hover:text-primary focus:text-primary active:text-primary",)}
                   variant={"outline"}
@@ -106,6 +115,18 @@ function RecycleBinComponent(props: Props) {
                   size={"sm"}
                 >
                   <RotateCcw />
+                </Button>
+                <Button
+                  className={cn("hover:text-primary focus:text-primary active:text-primary",)}
+                  variant={"outline"}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleHardDelete(quote)
+                  }}
+                  aria-label={"Delete note"}
+                  size={"sm"}
+                >
+                  <Trash2Icon />
                 </Button>
               </div>
             </div>

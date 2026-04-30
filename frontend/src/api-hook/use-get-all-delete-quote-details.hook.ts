@@ -6,7 +6,7 @@ export const useGetAllDeletedQuoteDetails = () => {
   const { sortBy } = useSortStore()
 
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['all-quote-details', sortBy],
+    queryKey: ['all-deleted-quote-details', sortBy],
     queryFn: () => getAllQuotesDetails({sortBy: sortBy, include:"deleted"}),
   })
 

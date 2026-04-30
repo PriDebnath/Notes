@@ -1,5 +1,5 @@
 
-import { useState, memo } from "react";
+import { useState, memo, Suspense } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -31,6 +31,9 @@ import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import RecycleBinDialog from "./recycle-bin.dialog";
+import { ButtonLoader } from "@/components/ui/button-loader";
+import { cn } from "@/lib/utils";
 
 interface Props {
 
@@ -45,7 +48,7 @@ function SettingComponent(props: Props) {
   const { sortBy, setSortBy } = useSortStore()
   const { view, setView } = useCardViewStore()
   const lastDeployed = useLastDeployed()
-
+  const controlHeightClass = " h-6!"
   return (
     <Dialog open={open} onOpenChange={setOpen}
 
@@ -77,7 +80,7 @@ function SettingComponent(props: Props) {
           <div className="flex justify-between items-center tex-sm">
             Appearance
             <Select value={theme} onValueChange={(value: ThemeMode) => setTheme(value)}>
-              <SelectTrigger className="text-xs">
+              <SelectTrigger className={cn("text-xs", controlHeightClass)}>
                 <SelectValue placeholder="Appearance" />
               </SelectTrigger>
               <SelectContent className="">
@@ -94,12 +97,12 @@ function SettingComponent(props: Props) {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex justify-between  items-center text-sm">
+          <div className="flex justify-between  items-center text-xs">
             Color Theme
             <Select
               value={colorTheme}
               onValueChange={(value: ColorTheme) => setColorTheme(value)}>
-              <SelectTrigger className="text-xs">
+              <SelectTrigger className={cn("text-xs", controlHeightClass)}>
                 <SelectValue placeholder="Color Theme" className="text-capitalize capitalize" />
               </SelectTrigger>
               <SelectContent className="">
@@ -118,10 +121,10 @@ function SettingComponent(props: Props) {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex justify-between items-center text-sm">
+          <div className="flex justify-between items-center text-xs">
             Font
             <Select value={font} onValueChange={(value: Font) => setFont(value)}>
-              <SelectTrigger className="text-xs">
+              <SelectTrigger className={cn("text-xs", controlHeightClass)}>
                 <SelectValue placeholder="Font" />
               </SelectTrigger>
               <SelectContent>
@@ -146,10 +149,10 @@ function SettingComponent(props: Props) {
 
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-xs">Card Style</p>
-          <div className="flex justify-between items-center text-sm">
+          <div className="flex justify-between items-center text-xs">
             Show Info
             <Select value={info} onValueChange={(value: ShowInfo) => setInfo(value)}>
-              <SelectTrigger className="text-xs">
+              <SelectTrigger className={cn("text-xs", controlHeightClass)}>
                 <SelectValue placeholder="Show Info" className="" />
               </SelectTrigger>
               <SelectContent >
@@ -166,10 +169,10 @@ function SettingComponent(props: Props) {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex justify-between items-center text-sm">
+          <div className="flex justify-between items-center text-xs">
             Sort by
             <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
-              <SelectTrigger className="text-xs">
+              <SelectTrigger className={cn("text-xs", controlHeightClass)}>
                 <SelectValue placeholder="Sort By" />
               </SelectTrigger>
               <SelectContent>
@@ -186,10 +189,10 @@ function SettingComponent(props: Props) {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex justify-between items-center text-sm">
+          <div className="flex justify-between items-center text-xs">
             View
             <Select value={view} onValueChange={(value: CardView) => setView(value)}>
-              <SelectTrigger className="text-xs">
+              <SelectTrigger className={cn("text-xs", controlHeightClass)}>
                 <SelectValue placeholder="View" />
               </SelectTrigger>
               <SelectContent>
@@ -213,7 +216,7 @@ function SettingComponent(props: Props) {
 
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-xs">My Profile</p>
-          <div className="flex justify-between items-center text-sm ">
+          <div className="flex justify-between items-center text-xs ">
             Profile
             <Link to="/me" title='me' aria-label="me-link" className="text-primary">
               <span className="flex items-center">
@@ -224,10 +227,17 @@ function SettingComponent(props: Props) {
           </div>
         </div>
 
+
+
         <Separator className="bg-border" />
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-xs">Other</p>
-
+          <div className="flex justify-between items-center text-xs ">
+            Recycle Bin
+            <Suspense fallback={<ButtonLoader />}>
+              <RecycleBinDialog />
+            </Suspense>
+          </div>
           <div className="flex justify-between text-center ">
             <p className="text-muted-foreground text-xs">
               Last updated

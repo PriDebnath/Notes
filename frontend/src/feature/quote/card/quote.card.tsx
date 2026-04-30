@@ -140,7 +140,10 @@ const QuoteCard = (props: Props) => {
                         </Button> */}
 
                         <Button
-                            className={cn("hover:text-primary", quote.pinned && "text-primary")}
+                            className={cn(
+                                "hover:text-primary focus:text-primary active:text-primary", 
+                                quote.pinned && "text-primary")
+                            }
                             variant={"outline"}
                             onClick={(e) => {
                                 e.preventDefault()
@@ -166,7 +169,7 @@ const QuoteCard = (props: Props) => {
                         </Button>
                         */}
                         <Button
-                            className=" hover:text-destructive "
+                            className=" hover:text-destructive  focus:text-destructive   active:text-destructive  "
                             variant={"outline"}
                             onClick={(e) => {
                                 e.preventDefault()

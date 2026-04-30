@@ -8,9 +8,7 @@ switch (import.meta.env.MODE) {
     break;
 
   default:
-    // BASE_API_URL = "http://localhost:8000";
-    BASE_API_URL = "https://notes-backend-k37u.onrender.com";
-
+    BASE_API_URL = "http://localhost:8000";
     break;
 }
 

@@ -35,6 +35,13 @@ export class DB extends Dexie {
       tags: "++id, &name",
       quotes_tags: "++id, quoteId, tagId, &[quoteId+tagId]",
     });
+
+    // v3 - add `synced and deleted` fields for quotes
+    this.version(3).stores({
+      quotes: "++id, text, texture, pri_set, created_at, updated_at, pinned, synced, deleted",
+      tags: "++id, &name",
+      quotes_tags: "++id, quoteId, tagId, &[quoteId+tagId]",
+    });
   }
 }
 

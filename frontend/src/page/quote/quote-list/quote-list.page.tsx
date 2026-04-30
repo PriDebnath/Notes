@@ -20,10 +20,11 @@ import { deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import type { Quote, QuoteDetails, QuoteFormData, Tag, SortOption } from '@/model/index.model'
 import { useGetAllQuoteDetails } from '@/api-hook/use-get-all-quote-details.hook'
 import { useSortStore } from '@/store/use-sort.store'
-import { toggleQuotePinned } from '@/db/quote.db'
+import { toggleQuotePinned, updateQuote } from '@/db/quote.db'
 import React from 'react'
 import { ButtonLoader } from '@/components/ui/button-loader'
 import { Loader } from '@/components/ui/loader'
+import { useUpdateQuoteDetails } from '@/api-hook/use-update-quote-details.hook'
 
 const DeleteQuoteDialog = lazy(() => import('@/feature/quote/dialog/delete.dialog'))
 const ListQuote = lazy(() => import('@/feature/quote/list.quote').then(mod => ({ default: mod.ListQuote })))
@@ -41,6 +42,9 @@ export function QuoteListPage() {
   const [search, setSearch] = useState('')
   const [quotes, setQuotes] = useState<QuoteDetails[]>([])
   const [openDelete, setOpenDelete] = useState(false)
+  const { updateQuote } = useUpdateQuoteDetails()
+console.log({quotes});
+
   const [activeTags, setActiveTags] = useState<string[]>([])
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
   const allTags = [
@@ -76,7 +80,14 @@ export function QuoteListPage() {
 
   const handleDelete = async (quote: QuoteFormData) => {
     if (!quote.id) return
-    await deleteQuoteWithLinks(quote.id)
+    // await deleteQuoteWithLinks(quote.id) // no hard delete
+    // sort delete
+    await updateQuote({
+      ...quote,
+      text: quote.text || "Empty",
+      deleted: true,
+      synced: false,
+    })
     setOpenDelete(false)
     refetch()
   }

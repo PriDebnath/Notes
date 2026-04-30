@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query"
 import { getAllQuotesDetails } from "@/db/quote_tags.db"
 import { useSortStore } from "@/store/use-sort.store"
 
-export const useGetAllQuoteDetails = () => {
+export const useGetAllDeletedQuoteDetails = () => {
   const { sortBy } = useSortStore()
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['all-quote-details', sortBy],
-    queryFn: () => getAllQuotesDetails({sortBy: sortBy, include:"non-deleted"}),
+    queryFn: () => getAllQuotesDetails({sortBy: sortBy, include:"deleted"}),
   })
 
   // console.log({ data, error })

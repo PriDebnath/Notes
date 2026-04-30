@@ -10,6 +10,8 @@ export interface Quote {
     created_at?: Date;
     updated_at?: Date;
     pinned?: boolean;
+    synced?: boolean;
+    deleted?: boolean;
 }
 
 export interface Tag {
@@ -50,4 +52,9 @@ export type Status = "idle" | "pending" | "success"
 export type ContentChatMessage = {
     role: "user" | "assistant";
     content: string;
+}
+
+export type GetAllQuotesDetailsParam = {
+    sortBy?: SortOption,
+    include?: 'all' | 'deleted'| 'non-deleted',
 }

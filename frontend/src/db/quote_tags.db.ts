@@ -1,66 +1,67 @@
 import { db } from "@/db/db";
 import { getOrAddTag } from "@/db/tag.db";
-import type { Tag, SortOption } from "@/model/index.model";
+import type { Tag, SortOption, GetAllQuotesDetailsParam } from "@/model/index.model";
 
 export const linkQuoteTag = async (quoteId: number, tagId: number) => {
-    await db.quotes_tags.add({ quoteId, tagId });
+  await db.quotes_tags.add({ quoteId, tagId });
 };
 
 export const addTagToQuote = async (quoteId: number, tagName: string) => {
-    return db.transaction("rw", db.tags, db.quotes_tags, async () => {
-        const tag = await getOrAddTag(tagName);
+  return db.transaction("rw", db.tags, db.quotes_tags, async () => {
+    const tag = await getOrAddTag(tagName);
 
-        await db.quotes_tags.add({
-            quoteId,
-            tagId: tag.id!,
-        });
-
-        return tag;
+    await db.quotes_tags.add({
+      quoteId,
+      tagId: tag.id!,
     });
+
+    return tag;
+  });
 };
 
 /**
  * Sort do not support here
  */
 export const getAllQuotesDetailsOld = async () => {
-    return db.transaction(
-        "r",
-        db.quotes,
-        db.quotes_tags,
-        db.tags,
-        async () => {
-            // #1 Query all tables
-            let quotes = await db.quotes.toArray()
-            let tags = await db.tags.toArray()
-            let quote_tags = await db.quotes_tags.toArray()
+  return db.transaction(
+    "r",
+    db.quotes,
+    db.quotes_tags,
+    db.tags,
+    async () => {
+      // #1 Query all tables
+      let quotes = await db.quotes.toArray()
+      let tags = await db.tags.toArray()
+      let quote_tags = await db.quotes_tags.toArray()
 
-            // #2 Store tags by their id
-            const tagsById = new Map<number, Tag>(tags.map(t => [t.id!, t])); // eq: 3 → { id: 3, name: "life" }
+      // #2 Store tags by their id
+      const tagsById = new Map<number, Tag>(tags.map(t => [t.id!, t])); // eq: 3 → { id: 3, name: "life" }
 
-            // #3 find links
-            const linksByQuoteId = new Map<number, Tag[]>(); // eq: 1 → [{ id: 3, name: "life" }]
-            for (const link of quote_tags) {
-                const tag = tagsById.get(link.tagId);
-                if (!tag) continue;
+      // #3 find links
+      const linksByQuoteId = new Map<number, Tag[]>(); // eq: 1 → [{ id: 3, name: "life" }]
+      for (const link of quote_tags) {
+        const tag = tagsById.get(link.tagId);
+        if (!tag) continue;
 
-                if (!linksByQuoteId.has(link.quoteId)) {
-                    linksByQuoteId.set(link.quoteId, []);
-                }
-                linksByQuoteId.get(link.quoteId)!.push(tag);
-            }
-            // #4 return formated data
-            let quotesResult = quotes.map((q) => {
-                return {
-                    ...q,
-                    tags: linksByQuoteId.get(q?.id!) || []
-                }
-            })
-            return quotesResult
-        })
+        if (!linksByQuoteId.has(link.quoteId)) {
+          linksByQuoteId.set(link.quoteId, []);
+        }
+        linksByQuoteId.get(link.quoteId)!.push(tag);
+      }
+      // #4 return formated data
+      let quotesResult = quotes.map((q) => {
+        return {
+          ...q,
+          tags: linksByQuoteId.get(q?.id!) || []
+        }
+      })
+      return quotesResult
+    })
 }
 
 
-export const getAllQuotesDetails = async (sortBy: SortOption = "created_at") => {
+export const getAllQuotesDetails = async (param: GetAllQuotesDetailsParam) => {
+  const { sortBy = 'created_at', include = 'all' } = param
   return db.transaction(
     "r",
     db.quotes,
@@ -72,8 +73,17 @@ export const getAllQuotesDetails = async (sortBy: SortOption = "created_at") => 
         sortBy === "created_at"
           ? await db.quotes.orderBy("created_at").reverse().toArray()
           : sortBy === "updated_at"
-          ? await db.quotes.orderBy("updated_at").reverse().toArray()
-          : await db.quotes.toArray()
+            ? await db.quotes.orderBy("updated_at").reverse().toArray()
+            : await db.quotes.toArray()
+
+      // #1.a get non-deleted 
+      if (include == 'non-deleted') {
+        quotes = quotes.filter((item) => item.deleted !== true)
+      }
+      // #1.b get deleted 
+      if (include == 'deleted') {
+        quotes = quotes.filter((item) => item.deleted === true)
+      }
 
       let tags = await db.tags.toArray()
       let quote_tags = await db.quotes_tags.toArray()

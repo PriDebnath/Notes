@@ -10,21 +10,16 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NewRouteImport } from './routes/new'
-import { Route as MeRouteImport } from './routes/me'
 import { Route as QuoteIdRouteImport } from './routes/$quoteId'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MeIndexRouteImport } from './routes/me/index'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 
 const NewRoute = NewRouteImport.update({
   id: '/new',
   path: '/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MeRoute = MeRouteImport.update({
-  id: '/me',
-  path: '/me',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuoteIdRoute = QuoteIdRouteImport.update({
@@ -42,6 +37,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MeIndexRoute = MeIndexRouteImport.update({
+  id: '/me/',
+  path: '/me/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
@@ -57,29 +57,29 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/$quoteId': typeof QuoteIdRoute
-  '/me': typeof MeRoute
   '/new': typeof NewRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/me/': typeof MeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/$quoteId': typeof QuoteIdRoute
-  '/me': typeof MeRoute
   '/new': typeof NewRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/me': typeof MeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/$quoteId': typeof QuoteIdRoute
-  '/me': typeof MeRoute
   '/new': typeof NewRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/me/': typeof MeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,36 +87,36 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/$quoteId'
-    | '/me'
     | '/new'
     | '/auth/sign-in'
     | '/auth/sign-up'
+    | '/me/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/$quoteId'
-    | '/me'
     | '/new'
     | '/auth/sign-in'
     | '/auth/sign-up'
+    | '/me'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/$quoteId'
-    | '/me'
     | '/new'
     | '/auth/sign-in'
     | '/auth/sign-up'
+    | '/me/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   QuoteIdRoute: typeof QuoteIdRoute
-  MeRoute: typeof MeRoute
   NewRoute: typeof NewRoute
+  MeIndexRoute: typeof MeIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -126,13 +126,6 @@ declare module '@tanstack/react-router' {
       path: '/new'
       fullPath: '/new'
       preLoaderRoute: typeof NewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/me': {
-      id: '/me'
-      path: '/me'
-      fullPath: '/me'
-      preLoaderRoute: typeof MeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$quoteId': {
@@ -154,6 +147,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/me/': {
+      id: '/me/'
+      path: '/me'
+      fullPath: '/me/'
+      preLoaderRoute: typeof MeIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/sign-up': {
@@ -191,8 +191,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   QuoteIdRoute: QuoteIdRoute,
-  MeRoute: MeRoute,
   NewRoute: NewRoute,
+  MeIndexRoute: MeIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

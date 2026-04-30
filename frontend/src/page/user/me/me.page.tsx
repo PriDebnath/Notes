@@ -15,6 +15,7 @@ import { useGetUser, type User } from "@/feature/user/hook/use-get-user.hook"
 import { cn } from "@/lib/utils"
 import { ButtonLoader } from "@/components/ui/button-loader"
 import RecycleBinDialog from "@/feature/quote/dialog/recycle-bin.dialog"
+import NavigationComponent from "@/feature/user/component/navigation"
 
 const profileFormSchema = z.object({
   name: z.string().min(1, "name should not be empty"),
@@ -69,16 +70,7 @@ const Me = () => {
           className="w-full "
         >
           <div className='flex p-4 bg-background flex-row sticky top-0 z-10  justify-between items-center'>
-            <Link to="/"
-              aria-label="link-to-home-link"
-              className='flex items-center gap-2'
-            >
-              <Button variant="outline" size="icon"
-                aria-label='go-to-home-button'
-                title='go-to-home-button'>
-                <ArrowLeftIcon />
-              </Button>
-            </Link>
+<NavigationComponent/>
           </div>
           {/* <Separator className="bg-border" /> */}
 

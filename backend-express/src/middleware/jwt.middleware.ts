@@ -19,7 +19,7 @@ export const validatedJwtToken = async (
                 return res.status(401).json({ message: "No token" });
             }
             const decoded = jwt.verify(token, JWT_SECRECT)
-            console.log({ decoded });
+            // console.log({ decoded });
             nextFunction()
         } catch (error) {
             return res.status(401).json({ message: "Not authorized" });

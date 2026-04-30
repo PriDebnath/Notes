@@ -13,8 +13,8 @@ let env: Env;
 
 export const loadEnv = async () => {
     dotenv.config({
-         path: path.resolve(__dirname, "../../.env"), 
-        });
+        path: path.resolve(__dirname, "../../../.env"),
+    });
 
     try {
         env = await envSchema.parseAsync(process.env);

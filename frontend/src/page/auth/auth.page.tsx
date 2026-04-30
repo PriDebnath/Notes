@@ -56,8 +56,8 @@ function AuthLayout() {
           className="w-full border-0"
         >
           <TabsList className="grid w-full grid-cols-2 border-0 p-0 ">
-            <TabsTrigger value="sign-in" className={'rounded-none border-none'}>Sign In</TabsTrigger>
-            <TabsTrigger value="sign-up" className={'rounded-none border-none'}>Sign Up</TabsTrigger>
+            <TabsTrigger value="sign-in" className={'rounded-none border-none cursor-pointer'}>Sign In</TabsTrigger>
+            <TabsTrigger value="sign-up" className={'rounded-none border-none cursor-pointer'}>Sign Up</TabsTrigger>
           </TabsList>
         </Tabs>
 

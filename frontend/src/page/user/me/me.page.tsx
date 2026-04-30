@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowLeftIcon, ArrowUpCircleIcon, ArrowUpRightFromCircleIcon, CloudBackupIcon, LockIcon } from "lucide-react"
 import { Link, useNavigate } from "@tanstack/react-router"
-import React, { useEffect } from "react"
+import React, { Suspense, useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { z, } from "zod"
 import { useJwt } from "react-jwt";
@@ -12,6 +12,9 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { useAuthStore } from "@/feature/auth/store/auth.store"
 import { useGetUser, type User } from "@/feature/user/hook/use-get-user.hook"
+import { cn } from "@/lib/utils"
+import { ButtonLoader } from "@/components/ui/button-loader"
+import RecycleBinDialog from "@/feature/quote/dialog/recycle-bin.dialog"
 
 const profileFormSchema = z.object({
   name: z.string().min(1, "name should not be empty"),
@@ -23,7 +26,6 @@ const Me = () => {
   const navigate = useNavigate()
   const { token, setToken } = useAuthStore()
   const { decodedToken, isExpired } = useJwt<User>(token);
-  console.log({ decodedToken });
 
   const { data: user, isPending, invalidateQueries } = useGetUser({ _id: decodedToken?._id })
 
@@ -36,10 +38,10 @@ const Me = () => {
   })
 
   useEffect(() => {
-       reset({
-        name: user?.name || "",
-        email: user?.email || "",
-      })
+    reset({
+      name: user?.name || "",
+      email: user?.email || "",
+    })
   }, [user])
 
   const onSubmit = (values: z.infer<typeof profileFormSchema>) => {
@@ -48,7 +50,7 @@ const Me = () => {
 
   const onLogout = () => {
     setToken('')
-invalidateQueries()
+    invalidateQueries()
     navigate({
       to: '/auth/sign-in'
     })
@@ -78,7 +80,7 @@ invalidateQueries()
               </Button>
             </Link>
           </div>
-          <Separator className="bg-border" />
+          {/* <Separator className="bg-border" /> */}
 
 
           {
@@ -173,11 +175,11 @@ invalidateQueries()
 
                 <div className="flex flex-col gap-1">
                   <p className=" text-muted-foreground text-xs">
-                    Sync
+                    Cloud
                   </p>
                   <div className="flex justify-between items-center text-center ">
                     <p className=" text-sm">
-                      Last synced: {'today'}
+                     Sync
                     </p>
                     {/* <Button variant="outline" size="icon"
                       aria-label='sync-button'
@@ -185,8 +187,15 @@ invalidateQueries()
                       <CloudBackupIcon />
                     </Button> */}
                   </div>
-
+                  <div className="flex justify-between items-center text-sm ">
+                    Cloud Container
+                    <Suspense fallback={<ButtonLoader />}>
+                      <RecycleBinDialog />
+                    </Suspense>
+                  </div>
                 </div>
+
+
               </div>
             ) : (
               <div className="p-4 flex flex-col gap-4">

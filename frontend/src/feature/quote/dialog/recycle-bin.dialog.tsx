@@ -88,7 +88,7 @@ function RecycleBinComponent(props: Props) {
           {data?.map((quote, i) => (
             <div className="flex justify-between border-2 rounded-lg p-2">
               <div
-                key={'bin'+quote.id}
+                key={'bin' + quote.id}
                 className=" "
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(quote?.text!)
@@ -111,6 +111,13 @@ function RecycleBinComponent(props: Props) {
             </div>
 
           ))}
+          {
+            !data?.length && (
+              <p className="w-full flex items-center justify-center h-48 text-muted-foreground">
+                No secrets written. For now.
+              </p>
+            )
+          }
         </div>
 
 

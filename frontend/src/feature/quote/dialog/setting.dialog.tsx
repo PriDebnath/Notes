@@ -49,6 +49,8 @@ function SettingComponent(props: Props) {
   const { view, setView } = useCardViewStore()
   const lastDeployed = useLastDeployed()
   const controlHeightClass = " h-6!"
+  const fontClassXxs = "text-[0.5rem]"
+
   return (
     <Dialog open={open} onOpenChange={setOpen}
 
@@ -75,9 +77,9 @@ function SettingComponent(props: Props) {
           </DialogDescription>
         </DialogHeader>
         <Separator className="bg-border" />
-        <div className="flex flex-col gap-1 text-xs">
-          <p className="text-muted-foreground text-xs">App Style</p>
-          <div className="flex justify-between items-center tex-sm">
+        <div className="flex flex-col gap-1 ">
+          <p className={cn("text-muted-foreground ", fontClassXxs)}>App Style</p>
+          <div className="flex justify-between items-center text-xs">
             Appearance
             <Select value={theme} onValueChange={(value: ThemeMode) => setTheme(value)}>
               <SelectTrigger className={cn("text-xs", controlHeightClass)}>
@@ -147,8 +149,8 @@ function SettingComponent(props: Props) {
 
         <Separator className="bg-border" />
 
-        <div className="flex flex-col gap-2">
-          <p className="text-muted-foreground text-xs">Card Style</p>
+        <div className={cn("flex flex-col gap-1", )}>
+          <p className={cn("text-muted-foreground ", fontClassXxs)}>Card Style</p>
           <div className="flex justify-between items-center text-xs">
             Show Info
             <Select value={info} onValueChange={(value: ShowInfo) => setInfo(value)}>
@@ -214,8 +216,8 @@ function SettingComponent(props: Props) {
 
         <Separator className="bg-border" />
 
-        <div className="flex flex-col gap-2">
-          <p className="text-muted-foreground text-xs">My Profile</p>
+        <div className="flex flex-col gap-1">
+          <p className={cn("text-muted-foreground ", fontClassXxs)}>My Profile</p>
           <div className="flex justify-between items-center text-xs ">
             Profile
             <Link to="/me" title='me' aria-label="me-link" className="text-primary">
@@ -231,7 +233,7 @@ function SettingComponent(props: Props) {
 
         <Separator className="bg-border" />
         <div className="flex flex-col gap-2">
-          <p className="text-muted-foreground text-xs">Other</p>
+          <p className={cn("text-muted-foreground ", fontClassXxs)}>Other</p>
           <div className="flex justify-between items-center text-xs ">
             Recycle Bin
             <Suspense fallback={<ButtonLoader />}>

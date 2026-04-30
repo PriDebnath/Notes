@@ -16,6 +16,9 @@ import { cn } from "@/lib/utils"
 import { ButtonLoader } from "@/components/ui/button-loader"
 import RecycleBinDialog from "@/feature/quote/dialog/recycle-bin.dialog"
 import NavigationComponent from "@/feature/user/component/navigation"
+import { useUpdateUser } from "@/feature/user/hook/use-update-user.hook"
+import { toast } from "sonner"
+import { toastConfig } from "@/components/ui/sonner"
 
 const profileFormSchema = z.object({
   name: z.string().min(1, "name should not be empty"),
@@ -29,8 +32,9 @@ const Me = () => {
   const { decodedToken, isExpired } = useJwt<User>(token);
 
   const { data: user, isPending, invalidateQueries } = useGetUser({ _id: decodedToken?._id })
+  const { updateUser } = useUpdateUser()
 
-  const { control, reset, formState: { isDirty }, handleSubmit } = useForm({
+  const { control, reset, formState: { isDirty }, handleSubmit, getValues } = useForm({
     defaultValues: {
       name: '',
       email: ''
@@ -38,15 +42,18 @@ const Me = () => {
     resolver: zodResolver(profileFormSchema)
   })
 
-  useEffect(() => {
-    reset({
-      name: user?.name || "",
-      email: user?.email || "",
+
+  const onSubmit = async (values: z.infer<typeof profileFormSchema>) => {
+    console.log({ values });
+
+    if (!user?._id) {
+      toast.warning("No user found", toastConfig)
+      return
+    }
+    await updateUser({
+      _id: user?._id,
+      name: values.name
     })
-  }, [user])
-
-  const onSubmit = (values: z.infer<typeof profileFormSchema>) => {
-
   }
 
   const onLogout = () => {
@@ -56,6 +63,13 @@ const Me = () => {
       to: '/auth/sign-in'
     })
   }
+
+  useEffect(() => {
+    reset({
+      name: user?.name || "",
+      email: user?.email || "",
+    })
+  }, [user])
 
   return (
     <div
@@ -70,7 +84,7 @@ const Me = () => {
           className="w-full "
         >
           <div className='flex p-4 bg-background flex-row sticky top-0 z-10  justify-between items-center'>
-<NavigationComponent/>
+            <NavigationComponent />
           </div>
           {/* <Separator className="bg-border" /> */}
 
@@ -96,18 +110,21 @@ const Me = () => {
                       >
                         Logout
                       </Button>
-                      {/* {
+                      {
                         (isDirty) && (
                           <Button
                             variant="outline"
-                            size={'sm'}
+                            onClick={() => {
+                              onSubmit(getValues())
+                            }
+                            } size={'sm'}
                             className="text-xs px-2 py-0"
                             aria-label='save-profile-button'
                             title='save-profile-button'>
                             Save changes
                           </Button>
                         )
-                      } */}
+                      }
                     </div>
 
                   </div>
@@ -171,13 +188,14 @@ const Me = () => {
                   </p>
                   <div className="flex justify-between items-center text-center ">
                     <p className=" text-sm">
-                     Sync
+                      Sync
                     </p>
-                    {/* <Button variant="outline" size="icon"
+                    <Button variant="outline" size="icon"
+                    disabled
                       aria-label='sync-button'
                       title='sync-button'>
                       <CloudBackupIcon />
-                    </Button> */}
+                    </Button>
                   </div>
                   <div className="flex justify-between items-center text-sm ">
                     Cloud Container

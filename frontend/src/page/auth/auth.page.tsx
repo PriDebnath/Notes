@@ -10,11 +10,7 @@ import { useAuthSignIn, type SignInParam } from "@/feature/auth/hook/use-sign-in
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-
-const authSchema = z.object({
-  email: z.string().min(1, { message: "Email is required" }),
-  password: z.string().min(1, { message: "Email is required" }),
-})
+ 
 
 function AuthLayout() {
   const location = useLocation();

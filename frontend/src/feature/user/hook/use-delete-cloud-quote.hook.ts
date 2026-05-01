@@ -4,33 +4,23 @@ import { toastConfig } from "@/components/ui/sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useGetCloudQuoteKey } from "./use-get-cloud-quote.hook";
 
-export type Param = {
-  _id?: string, // cloud id
-  id?: number, // local id
-  text?: string,
-  texture?: string,
-  pri_set?: string,
-  pinned?: boolean,
-  synced?: boolean,
-  user?: string,
-};
+export type Param = { _id: string;  };
 
-const syncNote = (data: Param) =>
-  apiClient<Param>("/api/v1/notes/sync", {
-    method: "POST",
-    body: JSON.stringify(data),
+const deleteCloudQuote = (data: Param) =>
+  apiClient<{ token: string }>("/api/v1/notes/" + data?._id, {
+    method: "DELETE",
   });
 
-export const useSyncNote = () => {
+export const useDeleteCloudQuote = () => {
   const queryClient = useQueryClient()
 
   const mutation = useMutation({
     mutationFn: async (data: Param) => {
-      const promise = syncNote(data);
+      const promise = deleteCloudQuote(data);
       toast.promise(promise, {
         ...toastConfig,
-        loading: "Syncing...",
-        success: "Sync successful",
+        loading: "Deleting...",
+        success: "Deleted successful",
         error: (err: any) => err?.message || "Something went wrong",
       });
       const res = await promise;
@@ -50,6 +40,6 @@ export const useSyncNote = () => {
 
   return {
     ...mutation,
-    syncNote: mutation.mutateAsync,
+    deleteCloudQuote: mutation.mutateAsync,
   };
 };

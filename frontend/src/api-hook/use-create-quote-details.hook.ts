@@ -8,7 +8,7 @@ export const useCreateQuoteDetails = () => {
     mutationFn: addQuote,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeysGetQuote
+        queryKey: [queryKeysGetQuote]
       })
     }
   })

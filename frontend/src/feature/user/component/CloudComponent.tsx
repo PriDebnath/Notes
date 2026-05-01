@@ -51,6 +51,7 @@ const CloudComponent = (props: Props) => {
           text: item.text,
           texture: item.texture,
           pri_set: item.pri_set,
+          id: item.id,
           user: user._id
         })
         console.log(
@@ -81,7 +82,7 @@ const CloudComponent = (props: Props) => {
           onClick={onSync}
           disabled={!unsyncedItems?.length || isPending}
           title='sync-button'>
-          <CloudBackupIcon />
+          {/* <CloudBackupIcon /> */}
           {isPending ? "Syncing" : "Sync"}
           {" "}
           {unsyncedItems?.length}

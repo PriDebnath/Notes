@@ -4,6 +4,7 @@ import { userModelName } from "../user/model.user"
 
 const noteSchema = new Schema(
     {
+        id: { type: Schema.Types.Number, required: false }, // will come from local 
         texture: { type: Schema.Types.String, required: false },
         text: { type: Schema.Types.String, required: true },
         pri_set: { type: Schema.Types.String, required: false },

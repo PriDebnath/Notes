@@ -3,6 +3,7 @@ import { Note } from "./model";
 
 export const noteZodSchema = z.object({
   _id: z.string(),
+  id: z.number().optional(), // will come from local 
   texture: z.string().optional(),
   text: z.string(),
   pri_set: z.string().optional(),

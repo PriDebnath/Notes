@@ -15,8 +15,8 @@ import { cn } from "@/lib/utils"
 import { ButtonLoader } from "@/components/ui/button-loader"
 import RecycleBinDialog from "@/feature/quote/dialog/recycle-bin.dialog"
 import NavigationComponent from "@/feature/user/component/navigation"
-import ProfileComponent from "@/feature/user/me/ProfileComponent"
-import CloudComponent from "@/feature/user/me/CloudComponent"
+import ProfileComponent from "@/feature/user/component/ProfileComponent"
+import CloudComponent from "@/feature/user/component/CloudComponent"
 
 
 
@@ -59,7 +59,7 @@ const Me = () => {
 
                 <Separator className="bg-border" />
                 <CloudComponent user={user} />
-
+                <Separator className="bg-border" />
               </div>
             ) : (
               <div className="p-4 flex flex-col gap-4">

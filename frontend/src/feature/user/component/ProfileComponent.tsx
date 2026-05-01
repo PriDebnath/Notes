@@ -7,7 +7,7 @@ import { toastConfig } from "@/components/ui/sonner"
 import { ArrowLeftIcon, ArrowUpCircleIcon, ArrowUpRightFromCircleIcon, CloudBackupIcon, LockIcon } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { profileFormSchema } from "./schema";
+import { profileFormSchema } from "../schema";
 import { Button } from "@/components/ui/button"
 import type { User } from "../hook/use-get-user.hook";
 import type z from "zod";

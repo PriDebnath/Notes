@@ -31,7 +31,7 @@ const CloudComponent = (props: Props) => {
     refetch,
   } = useGetAllQuoteDetails()
   const { updateQuote } = useUpdateQuoteDetails()
-  const { syncNote } = useSyncNote()
+  const { syncNote, isPending } = useSyncNote()
 
   const unsyncedItems = useMemo(() => {
     return data?.filter((item) => !item.synced)
@@ -42,10 +42,10 @@ const CloudComponent = (props: Props) => {
 
     if (data) {
       for (const item of data) {
-        console.log({item});
-        
+        console.log({ item });
+
         const newData = await syncNote({
-          ...(item._id && ({ _id: item._id})),
+          ...(item._id && ({ _id: item._id })),
           pinned: item.pinned,
           synced: item.synced,
           text: item.text,
@@ -54,9 +54,9 @@ const CloudComponent = (props: Props) => {
           user: user._id
         })
         console.log(
-          {newData}
+          { newData }
         );
-        
+
         await updateQuote({
           _id: newData._id,
           id: item.id,
@@ -79,10 +79,16 @@ const CloudComponent = (props: Props) => {
         <Button variant="outline" size="sm"
           aria-label='sync-button'
           onClick={onSync}
-          disabled={!unsyncedItems?.length}
+          disabled={!unsyncedItems?.length || isPending}
           title='sync-button'>
           <CloudBackupIcon />
-          Sync {unsyncedItems?.length} item{(unsyncedItems?.length! > 1) ? "s" : ""} now
+          {isPending ? "Syncing" : "Sync"}
+          {" "}
+          {unsyncedItems?.length}
+          {" "}
+          item{(unsyncedItems?.length! > 1) ? "s" : ""}
+          {" "}
+          now
         </Button>
       </div>
       <div className="flex justify-between items-center text-sm ">

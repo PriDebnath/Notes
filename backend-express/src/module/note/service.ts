@@ -3,6 +3,8 @@ import { noteCreateZodSchema, noteUpdateZodSchema } from "./schema"
 import { NoteModel } from "./model"
 import { User } from "../user/model.user"
 import { userPayloadSchema } from "../auth/schema"
+
+
  export const createNote = async (
     param: z.infer<typeof noteCreateZodSchema>,
     user: z.infer<typeof userPayloadSchema>
@@ -55,5 +57,10 @@ export const getNoteByUser = async (user_id: string ) => {
 
 export const getAllNote = async ( ) => {
     const data = await NoteModel.find()
+    return data
+}
+
+export const deleteNoteById = async ( _id: string ) => {
+    const data = await NoteModel.findByIdAndDelete(_id)
     return data
 }

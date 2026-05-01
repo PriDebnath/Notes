@@ -53,6 +53,10 @@ const CloudComponent = (props: Props) => {
           pri_set: item.pri_set,
           user: user._id
         })
+        console.log(
+          {newData}
+        );
+        
         await updateQuote({
           _id: newData._id,
           id: item.id,

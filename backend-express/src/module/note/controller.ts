@@ -1,15 +1,21 @@
 import { z, ZodError } from "zod"
 import { Request, Response, } from "express"
 import { noteUpdateZodSchema } from "./schema"
-import { createNote, updateNote } from "./service"
+import { createNote, getNote, updateNote } from "./service"
 
 export const syncNote = async (req: Request, res: Response) => {
-    try {let newNote;
-        if (req.body?._id) {
+    const existingNote = await getNote(req?.body?._id)
+    try {
+        let newNote;
+        if (existingNote) {
           newNote = await  updateNote(req.body)
         } else {
           newNote  =  await createNote(req.body, req.user)
         }
+        console.log(
+            {newNote}
+        );
+        
         res.status(200).json(newNote)
     } catch (error: any) {
 

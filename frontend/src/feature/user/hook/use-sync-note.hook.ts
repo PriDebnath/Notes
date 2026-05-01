@@ -32,9 +32,14 @@ export const useSyncNote = () => {
         error: (err: any) => err?.message || "Something went wrong",
       });
       const res = await promise;
+      console.log({res});
+      
       return res
     },
     onSuccess: (data) => {
+      console.log({data});
+      
+      return data
       // queryClient.invalidateQueries({
       //   // queryKey: [useGetUserKey,],
       // })

@@ -15,50 +15,81 @@ import { ButtonLoader } from "@/components/ui/button-loader";
 import { useGetAllDeletedQuoteDetails } from "@/api-hook/use-get-all-delete-quote-details.hook";
 import { useGetAllQuoteDetails } from "@/api-hook/use-get-all-quote-details.hook";
 import OpenCloudContainer from "./open-cloud-container";
+import { useSyncNote } from "../hook/use-sync-note.hook";
+import { useUpdateQuoteDetails } from "@/api-hook/use-update-quote-details.hook";
 
 type Props = {
-    user: User;
+  user: User;
 }
 
 const CloudComponent = (props: Props) => {
-    const { user } = props
-      const {
-        data,
-        isLoading,
-        error,
-        refetch,
-      } = useGetAllQuoteDetails()
+  const { user } = props
+  const {
+    data,
+    isLoading,
+    error,
+    refetch,
+  } = useGetAllQuoteDetails()
+  const { updateQuote } = useUpdateQuoteDetails()
+  const { syncNote } = useSyncNote()
 
-      const unsyncedItems = useMemo(()=>{
-        return data?.filter((item)=>!item.synced)
-      },[data])
+  const unsyncedItems = useMemo(() => {
+    return data?.filter((item) => !item.synced)
+  }, [data])
+  console.log({ unsyncedItems });
+  const onSync = async () => {
+    console.log({ data });
 
-    return (
-           <div className="flex flex-col gap-1">
-                  <p className=" text-muted-foreground text-xs">
-                    Cloud
-                  </p>
-                  <div className="flex justify-between items-center text-center ">
-                    <p className=" text-sm">
-                      Sync
-                    </p>
-                    <Button variant="outline" size="sm"
-                      aria-label='sync-button'
-                      disabled={!unsyncedItems?.length}
-                      title='sync-button'>
-                      <CloudBackupIcon />
-                        Sync {unsyncedItems?.length} item{( unsyncedItems?.length! > 1) ? "s" : ""} now
-                    </Button>
-                  </div>
-                  <div className="flex justify-between items-center text-sm ">
-                    Cloud Container
-                    <Suspense fallback={<ButtonLoader />}>
-                      <OpenCloudContainer />
-                    </Suspense>
-                  </div>
-                </div>
+    if (data) {
+      for (const item of data) {
+        console.log({item});
+        
+        const newData = await syncNote({
+          ...(item._id && ({ _id: item._id})),
+          pinned: item.pinned,
+          synced: item.synced,
+          text: item.text,
+          texture: item.texture,
+          pri_set: item.pri_set,
+          user: user._id
+        })
+        await updateQuote({
+          _id: newData._id,
+          id: item.id,
+          text: item.text,
+          synced: true
+        })
+        await refetch()
+      }
+    }
+  }
+  return (
+    <div className="flex flex-col gap-1">
+      <p className=" text-muted-foreground text-xs">
+        Cloud
+      </p>
+      <div className="flex justify-between items-center text-center ">
+        <p className=" text-sm">
+          Sync
+        </p>
+        <Button variant="outline" size="sm"
+          aria-label='sync-button'
+          onClick={onSync}
+          disabled={!unsyncedItems?.length}
+          title='sync-button'>
+          <CloudBackupIcon />
+          Sync {unsyncedItems?.length} item{(unsyncedItems?.length! > 1) ? "s" : ""} now
+        </Button>
+      </div>
+      <div className="flex justify-between items-center text-sm ">
+        Cloud Container
+        <Suspense fallback={<ButtonLoader />}>
+          <OpenCloudContainer />
+        </Suspense>
+      </div>
+    </div>
 
-    )
+  )
 }
 
 export default React.memo(CloudComponent)

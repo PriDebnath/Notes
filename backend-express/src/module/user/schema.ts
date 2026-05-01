@@ -2,8 +2,9 @@ import { z } from "zod";
 import type { User } from "./model.user";
 
 export const userZodSchema = z.object({
+  _id: z.string(),
   name: z.string(),
-  email: z.string().email(),
+  email: z.email(),
   password: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),

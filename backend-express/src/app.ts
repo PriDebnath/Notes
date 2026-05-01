@@ -2,8 +2,9 @@ import cors from "cors"
 import express, { Express,  } from "express"
 import swaggerUi from "swagger-ui-express"
 import { swaggerUiApp } from "./utils/swagger-config";
-import { router as routerUsers } from "./module/user/router.user";
 import { router as routerAuth } from "./module/auth/router";
+import { router as routerNote } from "./module/note/router";
+import { router as routerUsers } from "./module/user/router.user";
 
 const app: Express = express()
 
@@ -16,6 +17,7 @@ app.use("/docs", swaggerUi.serve, swaggerUiApp);
 // Routers
 app.use("/api/v1/users", routerUsers);
 app.use("/api/v1/auth", routerAuth);
+app.use("/api/v1/notes", routerNote);
 
 app.get("/", (req, res) => {
     res.send({ message: "🟩 Server is up and running" })

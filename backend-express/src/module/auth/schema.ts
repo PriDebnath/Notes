@@ -5,3 +5,9 @@ export const loginUserSchema = userZodSchema.omit({
   updatedAt: true,
   name: true
 });
+
+export const userPayloadSchema = userZodSchema.omit({
+  createdAt: true,
+  updatedAt: true,
+  password: true
+});

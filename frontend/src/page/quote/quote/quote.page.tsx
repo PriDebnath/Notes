@@ -113,12 +113,14 @@ export function QuotePage(props: Props) {
     if (quoteId) { // edit
       await updateQuote({
         ...quote,
-        text: quote.text || "Empty"
+        text: quote.text || "Empty",
+        synced: false
       })
     } else {
       const newQuote = await createQuote({
         ...quote,
         text: quote.text || "Empty",
+        synced: false
       })
       quoteId = newQuote.id
     }

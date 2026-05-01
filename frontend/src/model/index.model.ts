@@ -3,6 +3,7 @@ import type { TextureKey, Pri_set } from "@/hook/use-background.hook";
 // DB DATA MODELS
 
 export interface Quote {
+    _id?: string | undefined; // cloud id
     id?: number | undefined;
     text: string;
     texture?: TextureKey;

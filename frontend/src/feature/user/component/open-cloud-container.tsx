@@ -41,6 +41,7 @@ import { useGetCloudQuote } from "../hook/use-get-cloud-quote.hook";
 import { useCreateQuoteDetails } from "@/api-hook/use-create-quote-details.hook";
 import { toast } from "sonner";
 import { toastConfig } from "@/components/ui/sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tiptap-ui-primitive/tooltip";
 
 interface Props {
 
@@ -54,19 +55,11 @@ function OpenCloudContainer(props: Props) {
   const { createQuote } = useCreateQuoteDetails()
 
   const handleCloudDownload = async (quote: Quote) => {
-    if (quote.id) {
-      await updateQuote({
-        ...quote,
-        text: quote.text || "Empty",
-        synced: true
-      })
-    } else {
-      await createQuote({
-        ...quote,
-        text: quote.text || "Empty",
-        synced: true
-      })
-    }
+    await createQuote({
+      ...quote,
+      text: quote.text || "Empty",
+      synced: true
+    })
     toast.success("Stored in local", toastConfig)
   }
 
@@ -116,30 +109,46 @@ function OpenCloudContainer(props: Props) {
                 }}
               />
               <div className="flex items-center gap-2">
-                <Button
-                  className={cn("hover:text-primary focus:text-primary active:text-primary",)}
-                  variant={"outline"}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleCloudDownload(quote)
-                  }}
-                  aria-label={"Cloud Download"}
-                  size={"sm"}
-                >
-                  <CloudDownloadIcon />
-                </Button>
-                <Button
-                  className={cn("hover:text-primary focus:text-primary active:text-primary",)}
-                  variant={"outline"}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleHardDelete(quote)
-                  }}
-                  aria-label={"Delete note"}
-                  size={"sm"}
-                >
-                  <Trash2Icon />
-                </Button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className={cn("hover:text-primary focus:text-primary active:text-primary",)}
+                      variant={"outline"}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleCloudDownload(quote)
+                      }}
+                      aria-label={"Cloud Download"}
+                      size={"sm"}
+                    >
+                      <CloudDownloadIcon />
+                    </Button>
+
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>A new copy will be downloaded</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className={cn("hover:text-primary focus:text-primary active:text-primary",)}
+                      variant={"outline"}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleHardDelete(quote)
+                      }}
+                      aria-label={"Delete note"}
+                      size={"sm"}
+                    >
+                      <Trash2Icon />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p> Cloud item will be deleted instantly</p>
+                  </TooltipContent>
+                </Tooltip>
+
               </div>
             </div>
 

@@ -36,6 +36,8 @@ import { useGetAllDeletedQuoteDetails } from "@/api-hook/use-get-all-delete-quot
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { useUpdateQuoteDetails } from "@/api-hook/use-update-quote-details.hook";
 import { deleteQuoteWithLinks } from "@/db/quote_tags.db";
+import { TooltipTrigger, TooltipContent, Tooltip } from "@/components/ui/tooltip";
+
 
 interface Props {
 
@@ -104,30 +106,45 @@ function RecycleBinComponent(props: Props) {
                 }}
               />
               <div className="flex items-center gap-2">
-                <Button
-                  className={cn("hover:text-primary focus:text-primary active:text-primary",)}
-                  variant={"outline"}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleRestore(quote)
-                  }}
-                  aria-label={"Restore note"}
-                  size={"sm"}
-                >
-                  <RotateCcw />
-                </Button>
-                <Button
-                  className={cn("hover:text-primary focus:text-primary active:text-primary",)}
-                  variant={"outline"}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleHardDelete(quote)
-                  }}
-                  aria-label={"Delete note"}
-                  size={"sm"}
-                >
-                  <Trash2Icon />
-                </Button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className={cn("hover:text-primary focus:text-primary active:text-primary",)}
+                      variant={"outline"}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleRestore(quote)
+                      }}
+                      aria-label={"Restore note"}
+                      size={"sm"}
+                    >
+                      <RotateCcw />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p> Restore item  </p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className={cn("hover:text-primary focus:text-primary active:text-primary",)}
+                      variant={"outline"}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleHardDelete(quote)
+                      }}
+                      aria-label={"Delete note"}
+                      size={"sm"}
+                    >
+                      <Trash2Icon />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>  Item will be deleted instantly</p>
+                  </TooltipContent>
+                </Tooltip>
+
               </div>
             </div>
 

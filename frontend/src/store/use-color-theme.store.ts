@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
+import { colorThemes, type ColorTheme } from "@/hooks/use-color-theme.hook";
 
 
 type ColorThemeStore = {

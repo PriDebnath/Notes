@@ -12,10 +12,6 @@ export const syncNote = async (req: Request, res: Response) => {
         } else {
             newNote = await createNote(req.body, req.user)
         }
-        console.log(
-            { newNote }
-        );
-
         res.status(200).json(newNote)
     } catch (error: any) {
 

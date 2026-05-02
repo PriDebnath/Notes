@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { useApplyFont} from '@/hook/use-apply-font.hook'
-import { useApplyColorTheme} from '@/hook/use-color-theme.hook'
+import { useApplyFont} from '@/hooks/use-apply-font.hook'
+import { useApplyColorTheme} from '@/hooks/use-color-theme.hook'
 import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { useApplyTheme } from '@/hook/use-dark-or-light-theme.hook'
+import { useApplyTheme } from '@/hooks/use-dark-or-light-theme.hook'
 import { NativeBackHandler } from '@/provider/native-back.provider'
 
 export const Route = createRootRoute({

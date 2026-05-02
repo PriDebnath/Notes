@@ -23,10 +23,6 @@ import { userPayloadSchema } from "../auth/schema"
 export const updateNote = async (param: z.infer<typeof noteUpdateZodSchema>) => {
     const validated = await noteUpdateZodSchema.parseAsync(param)
     const { _id, texture, pinned, pri_set, text,id } = validated
-    console.log(
-        { validated }
-    );
-
     const newData = await NoteModel.findByIdAndUpdate(_id, {
         ...(texture && ({ texture: validated.texture })),
         ...(pinned && ({ pinned: validated.pinned })),
@@ -37,7 +33,6 @@ export const updateNote = async (param: z.infer<typeof noteUpdateZodSchema>) => 
     },
         { new: true}
     )
-    console.log({ newData });
 
     return newData
 }

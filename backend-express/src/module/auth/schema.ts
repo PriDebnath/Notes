@@ -3,7 +3,8 @@ import { userZodSchema } from "../user/schema";
 export const loginUserSchema = userZodSchema.omit({
   createdAt: true,
   updatedAt: true,
-  name: true
+  name: true,
+  _id: true,
 });
 
 export const userPayloadSchema = userZodSchema.omit({

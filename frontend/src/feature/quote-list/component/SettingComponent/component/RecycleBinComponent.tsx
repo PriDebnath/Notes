@@ -20,14 +20,14 @@ import { Button } from "@/components/ui/button";
 import { capitalize } from "@/helper/capitalize";
 import { Separator } from "@/components/ui/separator";
 import { useThemeStore } from "@/store/use-theme.store";
-import { useLastDeployed } from "@/hook/use-last-deployed";
+import { useLastDeployed } from "@/hooks/use-last-deployed";
 import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { useColorThemeStore } from "@/store/use-color-theme.store";
 import { useFontStore, fonts, type Font } from "@/store/use-font.store";
-import { colorThemes, type ColorTheme } from "@/hook/use-color-theme.hook";
+import { colorThemes, type ColorTheme } from "@/hooks/use-color-theme.hook";
 import type { CardView, Quote, QuoteFormData, SortOption } from "@/model/index.model";
 import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
-import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
+import { themeModes, type ThemeMode } from '@/hooks/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon } from "lucide-react";
 import { Link } from "@tanstack/react-router";

@@ -1,4 +1,4 @@
-import type { TextureKey, Pri_set } from "@/hook/use-background.hook";
+import type { TextureKey, Pri_set } from "@/hooks/use-background.hook";
 
 // DB DATA MODELS
 

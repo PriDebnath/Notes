@@ -60,9 +60,6 @@ export const loginUser = async (
             token
         })
     } catch (error: any) {
-        console.log("error----------");
-        console.log(error);
-
         if (error instanceof ZodError) {
             return res.status(400).json({
                 message: z.prettifyError(error)

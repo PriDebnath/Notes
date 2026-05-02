@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react"
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
 import { useColorThemeStore } from "@/store/use-color-theme.store"
 
 export type ColorTheme = "theme-neutral"

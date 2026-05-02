@@ -7,18 +7,17 @@ import { Link, useNavigate } from "@tanstack/react-router"
 import React, { lazy, Suspense, useEffect } from "react"
 import { z, } from "zod"
 import { useJwt } from "react-jwt";
-
 import { Separator } from "@/components/ui/separator"
 import { useAuthStore } from "@/feature/auth/store/auth.store"
 import { useGetUser, type User } from "@/feature/user/hook/use-get-user.hook"
 import { cn } from "@/lib/utils"
-import { ButtonLoader } from "@/components/ui/button-loader"
-import RecycleBinDialog from "@/feature/quote/dialog/recycle-bin.dialog"
-import NavigationComponent from "@/feature/user/component/navigation"
-import CloudComponent from "@/feature/user/component/CloudComponent"
 import { Loader } from "@/components/ui/loader"
+import { Shimmer } from 'shimmer-from-structure';
+import { LoaderFull } from "@/components/ui/loader-full"
 
-const ProfileComponent = lazy(()=> import("@/feature/user/component/ProfileComponent")) 
+const ProfileComponent = lazy(() => import("@/feature/user/component/ProfileComponent"))
+const NavigationComponent = lazy(() => import("@/feature/user/component/NavigationComponent"))
+const CloudComponent = lazy(() => import("@/feature/user/component/CloudComponent"))
 
 
 const Me = () => {
@@ -48,18 +47,21 @@ const Me = () => {
           className="w-full "
         >
           <div className='flex p-4 bg-background flex-row sticky top-0 z-10  justify-between items-center'>
-            <NavigationComponent />
+            <Suspense fallback={<LoaderFull />}>
+              <NavigationComponent />
+            </Suspense>
           </div>
-          {/* <Separator className="bg-border" /> */}
           {
-            user ? (
+            (user) ? (
               <div className="p-4 flex flex-col gap-4">
                 <Separator className="bg-border" />
-              <Suspense fallback={<Loader />}>
-                <ProfileComponent user={user} onLogout={onLogout} />
-</Suspense>
+                <Suspense fallback={<LoaderFull />}>
+                  <ProfileComponent user={user} onLogout={onLogout} />
+                </Suspense>
                 <Separator className="bg-border" />
-                <CloudComponent user={user} />
+                <Suspense fallback={<LoaderFull />}>
+                  <CloudComponent user={user} />
+                </Suspense>
                 <Separator className="bg-border" />
               </div>
             ) : (

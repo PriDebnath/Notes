@@ -1,5 +1,5 @@
 
-import { useState, memo, Suspense } from "react";
+import { useState, memo, Suspense, lazy } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -31,9 +31,10 @@ import { themeModes, type ThemeMode } from '@/hook/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import RecycleBinDialog from "./recycle-bin.dialog";
 import { ButtonLoader } from "@/components/ui/button-loader";
 import { cn } from "@/lib/utils";
+
+const RecycleBinComponent = lazy(()=> import("@/feature/quote-list/component/SettingComponent/component/RecycleBinComponent"))
 
 interface Props {
 
@@ -237,7 +238,7 @@ function SettingComponent(props: Props) {
           <div className="flex justify-between items-center text-xs ">
             Recycle Bin
             <Suspense fallback={<ButtonLoader />}>
-              <RecycleBinDialog />
+              <RecycleBinComponent />
             </Suspense>
           </div>
           <div className="flex justify-between text-center ">

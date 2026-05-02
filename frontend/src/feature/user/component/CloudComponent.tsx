@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo } from "react";
+import React, { lazy, Suspense, useEffect, useMemo } from "react";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useUpdateUser } from "@/feature/user/hook/use-update-user.hook"
@@ -14,9 +14,10 @@ import type z from "zod";
 import { ButtonLoader } from "@/components/ui/button-loader";
 import { useGetAllDeletedQuoteDetails } from "@/api-hook/use-get-all-delete-quote-details.hook";
 import { useGetAllQuoteDetails } from "@/api-hook/use-get-all-quote-details.hook";
-import OpenCloudContainer from "./OpenCloudContainer";
 import { useSyncNote } from "../hook/use-sync-note.hook";
 import { useUpdateQuoteDetails } from "@/api-hook/use-update-quote-details.hook";
+
+const OpenCloudContainerComponent = lazy(()=> import("@/feature/user/component/OpenCloudContainerComponent"))
 
 type Props = {
   user: User;
@@ -87,7 +88,7 @@ const CloudComponent = (props: Props) => {
       <div className="flex justify-between items-center text-sm ">
         Cloud Container
         <Suspense fallback={<ButtonLoader />}>
-          <OpenCloudContainer />
+          <OpenCloudContainerComponent />
         </Suspense>
       </div>
     </div>

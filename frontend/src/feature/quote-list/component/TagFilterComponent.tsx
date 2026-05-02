@@ -15,7 +15,7 @@ interface TagFilterProps {
   onChange: (tags: string[]) => void
 }
 
-export default function TagFilter({ tags, value, onChange }: TagFilterProps) {
+export default function TagFilterComponent({ tags, value, onChange }: TagFilterProps) {
   const [open, setOpen] = useState(false)
 
   const toggleTag = (tag: string) => {

@@ -47,7 +47,7 @@ interface Props {
 
 }
 
-function OpenCloudContainer(props: Props) {
+function OpenCloudContainerComponent(props: Props) {
   const [open, setOpen] = useState(false)
   const { data, isLoading, refetch } = useGetCloudQuote()
   const { deleteCloudQuote } = useDeleteCloudQuote()
@@ -166,5 +166,5 @@ function OpenCloudContainer(props: Props) {
   );
 }
 
-export default memo(OpenCloudContainer)
+export default memo(OpenCloudContainerComponent)
 

@@ -13,7 +13,7 @@ interface Props {
   onTogglePin: (quote: QuoteDetails) => void
 }
 
-export function ListQuote(props: Props) {
+export default function QuoteListComponent(props: Props) {
   const { loading, quotes, onEdit, onDelete, onTogglePin } = props
 
   const { view } = useCardViewStore()

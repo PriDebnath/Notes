@@ -26,10 +26,10 @@ import { ButtonLoader } from '@/components/ui/button-loader'
 import { Loader } from '@/components/ui/loader'
 import { useUpdateQuoteDetails } from '@/api-hook/use-update-quote-details.hook'
 
-const DeleteQuoteDialog = lazy(() => import('@/feature/quote/dialog/delete.dialog'))
-const ListQuote = lazy(() => import('@/feature/quote/list.quote').then(mod => ({ default: mod.ListQuote })))
-const SettingComponent = lazy(() => import('@/feature/quote/dialog/setting.dialog').then(mod => ({ default: mod.default })))
-const TagFilterComponent = lazy(() => import('@/feature/quote/popover/filter.popover').then(mod => ({ default: mod.default })))
+const DeleteQuoteDialog = lazy(() => import('@/feature/quote-list/component/DeleteQuoteDialog'))
+const QuoteListComponent = lazy(() => import('@/feature/quote-list/QuoteListComponent').then(mod => ({ default: mod.default })))
+const SettingComponent = lazy(() => import('@/feature/quote-list/component/SettingComponent/SettingComponent').then(mod => ({ default: mod.default })))
+const TagFilterComponent = lazy(() => import('@/feature/quote-list/component/TagFilterComponent').then(mod => ({ default: mod.default })))
 
 export function QuoteListPage() {
   const {
@@ -159,7 +159,7 @@ console.log({quotes});
           </div>
         }>
           <div aria-label='list'>
-            <ListQuote
+            <QuoteListComponent
               loading={isLoading}
               quotes={quotes}
               onEdit={() => { }}

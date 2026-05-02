@@ -6,7 +6,7 @@ export type Param = {
 }
 
 const getCloudQuote = () =>
-    apiClient<Quote[]>("/api/v1/notes" , {
+    apiClient<Quote[]>("/api/v1/notes/" , {
         method: "GET",
     })
 

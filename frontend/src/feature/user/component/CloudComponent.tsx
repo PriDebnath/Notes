@@ -14,7 +14,7 @@ import type z from "zod";
 import { ButtonLoader } from "@/components/ui/button-loader";
 import { useGetAllDeletedQuoteDetails } from "@/api-hook/use-get-all-delete-quote-details.hook";
 import { useGetAllQuoteDetails } from "@/api-hook/use-get-all-quote-details.hook";
-import OpenCloudContainer from "./open-cloud-container";
+import OpenCloudContainer from "./OpenCloudContainer";
 import { useSyncNote } from "../hook/use-sync-note.hook";
 import { useUpdateQuoteDetails } from "@/api-hook/use-update-quote-details.hook";
 
@@ -36,14 +36,10 @@ const CloudComponent = (props: Props) => {
   const unsyncedItems = useMemo(() => {
     return data?.filter((item) => !item.synced)
   }, [data])
-  console.log({ unsyncedItems });
+
   const onSync = async () => {
-    console.log({ data });
-
-    if (data) {
-      for (const item of data) {
-        console.log({ item });
-
+    if (unsyncedItems) {
+      for (const item of unsyncedItems) {
         const newData = await syncNote({
           ...(item._id && ({ _id: item._id })),
           pinned: item.pinned,
@@ -54,10 +50,6 @@ const CloudComponent = (props: Props) => {
           id: item.id,
           user: user._id
         })
-        console.log(
-          { newData }
-        );
-
         await updateQuote({
           _id: newData._id,
           id: item.id,

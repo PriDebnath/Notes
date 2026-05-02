@@ -4,7 +4,7 @@ import { ArrowLeftIcon, ArrowUpCircleIcon, ArrowUpRightFromCircleIcon, CloudBack
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Link, useNavigate } from "@tanstack/react-router"
-import React, { Suspense, useEffect } from "react"
+import React, { lazy, Suspense, useEffect } from "react"
 import { z, } from "zod"
 import { useJwt } from "react-jwt";
 
@@ -15,10 +15,10 @@ import { cn } from "@/lib/utils"
 import { ButtonLoader } from "@/components/ui/button-loader"
 import RecycleBinDialog from "@/feature/quote/dialog/recycle-bin.dialog"
 import NavigationComponent from "@/feature/user/component/navigation"
-import ProfileComponent from "@/feature/user/component/ProfileComponent"
 import CloudComponent from "@/feature/user/component/CloudComponent"
+import { Loader } from "@/components/ui/loader"
 
-
+const ProfileComponent = lazy(()=> import("@/feature/user/component/ProfileComponent")) 
 
 
 const Me = () => {
@@ -55,8 +55,9 @@ const Me = () => {
             user ? (
               <div className="p-4 flex flex-col gap-4">
                 <Separator className="bg-border" />
+              <Suspense fallback={<Loader />}>
                 <ProfileComponent user={user} onLogout={onLogout} />
-
+</Suspense>
                 <Separator className="bg-border" />
                 <CloudComponent user={user} />
                 <Separator className="bg-border" />

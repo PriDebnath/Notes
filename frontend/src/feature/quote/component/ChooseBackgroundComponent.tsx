@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { QuoteFormData } from "@/model/index.model";
 import { ArrowLeftIcon, Save, Shirt } from "lucide-react";
-import useBackground, { type Pri_set, type TextureKey } from "@/feature/quote/hook/use-background.hook";
+import useBackground, { type Pri_set, type TextureKey } from "@/hooks/use-background.hook";
 
 interface Props {
   onValueUpdate: (key: keyof QuoteFormData, value: string) => void

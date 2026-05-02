@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import StarterKit from '@tiptap/starter-kit'
 import { BatteryFull, List } from 'lucide-react'
-import useBackground from "@/feature/quote/hook/use-background.hook";
+import useBackground from "@/hooks/use-background.hook";
 import { useEditor, EditorContent } from '@tiptap/react'
 import type { QuoteFormData } from "@/model/index.model";
 import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus'

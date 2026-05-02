@@ -18,7 +18,7 @@ import { sanitizeHTML } from "@/helper/sanitize-html";
 import { Separator } from "@/components/ui/separator";
 import { htmlToPlainText } from "@/helper/html-to-text";
 import type { QuoteFormData, Status } from "@/model/index.model";
-import useBackground, { type Pri_set, type TextureKey } from "@/feature/quote/hook/use-background.hook";
+import useBackground, { type Pri_set, type TextureKey } from "@/hooks/use-background.hook";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share } from "lucide-react";
 import { exportAsImage } from "@/helper/html-to-image";
 import { ShareButton } from "@/feature/quote/component/ShareBackgroundComponent/component/share-button";

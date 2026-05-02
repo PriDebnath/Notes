@@ -13,7 +13,7 @@ import { toPng } from "html-to-image"
 import { useRef, useState } from "react";
 import { ResizableBox } from "react-resizable";
 import { Button } from "@/components/ui/button";
-import { ListTags } from "@/feature/quote/list.tags";
+import { ListTagsComponent } from "@/feature/quote/component/ListTagsComponent";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { Separator } from "@/components/ui/separator";
 import { htmlToPlainText } from "@/helper/html-to-text";
@@ -21,17 +21,17 @@ import type { QuoteFormData, Status } from "@/model/index.model";
 import useBackground, { type Pri_set, type TextureKey } from "@/hook/use-background.hook";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share } from "lucide-react";
 import { exportAsImage } from "@/helper/html-to-image";
-import { ShareButton } from "@/feature/quote/dialog/component/share-button";
-import { DownloadButton } from "@/feature/quote/dialog/component/download-button";
-import { CopyTextButton } from "@/feature/quote/dialog/component/copy-text-button";
-import { CopyImageButton } from "@/feature/quote/dialog/component/copy-image-button";
+import { ShareButton } from "@/feature/quote/component/ShareBackgroundComponent/component/share-button";
+import { DownloadButton } from "@/feature/quote/component/ShareBackgroundComponent/component/download-button";
+import { CopyTextButton } from "@/feature/quote/component/ShareBackgroundComponent/component/copy-text-button";
+import { CopyImageButton } from "@/feature/quote/component/ShareBackgroundComponent/component/copy-image-button";
 
 interface Props {
   quoteFormData: QuoteFormData
 }
 
 
-export function ShareBackground(props: Props) {
+export default function ShareBackgroundComponent(props: Props) {
   const { quoteFormData } = props
   const { buildStyle } = useBackground()
   const noteRef = useRef<HTMLDivElement>(null)
@@ -121,8 +121,9 @@ export function ShareBackground(props: Props) {
                     <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quoteFormData.text!) }}></div>
                   </div>
                   <div className="flex w-full items-end justify-between gap-2">
-                    <ListTags tags={quoteFormData?.tags?.map((tag, i) => { return { id: i, name: tag } }) || []} />
-
+                    <ListTagsComponent 
+                    tags={quoteFormData?.tags?.map((tag, i) => { return { id: i, name: tag } }) || []} 
+                    />
                   </div>
                 </div>
               </div>

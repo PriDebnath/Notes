@@ -21,7 +21,7 @@ interface Props {
     onChoose: (tag: string) => void
 }
 
-export function ChooseTagDropdown(props: Props) {
+export default function ChooseTagDropdownComponent(props: Props) {
     const { onChoose } = props
     const [open, setOpen] = useState(false)
 

@@ -32,13 +32,13 @@ import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon, CloudDownloadIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { useGetAllDeletedQuoteDetails } from "@/api-hook/use-get-all-delete-quote-details.hook";
+import { useGetAllDeletedQuoteDetails } from "@/feature/quote-list/hook/use-get-all-delete-quote-details.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
-import { useUpdateQuoteDetails } from "@/api-hook/use-update-quote-details.hook";
+import { useUpdateQuoteDetails } from "@/feature/quote-list/hook/use-update-quote-details.hook";
 import { deleteQuoteWithLinks } from "@/db/quote_tags.db";
 import { useDeleteCloudQuote, } from "../hook/use-delete-cloud-quote.hook";
 import { useGetCloudQuote } from "../hook/use-get-cloud-quote.hook";
-import { useCreateQuoteDetails } from "@/api-hook/use-create-quote-details.hook";
+import { useCreateQuoteDetails } from "@/feature/quote/hook/use-create-quote-details.hook"
 import { toast } from "sonner";
 import { toastConfig } from "@/components/ui/sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tiptap-ui-primitive/tooltip";

@@ -16,18 +16,18 @@ import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import { sanitizeHTML } from "@/helper/sanitize-html"
 import { BotMessageSquare, Send, X } from "lucide-react"
-import ChatMessage from "@/feature/quote/sheet/chat-message"
 import type { ContentChatMessage } from "@/model/index.model"
 import { useEffect, useRef, useState, type ChangeEvent } from "react"
-import { useAiContentStream } from "@/api-hook/ai-content-stream.hook"
-import ChatSetting from "./chat-setting"
+import { useAiContentStream } from "@/feature/quote/hook/ai-content-stream.hook"
+import ChatSettingComponent from "@/feature/quote/component/ChatSheetComponent/component/ChatSettingComponent"
+import ChatMessage from "@/feature/quote/component/ChatSheetComponent/component/ChatMessageComponent"
 
 interface Props {
     query?: string;
     text: string;
 }
 
-export function ChatSheet(props: Props) {
+export default function ChatSheetComponent(props: Props) {
     const { text, query } = props
     const [userQuery, setUserQuery] = useState(query ? query : "")
     const bottomRef = useRef<HTMLDivElement>(null)
@@ -116,7 +116,7 @@ export function ChatSheet(props: Props) {
                                     <span className="">Chat</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <ChatSetting />
+                                    <ChatSettingComponent />
                                     <SheetClose asChild>
                                         <Button variant="outline" size={'sm'}><X /></Button>
                                     </SheetClose>

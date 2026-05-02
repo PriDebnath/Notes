@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { BotMessageSquare, CircleQuestionMarkIcon, Eye, EyeClosed, Settings } from "lucide-react";
 import type { ContentChatMessage } from "@/model/index.model";
 import { MarkdownRenderer } from "@/components/common/markdown-renderer";
-import { CopyTextButton } from "@/feature/quote/dialog/component/copy-text-button"
+import { CopyTextButton } from "@/feature/quote/component/ShareBackgroundComponent/component/copy-text-button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { sanitizeHTML } from "@/helper/sanitize-html";
@@ -22,7 +22,7 @@ interface Props {
 
 }
 
-const ChatSetting = (props: Props) => {
+const ChatSettingComponent = (props: Props) => {
     const { key, setKey } = useAiApiKeyStore()
     const { } = props
     const [isInputType, setIsInputType] = useState(false)
@@ -100,4 +100,4 @@ export function ApiInfoTooltip() {
 }
 
 
-export default React.memo(ChatSetting)
+export default React.memo(ChatSettingComponent)

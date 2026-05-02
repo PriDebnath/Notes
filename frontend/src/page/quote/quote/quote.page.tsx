@@ -5,34 +5,34 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Button } from '@/components/ui/button'
 import { useBlocker } from "@tanstack/react-router"
-import TagField from "@/feature/quote/form-field/tag"
+import TagField from "@/feature/quote/component/TagFieldComponent"
 import { Separator } from '@/components/ui/separator'
 import { AnimatePresence, motion } from 'framer-motion'
 import { addOrGetTag } from '@/legacy-indexDB-db/tag.db'
 import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
-import { useGetSummarize } from '@/api-hook/ai-content-summarize.hook'
-import { useGetQuoteDetails } from '@/api-hook/use-get-quote-details.hook'
+import { useGetSummarize } from '@/feature/quote/hook/ai-content-summarize.hook'
+import { useGetQuoteDetails } from '@/feature/quote/hook/use-get-quote-details.hook'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
 import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
 import { ButtonLoader } from "@/components/ui/button-loader"
-import EditorSkeleton from "@/feature/quote/skeleton/editor.skeleton"
-import {  useCreateQuoteDetails } from "@/api-hook/use-create-quote-details.hook"
-import {   useUpdateQuoteDetails  } from "@/api-hook/use-update-quote-details.hook"
+import EditorSkeleton from "@/feature/quote/component/EditorSkeletonComponent"
+import {  useCreateQuoteDetails } from "@/feature/quote/hook/use-create-quote-details.hook"
+import {   useUpdateQuoteDetails  } from "@/feature/quote-list/hook/use-update-quote-details.hook"
 
 const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
-const ShareBackground = lazy(
-  () => import('@/feature/quote/dialog/share.dialog')
-    .then(mod => ({ default: mod.ShareBackground }))
-)
-const ChooseBackground = lazy(
-  () => import('@/feature/quote/drawer/choose-background.drawer')
+const ShareBackgroundComponent = lazy(
+  () => import('@/feature/quote/component/ShareBackgroundComponent/ShareBackgroundComponent')
     .then(mod => ({ default: mod.default }))
 )
-const ChatSheet = lazy(
-  () => import('@/feature/quote/sheet/chat.sheet')
-    .then(mod => ({ default: mod.ChatSheet }))
+const ChooseBackgroundComponent = lazy(
+  () => import('@/feature/quote/component/ChooseBackgroundComponent')
+    .then(mod => ({ default: mod.default }))
+)
+const ChatSheetComponent = lazy(
+  () => import('@/feature/quote/component/ChatSheetComponent/ChatSheetComponent')
+    .then(mod => ({ default: mod.default }))
 )
 
 
@@ -206,15 +206,15 @@ export function QuotePage(props: Props) {
             </Link>
             <div className="flex gap-2" >
               <Suspense fallback={<ButtonLoader />}>
-                <ShareBackground quoteFormData={quoteData} />
+                <ShareBackgroundComponent quoteFormData={quoteData} />
               </Suspense>
 
               <Suspense fallback={<ButtonLoader />}>
-                <ChooseBackground onValueUpdate={onValueUpdate} />
+                <ChooseBackgroundComponent onValueUpdate={onValueUpdate} />
               </Suspense>
 
               <Suspense fallback={<ButtonLoader />}>
-                <ChatSheet text={quoteData?.text!} query="Summarize this note" />
+                <ChatSheetComponent text={quoteData?.text!} query="Summarize this note" />
               </Suspense>
             </div>
           </div>

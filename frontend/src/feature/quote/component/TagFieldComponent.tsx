@@ -1,20 +1,19 @@
 import { Label } from "@/components/ui/label"
-import { ChooseTagDropdown } from "@/feature/quote/dropdown/choose-tag"
+import ChooseTagDropdownComponent from "@/feature/quote/component/ChooseTagDropdownComponent"
 
 interface Props {
   onChoose: (tag: string) => void
 }
 
-const TagField = (props: Props) => {
+const TagFieldComponent = (props: Props) => {
   const { onChoose } = props
 
   return (
       <div className="py-2 flex items-center justify-between " aria-label="tag-field">
         <Label htmlFor="tag" className="text-foreground">Tag</Label>
-        <ChooseTagDropdown onChoose={onChoose} />
+        <ChooseTagDropdownComponent onChoose={onChoose} />
       </div>
-
   )
 }
 
-export default TagField
+export default TagFieldComponent

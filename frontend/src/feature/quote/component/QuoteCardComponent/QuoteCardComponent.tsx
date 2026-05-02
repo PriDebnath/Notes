@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { ListTags } from "@/feature/quote/list.tags";
+import { ListTagsComponent } from "@/feature/quote/component/ListTagsComponent";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import useBackground from "@/hook/use-background.hook";
 import { htmlToPlainText } from "@/helper/html-to-text";
@@ -19,7 +19,7 @@ interface Props {
     onTogglePin: (quote: QuoteDetails) => void
 }
 
-const QuoteCard = (props: Props) => {
+const QuoteCardComponent = (props: Props) => {
     const { quote, onEdit, onDelete, onTogglePin } = props
     const [copying, setCopying] = useState(false)
     const [downloading, setDownloading] = useState(false)
@@ -112,7 +112,7 @@ const QuoteCard = (props: Props) => {
                 {/*
                 <p className="text-base w-full text-card-foreground text-right">-- Pritam</p>    */}
                 <div className="flex w-full items-end justify-between gap-2">
-                    {infoType == "tags" && <ListTags tags={quote.tags!} />}
+                    {infoType == "tags" && <ListTagsComponent tags={quote.tags!} />}
                     {infoType == "created_at" && (
                         <p className="p-0 text-[0.615rem] text-muted-foreground">  {
                             formatDate(quote.created_at!)
@@ -187,4 +187,4 @@ const QuoteCard = (props: Props) => {
     )
 }
 
-export default QuoteCard
+export default QuoteCardComponent

@@ -18,7 +18,7 @@ interface Props {
   onValueUpdate: (key: keyof QuoteFormData, value: string) => void
 }
 
-export default function ChooseBackground(props: Props) {
+export default function ChooseBackgroundComponent(props: Props) {
   const { onValueUpdate } = props
   const [open, setOpen] = useState(false)
 

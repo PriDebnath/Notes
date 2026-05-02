@@ -1,8 +1,8 @@
 import { motion } from "framer-motion"
 import Masonry from "react-masonry-css"
 import type { QuoteDetails } from "@/model/index.model"
-import QuoteCard from "@/feature/quote/card/quote.card"
-import QuoteSkeleton from "@/feature/quote/card/quote-skeleton.card"
+import QuoteCard from "@/feature/quote/component/QuoteCardComponent/QuoteCardComponent"
+import QuoteSkeleton from "@/feature/quote/component/QuoteCardComponent/component/QuoteSkeletonComponent"
 import { useCardViewStore } from "@/store/use-card-view.store"
 
 interface Props {

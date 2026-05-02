@@ -1,4 +1,4 @@
-export default function EditorSkeleton() {
+export default function EditorSkeletonComponent() {
   return (
     <div
       aria-label='loading-editor'

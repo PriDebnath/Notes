@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { logDOM, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react"
 
 // hooks
-import { useGetAllQuoteDetails } from "@/api-hook/use-get-all-quote-details.hook"
+import { useGetAllQuoteDetails } from "@/feature/quote-list/hook/use-get-all-quote-details.hook"
 
 // db actions
 import { deleteQuoteWithLinks } from "@/db/quote_tags.db"

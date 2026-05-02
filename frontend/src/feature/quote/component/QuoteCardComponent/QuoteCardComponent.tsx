@@ -6,7 +6,7 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { ListTagsComponent } from "@/feature/quote/component/ListTagsComponent";
 import { sanitizeHTML } from "@/helper/sanitize-html";
-import useBackground from "@/hooks/use-background.hook";
+import useBackground from "@/feature/quote/hook/use-background.hook";
 import { htmlToPlainText } from "@/helper/html-to-text";
 import { useShowCardInfo } from "@/store/use-card-info.store";
 import type { Quote, QuoteDetails } from "@/model/index.model";

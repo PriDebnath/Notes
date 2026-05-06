@@ -12,6 +12,7 @@ export interface Quote {
     updated_at?: Date;
     pinned?: boolean;
     synced?: boolean;
+    shared?: boolean;
     deleted?: boolean;
 }
 

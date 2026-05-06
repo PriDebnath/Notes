@@ -29,7 +29,7 @@ import type { CardView, Quote, QuoteFormData, SortOption } from "@/model/index.m
 import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
 import { themeModes, type ThemeMode } from '@/hooks/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
-import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon, CloudDownloadIcon } from "lucide-react";
+import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon, CloudDownloadIcon, EyeIcon, EyeOffIcon, LinkIcon, EarthIcon, EarthLockIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { useGetAllDeletedQuoteDetails } from "@/feature/quote-list/hook/use-get-all-delete-quote-details.hook";
@@ -42,6 +42,7 @@ import { useCreateQuoteDetails } from "@/feature/quote/hook/use-create-quote-det
 import { toast } from "sonner";
 import { toastConfig } from "@/components/ui/sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tiptap-ui-primitive/tooltip";
+import { useUpdateCloudQuote } from "../hook/use-update-cloud-quote.hook";
 
 interface Props {
 
@@ -51,6 +52,7 @@ function OpenCloudContainerComponent(props: Props) {
   const [open, setOpen] = useState(false)
   const { data, isLoading, refetch } = useGetCloudQuote()
   const { deleteCloudQuote } = useDeleteCloudQuote()
+  const { updateCloudQuote } = useUpdateCloudQuote()
   const { updateQuote } = useUpdateQuoteDetails()
   const { createQuote } = useCreateQuoteDetails()
 
@@ -65,8 +67,23 @@ function OpenCloudContainerComponent(props: Props) {
 
   const handleHardDelete = async (quote: Quote) => {
     if (!quote._id) return
-    await await deleteCloudQuote({ _id: quote._id })
+    await deleteCloudQuote({ _id: quote._id })
     refetch()
+  }
+
+  const handleUpdate = async (quote: Quote) => {
+    if (!quote._id) return
+    await updateCloudQuote({ _id: quote._id, shared: !quote?.shared })
+    refetch()
+  }
+
+  const handleLinkCopy = async (quote: Quote) => {
+    const pathname = window.location.pathname
+    const basepath = import.meta.env.BASE_URL; // auto matches Vite base
+    const fullLink = basepath + "shared/" + quote._id
+    console.log({ basepath, pathname, fullLink });
+    await navigator.clipboard.writeText(fullLink)
+    toast.success("Link copy", toastConfig)
   }
 
 
@@ -109,6 +126,49 @@ function OpenCloudContainerComponent(props: Props) {
                 }}
               />
               <div className="flex items-center gap-2">
+                {quote.shared && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        className={cn("hover:text-primary focus:text-primary active:text-primary",)}
+                        variant={"outline"}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          handleLinkCopy(quote)
+                        }}
+                        aria-label={"Copy link"}
+                        size={"sm"}
+                      >
+                        <Link2Icon />
+                        {/* <LinkIcon /> */}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>A link will be copied </p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className={cn("hover:text-primary focus:text-primary active:text-primary",)}
+                      variant={"outline"}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleUpdate(quote)
+                      }}
+                      aria-label={"Shared by link"}
+                      size={"sm"}
+                    >
+                      {quote?.shared ? <EarthIcon /> : <EarthLockIcon />}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      {quote?.shared ? "Shared by the link" : "Not shared"}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button

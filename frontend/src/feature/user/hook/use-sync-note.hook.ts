@@ -12,6 +12,7 @@ export type Param = {
   pri_set?: string,
   pinned?: boolean,
   synced?: boolean,
+  shared?: boolean,
   user?: string,
 };
 

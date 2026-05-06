@@ -3,26 +3,25 @@ import type { Quote } from "@/model/index.model"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 export type Param = {
-    _id: string
 }
 
-const getCloudQuote = (param : Param) =>
-    apiClient<Quote>("/api/v1/notes/" + param?._id, {
+const getAllCloudQuote = () =>
+    apiClient<Quote[]>("/api/v1/notes/" , {
         method: "GET",
     })
 
-export const useGetCloudQuoteKey = "get-cloud-quote"
+export const useGetAllCloudQuoteKey = "get-all-cloud-quote"
 
-export const useGetCloudQuote = (param : Param) => {
+export const useGetAllCloudQuote = () => {
     const queryClient = useQueryClient()
     const invalidateQueries = () => {
         queryClient.invalidateQueries({
-            queryKey: [useGetCloudQuoteKey]
+            queryKey: [useGetAllCloudQuoteKey]
         })
     }
     const data = useQuery({
-        queryFn: () => getCloudQuote(param),
-        queryKey: [useGetCloudQuoteKey],
+        queryFn: () => getAllCloudQuote(),
+        queryKey: [useGetAllCloudQuoteKey],
     })
     return { ...data, invalidateQueries }
 }

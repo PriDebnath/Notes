@@ -14,6 +14,7 @@ import { Route as QuoteIdRouteImport } from './routes/$quoteId'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MeIndexRouteImport } from './routes/me/index'
+import { Route as SharedNote_idRouteImport } from './routes/shared-note/$_id'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 
@@ -42,6 +43,11 @@ const MeIndexRoute = MeIndexRouteImport.update({
   path: '/me/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SharedNote_idRoute = SharedNote_idRouteImport.update({
+  id: '/shared-note/$_id',
+  path: '/shared-note/$_id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/new': typeof NewRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/shared-note/$_id': typeof SharedNote_idRoute
   '/me/': typeof MeIndexRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/new': typeof NewRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/shared-note/$_id': typeof SharedNote_idRoute
   '/me': typeof MeIndexRoute
 }
 export interface FileRoutesById {
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/new': typeof NewRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/shared-note/$_id': typeof SharedNote_idRoute
   '/me/': typeof MeIndexRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/new'
     | '/auth/sign-in'
     | '/auth/sign-up'
+    | '/shared-note/$_id'
     | '/me/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/new'
     | '/auth/sign-in'
     | '/auth/sign-up'
+    | '/shared-note/$_id'
     | '/me'
   id:
     | '__root__'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/new'
     | '/auth/sign-in'
     | '/auth/sign-up'
+    | '/shared-note/$_id'
     | '/me/'
   fileRoutesById: FileRoutesById
 }
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   QuoteIdRoute: typeof QuoteIdRoute
   NewRoute: typeof NewRoute
+  SharedNote_idRoute: typeof SharedNote_idRoute
   MeIndexRoute: typeof MeIndexRoute
 }
 
@@ -156,6 +169,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MeIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shared-note/$_id': {
+      id: '/shared-note/$_id'
+      path: '/shared-note/$_id'
+      fullPath: '/shared-note/$_id'
+      preLoaderRoute: typeof SharedNote_idRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/sign-up': {
       id: '/auth/sign-up'
       path: '/sign-up'
@@ -192,6 +212,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   QuoteIdRoute: QuoteIdRoute,
   NewRoute: NewRoute,
+  SharedNote_idRoute: SharedNote_idRoute,
   MeIndexRoute: MeIndexRoute,
 }
 export const routeTree = rootRouteImport

@@ -30,19 +30,20 @@ import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
 import { themeModes, type ThemeMode } from '@/hooks/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon, CloudDownloadIcon, EyeIcon, EyeOffIcon, LinkIcon, EarthIcon, EarthLockIcon } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { useGetAllDeletedQuoteDetails } from "@/feature/quote-list/hook/use-get-all-delete-quote-details.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { useUpdateQuoteDetails } from "@/feature/quote-list/hook/use-update-quote-details.hook";
 import { deleteQuoteWithLinks } from "@/db/quote_tags.db";
 import { useDeleteCloudQuote, } from "../hook/use-delete-cloud-quote.hook";
-import { useGetCloudQuote } from "../hook/use-get-cloud-quote.hook";
+import { useGetAllCloudQuote } from "../hook/use-get-all-cloud-quote.hook";
 import { useCreateQuoteDetails } from "@/feature/quote/hook/use-create-quote-details.hook"
 import { toast } from "sonner";
 import { toastConfig } from "@/components/ui/sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tiptap-ui-primitive/tooltip";
 import { useUpdateCloudQuote } from "../hook/use-update-cloud-quote.hook";
+import { Route } from "@/routes/shared-note/$_id";
 
 interface Props {
 
@@ -50,12 +51,12 @@ interface Props {
 
 function OpenCloudContainerComponent(props: Props) {
   const [open, setOpen] = useState(false)
-  const { data, isLoading, refetch } = useGetCloudQuote()
+  const router = useRouter()
+  const { data, isLoading, refetch } = useGetAllCloudQuote()
   const { deleteCloudQuote } = useDeleteCloudQuote()
   const { updateCloudQuote } = useUpdateCloudQuote()
   const { updateQuote } = useUpdateQuoteDetails()
   const { createQuote } = useCreateQuoteDetails()
-
   const handleCloudDownload = async (quote: Quote) => {
     await createQuote({
       ...quote,
@@ -78,10 +79,15 @@ function OpenCloudContainerComponent(props: Props) {
   }
 
   const handleLinkCopy = async (quote: Quote) => {
-    const pathname = window.location.pathname
-    const basepath = import.meta.env.BASE_URL; // auto matches Vite base
-    const fullLink = basepath + "shared/" + quote._id
-    console.log({ basepath, pathname, fullLink });
+    const location = router.buildLocation({
+      to: "/shared-note/$_id",
+      params: {
+        _id: quote._id!
+      }
+    })
+    const origin = window.location.origin
+    const fullLink = origin + location.href
+    console.log({ fullLink });
     await navigator.clipboard.writeText(fullLink)
     toast.success("Link copy", toastConfig)
   }
@@ -144,7 +150,7 @@ function OpenCloudContainerComponent(props: Props) {
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>A link will be copied </p>
+                      <p>The link will be copied </p>
                     </TooltipContent>
                   </Tooltip>
                 )}

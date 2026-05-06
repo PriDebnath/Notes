@@ -9,7 +9,7 @@ export const noteZodSchema = z.object({
   pri_set: z.string().optional(),
   pinned: z.boolean(),
   synced: z.boolean(),
-  shared: z.boolean(),
+  shared: z.boolean().optional(),
   createdAt: z.date(),
   updatedAt: z.date(),
   user: z.string().optional(),

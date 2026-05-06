@@ -10,6 +10,8 @@ export interface Quote {
     pri_set?: Pri_set;
     created_at?: Date;
     updated_at?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
     pinned?: boolean;
     synced?: boolean;
     shared?: boolean;

@@ -4,6 +4,7 @@ import { toastConfig } from "@/components/ui/sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useGetCloudQuoteKey } from "./use-get-cloud-quote.hook";
 import type { Quote } from "@/model/index.model";
+import { useGetAllCloudQuoteKey } from "./use-get-all-cloud-quote.hook";
 
 export interface Param extends Omit<Quote, 'text'> { 
   text?: string;  
@@ -32,7 +33,7 @@ export const useUpdateCloudQuote = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [useGetCloudQuoteKey,],
+        queryKey: [useGetAllCloudQuoteKey,],
       })
     },
     onError: (error) => {

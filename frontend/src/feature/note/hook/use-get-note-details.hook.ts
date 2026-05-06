@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getQuoteDetails } from "@/db/quote_tags.db"
+import { getQuoteDetails } from "@/db/note_tags.db"
 
 export const queryKeysGetQuote = 'quote-details'
 

@@ -53,10 +53,48 @@ export const getAllNote = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteNote = async (req: Request, res: Response) => {
+
+
+export const getNoteController = async (req: Request, res: Response) => {
     try {
         const { _id } = req.params
-        const data = await deleteNoteById(_id.toString())
+        const existingNote = await getNote(_id.toString())
+        if (!existingNote) {
+            return res.status(404).json({
+                message: "Not found"
+            })
+        }
+        res.status(200).json(existingNote)
+    } catch (error: any) {
+        if (error instanceof ZodError) {
+            return res.status(400).json({
+                message: z.prettifyError(error)
+            })
+        }
+        if (error.errors) {
+            return res.status(400).json({
+                errors: error.errors
+            })
+        }
+        return res.status(500).json({
+            message: "Server error"
+        })
+    }
+}
+
+export const updateNoteController = async (req: Request, res: Response) => {
+    try {
+        const { _id } = req.params
+        const existingNote = await getNote(_id.toString())
+        if (!existingNote) {
+            return res.status(404).json({
+                message: "Not found"
+            })
+        }
+        const data = await updateNote({
+            ...req.body,
+            _id
+        })
         res.status(200).json(data)
     } catch (error: any) {
         if (error instanceof ZodError) {
@@ -76,19 +114,10 @@ export const deleteNote = async (req: Request, res: Response) => {
 }
 
 
-export const updateNoteHandler = async (req: Request, res: Response) => {
+export const deleteNote = async (req: Request, res: Response) => {
     try {
         const { _id } = req.params
-        const existingNote = await getNote(_id.toString())
-        if (!existingNote) {
-            return res.status(404).json({
-                message: "Not found"
-            })
-        }
-        const data = await updateNote({
-            ...req.body,
-            _id
-        })
+        const data = await deleteNoteById(_id.toString())
         res.status(200).json(data)
     } catch (error: any) {
         if (error instanceof ZodError) {

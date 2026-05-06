@@ -18,18 +18,18 @@ import { Button } from '@/components/ui/button'
 import { Suspense, lazy } from 'react'
 import { deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import type { Quote, QuoteDetails, QuoteFormData, Tag, SortOption } from '@/model/index.model'
-import { useGetAllQuoteDetails } from '@/feature/quote-list/hook/use-get-all-quote-details.hook'
+import { useGetAllQuoteDetails } from '@/feature/note-list/hook/use-get-all-quote-details.hook'
 import { useSortStore } from '@/store/use-sort.store'
 import { toggleQuotePinned, updateQuote } from '@/db/quote.db'
 import React from 'react'
 import { ButtonLoader } from '@/components/ui/button-loader'
 import { Loader } from '@/components/ui/loader'
-import { useUpdateQuoteDetails } from '@/feature/quote-list/hook/use-update-quote-details.hook'
+import { useUpdateQuoteDetails } from '@/feature/note-list/hook/use-update-quote-details.hook'
 
-const DeleteQuoteDialog = lazy(() => import('@/feature/quote-list/component/DeleteQuoteDialog'))
-const QuoteListComponent = lazy(() => import('@/feature/quote-list/component/QuoteListComponent').then(mod => ({ default: mod.default })))
-const SettingComponent = lazy(() => import('@/feature/quote-list/component/SettingComponent/SettingComponent').then(mod => ({ default: mod.default })))
-const TagFilterComponent = lazy(() => import('@/feature/quote-list/component/TagFilterComponent').then(mod => ({ default: mod.default })))
+const DeleteQuoteDialog = lazy(() => import('@/feature/note-list/component/DeleteQuoteDialog'))
+const QuoteListComponent = lazy(() => import('@/feature/note-list/component/QuoteListComponent').then(mod => ({ default: mod.default })))
+const SettingComponent = lazy(() => import('@/feature/note-list/component/SettingComponent/SettingComponent').then(mod => ({ default: mod.default })))
+const TagFilterComponent = lazy(() => import('@/feature/note-list/component/TagFilterComponent').then(mod => ({ default: mod.default })))
 
 export function QuoteListPage() {
   const {

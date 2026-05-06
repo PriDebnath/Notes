@@ -34,7 +34,7 @@ import { Link } from "@tanstack/react-router";
 import { ButtonLoader } from "@/components/ui/button-loader";
 import { cn } from "@/lib/utils";
 
-const RecycleBinComponent = lazy(()=> import("@/feature/quote-list/component/SettingComponent/component/RecycleBinComponent"))
+const RecycleBinComponent = lazy(()=> import("@/feature/note-list/component/SettingComponent/component/RecycleBinComponent"))
 
 interface Props {
 

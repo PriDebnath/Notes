@@ -19,7 +19,7 @@ import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateA
 import { ButtonLoader } from "@/components/ui/button-loader"
 import EditorSkeleton from "@/feature/note/component/EditorSkeletonComponent"
 import {  useCreateQuoteDetails } from "@/feature/note/hook/use-create-note-details.hook"
-import {   useUpdateQuoteDetails  } from "@/feature/quote-list/hook/use-update-quote-details.hook"
+import {   useUpdateQuoteDetails  } from "@/feature/note-list/hook/use-update-quote-details.hook"
 
 const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
 const ShareBackgroundComponent = lazy(

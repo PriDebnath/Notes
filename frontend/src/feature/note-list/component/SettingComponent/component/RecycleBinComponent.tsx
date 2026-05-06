@@ -32,9 +32,9 @@ import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { useGetAllDeletedQuoteDetails } from "@/feature/quote-list/hook/use-get-all-delete-quote-details.hook";
+import { useGetAllDeletedQuoteDetails } from "@/feature/note-list/hook/use-get-all-delete-quote-details.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
-import { useUpdateQuoteDetails } from "@/feature/quote-list/hook/use-update-quote-details.hook";
+import { useUpdateQuoteDetails } from "@/feature/note-list/hook/use-update-quote-details.hook";
 import { deleteQuoteWithLinks } from "@/db/quote_tags.db";
 import { TooltipTrigger, TooltipContent, Tooltip } from "@/components/ui/tooltip";
 

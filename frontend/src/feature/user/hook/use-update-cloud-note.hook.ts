@@ -2,26 +2,30 @@ import { toast } from "sonner";
 import { apiClient } from "@/lib/apiClient";
 import { toastConfig } from "@/components/ui/sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useGetCloudQuoteKey } from "./use-get-cloud-quote.hook";
-import { useGetAllCloudQuoteKey } from "./use-get-all-cloud-quote.hook";
+import { useGetCloudQuoteKey } from "./use-get-cloud-note.hook";
+import type { Quote } from "@/model/index.model";
+import { useGetAllCloudQuoteKey } from "./use-get-all-cloud-note.hook";
 
-export type Param = { _id: string;  };
+export interface Param extends Omit<Quote, 'text'> { 
+  text?: string;  
+};
 
-const deleteCloudQuote = (data: Param) =>
-  apiClient("/api/v1/notes/" + data?._id, {
-    method: "DELETE",
+const updateCloudQuote = (data: Param) =>
+  apiClient<{ token: string }>("/api/v1/notes/" + data?._id, {
+    method: "PATCH",
+    body: JSON.stringify(data),
   });
 
-export const useDeleteCloudQuote = () => {
+export const useUpdateCloudQuote = () => {
   const queryClient = useQueryClient()
 
   const mutation = useMutation({
     mutationFn: async (data: Param) => {
-      const promise = deleteCloudQuote(data);
+      const promise = updateCloudQuote(data);
       toast.promise(promise, {
         ...toastConfig,
-        loading: "Deleting...",
-        success: "Deleted successful",
+        loading: "Updating...",
+        success: "Updated successful",
         error: (err: any) => err?.message || "Something went wrong",
       });
       const res = await promise;
@@ -41,6 +45,6 @@ export const useDeleteCloudQuote = () => {
 
   return {
     ...mutation,
-    deleteCloudQuote: mutation.mutateAsync,
+    updateCloudQuote: mutation.mutateAsync,
   };
 };

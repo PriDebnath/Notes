@@ -1,5 +1,5 @@
 import { Label } from "@/components/ui/label"
-import ChooseTagDropdownComponent from "@/feature/quote/component/ChooseTagDropdownComponent"
+import ChooseTagDropdownComponent from "@/feature/note/component/ChooseTagDropdownComponent"
 
 interface Props {
   onChoose: (tag: string) => void

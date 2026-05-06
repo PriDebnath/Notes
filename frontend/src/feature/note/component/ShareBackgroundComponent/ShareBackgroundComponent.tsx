@@ -13,7 +13,7 @@ import { toPng } from "html-to-image"
 import { useRef, useState } from "react";
 import { ResizableBox } from "react-resizable";
 import { Button } from "@/components/ui/button";
-import { ListTagsComponent } from "@/feature/quote/component/ListTagsComponent";
+import { ListTagsComponent } from "@/feature/note/component/ListTagsComponent";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { Separator } from "@/components/ui/separator";
 import { htmlToPlainText } from "@/helper/html-to-text";
@@ -21,10 +21,10 @@ import type { QuoteFormData, Status } from "@/model/index.model";
 import useBackground, { type Pri_set, type TextureKey } from "@/hooks/use-background.hook";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share } from "lucide-react";
 import { exportAsImage } from "@/helper/html-to-image";
-import { ShareButton } from "@/feature/quote/component/ShareBackgroundComponent/component/share-button";
-import { DownloadButton } from "@/feature/quote/component/ShareBackgroundComponent/component/download-button";
-import { CopyTextButton } from "@/feature/quote/component/ShareBackgroundComponent/component/copy-text-button";
-import { CopyImageButton } from "@/feature/quote/component/ShareBackgroundComponent/component/copy-image-button";
+import { ShareButton } from "@/feature/note/component/ShareBackgroundComponent/component/share-button";
+import { DownloadButton } from "@/feature/note/component/ShareBackgroundComponent/component/download-button";
+import { CopyTextButton } from "@/feature/note/component/ShareBackgroundComponent/component/copy-text-button";
+import { CopyImageButton } from "@/feature/note/component/ShareBackgroundComponent/component/copy-image-button";
 
 interface Props {
   quoteFormData: QuoteFormData

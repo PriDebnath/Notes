@@ -7,10 +7,10 @@ import { renderWithFileRoutes } from '@/test/file-route-utils';
 import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { act, logDOM, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
-import { useGetQuoteDetails } from '@/feature/quote/hook/use-get-quote-details.hook';
+import { useGetQuoteDetails } from '@/feature/note/hook/use-get-note-details.hook';
 
 /// mock hook
-vi.mock("@/api-hook/use-get-quote-details.hook")
+vi.mock("@/api-hook/use-get-note-details.hook")
 const mockUseGetQuoteDetails = vi.mocked(useGetQuoteDetails)
 
 beforeEach(() => {
@@ -26,7 +26,7 @@ beforeEach(() => {
 describe(Component.name, () => {
   describe("rendering", () => {
 
-    it("renders quote page: add mode", async () => {
+    it("renders note page: add mode", async () => {
       await router.navigate({ to: '/new' })
       await renderWithFileRoutes(<Component mode="add" />)
       const loader = await screen.queryByLabelText("loading-editor")
@@ -38,7 +38,7 @@ describe(Component.name, () => {
       expect(await editor).toBeInTheDocument()
     })
 
-    it("renders quote page: edit mode", async () => {
+    it("renders note page: edit mode", async () => {
       const editorContent = "editor-content"
       const tagContent = "tag-content"
       mockUseGetQuoteDetails.mockReturnValue({
@@ -70,7 +70,7 @@ describe(Component.name, () => {
 
     })
 
-    it("shows loading indicator when fetching quote", async () => {
+    it("shows loading indicator when fetching note", async () => {
       mockUseGetQuoteDetails.mockReturnValue({
         data: undefined,
         isLoading: true,

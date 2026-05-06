@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { BotMessageSquare } from "lucide-react";
 import type { ContentChatMessage } from "@/model/index.model";
 import { MarkdownRenderer } from "@/components/common/markdown-renderer";
-import { CopyTextButton } from "@/feature/quote/component/ShareBackgroundComponent/component/copy-text-button"
+import { CopyTextButton } from "@/feature/note/component/ShareBackgroundComponent/component/copy-text-button"
 
 interface Props {
     message: ContentChatMessage;

@@ -18,9 +18,9 @@ import { sanitizeHTML } from "@/helper/sanitize-html"
 import { BotMessageSquare, Send, X } from "lucide-react"
 import type { ContentChatMessage } from "@/model/index.model"
 import { useEffect, useRef, useState, type ChangeEvent } from "react"
-import { useAiContentStream } from "@/feature/quote/hook/ai-content-stream.hook"
-import ChatSettingComponent from "@/feature/quote/component/ChatSheetComponent/component/ChatSettingComponent"
-import ChatMessage from "@/feature/quote/component/ChatSheetComponent/component/ChatMessageComponent"
+import { useAiContentStream } from "@/feature/note/hook/ai-content-stream.hook"
+import ChatSettingComponent from "@/feature/note/component/ChatSheetComponent/component/ChatSettingComponent"
+import ChatMessage from "@/feature/note/component/ChatSheetComponent/component/ChatMessageComponent"
 
 interface Props {
     query?: string;

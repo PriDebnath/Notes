@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { ListTagsComponent } from "@/feature/quote/component/ListTagsComponent";
+import { ListTagsComponent } from "@/feature/note/component/ListTagsComponent";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import useBackground from "@/hooks/use-background.hook";
 import { htmlToPlainText } from "@/helper/html-to-text";

@@ -5,33 +5,33 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Button } from '@/components/ui/button'
 import { useBlocker } from "@tanstack/react-router"
-import TagField from "@/feature/quote/component/TagFieldComponent"
+import TagField from "@/feature/note/component/TagFieldComponent"
 import { Separator } from '@/components/ui/separator'
 import { AnimatePresence, motion } from 'framer-motion'
 import { addOrGetTag } from '@/legacy-indexDB-db/tag.db'
 import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
-import { useGetSummarize } from '@/feature/quote/hook/ai-content-summarize.hook'
-import { useGetQuoteDetails } from '@/feature/quote/hook/use-get-quote-details.hook'
+import { useGetSummarize } from '@/feature/note/hook/ai-content-summarize.hook'
+import { useGetQuoteDetails } from '@/feature/note/hook/use-get-note-details.hook'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
 import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/quote_tags.db'
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
 import { ButtonLoader } from "@/components/ui/button-loader"
-import EditorSkeleton from "@/feature/quote/component/EditorSkeletonComponent"
-import {  useCreateQuoteDetails } from "@/feature/quote/hook/use-create-quote-details.hook"
+import EditorSkeleton from "@/feature/note/component/EditorSkeletonComponent"
+import {  useCreateQuoteDetails } from "@/feature/note/hook/use-create-note-details.hook"
 import {   useUpdateQuoteDetails  } from "@/feature/quote-list/hook/use-update-quote-details.hook"
 
 const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
 const ShareBackgroundComponent = lazy(
-  () => import('@/feature/quote/component/ShareBackgroundComponent/ShareBackgroundComponent')
+  () => import('@/feature/note/component/ShareBackgroundComponent/ShareBackgroundComponent')
     .then(mod => ({ default: mod.default }))
 )
 const ChooseBackgroundComponent = lazy(
-  () => import('@/feature/quote/component/ChooseBackgroundComponent')
+  () => import('@/feature/note/component/ChooseBackgroundComponent')
     .then(mod => ({ default: mod.default }))
 )
 const ChatSheetComponent = lazy(
-  () => import('@/feature/quote/component/ChatSheetComponent/ChatSheetComponent')
+  () => import('@/feature/note/component/ChatSheetComponent/ChatSheetComponent')
     .then(mod => ({ default: mod.default }))
 )
 

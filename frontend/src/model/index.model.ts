@@ -4,6 +4,7 @@ import type { TextureKey, Pri_set } from "@/hooks/use-background.hook";
 
 export interface Quote {
     _id?: string | undefined; // cloud id
+    user?: string | undefined; // cloud user id
     id?: number | undefined;
     text: string;
     texture?: TextureKey;

@@ -50,7 +50,7 @@ describe(Component.name, () => {
         isLoading: false,
         error: undefined,
       })
-      await router.navigate({ to: '/$quoteId', params: { quoteId: "1" } })
+      await router.navigate({ to: '/$noteId', params: { noteId: "1" } })
       await renderWithFileRoutes(<Component mode="edit" />)
 
       const loader = await screen.queryByLabelText("loading")
@@ -77,7 +77,7 @@ describe(Component.name, () => {
         error: undefined,
       })
 
-      await router.navigate({ to: '/$quoteId', params: { quoteId: "1" } })
+      await router.navigate({ to: '/$noteId', params: { noteId: "1" } })
       await renderWithFileRoutes(<Component mode="edit" />)
 
       expect(await screen.findByLabelText("loading")).toBeInTheDocument()
@@ -91,7 +91,7 @@ describe(Component.name, () => {
         error: somethingBad
       })
 
-      router.navigate({ to: "/$quoteId", params: { quoteId: "1" } })
+      router.navigate({ to: "/$noteId", params: { noteId: "1" } })
       renderWithFileRoutes(<Component mode='edit' />)
 
       const errorElement = await screen.findByLabelText("error")

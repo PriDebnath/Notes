@@ -1,6 +1,6 @@
 import { toast } from "sonner"
 import { lazy, Suspense } from 'react'
-import { Route } from '@/routes/$quoteId'
+import { Route } from '@/routes/$noteId'
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Button } from '@/components/ui/button'
@@ -47,7 +47,7 @@ export function QuotePage(props: Props) {
 
   // Only read params in edit mode
   const params = mode === 'edit' ? Route.useParams() : null
-  const quoteId = params?.quoteId
+  const quoteId = params?.noteId
 
   // Only fetch in edit mode
   const {

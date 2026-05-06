@@ -1,4 +1,4 @@
-import { QuotePage } from '@/page/quote/quote/quote.page'
+import { QuotePage } from '@/page/note/note/note.page'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/new')({

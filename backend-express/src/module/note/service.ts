@@ -22,13 +22,14 @@ import { userPayloadSchema } from "../auth/schema"
 
 export const updateNote = async (param: z.infer<typeof noteUpdateZodSchema>) => {
     const validated = await noteUpdateZodSchema.parseAsync(param)
-    const { _id, texture, pinned, pri_set, text,id } = validated
+    const { _id, texture, pinned, shared, pri_set, text,id } = validated
     const newData = await NoteModel.findByIdAndUpdate(_id, {
         ...(texture && ({ texture: validated.texture })),
         ...(pinned && ({ pinned: validated.pinned })),
         ...(pri_set && ({ pri_set: validated.pri_set })),
         ...(text && ({ text: validated.text })),
         ...(id && ({ id: validated.id })),
+        shared: shared,
         synced: true
     },
         { new: true}

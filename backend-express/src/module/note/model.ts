@@ -10,6 +10,7 @@ const noteSchema = new Schema(
         pri_set: { type: Schema.Types.String, required: false },
         pinned: { type: Schema.Types.Boolean, required: false  },
         synced: { type: Schema.Types.Boolean, required: false  },
+        shared: { type: Schema.Types.Boolean, required: false  },
         user: { type: Schema.Types.ObjectId,  ref: userModelName},
     },
     { timestamps: true }

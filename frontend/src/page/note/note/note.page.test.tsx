@@ -1,5 +1,5 @@
 
-import { QuotePage as Component } from './quote.page';
+import { QuotePage as Component } from '@/page/note/note/note.page';
 import { userEvent } from '@testing-library/user-event';
 import { createMemoryHistory } from '@tanstack/react-router';
 import { router } from '@/provider/tanstack-router.provider';
@@ -7,9 +7,9 @@ import { renderWithFileRoutes } from '@/test/file-route-utils';
 import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { act, logDOM, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { useGetQuoteDetails } from '@/feature/quote/hook/use-get-quote-details.hook';
 
 /// mock hook
-import { useGetQuoteDetails } from '@/api-hook/use-get-quote-details.hook';
 vi.mock("@/api-hook/use-get-quote-details.hook")
 const mockUseGetQuoteDetails = vi.mocked(useGetQuoteDetails)
 

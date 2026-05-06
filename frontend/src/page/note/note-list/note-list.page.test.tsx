@@ -1,4 +1,4 @@
-import { QuoteListPage as Component } from "./quote-list.page"
+import { QuoteListPage as Component } from "@/page/note/note-list/note-list.page"
 import { userEvent } from "@testing-library/user-event"
 import { router } from "@/provider/tanstack-router.provider"
 import { renderWithFileRoutes } from "@/test/file-route-utils"

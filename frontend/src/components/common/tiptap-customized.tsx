@@ -19,14 +19,14 @@ import Image from '@tiptap/extension-image'
 
 interface Props {
   value?: string;
-  quoteFormData?: NoteFormData;
+  noteFormData?: NoteFormData;
   onValueUpdate: (key: keyof NoteFormData, value: string) => void
 }
 
 const Tiptap = (props: Props) => {
-  const { value, quoteFormData, onValueUpdate } = props
+  const { value, noteFormData, onValueUpdate } = props
   const { buildStyleString } = useBackground()
-  const styleString = buildStyleString(quoteFormData?.texture!, quoteFormData?.pri_set!)
+  const styleString = buildStyleString(noteFormData?.texture!, noteFormData?.pri_set!)
 
   const editor = useEditor({
     extensions: [

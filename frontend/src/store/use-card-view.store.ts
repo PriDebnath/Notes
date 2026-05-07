@@ -30,7 +30,7 @@ export const useCardViewStore = create<CardViewStore>()(
       setView: (view) => set({ view }),
     }),
     {
-      name: "quote_card_view",
+      name: "note_card_view",
     }
   )
 )

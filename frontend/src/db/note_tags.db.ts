@@ -2,16 +2,16 @@ import { db } from "@/db/db";
 import { getOrAddTag } from "@/db/tag.db";
 import type { Tag, SortOption, GetAllNotesDetailsParam } from "@/model/index.model";
 
-export const linkNoteTag = async (quoteId: number, tagId: number) => {
-  await db.quotes_tags.add({ quoteId, tagId });
+export const linkNoteTag = async (noteId: number, tagId: number) => {
+  await db.notes_tags.add({ noteId, tagId });
 };
 
-export const addTagToNote = async (quoteId: number, tagName: string) => {
-  return db.transaction("rw", db.tags, db.quotes_tags, async () => {
+export const addTagToNote = async (noteId: number, tagName: string) => {
+  return db.transaction("rw", db.tags, db.notes_tags, async () => {
     const tag = await getOrAddTag(tagName);
 
-    await db.quotes_tags.add({
-      quoteId,
+    await db.notes_tags.add({
+      noteId,
       tagId: tag.id!,
     });
 
@@ -26,36 +26,36 @@ export const getAllNotesDetailsOld = async () => {
   return db.transaction(
     "r",
     db.notes,
-    db.quotes_tags,
+    db.notes_tags,
     db.tags,
     async () => {
       // #1 Query all tables
       let notes = await db.notes.toArray()
       let tags = await db.tags.toArray()
-      let quote_tags = await db.quotes_tags.toArray()
+      let note_tags = await db.notes_tags.toArray()
 
       // #2 Store tags by their id
       const tagsById = new Map<number, Tag>(tags.map(t => [t.id!, t])); // eq: 3 → { id: 3, name: "life" }
 
       // #3 find links
       const linksByNoteId = new Map<number, Tag[]>(); // eq: 1 → [{ id: 3, name: "life" }]
-      for (const link of quote_tags) {
+      for (const link of note_tags) {
         const tag = tagsById.get(link.tagId);
         if (!tag) continue;
 
-        if (!linksByNoteId.has(link.quoteId)) {
-          linksByNoteId.set(link.quoteId, []);
+        if (!linksByNoteId.has(link.noteId)) {
+          linksByNoteId.set(link.noteId, []);
         }
-        linksByNoteId.get(link.quoteId)!.push(tag);
+        linksByNoteId.get(link.noteId)!.push(tag);
       }
       // #4 return formated data
-      let quotesResult = notes.map((q) => {
+      let notesResult = notes.map((q) => {
         return {
           ...q,
           tags: linksByNoteId.get(q?.id!) || []
         }
       })
-      return quotesResult
+      return notesResult
     })
 }
 
@@ -65,7 +65,7 @@ export const getAllNotesDetails = async (param: GetAllNotesDetailsParam) => {
   return db.transaction(
     "r",
     db.notes,
-    db.quotes_tags,
+    db.notes_tags,
     db.tags,
     async () => {
       // #1 Query all tables with DB-level ordering where possible
@@ -86,24 +86,24 @@ export const getAllNotesDetails = async (param: GetAllNotesDetailsParam) => {
       }
 
       let tags = await db.tags.toArray()
-      let quote_tags = await db.quotes_tags.toArray()
+      let note_tags = await db.notes_tags.toArray()
 
       // #2 Store tags by their id
       const tagsById = new Map<number, Tag>(tags.map(t => [t.id!, t])); // eq: 3 → { id: 3, name: "life" }
 
       // #3 find links
       const linksByNoteId = new Map<number, Tag[]>(); // eq: 1 → [{ id: 3, name: "life" }]
-      for (const link of quote_tags) {
+      for (const link of note_tags) {
         const tag = tagsById.get(link.tagId);
         if (!tag) continue;
 
-        if (!linksByNoteId.has(link.quoteId)) {
-          linksByNoteId.set(link.quoteId, []);
+        if (!linksByNoteId.has(link.noteId)) {
+          linksByNoteId.set(link.noteId, []);
         }
-        linksByNoteId.get(link.quoteId)!.push(tag);
+        linksByNoteId.get(link.noteId)!.push(tag);
       }
       // #4 join tags
-      let quotesResult = notes.map((q) => {
+      let notesResult = notes.map((q) => {
         return {
           ...q,
           tags: linksByNoteId.get(q?.id!) || []
@@ -120,26 +120,26 @@ export const getAllNotesDetails = async (param: GetAllNotesDetailsParam) => {
           return 0;
         };
 
-        quotesResult.sort((a, b) => compareByTags(a.tags as any, b.tags as any));
+        notesResult.sort((a, b) => compareByTags(a.tags as any, b.tags as any));
       }
 
       // #6 move pinned notes to the top, preserving relative order
-      const pinned = quotesResult.filter(q => q.pinned);
-      const unpinned = quotesResult.filter(q => !q.pinned);
+      const pinned = notesResult.filter(q => q.pinned);
+      const unpinned = notesResult.filter(q => !q.pinned);
 
       return [...pinned, ...unpinned];
     })
 }
 
 
-export const getNoteDetails = async (quoteId: number) => {
-  return db.transaction("r", db.notes, db.quotes_tags, db.tags, async () => {
-    const note = await db.notes.get(quoteId);
+export const getNoteDetails = async (noteId: number) => {
+  return db.transaction("r", db.notes, db.notes_tags, db.tags, async () => {
+    const note = await db.notes.get(noteId);
     if (!note) return;
 
-    const links = await db.quotes_tags
-      .where("quoteId")
-      .equals(quoteId)
+    const links = await db.notes_tags
+      .where("noteId")
+      .equals(noteId)
       .toArray();
 
     const tagIds = links.map(l => l.tagId);
@@ -154,36 +154,36 @@ export const getNoteDetails = async (quoteId: number) => {
 };
 
 
-export const deleteNoteWithLinks = async (quoteId: number) => {
+export const deleteNoteWithLinks = async (noteId: number) => {
   return db.transaction(
     "rw",
     db.notes,
-    db.quotes_tags,
+    db.notes_tags,
     async () => {
 
       // 1️⃣ delete all links for this note
-      await db.quotes_tags
-        .where("quoteId")
-        .equals(quoteId)
+      await db.notes_tags
+        .where("noteId")
+        .equals(noteId)
         .delete();
 
       // 2️⃣ delete the note itself
-      await db.notes.delete(quoteId);
+      await db.notes.delete(noteId);
     }
   );
 };
 
 
-export const deleteNoteTagLinks = async (quoteId: number) => {
+export const deleteNoteTagLinks = async (noteId: number) => {
   return db.transaction(
     "rw",
-    db.quotes_tags,
+    db.notes_tags,
     async () => {
 
       // 1️⃣ delete all links for this note
-      await db.quotes_tags
-        .where("quoteId")
-        .equals(quoteId)
+      await db.notes_tags
+        .where("noteId")
+        .equals(noteId)
         .delete();
     }
   );

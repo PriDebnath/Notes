@@ -47,7 +47,7 @@ export function NotePage(props: Props) {
 
   // Only read params in edit mode
   const params = mode === 'edit' ? Route.useParams() : null
-  const quoteId = params?.noteId
+  const noteId = params?.noteId
 
   // Only fetch in edit mode
   const {
@@ -55,12 +55,12 @@ export function NotePage(props: Props) {
     isLoading,
     error,
   } = useGetNoteDetails(
-    mode === 'edit' ? Number(quoteId) : undefined
+    mode === 'edit' ? Number(noteId) : undefined
   )
   const { updateNote } = useUpdateNoteDetails()
   const { createNote } = useCreateNoteDetails()
 
-  const [quoteData, setNoteData] = useState<NoteFormData>(() => ({
+  const [noteData, setNoteData] = useState<NoteFormData>(() => ({
     id: note?.id,
     text: note?.text || "",
     tags: note?.tags?.map((tag) => tag.name) || [],
@@ -109,8 +109,8 @@ export function NotePage(props: Props) {
   };
 
   const handleSubmit = useCallback(async (note: NoteFormData) => {
-    let quoteId: number | undefined = note.id
-    if (quoteId) { // edit
+    let noteId: number | undefined = note.id
+    if (noteId) { // edit
       await updateNote({
         ...note,
         text: note.text || "Empty",
@@ -122,20 +122,20 @@ export function NotePage(props: Props) {
         text: note.text || "Empty",
         synced: false
       })
-      quoteId = newNote.id
+      noteId = newNote.id
     }
 
-    // console.log({ quoteId });
+    // console.log({ noteId });
 
     const tags = await getTags(note.tags!)
     // console.log({ tags })
 
     // Delete all existing tags for this note
-    await deleteNoteTagLinks(quoteId!)
+    await deleteNoteTagLinks(noteId!)
 
     // Add new tags for this note
     for (const tag of tags) {
-      await addTagToNote(quoteId!, tag.name!)
+      await addTagToNote(noteId!, tag.name!)
     }
     navigate({
       to: '/'
@@ -155,15 +155,15 @@ export function NotePage(props: Props) {
   }, [note, mode])
 
   const blocker = useBlocker({
-    shouldBlockFn: () => Boolean(quoteData?.text?.trim()),
+    shouldBlockFn: () => Boolean(noteData?.text?.trim()),
     withResolver: true,
   })
 
   useEffect(() => {
-    if (blocker.status === 'blocked' && quoteData?.text?.trim()) {
+    if (blocker.status === 'blocked' && noteData?.text?.trim()) {
       const saveAndProceed = async () => {
         try {
-          await handleSubmit(quoteData)
+          await handleSubmit(noteData)
           // handleSubmit already navigates, but proceed() clears the blocker state
           blocker.proceed()
         } catch (error) {
@@ -174,7 +174,7 @@ export function NotePage(props: Props) {
       saveAndProceed()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blocker.status, quoteData, handleSubmit])
+  }, [blocker.status, noteData, handleSubmit])
 
 
   return (
@@ -185,7 +185,7 @@ export function NotePage(props: Props) {
 
       <AnimatePresence mode="wait">
         <motion.div
-          key={quoteId}
+          key={noteId}
           initial={{ x: 120, opacity: 1 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 120, opacity: 1 }}
@@ -206,7 +206,7 @@ export function NotePage(props: Props) {
             </Link>
             <div className="flex gap-2" >
               <Suspense fallback={<ButtonLoader />}>
-                <ShareBackgroundComponent quoteFormData={quoteData} />
+                <ShareBackgroundComponent noteFormData={noteData} />
               </Suspense>
 
               <Suspense fallback={<ButtonLoader />}>
@@ -214,7 +214,7 @@ export function NotePage(props: Props) {
               </Suspense>
 
               <Suspense fallback={<ButtonLoader />}>
-                <ChatSheetComponent text={quoteData?.text!} query="Summarize this note" />
+                <ChatSheetComponent text={noteData?.text!} query="Summarize this note" />
               </Suspense>
             </div>
           </div>
@@ -238,9 +238,9 @@ export function NotePage(props: Props) {
                     <Suspense fallback={<EditorSkeleton />}>
                       <div aria-label="editor" >
                         <Tiptap
-                          key={quoteData?.id ?? "new"}
-                          value={quoteData?.text}
-                          quoteFormData={quoteData}
+                          key={noteData?.id ?? "new"}
+                          value={noteData?.text}
+                          noteFormData={noteData}
                           onValueUpdate={onValueUpdate} />
                       </div>
                     </Suspense>
@@ -257,8 +257,8 @@ export function NotePage(props: Props) {
                 aria-label='tag-list'
                 className="flex flex-wrap gap-2">
                 {
-                  quoteData?.tags && quoteData?.tags.length > 0 && (
-                    quoteData?.tags.map((tag) => {
+                  noteData?.tags && noteData?.tags.length > 0 && (
+                    noteData?.tags.map((tag) => {
                       return (
                         <motion.div
                           key={tag}

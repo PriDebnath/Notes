@@ -20,7 +20,7 @@ vi.mock("@/api-hook/use-get-all-note-details.hook")
 const mockUseGetAllNoteDetails = vi.mocked(useGetAllNoteDetails)
 type GetAllNotesReturn = ReturnType<typeof useGetAllNoteDetails>
 
-vi.mock('@/db/quote_tags.db')
+vi.mock('@/db/note_tags.db')
 const mockDeleteNoteWithLinks = vi.mocked(deleteNoteWithLinks)
 
 beforeEach(() => {

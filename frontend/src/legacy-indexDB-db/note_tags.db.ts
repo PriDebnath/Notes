@@ -23,7 +23,7 @@ export const addNoteTag = async (data: NoteTags): Promise<NoteTags> => {
   const store = tx.objectStore(STORE)
 
   const newNoteTag: NoteTags = {
-    quoteId: data.quoteId,
+    noteId: data.noteId,
     tagId: data.tagId,
   }
   store.put(newNoteTag)
@@ -66,13 +66,13 @@ export const deleteNoteTag = async (id: number): Promise<void> => {
 }
 
 export const deleteAllNoteTags = async (
-  quoteId: number
+  noteId: number
 ): Promise<void> => {
   const db = await openDB()
   const tx = db.transaction(STORE, 'readwrite')
   const store = tx.objectStore(STORE)
 
-  const req = store.index('quoteId').getAll(quoteId)
+  const req = store.index('noteId').getAll(noteId)
 
   req.onsuccess = () => {
     req.result.forEach((r) => store.delete(r.id))
@@ -87,7 +87,7 @@ export const deleteAllNoteTags = async (
 /* ===================== READ MODELS ===================== */
 
 export const getNoteDetails = async (
-  quoteId: number
+  noteId: number
 ): Promise<NoteDetails | null> => {
   const db = await openDB()
 
@@ -97,22 +97,22 @@ export const getNoteDetails = async (
       'readonly'
     )
 
-    const quotesStore = tx.objectStore(STORES.QUOTES)
+    const notesStore = tx.objectStore(STORES.QUOTES)
     const tagsStore = tx.objectStore(STORES.TAGS)
     const junctionStore = tx.objectStore(STORES.QUOTES_TAGS)
 
-    const quoteReq = quotesStore.get(quoteId)
+    const noteReq = notesStore.get(noteId)
 
-    quoteReq.onsuccess = async () => {
-      const note = quoteReq.result
+    noteReq.onsuccess = async () => {
+      const note = noteReq.result
       if (!note) {
         resolve(null)
         return
       }
 
       const linkReq = junctionStore
-        .index('quoteId')
-        .getAll(quoteId)
+        .index('noteId')
+        .getAll(noteId)
 
       linkReq.onsuccess = async () => {
         const tags: Tag[] = []
@@ -145,19 +145,19 @@ export const getAllNotesDetails = async (): Promise<NoteDetails[]> => {
       'readonly'
     )
 
-    const quotesStore = tx.objectStore(STORES.QUOTES)
+    const notesStore = tx.objectStore(STORES.QUOTES)
     const tagsStore = tx.objectStore(STORES.TAGS)
     const junctionStore = tx.objectStore(STORES.QUOTES_TAGS)
 
-    const quotesReq = quotesStore.getAll()
+    const notesReq = notesStore.getAll()
 
-    quotesReq.onsuccess = async () => {
+    notesReq.onsuccess = async () => {
       const result: NoteDetails[] = []
 
-      for (const note of quotesReq.result) {
+      for (const note of notesReq.result) {
         const links = await new Promise<NoteTags[]>((res) => {
           const r = junctionStore
-            .index('quoteId')
+            .index('noteId')
             .getAll(note.id)
           r.onsuccess = () => res(r.result)
         })

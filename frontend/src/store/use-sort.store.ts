@@ -31,7 +31,7 @@ export const useSortStore = create<SortStore>()(
       setSortBy: (sortBy) => set({ sortBy }),
     }),
     {
-      name: "quote_sort_by",
+      name: "note_sort_by",
     }
   )
 )

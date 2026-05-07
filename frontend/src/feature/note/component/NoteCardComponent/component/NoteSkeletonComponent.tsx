@@ -1,4 +1,4 @@
-export default function QuoteSkeletonComponent() {
+export default function NoteSkeletonComponent() {
   return (
     <div className="border rounded-xl p-4 animate-pulse bg-muted">
       <div className="h-4 w-3/4 bg-gray-300 rounded mb-3" />

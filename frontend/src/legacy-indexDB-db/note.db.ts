@@ -14,11 +14,11 @@ export const getAllNotes = async (): Promise<Note[]> => {
   });
 };
 
-export const getAllNote = async (quoteId: number): Promise<Note> => {
+export const getAllNote = async (noteId: number): Promise<Note> => {
   const db = await openDB();
   const transaction = db.transaction(STORE_NAME, 'readonly');
   const store = transaction.objectStore(STORE_NAME);
-  const request = store.get(quoteId);
+  const request = store.get(noteId);
   return new Promise((resolve, reject) => {
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject('Error getting ' + STORE_NAME);

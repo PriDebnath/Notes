@@ -26,7 +26,7 @@ export interface Tag {
 
 export interface NoteTags {
     id?: number | undefined;
-    quoteId: number;
+    noteId: number;
     tagId: number;
 }
 

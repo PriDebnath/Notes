@@ -27,18 +27,18 @@ import { CopyTextButton } from "@/feature/note/component/ShareBackgroundComponen
 import { CopyImageButton } from "@/feature/note/component/ShareBackgroundComponent/component/copy-image-button";
 
 interface Props {
-  quoteFormData: NoteFormData
+  noteFormData: NoteFormData
 }
 
 
 export default function ShareBackgroundComponent(props: Props) {
-  const { quoteFormData } = props
+  const { noteFormData } = props
   const { buildStyle } = useBackground()
   const noteRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
 
   const [dimensions, setDimensions] = useState({ width: 200, height: 400 })
-  const cardStyle = buildStyle(quoteFormData.texture!, quoteFormData.pri_set!)
+  const cardStyle = buildStyle(noteFormData.texture!, noteFormData.pri_set!)
 
   const aspectRatios = [
     { label: "1:1", ratio: 1, width: 300, height: 300 },
@@ -118,11 +118,11 @@ export default function ShareBackgroundComponent(props: Props) {
                             removed-xl:prose-2xl
                             removed-prose-foreground
                         ">   {/* IMPORTANT */}
-                    <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quoteFormData.text!) }}></div>
+                    <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(noteFormData.text!) }}></div>
                   </div>
                   <div className="flex w-full items-end justify-between gap-2">
                     <ListTagsComponent 
-                    tags={quoteFormData?.tags?.map((tag, i) => { return { id: i, name: tag } }) || []} 
+                    tags={noteFormData?.tags?.map((tag, i) => { return { id: i, name: tag } }) || []} 
                     />
                   </div>
                 </div>
@@ -156,7 +156,7 @@ export default function ShareBackgroundComponent(props: Props) {
               option={{ backgroundColor: cardStyle.backgroundColor! }}
               key={'DownloadButton'}
             />
-            <CopyTextButton text={quoteFormData.text!} isLoaderText={true} />
+            <CopyTextButton text={noteFormData.text!} isLoaderText={true} />
             <CopyImageButton
               elementRef={noteRef}
               option={{ backgroundColor: cardStyle.backgroundColor! }}

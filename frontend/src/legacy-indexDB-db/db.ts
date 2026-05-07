@@ -5,13 +5,13 @@
 * - new index
 * - keyPath change
 */
-const DB_NAME = 'quotes_keeper_db_by_pri';
+const DB_NAME = 'notes_keeper_db_by_pri';
 const DB_VERSION = 7
 
 export const STORES = {
   QUOTES: 'notes',
   TAGS: 'tags',
-  QUOTES_TAGS: 'quotes_tags', // many to many relationship
+  QUOTES_TAGS: 'notes_tags', // many to many relationship
 } as const
 
 
@@ -43,13 +43,13 @@ const createNotesTagsStore = (db: IDBDatabase) => {
       autoIncrement: true,
     })
 
-    store.createIndex('quoteId', 'quoteId')
+    store.createIndex('noteId', 'noteId')
     store.createIndex('tagId', 'tagId')
 
     // prevent duplicate links
     store.createIndex(
-      'quoteId_tagId',
-      ['quoteId', 'tagId'],
+      'noteId_tagId',
+      ['noteId', 'tagId'],
       { unique: true }
     )
   }

@@ -33,7 +33,7 @@ const TagFilterComponent = lazy(() => import('@/feature/note-list/component/TagF
 
 export function NoteListPage() {
   const {
-    data: quotesStored,
+    data: notesStored,
     isLoading,
     error,
     refetch,
@@ -46,12 +46,12 @@ export function NoteListPage() {
   const [activeTags, setActiveTags] = useState<string[]>([])
   const [selectedNote, setSelectedNote] = useState<Note | null>(null)
   const allTags = [
-    ...new Set(quotesStored?.flatMap(q => q.tags?.map(t => t.name) ?? []
+    ...new Set(notesStored?.flatMap(q => q.tags?.map(t => t.name) ?? []
     ))]
 
   useEffect(() => {
-    if (!quotesStored) return
-    let result = [...quotesStored]
+    if (!notesStored) return
+    let result = [...notesStored]
     // 🔍 search
     if (search.trim()) {
       const term = search.toLowerCase()
@@ -68,7 +68,7 @@ export function NoteListPage() {
     }
 
     setNotes(result)
-  }, [quotesStored, search, activeTags])
+  }, [notesStored, search, activeTags])
 
 
   const openDeleteDialog = (note: Note) => {

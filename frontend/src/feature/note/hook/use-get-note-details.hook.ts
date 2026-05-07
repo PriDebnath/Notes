@@ -3,11 +3,11 @@ import { getNoteDetails } from "@/db/note_tags.db"
 
 export const queryKeysGetNote = 'note-details'
 
-export const useGetNoteDetails = (quoteId?: number) => {
+export const useGetNoteDetails = (noteId?: number) => {
     const { data, isLoading, error} = useQuery({
-    queryKey: [queryKeysGetNote, quoteId],
-    queryFn: () => getNoteDetails(quoteId!),
-    enabled: Boolean(quoteId)
+    queryKey: [queryKeysGetNote, noteId],
+    queryFn: () => getNoteDetails(noteId!),
+    enabled: Boolean(noteId)
   })
   const errorString = error?.message
   return { data, isLoading , error: errorString}

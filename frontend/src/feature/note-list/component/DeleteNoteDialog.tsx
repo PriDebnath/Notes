@@ -18,9 +18,9 @@ interface Props {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default memo(DeleteQuoteDialog)
+export default memo(DeleteNoteDialog)
 
-function DeleteQuoteDialog(props: Props) {
+function DeleteNoteDialog(props: Props) {
 
   const { note, open, setOpen, handleDelete } = props
 

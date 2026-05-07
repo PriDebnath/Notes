@@ -4,7 +4,7 @@ export function htmlToPlainText(html: string) {
     return ""
   }
   const BLOCK_TAGS =
-    /<\/(p|div|h1|h2|h3|h4|h5|h6|li|ul|ol|blockquote|pre|section|article|header|footer|tr|table)>/gi
+    /<\/(p|div|h1|h2|h3|h4|h5|h6|li|ul|ol|blocknote|pre|section|article|header|footer|tr|table)>/gi
 
   const BREAK_TAGS = /<br\s*\/?>/gi
 

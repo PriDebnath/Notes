@@ -1,11 +1,11 @@
 import { openDB, STORES } from './db'
-import type { QuoteDetails, QuoteTags, Tag } from '@/model/index.model'
+import type { NoteDetails, NoteTags, Tag } from '@/model/index.model'
 
 const STORE = STORES.QUOTES_TAGS
 
 /* ===================== QUOTE ↔ TAG (JUNCTION) ===================== */
 
-export const getAllQuoteTags = async (): Promise<QuoteTags[]> => {
+export const getAllNoteTags = async (): Promise<NoteTags[]> => {
   const db = await openDB()
   const tx = db.transaction(STORE, 'readonly')
   const store = tx.objectStore(STORE)
@@ -17,16 +17,16 @@ export const getAllQuoteTags = async (): Promise<QuoteTags[]> => {
   })
 }
 
-export const addQuoteTag = async (data: QuoteTags): Promise<QuoteTags> => {
+export const addNoteTag = async (data: NoteTags): Promise<NoteTags> => {
   const db = await openDB()
   const tx = db.transaction(STORE, 'readwrite')
   const store = tx.objectStore(STORE)
 
-  const newQuoteTag: QuoteTags = {
+  const newNoteTag: NoteTags = {
     quoteId: data.quoteId,
     tagId: data.tagId,
   }
-  store.put(newQuoteTag)
+  store.put(newNoteTag)
 
   return new Promise((resolve, reject) => {
     tx.oncomplete = () => resolve(data)
@@ -34,11 +34,11 @@ export const addQuoteTag = async (data: QuoteTags): Promise<QuoteTags> => {
   })
 }
 
-export const updateQuoteTag = async (
-  data: QuoteTags
-): Promise<QuoteTags> => {
+export const updateNoteTag = async (
+  data: NoteTags
+): Promise<NoteTags> => {
   if (data.id == null) {
-    throw new Error('QuoteTag id required')
+    throw new Error('NoteTag id required')
   }
 
   const db = await openDB()
@@ -52,7 +52,7 @@ export const updateQuoteTag = async (
   })
 }
 
-export const deleteQuoteTag = async (id: number): Promise<void> => {
+export const deleteNoteTag = async (id: number): Promise<void> => {
   const db = await openDB()
   const tx = db.transaction(STORE, 'readwrite')
   const store = tx.objectStore(STORE)
@@ -65,7 +65,7 @@ export const deleteQuoteTag = async (id: number): Promise<void> => {
   })
 }
 
-export const deleteAllQuoteTags = async (
+export const deleteAllNoteTags = async (
   quoteId: number
 ): Promise<void> => {
   const db = await openDB()
@@ -86,9 +86,9 @@ export const deleteAllQuoteTags = async (
 
 /* ===================== READ MODELS ===================== */
 
-export const getQuoteDetails = async (
+export const getNoteDetails = async (
   quoteId: number
-): Promise<QuoteDetails | null> => {
+): Promise<NoteDetails | null> => {
   const db = await openDB()
 
   return new Promise((resolve, reject) => {
@@ -136,7 +136,7 @@ export const getQuoteDetails = async (
   })
 }
 
-export const getAllQuotesDetails = async (): Promise<QuoteDetails[]> => {
+export const getAllNotesDetails = async (): Promise<NoteDetails[]> => {
   const db = await openDB()
 
   return new Promise((resolve, reject) => {
@@ -152,10 +152,10 @@ export const getAllQuotesDetails = async (): Promise<QuoteDetails[]> => {
     const quotesReq = quotesStore.getAll()
 
     quotesReq.onsuccess = async () => {
-      const result: QuoteDetails[] = []
+      const result: NoteDetails[] = []
 
       for (const note of quotesReq.result) {
-        const links = await new Promise<QuoteTags[]>((res) => {
+        const links = await new Promise<NoteTags[]>((res) => {
           const r = junctionStore
             .index('quoteId')
             .getAll(note.id)

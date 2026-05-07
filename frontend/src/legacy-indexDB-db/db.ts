@@ -15,7 +15,7 @@ export const STORES = {
 } as const
 
 
-const createQuotesStore = (db: IDBDatabase) => {
+const createNotesStore = (db: IDBDatabase) => {
   if (!db.objectStoreNames.contains(STORES.QUOTES)) {
     db.createObjectStore(STORES.QUOTES, {
       keyPath: 'id',
@@ -36,7 +36,7 @@ const createTagsStore = (db: IDBDatabase) => {
   }
 }
 
-const createQuotesTagsStore = (db: IDBDatabase) => {
+const createNotesTagsStore = (db: IDBDatabase) => {
   if (!db.objectStoreNames.contains(STORES.QUOTES_TAGS)) {
     const store = db.createObjectStore(STORES.QUOTES_TAGS, {
       keyPath: 'id',
@@ -67,9 +67,9 @@ export const openDB = (): Promise<IDBDatabase> => {
       // delete all stores(@TODO: should not use in production, plan migration)
       deleteStores(db) 
 
-      createQuotesStore(db)
+      createNotesStore(db)
       createTagsStore(db)
-      createQuotesTagsStore(db)
+      createNotesTagsStore(db)
     }
 
     request.onerror = () => reject('Failed to open IndexedDB')

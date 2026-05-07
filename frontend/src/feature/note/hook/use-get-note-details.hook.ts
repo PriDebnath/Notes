@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query"
-import { getQuoteDetails } from "@/db/note_tags.db"
+import { getNoteDetails } from "@/db/note_tags.db"
 
-export const queryKeysGetQuote = 'note-details'
+export const queryKeysGetNote = 'note-details'
 
-export const useGetQuoteDetails = (quoteId?: number) => {
+export const useGetNoteDetails = (quoteId?: number) => {
     const { data, isLoading, error} = useQuery({
-    queryKey: [queryKeysGetQuote, quoteId],
-    queryFn: () => getQuoteDetails(quoteId!),
+    queryKey: [queryKeysGetNote, quoteId],
+    queryFn: () => getNoteDetails(quoteId!),
     enabled: Boolean(quoteId)
   })
   const errorString = error?.message

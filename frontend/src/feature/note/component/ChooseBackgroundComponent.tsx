@@ -10,12 +10,12 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import type { QuoteFormData } from "@/model/index.model";
+import type { NoteFormData } from "@/model/index.model";
 import { ArrowLeftIcon, Save, Shirt } from "lucide-react";
 import useBackground, { type Pri_set, type TextureKey } from "@/hooks/use-background.hook";
 
 interface Props {
-  onValueUpdate: (key: keyof QuoteFormData, value: string) => void
+  onValueUpdate: (key: keyof NoteFormData, value: string) => void
 }
 
 export default function ChooseBackgroundComponent(props: Props) {

@@ -3,7 +3,7 @@ import StarterKit from '@tiptap/starter-kit'
 import { BatteryFull, List } from 'lucide-react'
 import useBackground from "@/hooks/use-background.hook";
 import { useEditor, EditorContent } from '@tiptap/react'
-import type { QuoteFormData } from "@/model/index.model";
+import type { NoteFormData } from "@/model/index.model";
 import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus'
 import TiptapToolbar from '@/components/common/tiptap-toolbar'
 import { useGetKeyBoardHeight } from '@/feature/note/hook/use-get-keyboard-height.hook'
@@ -19,8 +19,8 @@ import Image from '@tiptap/extension-image'
 
 interface Props {
   value?: string;
-  quoteFormData?: QuoteFormData;
-  onValueUpdate: (key: keyof QuoteFormData, value: string) => void
+  quoteFormData?: NoteFormData;
+  onValueUpdate: (key: keyof NoteFormData, value: string) => void
 }
 
 const Tiptap = (props: Props) => {

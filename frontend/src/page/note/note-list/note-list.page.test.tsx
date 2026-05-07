@@ -1,4 +1,4 @@
-import { QuoteListPage as Component } from "@/page/note/note-list/note-list.page"
+import { NoteListPage as Component } from "@/page/note/note-list/note-list.page"
 import { userEvent } from "@testing-library/user-event"
 import { router } from "@/provider/tanstack-router.provider"
 import { renderWithFileRoutes } from "@/test/file-route-utils"
@@ -6,26 +6,26 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { logDOM, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react"
 
 // hooks
-import { useGetAllQuoteDetails } from "@/feature/note-list/hook/use-get-all-note-details.hook"
+import { useGetAllNoteDetails } from "@/feature/note-list/hook/use-get-all-note-details.hook"
 
 // db actions
-import { deleteQuoteWithLinks } from "@/db/note_tags.db"
-import { toggleQuotePinned } from "@/db/note.db"
+import { deleteNoteWithLinks } from "@/db/note_tags.db"
+import { toggleNotePinned } from "@/db/note.db"
 
 // store
 import { useSortStore } from "@/store/use-sort.store"
-import type { QuoteDetails } from "@/model/index.model"
+import type { NoteDetails } from "@/model/index.model"
 
 vi.mock("@/api-hook/use-get-all-note-details.hook")
-const mockUseGetAllQuoteDetails = vi.mocked(useGetAllQuoteDetails)
-type GetAllQuotesReturn = ReturnType<typeof useGetAllQuoteDetails>
+const mockUseGetAllNoteDetails = vi.mocked(useGetAllNoteDetails)
+type GetAllNotesReturn = ReturnType<typeof useGetAllNoteDetails>
 
 vi.mock('@/db/quote_tags.db')
-const mockDeleteQuoteWithLinks = vi.mocked(deleteQuoteWithLinks)
+const mockDeleteNoteWithLinks = vi.mocked(deleteNoteWithLinks)
 
 beforeEach(() => {
   ///reset mock value
-  mockUseGetAllQuoteDetails.mockReturnValue({
+  mockUseGetAllNoteDetails.mockReturnValue({
     data: undefined,
     isLoading: false,
     error: undefined,
@@ -54,7 +54,7 @@ describe(Component.name, () => {
     })
 
     it("renders loading list", async () => {
-      mockUseGetAllQuoteDetails.mockReturnValue({
+      mockUseGetAllNoteDetails.mockReturnValue({
         data: undefined,
         isLoading: true,
         error: undefined,
@@ -77,7 +77,7 @@ describe(Component.name, () => {
 
     it("renders notes when data exists", async () => {
       const testContent = "test note" 
-      mockUseGetAllQuoteDetails.mockReturnValue({
+      mockUseGetAllNoteDetails.mockReturnValue({
         data: [
           {
             id: 1,
@@ -106,7 +106,7 @@ describe(Component.name, () => {
     it("shows error state", async () => {
       const errorMessage = "something went wrong"
 
-      mockUseGetAllQuoteDetails.mockReturnValue({
+      mockUseGetAllNoteDetails.mockReturnValue({
         data: undefined,
         isLoading: false,
         error: errorMessage,
@@ -133,7 +133,7 @@ describe(Component.name, () => {
 
   describe("search filtering", () => {
     it("filters notes by search text", async () => {
-      mockUseGetAllQuoteDetails.mockReturnValue({
+      mockUseGetAllNoteDetails.mockReturnValue({
         data: [
           { id: 1, text: "hello world", tags: [] },
           { id: 2, text: "goodbye world", tags: [] },
@@ -175,7 +175,7 @@ describe(Component.name, () => {
         error: undefined,
         refetch: vi.fn(),
       }
-      mockUseGetAllQuoteDetails.mockReturnValue(mockedData)
+      mockUseGetAllNoteDetails.mockReturnValue(mockedData)
 
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
@@ -212,17 +212,17 @@ describe(Component.name, () => {
   describe("interaction", () => {
     it("opens delete dialog and deletes note", async () => {
       const firstItem = { id: 1, text: "delete me", tags: [{ id: 1, name: "life" }] }
-      const mockedData: GetAllQuotesReturn = {
+      const mockedData: GetAllNotesReturn = {
         data: [firstItem],
         isLoading: false,
         error: undefined,
         // refetch: vi.fn()
         refetch: vi.fn(async () => {
           mockedData.data = []
-          return {} as Awaited<ReturnType<GetAllQuotesReturn["refetch"]>>
+          return {} as Awaited<ReturnType<GetAllNotesReturn["refetch"]>>
         })
       }
-      mockUseGetAllQuoteDetails.mockReturnValue(mockedData)
+      mockUseGetAllNoteDetails.mockReturnValue(mockedData)
 
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
@@ -245,7 +245,7 @@ describe(Component.name, () => {
  
       await userEvent.click(deletePopup, {})
      
-      await expect(mockDeleteQuoteWithLinks).toHaveBeenCalledWith(firstItem.id)
+      await expect(mockDeleteNoteWithLinks).toHaveBeenCalledWith(firstItem.id)
       await expect(mockedData.refetch).toHaveBeenCalled()
 
       await expect(deletePopup).not.toBeInTheDocument()

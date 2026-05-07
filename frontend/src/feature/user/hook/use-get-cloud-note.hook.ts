@@ -6,23 +6,23 @@ export type Param = {
     _id: string
 }
 
-const getCloudQuote = (param : Param) =>
+const getCloudNote = (param : Param) =>
     apiClient<Note>("/api/v1/notes/" + param?._id, {
         method: "GET",
     })
 
-export const useGetCloudQuoteKey = "get-cloud-note"
+export const useGetCloudNoteKey = "get-cloud-note"
 
-export const useGetCloudQuote = (param : Param) => {
+export const useGetCloudNote = (param : Param) => {
     const queryClient = useQueryClient()
     const invalidateQueries = () => {
         queryClient.invalidateQueries({
-            queryKey: [useGetCloudQuoteKey]
+            queryKey: [useGetCloudNoteKey]
         })
     }
     const data = useQuery({
-        queryFn: () => getCloudQuote(param),
-        queryKey: [useGetCloudQuoteKey],
+        queryFn: () => getCloudNote(param),
+        queryKey: [useGetCloudNoteKey],
     })
     return { ...data, invalidateQueries }
 }

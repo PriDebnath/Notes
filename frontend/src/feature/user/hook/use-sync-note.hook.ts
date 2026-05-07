@@ -2,8 +2,8 @@ import { toast } from "sonner";
 import { apiClient } from "@/lib/apiClient";
 import { toastConfig } from "@/components/ui/sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useGetCloudQuoteKey } from "./use-get-cloud-note.hook";
-import { useGetAllCloudQuoteKey } from "./use-get-all-cloud-note.hook";
+import { useGetCloudNoteKey } from "./use-get-cloud-note.hook";
+import { useGetAllCloudNoteKey } from "./use-get-all-cloud-note.hook";
 
 export type Param = {
   _id?: string, // cloud id
@@ -40,7 +40,7 @@ export const useSyncNote = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [useGetAllCloudQuoteKey,],
+        queryKey: [useGetAllCloudNoteKey,],
       })
     },
     onError: (error) => {

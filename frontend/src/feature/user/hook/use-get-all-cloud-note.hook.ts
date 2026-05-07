@@ -5,23 +5,23 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 export type Param = {
 }
 
-const getAllCloudQuote = () =>
+const getAllCloudNote = () =>
     apiClient<Note[]>("/api/v1/notes/" , {
         method: "GET",
     })
 
-export const useGetAllCloudQuoteKey = "get-all-cloud-note"
+export const useGetAllCloudNoteKey = "get-all-cloud-note"
 
-export const useGetAllCloudQuote = () => {
+export const useGetAllCloudNote = () => {
     const queryClient = useQueryClient()
     const invalidateQueries = () => {
         queryClient.invalidateQueries({
-            queryKey: [useGetAllCloudQuoteKey]
+            queryKey: [useGetAllCloudNoteKey]
         })
     }
     const data = useQuery({
-        queryFn: () => getAllCloudQuote(),
-        queryKey: [useGetAllCloudQuoteKey],
+        queryFn: () => getAllCloudNote(),
+        queryKey: [useGetAllCloudNoteKey],
     })
     return { ...data, invalidateQueries }
 }

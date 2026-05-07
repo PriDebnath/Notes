@@ -1,19 +1,19 @@
-import { addQuote, } from '@/db/note.db'
-import { queryKeysGetQuote } from "./use-get-note-details.hook"
+import { addNote, } from '@/db/note.db'
+import { queryKeysGetNote } from "./use-get-note-details.hook"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-export const useCreateQuoteDetails = () => {
+export const useCreateNoteDetails = () => {
   const queryClient = useQueryClient()
   const mutation = useMutation({
-    mutationFn: addQuote,
+    mutationFn: addNote,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [queryKeysGetQuote]
+        queryKey: [queryKeysGetNote]
       })
     }
   })
   return {
     ...mutation,
-    createQuote: mutation.mutateAsync
+    createNote: mutation.mutateAsync
   }
 }

@@ -25,23 +25,23 @@ import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { useColorThemeStore } from "@/store/use-color-theme.store";
 import { useFontStore, fonts, type Font } from "@/store/use-font.store";
 import { colorThemes, type ColorTheme } from "@/hooks/use-color-theme.hook";
-import type { CardView, Note, QuoteFormData, SortOption } from "@/model/index.model";
+import type { CardView, Note, NoteFormData, SortOption } from "@/model/index.model";
 import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
 import { themeModes, type ThemeMode } from '@/hooks/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon, CloudDownloadIcon, EyeIcon, EyeOffIcon, LinkIcon, EarthIcon, EarthLockIcon } from "lucide-react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { useGetAllDeletedQuoteDetails } from "@/feature/note-list/hook/use-get-all-delete-note-details.hook";
+import { useGetAllDeletedNoteDetails } from "@/feature/note-list/hook/use-get-all-delete-note-details.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
-import { useUpdateQuoteDetails } from "@/feature/note-list/hook/use-update-note-details.hook";
-import { useDeleteCloudQuote, } from "../hook/use-delete-cloud-note.hook";
-import { useGetAllCloudQuote } from "../hook/use-get-all-cloud-note.hook";
-import { useCreateQuoteDetails } from "@/feature/note/hook/use-create-note-details.hook"
+import { useUpdateNoteDetails } from "@/feature/note-list/hook/use-update-note-details.hook";
+import { useDeleteCloudNote, } from "../hook/use-delete-cloud-note.hook";
+import { useGetAllCloudNote } from "../hook/use-get-all-cloud-note.hook";
+import { useCreateNoteDetails } from "@/feature/note/hook/use-create-note-details.hook"
 import { toast } from "sonner";
 import { toastConfig } from "@/components/ui/sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tiptap-ui-primitive/tooltip";
-import { useUpdateCloudQuote } from "../hook/use-update-cloud-note.hook";
+import { useUpdateCloudNote } from "../hook/use-update-cloud-note.hook";
 import { Route } from "@/routes/shared-note/$_id";
 
 interface Props {
@@ -51,13 +51,13 @@ interface Props {
 function OpenCloudContainerComponent(props: Props) {
   const [open, setOpen] = useState(false)
   const router = useRouter()
-  const { data, isLoading, refetch } = useGetAllCloudQuote()
-  const { deleteCloudQuote } = useDeleteCloudQuote()
-  const { updateCloudQuote } = useUpdateCloudQuote()
-  const { updateQuote } = useUpdateQuoteDetails()
-  const { createQuote } = useCreateQuoteDetails()
+  const { data, isLoading, refetch } = useGetAllCloudNote()
+  const { deleteCloudNote } = useDeleteCloudNote()
+  const { updateCloudNote } = useUpdateCloudNote()
+  const { updateNote } = useUpdateNoteDetails()
+  const { createNote } = useCreateNoteDetails()
   const handleCloudDownload = async (note: Note) => {
-    await createQuote({
+    await createNote({
       ...note,
       text: note.text || "Empty",
       synced: true
@@ -67,13 +67,13 @@ function OpenCloudContainerComponent(props: Props) {
 
   const handleHardDelete = async (note: Note) => {
     if (!note._id) return
-    await deleteCloudQuote({ _id: note._id })
+    await deleteCloudNote({ _id: note._id })
     refetch()
   }
 
   const handleUpdate = async (note: Note) => {
     if (!note._id) return
-    await updateCloudQuote({ _id: note._id, shared: !note?.shared })
+    await updateCloudNote({ _id: note._id, shared: !note?.shared })
     refetch()
   }
 

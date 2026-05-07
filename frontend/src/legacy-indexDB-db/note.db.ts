@@ -3,7 +3,7 @@ import type { Note } from "@/model/index.model";
 
 const STORE_NAME = STORES.QUOTES;
 
-export const getAllQuotes = async (): Promise<Note[]> => {
+export const getAllNotes = async (): Promise<Note[]> => {
   const db = await openDB();
   const transaction = db.transaction(STORE_NAME, 'readonly');
   const store = transaction.objectStore(STORE_NAME);
@@ -14,7 +14,7 @@ export const getAllQuotes = async (): Promise<Note[]> => {
   });
 };
 
-export const getAllQuote = async (quoteId: number): Promise<Note> => {
+export const getAllNote = async (quoteId: number): Promise<Note> => {
   const db = await openDB();
   const transaction = db.transaction(STORE_NAME, 'readonly');
   const store = transaction.objectStore(STORE_NAME);
@@ -26,7 +26,7 @@ export const getAllQuote = async (quoteId: number): Promise<Note> => {
 };
 
 
-export const addQuote = async (note: Note): Promise<Note> => {
+export const addNote = async (note: Note): Promise<Note> => {
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, 'readwrite');
   const store = tx.objectStore(STORE_NAME);
@@ -53,7 +53,7 @@ export const addQuote = async (note: Note): Promise<Note> => {
 
 
 
-export const updateQuote = async (note: Note): Promise<Note> => {
+export const updateNote = async (note: Note): Promise<Note> => {
   if (note.id == null) {
     throw new Error('Note id is required for update');
   }
@@ -79,7 +79,7 @@ export const updateQuote = async (note: Note): Promise<Note> => {
 };
 
 
-export const deleteQuote = async (id: number): Promise<void> => {
+export const deleteNote = async (id: number): Promise<void> => {
   const db = await openDB();
   const transaction = db.transaction(STORE_NAME, 'readwrite');
   const store = transaction.objectStore(STORE_NAME);

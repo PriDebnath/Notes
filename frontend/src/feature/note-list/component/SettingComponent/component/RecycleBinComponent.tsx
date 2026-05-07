@@ -25,17 +25,17 @@ import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { useColorThemeStore } from "@/store/use-color-theme.store";
 import { useFontStore, fonts, type Font } from "@/store/use-font.store";
 import { colorThemes, type ColorTheme } from "@/hooks/use-color-theme.hook";
-import type { CardView, Note, QuoteFormData, SortOption } from "@/model/index.model";
+import type { CardView, Note, NoteFormData, SortOption } from "@/model/index.model";
 import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
 import { themeModes, type ThemeMode } from '@/hooks/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { useGetAllDeletedQuoteDetails } from "@/feature/note-list/hook/use-get-all-delete-note-details.hook";
+import { useGetAllDeletedNoteDetails } from "@/feature/note-list/hook/use-get-all-delete-note-details.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
-import { useUpdateQuoteDetails } from "@/feature/note-list/hook/use-update-note-details.hook";
-import { deleteQuoteWithLinks } from "@/db/note_tags.db";
+import { useUpdateNoteDetails } from "@/feature/note-list/hook/use-update-note-details.hook";
+import { deleteNoteWithLinks } from "@/db/note_tags.db";
 import { TooltipTrigger, TooltipContent, Tooltip } from "@/components/ui/tooltip";
 
 
@@ -45,12 +45,12 @@ interface Props {
 
 function RecycleBinComponent(props: Props) {
   const [open, setOpen] = useState(false)
-  const { data, isLoading, refetch } = useGetAllDeletedQuoteDetails()
-  const { updateQuote } = useUpdateQuoteDetails()
+  const { data, isLoading, refetch } = useGetAllDeletedNoteDetails()
+  const { updateNote } = useUpdateNoteDetails()
 
   const handleRestore = async (note: Note) => {
     if (!note.id) return
-    await updateQuote({
+    await updateNote({
       ...note,
       text: note.text || "Empty",
       deleted: false,
@@ -61,7 +61,7 @@ function RecycleBinComponent(props: Props) {
 
   const handleHardDelete = async (note: Note) => {
     if (!note.id) return
-    await await deleteQuoteWithLinks(note.id)
+    await await deleteNoteWithLinks(note.id)
     refetch()
   }
 

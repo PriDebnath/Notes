@@ -16,35 +16,35 @@ import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Suspense, lazy } from 'react'
-import { deleteQuoteWithLinks } from '@/db/note_tags.db'
-import type { Note, QuoteDetails, QuoteFormData, Tag, SortOption } from '@/model/index.model'
-import { useGetAllQuoteDetails } from '@/feature/note-list/hook/use-get-all-note-details.hook'
+import { deleteNoteWithLinks } from '@/db/note_tags.db'
+import type { Note, NoteDetails, NoteFormData, Tag, SortOption } from '@/model/index.model'
+import { useGetAllNoteDetails } from '@/feature/note-list/hook/use-get-all-note-details.hook'
 import { useSortStore } from '@/store/use-sort.store'
-import { toggleQuotePinned, updateQuote } from '@/db/note.db'
+import { toggleNotePinned, updateNote } from '@/db/note.db'
 import React from 'react'
 import { ButtonLoader } from '@/components/ui/button-loader'
 import { Loader } from '@/components/ui/loader'
-import { useUpdateQuoteDetails } from '@/feature/note-list/hook/use-update-note-details.hook'
+import { useUpdateNoteDetails } from '@/feature/note-list/hook/use-update-note-details.hook'
 
-const DeleteQuoteDialog = lazy(() => import('@/feature/note-list/component/DeleteQuoteDialog'))
-const QuoteListComponent = lazy(() => import('@/feature/note-list/component/QuoteListComponent').then(mod => ({ default: mod.default })))
+const DeleteNoteDialog = lazy(() => import('@/feature/note-list/component/DeleteNoteDialog'))
+const NoteListComponent = lazy(() => import('@/feature/note-list/component/NoteListComponent').then(mod => ({ default: mod.default })))
 const SettingComponent = lazy(() => import('@/feature/note-list/component/SettingComponent/SettingComponent').then(mod => ({ default: mod.default })))
 const TagFilterComponent = lazy(() => import('@/feature/note-list/component/TagFilterComponent').then(mod => ({ default: mod.default })))
 
-export function QuoteListPage() {
+export function NoteListPage() {
   const {
     data: quotesStored,
     isLoading,
     error,
     refetch,
-  } = useGetAllQuoteDetails()
+  } = useGetAllNoteDetails()
 
   const [search, setSearch] = useState('')
-  const [notes, setQuotes] = useState<QuoteDetails[]>([])
+  const [notes, setNotes] = useState<NoteDetails[]>([])
   const [openDelete, setOpenDelete] = useState(false)
-  const { updateQuote } = useUpdateQuoteDetails()
+  const { updateNote } = useUpdateNoteDetails()
   const [activeTags, setActiveTags] = useState<string[]>([])
-  const [selectedQuote, setSelectedQuote] = useState<Note | null>(null)
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null)
   const allTags = [
     ...new Set(quotesStored?.flatMap(q => q.tags?.map(t => t.name) ?? []
     ))]
@@ -67,20 +67,20 @@ export function QuoteListPage() {
       )
     }
 
-    setQuotes(result)
+    setNotes(result)
   }, [quotesStored, search, activeTags])
 
 
   const openDeleteDialog = (note: Note) => {
-    setSelectedQuote(note)
+    setSelectedNote(note)
     setOpenDelete(true)
   }
 
-  const handleDelete = async (note: QuoteFormData) => {
+  const handleDelete = async (note: NoteFormData) => {
     if (!note.id) return
-    // await deleteQuoteWithLinks(note.id) // no hard delete
+    // await deleteNoteWithLinks(note.id) // no hard delete
     // sort delete
-    await updateQuote({
+    await updateNote({
       ...note,
       text: note.text || "Empty",
       deleted: true,
@@ -90,9 +90,9 @@ export function QuoteListPage() {
     refetch()
   }
 
-  const handleTogglePin = async (note: QuoteDetails) => {
+  const handleTogglePin = async (note: NoteDetails) => {
     if (!note.id) return
-    await toggleQuotePinned(note.id, !note.pinned)
+    await toggleNotePinned(note.id, !note.pinned)
     refetch()
   }
 
@@ -157,7 +157,7 @@ export function QuoteListPage() {
           </div>
         }>
           <div aria-label='list'>
-            <QuoteListComponent
+            <NoteListComponent
               loading={isLoading}
               notes={notes}
               onEdit={() => { }}
@@ -184,10 +184,10 @@ export function QuoteListPage() {
 
       {/* Delete Dialog */}
       <Suspense fallback={null}>
-        <DeleteQuoteDialog
+        <DeleteNoteDialog
           open={openDelete}
           setOpen={setOpenDelete}
-          note={selectedQuote}
+          note={selectedNote}
           handleDelete={handleDelete}
         />
       </Suspense>

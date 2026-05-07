@@ -1,5 +1,5 @@
 import { Route } from "@/routes/shared-note/$_id"
-import { useGetCloudQuote } from "@/feature/user/hook/use-get-cloud-note.hook";
+import { useGetCloudNote } from "@/feature/user/hook/use-get-cloud-note.hook";
 import NoteCardComponent from "@/feature/shared-note/component/NoteCardComponent";
 import { LoaderFull } from "@/components/ui/loader-full";
 import NavigationComponent from "@/feature/user/component/NavigationComponent";
@@ -8,7 +8,7 @@ import { useGetUser } from "@/feature/user/hook/use-get-user.hook";
 
 function SharedNotePage() {
     const { _id } = Route.useParams()
-    const { data: note, isPending } = useGetCloudQuote({ _id })
+    const { data: note, isPending } = useGetCloudNote({ _id })
     const { data: user, } = useGetUser({ _id: note?.user })
 
     return (

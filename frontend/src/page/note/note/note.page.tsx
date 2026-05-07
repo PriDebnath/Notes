@@ -11,15 +11,15 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { addOrGetTag } from '@/legacy-indexDB-db/tag.db'
 import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
 import { useGetSummarize } from '@/feature/note/hook/ai-content-summarize.hook'
-import { useGetQuoteDetails } from '@/feature/note/hook/use-get-note-details.hook'
+import { useGetNoteDetails } from '@/feature/note/hook/use-get-note-details.hook'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import type { Note, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
-import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/note_tags.db'
+import type { Note, NoteDetails, NoteFormData, Tag } from "@/model/index.model"
+import { addTagToNote, deleteNoteTagLinks, deleteNoteWithLinks } from '@/db/note_tags.db'
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
 import { ButtonLoader } from "@/components/ui/button-loader"
 import EditorSkeleton from "@/feature/note/component/EditorSkeletonComponent"
-import {  useCreateQuoteDetails } from "@/feature/note/hook/use-create-note-details.hook"
-import {   useUpdateQuoteDetails  } from "@/feature/note-list/hook/use-update-note-details.hook"
+import {  useCreateNoteDetails } from "@/feature/note/hook/use-create-note-details.hook"
+import {   useUpdateNoteDetails  } from "@/feature/note-list/hook/use-update-note-details.hook"
 
 const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
 const ShareBackgroundComponent = lazy(
@@ -40,7 +40,7 @@ interface Props {
   mode: "add" | "edit";
 }
 
-export function QuotePage(props: Props) {
+export function NotePage(props: Props) {
   const { mode } = props
   const navigate = useNavigate()
   const noteRef = useRef<HTMLDivElement>(null)
@@ -54,13 +54,13 @@ export function QuotePage(props: Props) {
     data: note,
     isLoading,
     error,
-  } = useGetQuoteDetails(
+  } = useGetNoteDetails(
     mode === 'edit' ? Number(quoteId) : undefined
   )
-  const { updateQuote } = useUpdateQuoteDetails()
-  const { createQuote } = useCreateQuoteDetails()
+  const { updateNote } = useUpdateNoteDetails()
+  const { createNote } = useCreateNoteDetails()
 
-  const [quoteData, setQuoteData] = useState<QuoteFormData>(() => ({
+  const [quoteData, setNoteData] = useState<NoteFormData>(() => ({
     id: note?.id,
     text: note?.text || "",
     tags: note?.tags?.map((tag) => tag.name) || [],
@@ -69,7 +69,7 @@ export function QuotePage(props: Props) {
   }))
 
   const onTagChoose = (tag: string) => {
-    setQuoteData(prev => {
+    setNoteData(prev => {
       const currentTags = prev?.tags || []
       const updatedTags = [...currentTags, tag]
       const uniqueTags = [...new Set(updatedTags)]
@@ -81,7 +81,7 @@ export function QuotePage(props: Props) {
   }
 
   const onTagRemove = (tag: string) => {
-    setQuoteData(prev => {
+    setNoteData(prev => {
       const currentTags = prev?.tags || []
       const updatedTags = currentTags.filter((t) => tag != t)
       const uniqueTags = [...new Set(updatedTags)]
@@ -92,8 +92,8 @@ export function QuotePage(props: Props) {
     })
   }
 
-  const onValueUpdate = (key: keyof QuoteFormData, value: string) => {
-    setQuoteData(prev => ({
+  const onValueUpdate = (key: keyof NoteFormData, value: string) => {
+    setNoteData(prev => ({
       ...prev,
       [key]: value
     }))
@@ -108,21 +108,21 @@ export function QuotePage(props: Props) {
     return result;
   };
 
-  const handleSubmit = useCallback(async (note: QuoteFormData) => {
+  const handleSubmit = useCallback(async (note: NoteFormData) => {
     let quoteId: number | undefined = note.id
     if (quoteId) { // edit
-      await updateQuote({
+      await updateNote({
         ...note,
         text: note.text || "Empty",
         synced: false
       })
     } else {
-      const newQuote = await createQuote({
+      const newNote = await createNote({
         ...note,
         text: note.text || "Empty",
         synced: false
       })
-      quoteId = newQuote.id
+      quoteId = newNote.id
     }
 
     // console.log({ quoteId });
@@ -131,11 +131,11 @@ export function QuotePage(props: Props) {
     // console.log({ tags })
 
     // Delete all existing tags for this note
-    await deleteQuoteTagLinks(quoteId!)
+    await deleteNoteTagLinks(quoteId!)
 
     // Add new tags for this note
     for (const tag of tags) {
-      await addTagToQuote(quoteId!, tag.name!)
+      await addTagToNote(quoteId!, tag.name!)
     }
     navigate({
       to: '/'
@@ -144,7 +144,7 @@ export function QuotePage(props: Props) {
 
   useEffect(() => {
     if (note) {
-      setQuoteData({
+      setNoteData({
         id: note.id,
         text: note.text,
         tags: note.tags?.map(t => t.name) || [],

@@ -1,5 +1,5 @@
 
-import { QuotePage as Component } from '@/page/note/note/note.page';
+import { NotePage as Component } from '@/page/note/note/note.page';
 import { userEvent } from '@testing-library/user-event';
 import { createMemoryHistory } from '@tanstack/react-router';
 import { router } from '@/provider/tanstack-router.provider';
@@ -7,16 +7,16 @@ import { renderWithFileRoutes } from '@/test/file-route-utils';
 import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { act, logDOM, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
-import { useGetQuoteDetails } from '@/feature/note/hook/use-get-note-details.hook';
+import { useGetNoteDetails } from '@/feature/note/hook/use-get-note-details.hook';
 
 /// mock hook
 vi.mock("@/api-hook/use-get-note-details.hook")
-const mockUseGetQuoteDetails = vi.mocked(useGetQuoteDetails)
+const mockUseGetNoteDetails = vi.mocked(useGetNoteDetails)
 
 beforeEach(() => {
 
   ///reset mock value
-  mockUseGetQuoteDetails.mockReturnValue({
+  mockUseGetNoteDetails.mockReturnValue({
     data: undefined,
     isLoading: false,
     error: undefined,
@@ -41,7 +41,7 @@ describe(Component.name, () => {
     it("renders note page: edit mode", async () => {
       const editorContent = "editor-content"
       const tagContent = "tag-content"
-      mockUseGetQuoteDetails.mockReturnValue({
+      mockUseGetNoteDetails.mockReturnValue({
         data: {
           text: editorContent,
           id: 1,
@@ -71,7 +71,7 @@ describe(Component.name, () => {
     })
 
     it("shows loading indicator when fetching note", async () => {
-      mockUseGetQuoteDetails.mockReturnValue({
+      mockUseGetNoteDetails.mockReturnValue({
         data: undefined,
         isLoading: true,
         error: undefined,
@@ -85,7 +85,7 @@ describe(Component.name, () => {
 
     it("should show error", async () => {
       const somethingBad = "bugs took over the entire tech world"
-      mockUseGetQuoteDetails.mockReturnValue({
+      mockUseGetNoteDetails.mockReturnValue({
         data: undefined,
         isLoading: false,
         error: somethingBad

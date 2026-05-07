@@ -1,12 +1,12 @@
 import { db } from "@/db/db";
 import { getOrAddTag } from "@/db/tag.db";
-import type { Tag, SortOption, GetAllQuotesDetailsParam } from "@/model/index.model";
+import type { Tag, SortOption, GetAllNotesDetailsParam } from "@/model/index.model";
 
-export const linkQuoteTag = async (quoteId: number, tagId: number) => {
+export const linkNoteTag = async (quoteId: number, tagId: number) => {
   await db.quotes_tags.add({ quoteId, tagId });
 };
 
-export const addTagToQuote = async (quoteId: number, tagName: string) => {
+export const addTagToNote = async (quoteId: number, tagName: string) => {
   return db.transaction("rw", db.tags, db.quotes_tags, async () => {
     const tag = await getOrAddTag(tagName);
 
@@ -22,7 +22,7 @@ export const addTagToQuote = async (quoteId: number, tagName: string) => {
 /**
  * Sort do not support here
  */
-export const getAllQuotesDetailsOld = async () => {
+export const getAllNotesDetailsOld = async () => {
   return db.transaction(
     "r",
     db.notes,
@@ -38,21 +38,21 @@ export const getAllQuotesDetailsOld = async () => {
       const tagsById = new Map<number, Tag>(tags.map(t => [t.id!, t])); // eq: 3 → { id: 3, name: "life" }
 
       // #3 find links
-      const linksByQuoteId = new Map<number, Tag[]>(); // eq: 1 → [{ id: 3, name: "life" }]
+      const linksByNoteId = new Map<number, Tag[]>(); // eq: 1 → [{ id: 3, name: "life" }]
       for (const link of quote_tags) {
         const tag = tagsById.get(link.tagId);
         if (!tag) continue;
 
-        if (!linksByQuoteId.has(link.quoteId)) {
-          linksByQuoteId.set(link.quoteId, []);
+        if (!linksByNoteId.has(link.quoteId)) {
+          linksByNoteId.set(link.quoteId, []);
         }
-        linksByQuoteId.get(link.quoteId)!.push(tag);
+        linksByNoteId.get(link.quoteId)!.push(tag);
       }
       // #4 return formated data
       let quotesResult = notes.map((q) => {
         return {
           ...q,
-          tags: linksByQuoteId.get(q?.id!) || []
+          tags: linksByNoteId.get(q?.id!) || []
         }
       })
       return quotesResult
@@ -60,7 +60,7 @@ export const getAllQuotesDetailsOld = async () => {
 }
 
 
-export const getAllQuotesDetails = async (param: GetAllQuotesDetailsParam) => {
+export const getAllNotesDetails = async (param: GetAllNotesDetailsParam) => {
   const { sortBy = 'created_at', include = 'all' } = param
   return db.transaction(
     "r",
@@ -92,21 +92,21 @@ export const getAllQuotesDetails = async (param: GetAllQuotesDetailsParam) => {
       const tagsById = new Map<number, Tag>(tags.map(t => [t.id!, t])); // eq: 3 → { id: 3, name: "life" }
 
       // #3 find links
-      const linksByQuoteId = new Map<number, Tag[]>(); // eq: 1 → [{ id: 3, name: "life" }]
+      const linksByNoteId = new Map<number, Tag[]>(); // eq: 1 → [{ id: 3, name: "life" }]
       for (const link of quote_tags) {
         const tag = tagsById.get(link.tagId);
         if (!tag) continue;
 
-        if (!linksByQuoteId.has(link.quoteId)) {
-          linksByQuoteId.set(link.quoteId, []);
+        if (!linksByNoteId.has(link.quoteId)) {
+          linksByNoteId.set(link.quoteId, []);
         }
-        linksByQuoteId.get(link.quoteId)!.push(tag);
+        linksByNoteId.get(link.quoteId)!.push(tag);
       }
       // #4 join tags
       let quotesResult = notes.map((q) => {
         return {
           ...q,
-          tags: linksByQuoteId.get(q?.id!) || []
+          tags: linksByNoteId.get(q?.id!) || []
         }
       })
 
@@ -132,7 +132,7 @@ export const getAllQuotesDetails = async (param: GetAllQuotesDetailsParam) => {
 }
 
 
-export const getQuoteDetails = async (quoteId: number) => {
+export const getNoteDetails = async (quoteId: number) => {
   return db.transaction("r", db.notes, db.quotes_tags, db.tags, async () => {
     const note = await db.notes.get(quoteId);
     if (!note) return;
@@ -154,7 +154,7 @@ export const getQuoteDetails = async (quoteId: number) => {
 };
 
 
-export const deleteQuoteWithLinks = async (quoteId: number) => {
+export const deleteNoteWithLinks = async (quoteId: number) => {
   return db.transaction(
     "rw",
     db.notes,
@@ -174,7 +174,7 @@ export const deleteQuoteWithLinks = async (quoteId: number) => {
 };
 
 
-export const deleteQuoteTagLinks = async (quoteId: number) => {
+export const deleteNoteTagLinks = async (quoteId: number) => {
   return db.transaction(
     "rw",
     db.quotes_tags,

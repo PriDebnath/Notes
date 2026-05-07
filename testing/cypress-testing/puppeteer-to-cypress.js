@@ -40,7 +40,7 @@ const variableMap = new Map()
 // ================================
 // HELPERS
 // ================================
-function stripQuotes(s) {
+function stripNotes(s) {
   if (!s) return s
   return s.replace(/^["']|["']$/g, '')
 }
@@ -93,7 +93,7 @@ function normalizeDeepSelector(selector) {
 function convertSelector(selector) {
   if (!selector) return null
 
-  selector = stripQuotes(selector)
+  selector = stripNotes(selector)
   selector = normalizeDeepSelector(selector)
 
 // chained aria selectors
@@ -107,8 +107,8 @@ if (selector.includes('>>>') && selector.includes('::-p-aria')) {
   const secondMatch = second?.match(/::-p-aria\((.*?)\)/)
 
   if (firstMatch && secondMatch) {
-    const parent = stripQuotes(firstMatch[1])
-    const child = stripQuotes(secondMatch[1])
+    const parent = stripNotes(firstMatch[1])
+    const child = stripNotes(secondMatch[1])
 
     if (child.startsWith('[')) {
       return `cy.get('[aria-label="${parent}"]').find(${JSON.stringify(child)})`
@@ -122,7 +122,7 @@ if (selector.includes('>>>') && selector.includes('::-p-aria')) {
   if (selector.includes('::-p-text(')) {
     const match = selector.match(/::-p-text\(([\s\S]*?)\)/)
     if (match) {
-      return `cy.contains(${JSON.stringify(stripQuotes(match[1]))})`
+      return `cy.contains(${JSON.stringify(stripNotes(match[1]))})`
     }
   }
 
@@ -131,7 +131,7 @@ if (selector.includes('::-p-aria(')) {
   const match = selector.match(/::-p-aria\(([\s\S]*?)\)/)
   if (!match) return null
 
-  const content = stripQuotes(match[1].trim())
+  const content = stripNotes(match[1].trim())
 const commonMethod = ".eq(0).should('exist').scrollIntoView()"
 
   // attribute selector already
@@ -154,7 +154,7 @@ const commonMethod = ".eq(0).should('exist').scrollIntoView()"
   // xpath → TODO (requires plugin)
   if (selector.includes('::-p-xpath(')) {
     const match = selector.match(/::-p-xpath\(([\s\S]*?)\)/)
-    const xpath = match ? stripQuotes(match[1]) : selector
+    const xpath = match ? stripNotes(match[1]) : selector
     return `/* TODO: requires cypress-xpath */ cy.xpath(${JSON.stringify(xpath)})`
   }
 
@@ -172,7 +172,7 @@ function pickBestSelector(raceElements) {
   const selectors = raceElements
     .map(el => nodeToString(el.arguments?.[0]))
     .filter(Boolean)
-    .map(stripQuotes)
+    .map(stripNotes)
 
   if (!selectors.length) return null
 
@@ -184,7 +184,7 @@ function pickBestSelector(raceElements) {
     const match = s.match(/::-p-aria\((.*?)\)/)
     if (!match) return false
 
-    const content = stripQuotes(match[1]).trim()
+    const content = stripNotes(match[1]).trim()
 
     // ignore attribute selectors and roles
     if (content.startsWith('[')) return false
@@ -200,7 +200,7 @@ function pickBestSelector(raceElements) {
     const match = s.match(/::-p-text\((.*?)\)/)
     if (!match) return false
 
-    const text = stripQuotes(match[1]).trim()
+    const text = stripNotes(match[1]).trim()
     return text.length > 1 && !/^#/.test(text)
   })
   if (ptext) return ptext

@@ -1,5 +1,5 @@
 import Dexie, { type Table } from "dexie";
-import type { Note, QuoteTags, Tag } from "@/model/index.model";
+import type { Note, NoteTags, Tag } from "@/model/index.model";
 
 /**
  * Doc
@@ -16,7 +16,7 @@ import type { Note, QuoteTags, Tag } from "@/model/index.model";
 export class DB extends Dexie {
   notes!: Table<Note, number>;
   tags!: Table<Tag, number>;
-  quotes_tags!: Table<QuoteTags, number>;
+  quotes_tags!: Table<NoteTags, number>;
 
   constructor() {
     super("db_by_pri");

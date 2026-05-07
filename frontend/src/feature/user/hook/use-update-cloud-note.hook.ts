@@ -2,26 +2,26 @@ import { toast } from "sonner";
 import { apiClient } from "@/lib/apiClient";
 import { toastConfig } from "@/components/ui/sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useGetCloudQuoteKey } from "./use-get-cloud-note.hook";
+import { useGetCloudNoteKey } from "./use-get-cloud-note.hook";
 import type { Note } from "@/model/index.model";
-import { useGetAllCloudQuoteKey } from "./use-get-all-cloud-note.hook";
+import { useGetAllCloudNoteKey } from "./use-get-all-cloud-note.hook";
 
 export interface Param extends Omit<Note, 'text'> { 
   text?: string;  
 };
 
-const updateCloudQuote = (data: Param) =>
+const updateCloudNote = (data: Param) =>
   apiClient<{ token: string }>("/api/v1/notes/" + data?._id, {
     method: "PATCH",
     body: JSON.stringify(data),
   });
 
-export const useUpdateCloudQuote = () => {
+export const useUpdateCloudNote = () => {
   const queryClient = useQueryClient()
 
   const mutation = useMutation({
     mutationFn: async (data: Param) => {
-      const promise = updateCloudQuote(data);
+      const promise = updateCloudNote(data);
       toast.promise(promise, {
         ...toastConfig,
         loading: "Updating...",
@@ -33,7 +33,7 @@ export const useUpdateCloudQuote = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [useGetAllCloudQuoteKey,],
+        queryKey: [useGetAllCloudNoteKey,],
       })
     },
     onError: (error) => {
@@ -45,6 +45,6 @@ export const useUpdateCloudQuote = () => {
 
   return {
     ...mutation,
-    updateCloudQuote: mutation.mutateAsync,
+    updateCloudNote: mutation.mutateAsync,
   };
 };

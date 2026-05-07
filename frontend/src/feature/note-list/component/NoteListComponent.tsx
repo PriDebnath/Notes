@@ -1,0 +1,88 @@
+import { motion } from "framer-motion"
+import Masonry from "react-masonry-css"
+import type { NoteDetails } from "@/model/index.model"
+import NoteCard from "@/feature/note/component/NoteCardComponent/NoteCardComponent"
+import NoteSkeleton from "@/feature/note/component/NoteCardComponent/component/NoteSkeletonComponent"
+import { useCardViewStore } from "@/store/use-card-view.store"
+
+interface Props {
+  loading: boolean
+  notes: NoteDetails[]
+  onEdit: (note: NoteDetails) => void
+  onDelete: (note: NoteDetails) => void
+  onTogglePin: (note: NoteDetails) => void
+}
+
+export default function NoteListComponent(props: Props) {
+  const { loading, notes, onEdit, onDelete, onTogglePin } = props
+
+  const { view } = useCardViewStore()
+
+  // when list, use 1 column; otherwise responsive columns
+  const breakpointCols: number | { [key: number]: number; default: number } =
+    view === "list"
+      ? 1
+      : { default: 4, 1024: 3, 768: 2, 480: 2, 240: 1 }
+  const columnClassName = "flex flex-col gap-2"
+
+  if (loading) {
+    return (
+      <Masonry
+        breakpointCols={breakpointCols}
+        className="flex gap-2"
+        aria-label="loading"
+        columnClassName={columnClassName}
+      >
+        {Array.from({ length: 3 }).map((_, i) => {
+          return (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 * i }}
+            >
+              <NoteSkeleton />
+            </motion.div>
+          )
+        })}
+      </Masonry>
+    )
+  }
+
+  if ((!notes || notes.length === 0) && !loading) {
+    return <p className="w-full flex items-center justify-center h-48 text-muted-foreground">
+      No secrets written. For now.
+    </p>
+  }
+
+  return (
+    <div aria-label='list-box'>
+      <Masonry
+        breakpointCols={breakpointCols}
+        className="flex gap-2"
+        columnClassName={columnClassName}
+      >
+        {notes.map((q, i) => (
+          <motion.div
+            key={q.id}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.4, delay: 0.1 * i }}
+          >
+            <NoteCard
+              note={q}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onTogglePin={onTogglePin}
+            />
+          </motion.div>
+        ))}
+      </Masonry>
+
+      <p className="text-center text-muted-foreground  py-16">
+        --- You’ve reached the last secret. ---
+      </p>
+    </div>
+  )
+}

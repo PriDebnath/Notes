@@ -25,24 +25,23 @@ import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { useColorThemeStore } from "@/store/use-color-theme.store";
 import { useFontStore, fonts, type Font } from "@/store/use-font.store";
 import { colorThemes, type ColorTheme } from "@/hooks/use-color-theme.hook";
-import type { CardView, Quote, QuoteFormData, SortOption } from "@/model/index.model";
+import type { CardView, Note, NoteFormData, SortOption } from "@/model/index.model";
 import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
 import { themeModes, type ThemeMode } from '@/hooks/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon, CloudDownloadIcon, EyeIcon, EyeOffIcon, LinkIcon, EarthIcon, EarthLockIcon } from "lucide-react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { useGetAllDeletedQuoteDetails } from "@/feature/quote-list/hook/use-get-all-delete-quote-details.hook";
+import { useGetAllDeletedNoteDetails } from "@/feature/note-list/hook/use-get-all-delete-note-details.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
-import { useUpdateQuoteDetails } from "@/feature/quote-list/hook/use-update-quote-details.hook";
-import { deleteQuoteWithLinks } from "@/db/quote_tags.db";
-import { useDeleteCloudQuote, } from "../hook/use-delete-cloud-quote.hook";
-import { useGetAllCloudQuote } from "../hook/use-get-all-cloud-quote.hook";
-import { useCreateQuoteDetails } from "@/feature/quote/hook/use-create-quote-details.hook"
+import { useUpdateNoteDetails } from "@/feature/note-list/hook/use-update-note-details.hook";
+import { useDeleteCloudNote, } from "../hook/use-delete-cloud-note.hook";
+import { useGetAllCloudNote } from "../hook/use-get-all-cloud-note.hook";
+import { useCreateNoteDetails } from "@/feature/note/hook/use-create-note-details.hook"
 import { toast } from "sonner";
 import { toastConfig } from "@/components/ui/sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tiptap-ui-primitive/tooltip";
-import { useUpdateCloudQuote } from "../hook/use-update-cloud-quote.hook";
+import { useUpdateCloudNote } from "../hook/use-update-cloud-note.hook";
 import { Route } from "@/routes/shared-note/$_id";
 
 interface Props {
@@ -52,37 +51,37 @@ interface Props {
 function OpenCloudContainerComponent(props: Props) {
   const [open, setOpen] = useState(false)
   const router = useRouter()
-  const { data, isLoading, refetch } = useGetAllCloudQuote()
-  const { deleteCloudQuote } = useDeleteCloudQuote()
-  const { updateCloudQuote } = useUpdateCloudQuote()
-  const { updateQuote } = useUpdateQuoteDetails()
-  const { createQuote } = useCreateQuoteDetails()
-  const handleCloudDownload = async (quote: Quote) => {
-    await createQuote({
-      ...quote,
-      text: quote.text || "Empty",
+  const { data, isLoading, refetch } = useGetAllCloudNote()
+  const { deleteCloudNote } = useDeleteCloudNote()
+  const { updateCloudNote } = useUpdateCloudNote()
+  const { updateNote } = useUpdateNoteDetails()
+  const { createNote } = useCreateNoteDetails()
+  const handleCloudDownload = async (note: Note) => {
+    await createNote({
+      ...note,
+      text: note.text || "Empty",
       synced: true
     })
     toast.success("Stored in local", toastConfig)
   }
 
-  const handleHardDelete = async (quote: Quote) => {
-    if (!quote._id) return
-    await deleteCloudQuote({ _id: quote._id })
+  const handleHardDelete = async (note: Note) => {
+    if (!note._id) return
+    await deleteCloudNote({ _id: note._id })
     refetch()
   }
 
-  const handleUpdate = async (quote: Quote) => {
-    if (!quote._id) return
-    await updateCloudQuote({ _id: quote._id, shared: !quote?.shared })
+  const handleUpdate = async (note: Note) => {
+    if (!note._id) return
+    await updateCloudNote({ _id: note._id, shared: !note?.shared })
     refetch()
   }
 
-  const handleLinkCopy = async (quote: Quote) => {
+  const handleLinkCopy = async (note: Note) => {
     const location = router.buildLocation({
       to: "/shared-note/$_id",
       params: {
-        _id: quote._id!
+        _id: note._id!
       }
     })
     const origin = window.location.origin
@@ -122,17 +121,17 @@ function OpenCloudContainerComponent(props: Props) {
 
         <div
           className=" overflow-y-auto rounded-xl  h-40 min-h-0 flex flex-col gap-1 border-2  p-2">
-          {data?.map((quote, i) => (
-            <div key={'bin' + quote.id}
+          {data?.map((note, i) => (
+            <div key={'bin' + note.id}
               className="flex justify-between border-2 rounded-lg p-2">
               <div
                 className=" "
                 dangerouslySetInnerHTML={{
-                  __html: sanitizeHTML(quote?.text!)
+                  __html: sanitizeHTML(note?.text!)
                 }}
               />
               <div className="flex items-center gap-2">
-                {quote.shared && (
+                {note.shared && (
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
@@ -140,7 +139,7 @@ function OpenCloudContainerComponent(props: Props) {
                         variant={"outline"}
                         onClick={(e) => {
                           e.preventDefault()
-                          handleLinkCopy(quote)
+                          handleLinkCopy(note)
                         }}
                         aria-label={"Copy link"}
                         size={"sm"}
@@ -161,17 +160,17 @@ function OpenCloudContainerComponent(props: Props) {
                       variant={"outline"}
                       onClick={(e) => {
                         e.preventDefault()
-                        handleUpdate(quote)
+                        handleUpdate(note)
                       }}
                       aria-label={"Shared by link"}
                       size={"sm"}
                     >
-                      {quote?.shared ? <EarthIcon /> : <EarthLockIcon />}
+                      {note?.shared ? <EarthIcon /> : <EarthLockIcon />}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>
-                      {quote?.shared ? "Shared by the link" : "Not shared"}
+                      {note?.shared ? "Shared by the link" : "Not shared"}
                     </p>
                   </TooltipContent>
                 </Tooltip>
@@ -182,7 +181,7 @@ function OpenCloudContainerComponent(props: Props) {
                       variant={"outline"}
                       onClick={(e) => {
                         e.preventDefault()
-                        handleCloudDownload(quote)
+                        handleCloudDownload(note)
                       }}
                       aria-label={"Cloud Download"}
                       size={"sm"}
@@ -202,7 +201,7 @@ function OpenCloudContainerComponent(props: Props) {
                       variant={"outline"}
                       onClick={(e) => {
                         e.preventDefault()
-                        handleHardDelete(quote)
+                        handleHardDelete(note)
                       }}
                       aria-label={"Delete note"}
                       size={"sm"}

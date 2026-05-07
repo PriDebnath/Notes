@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { createUser, getUserByEmail } from "../user/service";
-import { User } from "../user/model.user";
+import { User } from "../user/model";
 import z, { email, ZodError } from "zod";
 import jwt from "jsonwebtoken";
 import { loginUserSchema } from "./schema";
 import { JWT_SECRECT } from "../../utils/jwt";
+import { errorHandler } from "../../utils/error-handler";
 
 export const registerUser = async (
     req: Request,
@@ -23,19 +24,7 @@ export const registerUser = async (
         const newItem = await createUser(item)
         res.status(201).json(newItem)
     } catch (error: any) {
-        if (error instanceof ZodError) {
-            return res.status(400).json({
-                message: z.prettifyError(error)
-            })
-        }
-        if (error.errors) {
-            return res.status(400).json({
-                errors: error.errors
-            })
-        }
-        return res.status(500).json({
-            message: "Server error"
-        })
+        errorHandler({ error, response: res })
     }
 }
 
@@ -60,18 +49,6 @@ export const loginUser = async (
             token
         })
     } catch (error: any) {
-        if (error instanceof ZodError) {
-            return res.status(400).json({
-                message: z.prettifyError(error)
-            })
-        }
-        if (error.errors) {
-            return res.status(400).json({
-                errors: error.errors
-            })
-        }
-        return res.status(500).json({
-            message: "Server error"
-        })
+        errorHandler({ error, response: res })
     }
 }

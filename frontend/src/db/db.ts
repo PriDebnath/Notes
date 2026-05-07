@@ -1,5 +1,5 @@
 import Dexie, { type Table } from "dexie";
-import type { Quote, QuoteTags, Tag } from "@/model/index.model";
+import type { Note, NoteTags, Tag } from "@/model/index.model";
 
 /**
  * Doc
@@ -14,9 +14,9 @@ import type { Quote, QuoteTags, Tag } from "@/model/index.model";
 
  */
 export class DB extends Dexie {
-  quotes!: Table<Quote, number>;
+  notes!: Table<Note, number>;
   tags!: Table<Tag, number>;
-  quotes_tags!: Table<QuoteTags, number>;
+  notes_tags!: Table<NoteTags, number>;
 
   constructor() {
     super("db_by_pri");
@@ -24,23 +24,23 @@ export class DB extends Dexie {
     /* version = DB_VERSION */
     // v1 - initial schema
     this.version(1).stores({
-      quotes: "++id, text, texture, pri_set, created_at, updated_at",
+      notes: "++id, text, texture, pri_set, created_at, updated_at",
       tags: "++id, &name",
-      quotes_tags: "++id, quoteId, tagId, &[quoteId+tagId]",
+      notes_tags: "++id, noteId, tagId, &[noteId+tagId]",
     });
 
-    // v2 - add `pinned` flag for quotes
+    // v2 - add `pinned` flag for notes
     this.version(2).stores({
-      quotes: "++id, text, texture, pri_set, created_at, updated_at, pinned",
+      notes: "++id, text, texture, pri_set, created_at, updated_at, pinned",
       tags: "++id, &name",
-      quotes_tags: "++id, quoteId, tagId, &[quoteId+tagId]",
+      notes_tags: "++id, noteId, tagId, &[noteId+tagId]",
     });
 
-    // v3 - add `synced and deleted` fields for quotes
+    // v3 - add `synced and deleted` fields for notes
     this.version(3).stores({
-      quotes: "++id, text, texture, pri_set, created_at, updated_at, pinned, synced, deleted",
+      notes: "++id, text, texture, pri_set, created_at, updated_at, pinned, synced, deleted",
       tags: "++id, &name",
-      quotes_tags: "++id, quoteId, tagId, &[quoteId+tagId]",
+      notes_tags: "++id, noteId, tagId, &[noteId+tagId]",
     });
   }
 }

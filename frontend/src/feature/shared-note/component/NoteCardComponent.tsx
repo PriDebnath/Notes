@@ -4,22 +4,22 @@ import { useState, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { ListTagsComponent } from "@/feature/quote/component/ListTagsComponent";
+import { ListTagsComponent } from "@/feature/note/component/ListTagsComponent";
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import useBackground from "@/hooks/use-background.hook";
 import { htmlToPlainText } from "@/helper/html-to-text";
 import { useShowCardInfo } from "@/store/use-card-info.store";
-import type { Quote, QuoteDetails } from "@/model/index.model";
+import type { Note, NoteDetails } from "@/model/index.model";
 import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCircle, Pin, PinOff } from "lucide-react";
 
 interface Props {
-    quote: Quote;
+    note: Note;
 }
 
 const NoteCardComponent = (props: Props) => {
-    const { quote, } = props
+    const { note, } = props
     const { buildStyle } = useBackground()
-    const cardStyle = buildStyle(quote.texture!, quote.pri_set!)
+    const cardStyle = buildStyle(note.texture!, note.pri_set!)
     const formatDate = (date: Date | string) => {
         const formatedDate = typeof date == 'string' ? new Date(date) : date
         return formatedDate?.toLocaleDateString("en-US", {
@@ -29,8 +29,8 @@ const NoteCardComponent = (props: Props) => {
         })
     }
 
-    const created_at = quote?.createdAt ? quote?.createdAt : quote?.created_at ? quote?.created_at : null
-    const updated_at = quote?.updatedAt ? quote?.updatedAt : quote?.updated_at ? quote?.updated_at : null
+    const created_at = note?.createdAt ? note?.createdAt : note?.created_at ? note?.created_at : null
+    const updated_at = note?.updatedAt ? note?.updatedAt : note?.updated_at ? note?.updated_at : null
 
     return (
             <div
@@ -51,10 +51,10 @@ const NoteCardComponent = (props: Props) => {
                     "removed-prose-foreground",
                     "line-clamp-3",
                 )}>   {/* IMPORTANT */}
-                    <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quote.text) }}></div>
+                    <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(note.text) }}></div>
                 </div>
                 <div className="flex w-full  gap-2">
-                    {/* {infoType == "tags" && <ListTagsComponent tags={quote.tags!} />} */}
+                    {/* {infoType == "tags" && <ListTagsComponent tags={note.tags!} />} */}
                     <p className="p-0 text-[0.615rem] text-muted-foreground">
                         Created at: {formatDate(created_at!)},</p>
                     <p className="p-0 text-[0.615rem] text-muted-foreground">

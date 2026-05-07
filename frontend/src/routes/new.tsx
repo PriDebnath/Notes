@@ -1,4 +1,4 @@
-import { QuotePage } from '@/page/quote/quote/quote.page'
+import { NotePage } from '@/page/note/note/note.page'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/new')({
@@ -6,5 +6,5 @@ export const Route = createFileRoute('/new')({
 })
 
 function RouteComponent() {
-  return <QuotePage mode= "add"/>
+  return <NotePage mode= "add"/>
 }

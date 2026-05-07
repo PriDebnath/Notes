@@ -1,5 +1,5 @@
 import { Route } from "@/routes/shared-note/$_id"
-import { useGetCloudQuote } from "@/feature/user/hook/use-get-cloud-quote.hook";
+import { useGetCloudNote } from "@/feature/user/hook/use-get-cloud-note.hook";
 import NoteCardComponent from "@/feature/shared-note/component/NoteCardComponent";
 import { LoaderFull } from "@/components/ui/loader-full";
 import NavigationComponent from "@/feature/user/component/NavigationComponent";
@@ -8,7 +8,7 @@ import { useGetUser } from "@/feature/user/hook/use-get-user.hook";
 
 function SharedNotePage() {
     const { _id } = Route.useParams()
-    const { data: note, isPending } = useGetCloudQuote({ _id })
+    const { data: note, isPending, error, } = useGetCloudNote({ _id })
     const { data: user, } = useGetUser({ _id: note?.user })
 
     return (
@@ -19,7 +19,7 @@ function SharedNotePage() {
                     <span >
                         Shared by:
                         <span className="font-bolder">
-                         {" "} {user?.name}
+                            {" "} {user?.name}
                         </span>
                     </span>
                 )
@@ -27,7 +27,8 @@ function SharedNotePage() {
             </div>
             <div >
                 {(isPending) && <LoaderFull />}
-                {(note && note?.shared) && <NoteCardComponent quote={note} />}
+                {(!isPending && error) && (<p className="text-red-500">{error?.message}</p>)}
+                {(note && note?.shared) && <NoteCardComponent note={note} />}
                 {(note && !note?.shared) && (<p>The secrect was not shared...</p>)}
             </div>
         </div>

@@ -39,7 +39,7 @@ const variableMap = new Map()
 // ================================
 // HELPERS
 // ================================
-function stripQuotes(s) {
+function stripNotes(s) {
   if (!s) return s
   return s.replace(/^["']|["']$/g, '')
 }
@@ -73,7 +73,7 @@ function normalizeSelector(selector) {
 // SELECTOR RANKING
 // ================================
 function pickBestSelector(selectors) {
-  const cleaned = selectors.map(stripQuotes).map(normalizeSelector)
+  const cleaned = selectors.map(stripNotes).map(normalizeSelector)
 
   // 1 text selector
   const textSel = cleaned.find(s => s.includes('::-p-text('))
@@ -86,7 +86,7 @@ function pickBestSelector(selectors) {
     const match = s.match(/::-p-aria\((.*?)\)/)
     if (!match) return false
 
-    const content = stripQuotes(match[1])
+    const content = stripNotes(match[1])
 
     if (content.startsWith('[')) return false
     if (content.includes('role=')) return false
@@ -116,18 +116,18 @@ function pickBestSelector(selectors) {
 function convertSelector(selector) {
   if (!selector) return null
 
-  selector = stripQuotes(selector)
+  selector = stripNotes(selector)
 
   // text
   if (selector.includes('::-p-text(')) {
     const match = selector.match(/::-p-text\((.*?)\)/)
-    return `page.getByText(${JSON.stringify(stripQuotes(match[1]))})`
+    return `page.getByText(${JSON.stringify(stripNotes(match[1]))})`
   }
 
   // aria
   if (selector.includes('::-p-aria(')) {
     const match = selector.match(/::-p-aria\((.*?)\)/)
-    const content = stripQuotes(match[1])
+    const content = stripNotes(match[1])
 
     if (content.startsWith('['))
       return `page.locator('${content}')`
@@ -143,7 +143,7 @@ function convertSelector(selector) {
   // xpath
   if (selector.includes('::-p-xpath(')) {
     const match = selector.match(/::-p-xpath\((.*?)\)/)
-    return `page.locator('xpath=${stripQuotes(match[1])}')`
+    return `page.locator('xpath=${stripNotes(match[1])}')`
   }
 
   return `page.locator(${JSON.stringify(selector)})`

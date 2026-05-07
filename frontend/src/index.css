@@ -812,3 +812,90 @@ body {
   background-color: rgba(255, 255, 255, 0.5);
 }
  
+
+/* Input check box start */
+/* Base checkbox */
+input[type="checkbox"] {
+  appearance: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid var(--ring);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+/* Cool fill animation */
+input[type="checkbox"]:checked {
+  border-color: var(--primary);
+  animation: pop 0.3s ease;
+}
+
+/* Expanding ripple */
+input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--primary);
+  transform: scale(0);
+  border-radius: 2px;
+  transition: transform 0.3s ease;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+/* Checkmark */
+input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -60%) rotate(45deg) scale(0);
+  opacity: 0;
+}
+
+/* Draw checkmark with delay */
+input[type="checkbox"]:checked::after {
+  animation: check 0.3s ease forwards 0.15s;
+}
+
+/* Hover glow */
+input[type="checkbox"]:hover {
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.6);
+}
+
+/* Click press */
+input[type="checkbox"]:active {
+  transform: scale(0.9);
+}
+
+/* Animations */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+@keyframes check {
+  0% {
+    transform: translate(-50%, -60%) rotate(45deg) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -60%) rotate(45deg) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -60%) rotate(45deg) scale(1);
+    opacity: 1;
+  }
+}
+/* Input check box end */

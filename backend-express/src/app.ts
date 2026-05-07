@@ -1,15 +1,18 @@
 import cors from "cors"
 import express, { Express,  } from "express"
 import swaggerUi from "swagger-ui-express"
-import { swaggerUiApp } from "./utils/swagger-config";
+import {  rateLimit } from "./utils/config/rate-limiter-config";
+import { swaggerUiApp } from "./utils/config/swagger-config";
 import { router as routerAuth } from "./module/auth/router";
 import { router as routerNote } from "./module/note/router";
-import { router as routerUsers } from "./module/user/router.user";
+import { router as routerUsers } from "./module/user/router";
 
 const app: Express = express()
 
 app.use(cors( ))
 app.use(express.json({ strict: false }));
+
+app.use(rateLimit);
 
  // Swagger for API docs
 app.use("/docs", swaggerUi.serve, swaggerUiApp);

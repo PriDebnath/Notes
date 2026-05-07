@@ -12,10 +12,10 @@ import { Button } from "@/components/ui/button"
 import type { User } from "../hook/use-get-user.hook";
 import type z from "zod";
 import { ButtonLoader } from "@/components/ui/button-loader";
-import { useGetAllDeletedQuoteDetails } from "@/feature/quote-list/hook/use-get-all-delete-quote-details.hook";
-import { useGetAllQuoteDetails } from "@/feature/quote-list/hook/use-get-all-quote-details.hook";
+import { useGetAllDeletedNoteDetails } from "@/feature/note-list/hook/use-get-all-delete-note-details.hook";
+import { useGetAllNoteDetails } from "@/feature/note-list/hook/use-get-all-note-details.hook";
 import { useSyncNote } from "../hook/use-sync-note.hook";
-import { useUpdateQuoteDetails } from "@/feature/quote-list/hook/use-update-quote-details.hook";
+import { useUpdateNoteDetails } from "@/feature/note-list/hook/use-update-note-details.hook";
 
 const OpenCloudContainerComponent = lazy(()=> import("@/feature/user/component/OpenCloudContainerComponent"))
 
@@ -30,8 +30,8 @@ const CloudComponent = (props: Props) => {
     isLoading,
     error,
     refetch,
-  } = useGetAllQuoteDetails()
-  const { updateQuote } = useUpdateQuoteDetails()
+  } = useGetAllNoteDetails()
+  const { updateNote } = useUpdateNoteDetails()
   const { syncNote, isPending } = useSyncNote()
 
   const unsyncedItems = useMemo(() => {
@@ -51,7 +51,7 @@ const CloudComponent = (props: Props) => {
           id: item.id,
           user: user._id
         })
-        await updateQuote({
+        await updateNote({
           _id: newData._id,
           id: item.id,
           text: item.text,

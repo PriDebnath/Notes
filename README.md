@@ -36,7 +36,7 @@ https://github.com/PriDebnath/Notes/releases/latest/download/app-debug.apk
 
 **A calm, intelligent space to capture thoughts — and explore them with AI 🤖.**
 
-Notes turns your ideas, quotes, and short writings into a personal library you enjoy browsing — not just storing.
+Notes turns your ideas, notes, and short writings into a personal library you enjoy browsing — not just storing.
 
 
 ## What you get
@@ -51,7 +51,7 @@ Notes turns your ideas, quotes, and short writings into a personal library you e
 
 ## Great for
 
-* Readers saving meaningful quotes
+* Readers saving meaningful notes
 * Writers collecting ideas and snippets
 * Thinkers and journalers who enjoy short-form notes
 

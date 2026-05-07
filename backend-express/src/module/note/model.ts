@@ -1,6 +1,6 @@
 
 import mongoose, { InferSchemaType, Schema, ObjectId } from "mongoose"
-import { userModelName } from "../user/model.user"
+import { userModelName } from "../user/model"
 
 const noteSchema = new Schema(
     {

@@ -3,7 +3,7 @@ import { routeTree } from './routeTree.gen'
 import { describe, it, expect } from 'vitest'
 import { router } from './provider/tanstack-router.provider'
 import { renderWithFileRoutes } from '@/test/file-route-utils';
-import { QuoteListPage } from "@/page/quote/quote-list/quote-list.page"
+import { NoteListPage } from "@/page/note/note-list/note-list.page"
 import { act, screen, waitForElementToBeRemoved } from '@testing-library/react'
 
 describe('Generated Route Tree', () => {
@@ -39,7 +39,7 @@ describe('Generated Route Tree', () => {
 describe('Individual Route Components', async () => {
     it('should test home route component', async () => {
         await router.navigate({ to: '/' })
-        await renderWithFileRoutes(<QuoteListPage />)
+        await renderWithFileRoutes(<NoteListPage />)
         const addButton = screen.getByTitle('new')
         expect(addButton).toBeInTheDocument()
 

@@ -7,7 +7,7 @@ const router = Router()
  
 router.post("/sync", validatedJwtToken, syncNote)
 router.get("/", validatedJwtToken, getAllNote)
-router.get("/:_id", validatedJwtToken, getNoteController)
+router.get("/:_id", getNoteController)
 router.patch("/:_id", validatedJwtToken, updateNoteController)
 router.delete("/:_id", validatedJwtToken, deleteNote)
 

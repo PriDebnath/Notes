@@ -12,10 +12,10 @@ import { Button } from "@/components/ui/button"
 import type { User } from "../hook/use-get-user.hook";
 import type z from "zod";
 import { ButtonLoader } from "@/components/ui/button-loader";
-import { useGetAllDeletedQuoteDetails } from "@/feature/note-list/hook/use-get-all-delete-quote-details.hook";
-import { useGetAllQuoteDetails } from "@/feature/note-list/hook/use-get-all-quote-details.hook";
+import { useGetAllDeletedQuoteDetails } from "@/feature/note-list/hook/use-get-all-delete-note-details.hook";
+import { useGetAllQuoteDetails } from "@/feature/note-list/hook/use-get-all-note-details.hook";
 import { useSyncNote } from "../hook/use-sync-note.hook";
-import { useUpdateQuoteDetails } from "@/feature/note-list/hook/use-update-quote-details.hook";
+import { useUpdateQuoteDetails } from "@/feature/note-list/hook/use-update-note-details.hook";
 
 const OpenCloudContainerComponent = lazy(()=> import("@/feature/user/component/OpenCloudContainerComponent"))
 

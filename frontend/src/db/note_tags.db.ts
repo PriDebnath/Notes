@@ -134,8 +134,8 @@ export const getAllQuotesDetails = async (param: GetAllQuotesDetailsParam) => {
 
 export const getQuoteDetails = async (quoteId: number) => {
   return db.transaction("r", db.quotes, db.quotes_tags, db.tags, async () => {
-    const quote = await db.quotes.get(quoteId);
-    if (!quote) return;
+    const note = await db.quotes.get(quoteId);
+    if (!note) return;
 
     const links = await db.quotes_tags
       .where("quoteId")
@@ -149,7 +149,7 @@ export const getQuoteDetails = async (quoteId: number) => {
         ? []
         : await db.tags.where("id").anyOf(tagIds).toArray();
 
-    return { ...quote, tags };
+    return { ...note, tags };
   });
 };
 
@@ -161,13 +161,13 @@ export const deleteQuoteWithLinks = async (quoteId: number) => {
     db.quotes_tags,
     async () => {
 
-      // 1️⃣ delete all links for this quote
+      // 1️⃣ delete all links for this note
       await db.quotes_tags
         .where("quoteId")
         .equals(quoteId)
         .delete();
 
-      // 2️⃣ delete the quote itself
+      // 2️⃣ delete the note itself
       await db.quotes.delete(quoteId);
     }
   );
@@ -180,7 +180,7 @@ export const deleteQuoteTagLinks = async (quoteId: number) => {
     db.quotes_tags,
     async () => {
 
-      // 1️⃣ delete all links for this quote
+      // 1️⃣ delete all links for this note
       await db.quotes_tags
         .where("quoteId")
         .equals(quoteId)

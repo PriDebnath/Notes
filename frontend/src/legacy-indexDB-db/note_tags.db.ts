@@ -13,7 +13,7 @@ export const getAllQuoteTags = async (): Promise<QuoteTags[]> => {
   return new Promise((resolve, reject) => {
     const req = store.getAll()
     req.onsuccess = () => resolve(req.result)
-    req.onerror = () => reject('Failed to get quote tags')
+    req.onerror = () => reject('Failed to get note tags')
   })
 }
 
@@ -30,7 +30,7 @@ export const addQuoteTag = async (data: QuoteTags): Promise<QuoteTags> => {
 
   return new Promise((resolve, reject) => {
     tx.oncomplete = () => resolve(data)
-    tx.onerror = () => reject('Failed to add quote tag')
+    tx.onerror = () => reject('Failed to add note tag')
   })
 }
 
@@ -48,7 +48,7 @@ export const updateQuoteTag = async (
   return new Promise((resolve, reject) => {
     const req = store.put(data)
     req.onsuccess = () => resolve(data)
-    req.onerror = () => reject('Failed to update quote tag')
+    req.onerror = () => reject('Failed to update note tag')
   })
 }
 
@@ -61,7 +61,7 @@ export const deleteQuoteTag = async (id: number): Promise<void> => {
 
   return new Promise((resolve, reject) => {
     tx.oncomplete = () => resolve()
-    tx.onerror = () => reject('Failed to delete quote tag')
+    tx.onerror = () => reject('Failed to delete note tag')
   })
 }
 
@@ -80,7 +80,7 @@ export const deleteAllQuoteTags = async (
 
   return new Promise((resolve, reject) => {
     tx.oncomplete = () => resolve()
-    tx.onerror = () => reject('Failed to delete quote tags')
+    tx.onerror = () => reject('Failed to delete note tags')
   })
 }
 
@@ -104,8 +104,8 @@ export const getQuoteDetails = async (
     const quoteReq = quotesStore.get(quoteId)
 
     quoteReq.onsuccess = async () => {
-      const quote = quoteReq.result
-      if (!quote) {
+      const note = quoteReq.result
+      if (!note) {
         resolve(null)
         return
       }
@@ -126,13 +126,13 @@ export const getQuoteDetails = async (
         }
 
         resolve({
-          ...quote,
+          ...note,
           tags,
         })
       }
     }
 
-    tx.onerror = () => reject('Failed to load quote details')
+    tx.onerror = () => reject('Failed to load note details')
   })
 }
 
@@ -154,11 +154,11 @@ export const getAllQuotesDetails = async (): Promise<QuoteDetails[]> => {
     quotesReq.onsuccess = async () => {
       const result: QuoteDetails[] = []
 
-      for (const quote of quotesReq.result) {
+      for (const note of quotesReq.result) {
         const links = await new Promise<QuoteTags[]>((res) => {
           const r = junctionStore
             .index('quoteId')
-            .getAll(quote.id)
+            .getAll(note.id)
           r.onsuccess = () => res(r.result)
         })
 
@@ -173,7 +173,7 @@ export const getAllQuotesDetails = async (): Promise<QuoteDetails[]> => {
         }
 
         result.push({
-          ...quote,
+          ...note,
           tags,
         })
       }

@@ -16,15 +16,15 @@ import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Suspense, lazy } from 'react'
-import { deleteQuoteWithLinks } from '@/db/quote_tags.db'
+import { deleteQuoteWithLinks } from '@/db/note_tags.db'
 import type { Quote, QuoteDetails, QuoteFormData, Tag, SortOption } from '@/model/index.model'
-import { useGetAllQuoteDetails } from '@/feature/note-list/hook/use-get-all-quote-details.hook'
+import { useGetAllQuoteDetails } from '@/feature/note-list/hook/use-get-all-note-details.hook'
 import { useSortStore } from '@/store/use-sort.store'
-import { toggleQuotePinned, updateQuote } from '@/db/quote.db'
+import { toggleQuotePinned, updateQuote } from '@/db/note.db'
 import React from 'react'
 import { ButtonLoader } from '@/components/ui/button-loader'
 import { Loader } from '@/components/ui/loader'
-import { useUpdateQuoteDetails } from '@/feature/note-list/hook/use-update-quote-details.hook'
+import { useUpdateQuoteDetails } from '@/feature/note-list/hook/use-update-note-details.hook'
 
 const DeleteQuoteDialog = lazy(() => import('@/feature/note-list/component/DeleteQuoteDialog'))
 const QuoteListComponent = lazy(() => import('@/feature/note-list/component/QuoteListComponent').then(mod => ({ default: mod.default })))
@@ -71,18 +71,18 @@ export function QuoteListPage() {
   }, [quotesStored, search, activeTags])
 
 
-  const openDeleteDialog = (quote: Quote) => {
-    setSelectedQuote(quote)
+  const openDeleteDialog = (note: Quote) => {
+    setSelectedQuote(note)
     setOpenDelete(true)
   }
 
-  const handleDelete = async (quote: QuoteFormData) => {
-    if (!quote.id) return
-    // await deleteQuoteWithLinks(quote.id) // no hard delete
+  const handleDelete = async (note: QuoteFormData) => {
+    if (!note.id) return
+    // await deleteQuoteWithLinks(note.id) // no hard delete
     // sort delete
     await updateQuote({
-      ...quote,
-      text: quote.text || "Empty",
+      ...note,
+      text: note.text || "Empty",
       deleted: true,
       synced: false,
     })
@@ -90,9 +90,9 @@ export function QuoteListPage() {
     refetch()
   }
 
-  const handleTogglePin = async (quote: QuoteDetails) => {
-    if (!quote.id) return
-    await toggleQuotePinned(quote.id, !quote.pinned)
+  const handleTogglePin = async (note: QuoteDetails) => {
+    if (!note.id) return
+    await toggleQuotePinned(note.id, !note.pinned)
     refetch()
   }
 
@@ -187,7 +187,7 @@ export function QuoteListPage() {
         <DeleteQuoteDialog
           open={openDelete}
           setOpen={setOpenDelete}
-          quote={selectedQuote}
+          note={selectedQuote}
           handleDelete={handleDelete}
         />
       </Suspense>

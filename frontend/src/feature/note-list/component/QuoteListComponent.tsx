@@ -8,9 +8,9 @@ import { useCardViewStore } from "@/store/use-card-view.store"
 interface Props {
   loading: boolean
   quotes: QuoteDetails[]
-  onEdit: (quote: QuoteDetails) => void
-  onDelete: (quote: QuoteDetails) => void
-  onTogglePin: (quote: QuoteDetails) => void
+  onEdit: (note: QuoteDetails) => void
+  onDelete: (note: QuoteDetails) => void
+  onTogglePin: (note: QuoteDetails) => void
 }
 
 export default function QuoteListComponent(props: Props) {
@@ -71,7 +71,7 @@ export default function QuoteListComponent(props: Props) {
             transition={{ duration: 0.4, delay: 0.1 * i }}
           >
             <QuoteCard
-              quote={q}
+              note={q}
               onEdit={onEdit}
               onDelete={onDelete}
               onTogglePin={onTogglePin}

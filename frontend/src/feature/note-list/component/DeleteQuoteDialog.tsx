@@ -13,8 +13,8 @@ import { useState, useEffect, type Dispatch, type SetStateAction, memo } from "r
 
 interface Props {
   open: boolean;
-  quote: Quote | null;
-  handleDelete: (quote: Quote) => void;
+  note: Quote | null;
+  handleDelete: (note: Quote) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -22,11 +22,11 @@ export default memo(DeleteQuoteDialog)
 
 function DeleteQuoteDialog(props: Props) {
 
-  const { quote, open, setOpen, handleDelete } = props
+  const { note, open, setOpen, handleDelete } = props
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    handleDelete(quote!)
+    handleDelete(note!)
   }
 
   return (
@@ -47,7 +47,7 @@ function DeleteQuoteDialog(props: Props) {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 ">
-            <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: sanitizeHTML(quote?.text!) }}></div>
+            <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: sanitizeHTML(note?.text!) }}></div>
           </div>
           <DialogFooter>
             {/* <DialogClose asChild>

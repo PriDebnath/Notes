@@ -1,5 +1,5 @@
 import { Route } from "@/routes/shared-note/$_id"
-import { useGetCloudQuote } from "@/feature/user/hook/use-get-cloud-quote.hook";
+import { useGetCloudQuote } from "@/feature/user/hook/use-get-cloud-note.hook";
 import NoteCardComponent from "@/feature/shared-note/component/NoteCardComponent";
 import { LoaderFull } from "@/components/ui/loader-full";
 import NavigationComponent from "@/feature/user/component/NavigationComponent";
@@ -27,7 +27,7 @@ function SharedNotePage() {
             </div>
             <div >
                 {(isPending) && <LoaderFull />}
-                {(note && note?.shared) && <NoteCardComponent quote={note} />}
+                {(note && note?.shared) && <NoteCardComponent note={note} />}
                 {(note && !note?.shared) && (<p>The secrect was not shared...</p>)}
             </div>
         </div>

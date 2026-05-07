@@ -10,7 +10,7 @@ const getAllCloudQuote = () =>
         method: "GET",
     })
 
-export const useGetAllCloudQuoteKey = "get-all-cloud-quote"
+export const useGetAllCloudQuoteKey = "get-all-cloud-note"
 
 export const useGetAllCloudQuote = () => {
     const queryClient = useQueryClient()

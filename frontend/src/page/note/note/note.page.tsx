@@ -14,12 +14,12 @@ import { useGetSummarize } from '@/feature/note/hook/ai-content-summarize.hook'
 import { useGetQuoteDetails } from '@/feature/note/hook/use-get-note-details.hook'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
-import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/quote_tags.db'
+import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/note_tags.db'
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
 import { ButtonLoader } from "@/components/ui/button-loader"
 import EditorSkeleton from "@/feature/note/component/EditorSkeletonComponent"
 import {  useCreateQuoteDetails } from "@/feature/note/hook/use-create-note-details.hook"
-import {   useUpdateQuoteDetails  } from "@/feature/note-list/hook/use-update-quote-details.hook"
+import {   useUpdateQuoteDetails  } from "@/feature/note-list/hook/use-update-note-details.hook"
 
 const Tiptap = lazy(() => import('@/components/common/tiptap-customized'))
 const ShareBackgroundComponent = lazy(
@@ -51,7 +51,7 @@ export function QuotePage(props: Props) {
 
   // Only fetch in edit mode
   const {
-    data: quote,
+    data: note,
     isLoading,
     error,
   } = useGetQuoteDetails(
@@ -61,11 +61,11 @@ export function QuotePage(props: Props) {
   const { createQuote } = useCreateQuoteDetails()
 
   const [quoteData, setQuoteData] = useState<QuoteFormData>(() => ({
-    id: quote?.id,
-    text: quote?.text || "",
-    tags: quote?.tags?.map((tag) => tag.name) || [],
-    texture: quote?.texture,
-    pri_set: quote?.pri_set,
+    id: note?.id,
+    text: note?.text || "",
+    tags: note?.tags?.map((tag) => tag.name) || [],
+    texture: note?.texture,
+    pri_set: note?.pri_set,
   }))
 
   const onTagChoose = (tag: string) => {
@@ -108,18 +108,18 @@ export function QuotePage(props: Props) {
     return result;
   };
 
-  const handleSubmit = useCallback(async (quote: QuoteFormData) => {
-    let quoteId: number | undefined = quote.id
+  const handleSubmit = useCallback(async (note: QuoteFormData) => {
+    let quoteId: number | undefined = note.id
     if (quoteId) { // edit
       await updateQuote({
-        ...quote,
-        text: quote.text || "Empty",
+        ...note,
+        text: note.text || "Empty",
         synced: false
       })
     } else {
       const newQuote = await createQuote({
-        ...quote,
-        text: quote.text || "Empty",
+        ...note,
+        text: note.text || "Empty",
         synced: false
       })
       quoteId = newQuote.id
@@ -127,13 +127,13 @@ export function QuotePage(props: Props) {
 
     // console.log({ quoteId });
 
-    const tags = await getTags(quote.tags!)
+    const tags = await getTags(note.tags!)
     // console.log({ tags })
 
-    // Delete all existing tags for this quote
+    // Delete all existing tags for this note
     await deleteQuoteTagLinks(quoteId!)
 
-    // Add new tags for this quote
+    // Add new tags for this note
     for (const tag of tags) {
       await addTagToQuote(quoteId!, tag.name!)
     }
@@ -143,16 +143,16 @@ export function QuotePage(props: Props) {
   }, [navigate])
 
   useEffect(() => {
-    if (quote) {
+    if (note) {
       setQuoteData({
-        id: quote.id,
-        text: quote.text,
-        tags: quote.tags?.map(t => t.name) || [],
-        texture: quote.texture,
-        pri_set: quote.pri_set,
+        id: note.id,
+        text: note.text,
+        tags: note.tags?.map(t => t.name) || [],
+        texture: note.texture,
+        pri_set: note.pri_set,
       })
     }
-  }, [quote, mode])
+  }, [note, mode])
 
   const blocker = useBlocker({
     shouldBlockFn: () => Boolean(quoteData?.text?.trim()),
@@ -167,7 +167,7 @@ export function QuotePage(props: Props) {
           // handleSubmit already navigates, but proceed() clears the blocker state
           blocker.proceed()
         } catch (error) {
-          console.error('Failed to save quote before navigation:', error)
+          console.error('Failed to save note before navigation:', error)
           blocker.reset()
         }
       }

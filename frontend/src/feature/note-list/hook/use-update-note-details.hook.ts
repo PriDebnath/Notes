@@ -1,7 +1,7 @@
-import { addQuote, updateQuote } from '@/db/quote.db'
-import { queryKeysGetQuote } from "@/feature/quote/hook/use-get-quote-details.hook"
+import { addQuote, updateQuote } from '@/db/note.db'
+import { queryKeysGetQuote } from "@/feature/note/hook/use-get-note-details.hook"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { queryKeysGetAllQuote } from './use-get-all-quote-details.hook'
+import { queryKeysGetAllQuote } from './use-get-all-note-details.hook'
 
 export const useUpdateQuoteDetails = () => {
   const queryClient = useQueryClient()

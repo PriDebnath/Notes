@@ -2,8 +2,8 @@ import { toast } from "sonner";
 import { apiClient } from "@/lib/apiClient";
 import { toastConfig } from "@/components/ui/sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useGetCloudQuoteKey } from "./use-get-cloud-quote.hook";
-import { useGetAllCloudQuoteKey } from "./use-get-all-cloud-quote.hook";
+import { useGetCloudQuoteKey } from "./use-get-cloud-note.hook";
+import { useGetAllCloudQuoteKey } from "./use-get-all-cloud-note.hook";
 
 export type Param = {
   _id?: string, // cloud id

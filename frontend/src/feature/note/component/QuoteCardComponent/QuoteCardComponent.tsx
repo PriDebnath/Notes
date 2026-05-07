@@ -13,14 +13,14 @@ import type { Quote, QuoteDetails } from "@/model/index.model";
 import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCircle, Pin, PinOff } from "lucide-react";
 
 interface Props {
-    quote: QuoteDetails;
-    onEdit: (quote: Quote) => void
-    onDelete: (quote: Quote) => void
-    onTogglePin: (quote: QuoteDetails) => void
+    note: QuoteDetails;
+    onEdit: (note: Quote) => void
+    onDelete: (note: Quote) => void
+    onTogglePin: (note: QuoteDetails) => void
 }
 
 const QuoteCardComponent = (props: Props) => {
-    const { quote, onEdit, onDelete, onTogglePin } = props
+    const { note, onEdit, onDelete, onTogglePin } = props
     const [copying, setCopying] = useState(false)
     const [downloading, setDownloading] = useState(false)
     const { buildStyle } = useBackground()
@@ -28,7 +28,7 @@ const QuoteCardComponent = (props: Props) => {
 
     const noteRef = useRef<HTMLDivElement>(null)
 
-    const cardStyle = buildStyle(quote.texture!, quote.pri_set!)
+    const cardStyle = buildStyle(note.texture!, note.pri_set!)
 
     const exportAsImage = async () => {
         if (!noteRef.current) return
@@ -70,9 +70,9 @@ const QuoteCardComponent = (props: Props) => {
     return (
         <Link
             className=""
-            to={"/$quoteId"}
+            to={"/$noteId"}
             params={
-                { quoteId: quote.id?.toString()! }
+                { noteId: note.id?.toString()! }
             }>
 
             <div
@@ -85,16 +85,16 @@ const QuoteCardComponent = (props: Props) => {
                 )}>
                 {/* <div className="flex justify-end w-full">
                     <Button
-                            className={cn("hover:text-primary-600", quote.pinned && "text-primary-600")}
+                            className={cn("hover:text-primary-600", note.pinned && "text-primary-600")}
                             variant={"outline"}
                             onClick={(e) => {
                                 e.preventDefault()
-                                onTogglePin(quote)
+                                onTogglePin(note)
                             }}
-                            aria-label={quote.pinned ? "Unpin note" : "Pin note"}
+                            aria-label={note.pinned ? "Unpin note" : "Pin note"}
                             size={"sm"}
                         >
-                            {quote.pinned ? <PinOff /> : <Pin />}
+                            {note.pinned ? <PinOff /> : <Pin />}
                         </Button>
                     </div> */}
                 <div className={cn(
@@ -107,20 +107,20 @@ const QuoteCardComponent = (props: Props) => {
                     "removed-prose-foreground",
                     "line-clamp-3",
                 )}>   {/* IMPORTANT */}
-                    <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(quote.text) }}></div>
+                    <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(note.text) }}></div>
                 </div>
                 {/*
                 <p className="text-base w-full text-card-foreground text-right">-- Pritam</p>    */}
                 <div className="flex w-full items-end justify-between gap-2">
-                    {infoType == "tags" && <ListTagsComponent tags={quote.tags!} />}
+                    {infoType == "tags" && <ListTagsComponent tags={note.tags!} />}
                     {infoType == "created_at" && (
                         <p className="p-0 text-[0.615rem] text-muted-foreground">  {
-                            formatDate(quote.created_at!)
+                            formatDate(note.created_at!)
                         }</p>
                     )}
                     {infoType == "updated_at" && (
                         <p className="p-0 text-[0.615rem] text-muted-foreground">  {
-                            formatDate(quote.updated_at!)
+                            formatDate(note.updated_at!)
                         }</p>
                     )}
                     <div className="flex items-center gap-2 ">
@@ -130,10 +130,10 @@ const QuoteCardComponent = (props: Props) => {
                             variant={"outline"}
                             onClick={(e) => {
                                 e.preventDefault()
-                                const text = htmlToPlainText(quote.text)
+                                const text = htmlToPlainText(note.text)
                                 onCopy(text)
                             }}
-                            aria-label="Copy quote"
+                            aria-label="Copy note"
                             size={"sm"}
                         >
                             {copying ? <Check className="text-green-500" /> : <Copy />}
@@ -142,17 +142,17 @@ const QuoteCardComponent = (props: Props) => {
                         <Button
                             className={cn(
                                 "hover:text-primary focus:text-primary active:text-primary", 
-                                quote.pinned && "text-primary")
+                                note.pinned && "text-primary")
                             }
                             variant={"outline"}
                             onClick={(e) => {
                                 e.preventDefault()
-                                onTogglePin(quote)
+                                onTogglePin(note)
                             }}
-                            aria-label={quote.pinned ? "Unpin note" : "Pin note"}
+                            aria-label={note.pinned ? "Unpin note" : "Pin note"}
                             size={"sm"}
                         >
-                            {quote.pinned ? <PinOff /> : <Pin />}
+                            {note.pinned ? <PinOff /> : <Pin />}
                         </Button>
 
                         {/*
@@ -161,9 +161,9 @@ const QuoteCardComponent = (props: Props) => {
                             variant={"outline"}
                             onClick={(e) => {
                                 e.preventDefault()
-                                onEdit(quote)
+                                onEdit(note)
                             }} 
-                            aria-label="Edit quote"
+                            aria-label="Edit note"
                             size={"sm"}>
                             <PenIcon />
                         </Button>
@@ -173,9 +173,9 @@ const QuoteCardComponent = (props: Props) => {
                             variant={"outline"}
                             onClick={(e) => {
                                 e.preventDefault()
-                                onDelete(quote)
+                                onDelete(note)
                             }}
-                            aria-label={"delete-" + quote.id}
+                            aria-label={"delete-" + note.id}
                             size={"sm"}
                         >
                             {<Trash />}

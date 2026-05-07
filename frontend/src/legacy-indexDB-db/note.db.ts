@@ -26,14 +26,14 @@ export const getAllQuote = async (quoteId: number): Promise<Quote> => {
 };
 
 
-export const addQuote = async (quote: Quote): Promise<Quote> => {
+export const addQuote = async (note: Quote): Promise<Quote> => {
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, 'readwrite');
   const store = tx.objectStore(STORE_NAME);
 
   const promise = new Promise<Quote>((resolve, reject) => {
     // IMPORTANT: remove id before add
-    const { id, ...data } = quote;
+    const { id, ...data } = note;
     const req = store.add({
       ...data,
       created_at: new Date(),
@@ -41,7 +41,7 @@ export const addQuote = async (quote: Quote): Promise<Quote> => {
     });
     req.onsuccess = () => {
       resolve({
-        ...quote,
+        ...note,
         id: req.result as number, // ✅ GENERATED ID
       });
     };
@@ -53,8 +53,8 @@ export const addQuote = async (quote: Quote): Promise<Quote> => {
 
 
 
-export const updateQuote = async (quote: Quote): Promise<Quote> => {
-  if (quote.id == null) {
+export const updateQuote = async (note: Quote): Promise<Quote> => {
+  if (note.id == null) {
     throw new Error('Quote id is required for update');
   }
 
@@ -64,12 +64,12 @@ export const updateQuote = async (quote: Quote): Promise<Quote> => {
 
   const promise = new Promise<Quote>(async (resolve, reject) => {
     const req = store.put({
-      ...quote,
+      ...note,
       updated_at: new Date(),
     })
     req.onsuccess = async () => {
       resolve({
-        ...quote,
+        ...note,
       })
     }
     req.onerror = () => reject(req.error)
@@ -86,6 +86,6 @@ export const deleteQuote = async (id: number): Promise<void> => {
   store.delete(id);
   return new Promise((resolve, reject) => {
     transaction.oncomplete = () => resolve();
-    transaction.onerror = () => reject('Error deleting quote');
+    transaction.onerror = () => reject('Error deleting note');
   });
 };

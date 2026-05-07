@@ -73,7 +73,7 @@ export const DownloadButton = (props: Props) => {
                     e.preventDefault()
                     handleDownload()
                 }}
-                aria-label="Download quote"
+                aria-label="Download note"
                 size={"sm"}
             >
                 {downloadStatus == "idle" && <CircleArrowDown />}

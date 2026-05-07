@@ -1,5 +1,5 @@
-import { addQuote, } from '@/db/quote.db'
-import { queryKeysGetQuote } from "./use-get-quote-details.hook"
+import { addQuote, } from '@/db/note.db'
+import { queryKeysGetQuote } from "./use-get-note-details.hook"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 export const useCreateQuoteDetails = () => {

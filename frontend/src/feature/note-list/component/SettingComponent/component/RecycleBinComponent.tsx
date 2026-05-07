@@ -32,10 +32,10 @@ import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.
 import { ArrowLeftIcon, CircleArrowDown, CircleCheckBig, Copy, Images, LoaderCircle, Save, Share, Settings, Link2Icon, SquareArrowOutUpRight, ArrowUpRight, TrashIcon, CircleArrowLeft, RotateCcw, Trash2Icon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { useGetAllDeletedQuoteDetails } from "@/feature/note-list/hook/use-get-all-delete-quote-details.hook";
+import { useGetAllDeletedQuoteDetails } from "@/feature/note-list/hook/use-get-all-delete-note-details.hook";
 import { sanitizeHTML } from "@/helper/sanitize-html";
-import { useUpdateQuoteDetails } from "@/feature/note-list/hook/use-update-quote-details.hook";
-import { deleteQuoteWithLinks } from "@/db/quote_tags.db";
+import { useUpdateQuoteDetails } from "@/feature/note-list/hook/use-update-note-details.hook";
+import { deleteQuoteWithLinks } from "@/db/note_tags.db";
 import { TooltipTrigger, TooltipContent, Tooltip } from "@/components/ui/tooltip";
 
 
@@ -48,20 +48,20 @@ function RecycleBinComponent(props: Props) {
   const { data, isLoading, refetch } = useGetAllDeletedQuoteDetails()
   const { updateQuote } = useUpdateQuoteDetails()
 
-  const handleRestore = async (quote: Quote) => {
-    if (!quote.id) return
+  const handleRestore = async (note: Quote) => {
+    if (!note.id) return
     await updateQuote({
-      ...quote,
-      text: quote.text || "Empty",
+      ...note,
+      text: note.text || "Empty",
       deleted: false,
       synced: false,
     })
     refetch()
   }
 
-  const handleHardDelete = async (quote: Quote) => {
-    if (!quote.id) return
-    await await deleteQuoteWithLinks(quote.id)
+  const handleHardDelete = async (note: Quote) => {
+    if (!note.id) return
+    await await deleteQuoteWithLinks(note.id)
     refetch()
   }
 
@@ -95,14 +95,14 @@ function RecycleBinComponent(props: Props) {
 
         <div
           className=" overflow-y-auto rounded-xl  h-40 min-h-0 flex flex-col gap-1 border-2  p-2">
-          {data?.map((quote, i) => (
-            <div key={'bin' + quote.id}
+          {data?.map((note, i) => (
+            <div key={'bin' + note.id}
               className="flex justify-between border-2 rounded-lg p-2">
               <div
 
                 className=" "
                 dangerouslySetInnerHTML={{
-                  __html: sanitizeHTML(quote?.text!)
+                  __html: sanitizeHTML(note?.text!)
                 }}
               />
               <div className="flex items-center gap-2">
@@ -113,7 +113,7 @@ function RecycleBinComponent(props: Props) {
                       variant={"outline"}
                       onClick={(e) => {
                         e.preventDefault()
-                        handleRestore(quote)
+                        handleRestore(note)
                       }}
                       aria-label={"Restore note"}
                       size={"sm"}
@@ -132,7 +132,7 @@ function RecycleBinComponent(props: Props) {
                       variant={"outline"}
                       onClick={(e) => {
                         e.preventDefault()
-                        handleHardDelete(quote)
+                        handleHardDelete(note)
                       }}
                       aria-label={"Delete note"}
                       size={"sm"}

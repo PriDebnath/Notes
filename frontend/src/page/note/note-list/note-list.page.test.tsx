@@ -6,17 +6,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { logDOM, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react"
 
 // hooks
-import { useGetAllQuoteDetails } from "@/feature/note-list/hook/use-get-all-quote-details.hook"
+import { useGetAllQuoteDetails } from "@/feature/note-list/hook/use-get-all-note-details.hook"
 
 // db actions
-import { deleteQuoteWithLinks } from "@/db/quote_tags.db"
-import { toggleQuotePinned } from "@/db/quote.db"
+import { deleteQuoteWithLinks } from "@/db/note_tags.db"
+import { toggleQuotePinned } from "@/db/note.db"
 
 // store
 import { useSortStore } from "@/store/use-sort.store"
 import type { QuoteDetails } from "@/model/index.model"
 
-vi.mock("@/api-hook/use-get-all-quote-details.hook")
+vi.mock("@/api-hook/use-get-all-note-details.hook")
 const mockUseGetAllQuoteDetails = vi.mocked(useGetAllQuoteDetails)
 type GetAllQuotesReturn = ReturnType<typeof useGetAllQuoteDetails>
 
@@ -76,7 +76,7 @@ describe(Component.name, () => {
     })
 
     it("renders quotes when data exists", async () => {
-      const testContent = "test quote" 
+      const testContent = "test note" 
       mockUseGetAllQuoteDetails.mockReturnValue({
         data: [
           {
@@ -162,12 +162,12 @@ describe(Component.name, () => {
         data: [
           {
             id: 1,
-            text: "quote one",
+            text: "note one",
             tags: [{ id: 1, name: "life" }],
           },
           {
             id: 2,
-            text: "quote two",
+            text: "note two",
             tags: [{ id: 2, name: "love" }],
           },
         ],
@@ -210,7 +210,7 @@ describe(Component.name, () => {
   })
 
   describe("interaction", () => {
-    it("opens delete dialog and deletes quote", async () => {
+    it("opens delete dialog and deletes note", async () => {
       const firstItem = { id: 1, text: "delete me", tags: [{ id: 1, name: "life" }] }
       const mockedData: GetAllQuotesReturn = {
         data: [firstItem],

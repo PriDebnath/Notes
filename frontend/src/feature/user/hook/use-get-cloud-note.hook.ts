@@ -11,7 +11,7 @@ const getCloudQuote = (param : Param) =>
         method: "GET",
     })
 
-export const useGetCloudQuoteKey = "get-cloud-quote"
+export const useGetCloudQuoteKey = "get-cloud-note"
 
 export const useGetCloudQuote = (param : Param) => {
     const queryClient = useQueryClient()

@@ -1,9 +1,9 @@
 import { openDB, STORES } from './db'
 import type { NoteDetails, NoteTags, Tag } from '@/model/index.model'
 
-const STORE = STORES.QUOTES_TAGS
+const STORE = STORES.NOTES_TAGS
 
-/* ===================== QUOTE ↔ TAG (JUNCTION) ===================== */
+/* ===================== NOTE ↔ TAG (JUNCTION) ===================== */
 
 export const getAllNoteTags = async (): Promise<NoteTags[]> => {
   const db = await openDB()
@@ -93,13 +93,13 @@ export const getNoteDetails = async (
 
   return new Promise((resolve, reject) => {
     const tx = db.transaction(
-      [STORES.QUOTES, STORES.TAGS, STORES.QUOTES_TAGS],
+      [STORES.NOTES, STORES.TAGS, STORES.NOTES_TAGS],
       'readonly'
     )
 
-    const notesStore = tx.objectStore(STORES.QUOTES)
+    const notesStore = tx.objectStore(STORES.NOTES)
     const tagsStore = tx.objectStore(STORES.TAGS)
-    const junctionStore = tx.objectStore(STORES.QUOTES_TAGS)
+    const junctionStore = tx.objectStore(STORES.NOTES_TAGS)
 
     const noteReq = notesStore.get(noteId)
 
@@ -141,13 +141,13 @@ export const getAllNotesDetails = async (): Promise<NoteDetails[]> => {
 
   return new Promise((resolve, reject) => {
     const tx = db.transaction(
-      [STORES.QUOTES, STORES.TAGS, STORES.QUOTES_TAGS],
+      [STORES.NOTES, STORES.TAGS, STORES.NOTES_TAGS],
       'readonly'
     )
 
-    const notesStore = tx.objectStore(STORES.QUOTES)
+    const notesStore = tx.objectStore(STORES.NOTES)
     const tagsStore = tx.objectStore(STORES.TAGS)
-    const junctionStore = tx.objectStore(STORES.QUOTES_TAGS)
+    const junctionStore = tx.objectStore(STORES.NOTES_TAGS)
 
     const notesReq = notesStore.getAll()
 

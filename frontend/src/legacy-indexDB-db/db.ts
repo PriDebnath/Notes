@@ -9,15 +9,15 @@ const DB_NAME = 'notes_keeper_db_by_pri';
 const DB_VERSION = 7
 
 export const STORES = {
-  QUOTES: 'notes',
+  NOTES: 'notes',
   TAGS: 'tags',
-  QUOTES_TAGS: 'notes_tags', // many to many relationship
+  NOTES_TAGS: 'notes_tags', // many to many relationship
 } as const
 
 
 const createNotesStore = (db: IDBDatabase) => {
-  if (!db.objectStoreNames.contains(STORES.QUOTES)) {
-    db.createObjectStore(STORES.QUOTES, {
+  if (!db.objectStoreNames.contains(STORES.NOTES)) {
+    db.createObjectStore(STORES.NOTES, {
       keyPath: 'id',
       autoIncrement: true,
     })
@@ -37,8 +37,8 @@ const createTagsStore = (db: IDBDatabase) => {
 }
 
 const createNotesTagsStore = (db: IDBDatabase) => {
-  if (!db.objectStoreNames.contains(STORES.QUOTES_TAGS)) {
-    const store = db.createObjectStore(STORES.QUOTES_TAGS, {
+  if (!db.objectStoreNames.contains(STORES.NOTES_TAGS)) {
+    const store = db.createObjectStore(STORES.NOTES_TAGS, {
       keyPath: 'id',
       autoIncrement: true,
     })
@@ -78,13 +78,13 @@ export const openDB = (): Promise<IDBDatabase> => {
 }
 
 const deleteStores = (db: IDBDatabase) => {
-  if (db.objectStoreNames.contains(STORES.QUOTES)) {
-    db.deleteObjectStore(STORES.QUOTES)
+  if (db.objectStoreNames.contains(STORES.NOTES)) {
+    db.deleteObjectStore(STORES.NOTES)
   }
   if (db.objectStoreNames.contains(STORES.TAGS)) {
     db.deleteObjectStore(STORES.TAGS)
   }
-  if (db.objectStoreNames.contains(STORES.QUOTES_TAGS)) {
-    db.deleteObjectStore(STORES.QUOTES_TAGS)
+  if (db.objectStoreNames.contains(STORES.NOTES_TAGS)) {
+    db.deleteObjectStore(STORES.NOTES_TAGS)
   }
 }

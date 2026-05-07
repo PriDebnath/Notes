@@ -1,7 +1,7 @@
 import { openDB, STORES } from "./db";
 import type { Note } from "@/model/index.model";
 
-const STORE_NAME = STORES.QUOTES;
+const STORE_NAME = STORES.NOTES;
 
 export const getAllNotes = async (): Promise<Note[]> => {
   const db = await openDB();

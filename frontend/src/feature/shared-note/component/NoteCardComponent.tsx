@@ -9,11 +9,11 @@ import { sanitizeHTML } from "@/helper/sanitize-html";
 import useBackground from "@/hooks/use-background.hook";
 import { htmlToPlainText } from "@/helper/html-to-text";
 import { useShowCardInfo } from "@/store/use-card-info.store";
-import type { Quote, QuoteDetails } from "@/model/index.model";
+import type { Note, QuoteDetails } from "@/model/index.model";
 import { Check, Copy, Maximize2, PenIcon, Trash, Save, CircleArrowDown, LoaderCircle, Pin, PinOff } from "lucide-react";
 
 interface Props {
-    note: Quote;
+    note: Note;
 }
 
 const NoteCardComponent = (props: Props) => {

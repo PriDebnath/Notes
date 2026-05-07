@@ -7,14 +7,14 @@ import { useCardViewStore } from "@/store/use-card-view.store"
 
 interface Props {
   loading: boolean
-  quotes: QuoteDetails[]
+  notes: QuoteDetails[]
   onEdit: (note: QuoteDetails) => void
   onDelete: (note: QuoteDetails) => void
   onTogglePin: (note: QuoteDetails) => void
 }
 
 export default function QuoteListComponent(props: Props) {
-  const { loading, quotes, onEdit, onDelete, onTogglePin } = props
+  const { loading, notes, onEdit, onDelete, onTogglePin } = props
 
   const { view } = useCardViewStore()
 
@@ -49,7 +49,7 @@ export default function QuoteListComponent(props: Props) {
     )
   }
 
-  if ((!quotes || quotes.length === 0) && !loading) {
+  if ((!notes || notes.length === 0) && !loading) {
     return <p className="w-full flex items-center justify-center h-48 text-muted-foreground">
       No secrets written. For now.
     </p>
@@ -62,7 +62,7 @@ export default function QuoteListComponent(props: Props) {
         className="flex gap-2"
         columnClassName={columnClassName}
       >
-        {quotes.map((q, i) => (
+        {notes.map((q, i) => (
           <motion.div
             key={q.id}
             initial={{ opacity: 0, y: 6 }}

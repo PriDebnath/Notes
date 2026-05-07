@@ -2,7 +2,7 @@ import type { TextureKey, Pri_set } from "@/hooks/use-background.hook";
 
 // DB DATA MODELS
 
-export interface Quote {
+export interface Note {
     _id?: string | undefined; // cloud id
     user?: string | undefined; // cloud user id
     id?: number | undefined;
@@ -41,7 +41,7 @@ export interface QuoteFormData {
     pri_set?: Pri_set;
 }
 
-export interface QuoteDetails extends Quote {
+export interface QuoteDetails extends Note {
     tags?: Tag[]
 }
 

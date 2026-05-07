@@ -1,12 +1,12 @@
 import { apiClient } from "@/lib/apiClient"
-import type { Quote } from "@/model/index.model"
+import type { Note } from "@/model/index.model"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 export type Param = {
 }
 
 const getAllCloudQuote = () =>
-    apiClient<Quote[]>("/api/v1/notes/" , {
+    apiClient<Note[]>("/api/v1/notes/" , {
         method: "GET",
     })
 

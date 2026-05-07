@@ -7,14 +7,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import type { Quote } from "@/model/index.model"
+import type { Note } from "@/model/index.model"
 import { sanitizeHTML } from "@/helper/sanitize-html";
 import { useState, useEffect, type Dispatch, type SetStateAction, memo } from "react"
 
 interface Props {
   open: boolean;
-  note: Quote | null;
-  handleDelete: (note: Quote) => void;
+  note: Note | null;
+  handleDelete: (note: Note) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -34,7 +34,7 @@ function DeleteQuoteDialog(props: Props) {
       <form onSubmit={handleFormSubmit} aria-label="delete-note-form">
         {/* 
           <DialogTrigger asChild>
-            <Button variant="outline">Add Quote</Button>
+            <Button variant="outline">Add Note</Button>
           </DialogTrigger>
         */}
         <DialogContent className="">

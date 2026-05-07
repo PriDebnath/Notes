@@ -2,6 +2,7 @@
   "compilerOptions": {
         "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "ignoreDeprecations" :"6.0" ,
     "baseUrl": ".",
     "target": "es6",
     "lib": ["es6", "dom"],

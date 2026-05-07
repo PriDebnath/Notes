@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/apiClient"
-import type { Quote } from "@/model/index.model"
+import type { Note } from "@/model/index.model"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 export type Param = {
@@ -7,7 +7,7 @@ export type Param = {
 }
 
 const getCloudQuote = (param : Param) =>
-    apiClient<Quote>("/api/v1/notes/" + param?._id, {
+    apiClient<Note>("/api/v1/notes/" + param?._id, {
         method: "GET",
     })
 

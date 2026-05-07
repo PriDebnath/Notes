@@ -25,12 +25,12 @@ export const addTagToQuote = async (quoteId: number, tagName: string) => {
 export const getAllQuotesDetailsOld = async () => {
   return db.transaction(
     "r",
-    db.quotes,
+    db.notes,
     db.quotes_tags,
     db.tags,
     async () => {
       // #1 Query all tables
-      let quotes = await db.quotes.toArray()
+      let notes = await db.notes.toArray()
       let tags = await db.tags.toArray()
       let quote_tags = await db.quotes_tags.toArray()
 
@@ -49,7 +49,7 @@ export const getAllQuotesDetailsOld = async () => {
         linksByQuoteId.get(link.quoteId)!.push(tag);
       }
       // #4 return formated data
-      let quotesResult = quotes.map((q) => {
+      let quotesResult = notes.map((q) => {
         return {
           ...q,
           tags: linksByQuoteId.get(q?.id!) || []
@@ -64,25 +64,25 @@ export const getAllQuotesDetails = async (param: GetAllQuotesDetailsParam) => {
   const { sortBy = 'created_at', include = 'all' } = param
   return db.transaction(
     "r",
-    db.quotes,
+    db.notes,
     db.quotes_tags,
     db.tags,
     async () => {
       // #1 Query all tables with DB-level ordering where possible
-      let quotes =
+      let notes =
         sortBy === "created_at"
-          ? await db.quotes.orderBy("created_at").reverse().toArray()
+          ? await db.notes.orderBy("created_at").reverse().toArray()
           : sortBy === "updated_at"
-            ? await db.quotes.orderBy("updated_at").reverse().toArray()
-            : await db.quotes.toArray()
+            ? await db.notes.orderBy("updated_at").reverse().toArray()
+            : await db.notes.toArray()
 
       // #1.a get non-deleted 
       if (include == 'non-deleted') {
-        quotes = quotes.filter((item) => item.deleted !== true)
+        notes = notes.filter((item) => item.deleted !== true)
       }
       // #1.b get deleted 
       if (include == 'deleted') {
-        quotes = quotes.filter((item) => item.deleted === true)
+        notes = notes.filter((item) => item.deleted === true)
       }
 
       let tags = await db.tags.toArray()
@@ -103,7 +103,7 @@ export const getAllQuotesDetails = async (param: GetAllQuotesDetailsParam) => {
         linksByQuoteId.get(link.quoteId)!.push(tag);
       }
       // #4 join tags
-      let quotesResult = quotes.map((q) => {
+      let quotesResult = notes.map((q) => {
         return {
           ...q,
           tags: linksByQuoteId.get(q?.id!) || []
@@ -133,8 +133,8 @@ export const getAllQuotesDetails = async (param: GetAllQuotesDetailsParam) => {
 
 
 export const getQuoteDetails = async (quoteId: number) => {
-  return db.transaction("r", db.quotes, db.quotes_tags, db.tags, async () => {
-    const note = await db.quotes.get(quoteId);
+  return db.transaction("r", db.notes, db.quotes_tags, db.tags, async () => {
+    const note = await db.notes.get(quoteId);
     if (!note) return;
 
     const links = await db.quotes_tags
@@ -157,7 +157,7 @@ export const getQuoteDetails = async (quoteId: number) => {
 export const deleteQuoteWithLinks = async (quoteId: number) => {
   return db.transaction(
     "rw",
-    db.quotes,
+    db.notes,
     db.quotes_tags,
     async () => {
 
@@ -168,7 +168,7 @@ export const deleteQuoteWithLinks = async (quoteId: number) => {
         .delete();
 
       // 2️⃣ delete the note itself
-      await db.quotes.delete(quoteId);
+      await db.notes.delete(quoteId);
     }
   );
 };

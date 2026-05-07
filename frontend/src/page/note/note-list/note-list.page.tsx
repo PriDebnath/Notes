@@ -17,7 +17,7 @@ import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Suspense, lazy } from 'react'
 import { deleteQuoteWithLinks } from '@/db/note_tags.db'
-import type { Quote, QuoteDetails, QuoteFormData, Tag, SortOption } from '@/model/index.model'
+import type { Note, QuoteDetails, QuoteFormData, Tag, SortOption } from '@/model/index.model'
 import { useGetAllQuoteDetails } from '@/feature/note-list/hook/use-get-all-note-details.hook'
 import { useSortStore } from '@/store/use-sort.store'
 import { toggleQuotePinned, updateQuote } from '@/db/note.db'
@@ -40,11 +40,11 @@ export function QuoteListPage() {
   } = useGetAllQuoteDetails()
 
   const [search, setSearch] = useState('')
-  const [quotes, setQuotes] = useState<QuoteDetails[]>([])
+  const [notes, setQuotes] = useState<QuoteDetails[]>([])
   const [openDelete, setOpenDelete] = useState(false)
   const { updateQuote } = useUpdateQuoteDetails()
   const [activeTags, setActiveTags] = useState<string[]>([])
-  const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
+  const [selectedQuote, setSelectedQuote] = useState<Note | null>(null)
   const allTags = [
     ...new Set(quotesStored?.flatMap(q => q.tags?.map(t => t.name) ?? []
     ))]
@@ -71,7 +71,7 @@ export function QuoteListPage() {
   }, [quotesStored, search, activeTags])
 
 
-  const openDeleteDialog = (note: Quote) => {
+  const openDeleteDialog = (note: Note) => {
     setSelectedQuote(note)
     setOpenDelete(true)
   }
@@ -159,7 +159,7 @@ export function QuoteListPage() {
           <div aria-label='list'>
             <QuoteListComponent
               loading={isLoading}
-              quotes={quotes}
+              notes={notes}
               onEdit={() => { }}
               onDelete={openDeleteDialog}
               onTogglePin={handleTogglePin}

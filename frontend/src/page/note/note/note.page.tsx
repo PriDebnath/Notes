@@ -13,7 +13,7 @@ import { ArrowLeftIcon, Save, Shirt } from 'lucide-react'
 import { useGetSummarize } from '@/feature/note/hook/ai-content-summarize.hook'
 import { useGetQuoteDetails } from '@/feature/note/hook/use-get-note-details.hook'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import type { Quote, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
+import type { Note, QuoteDetails, QuoteFormData, Tag } from "@/model/index.model"
 import { addTagToQuote, deleteQuoteTagLinks, deleteQuoteWithLinks } from '@/db/note_tags.db'
 import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react"
 import { ButtonLoader } from "@/components/ui/button-loader"
@@ -233,7 +233,7 @@ export function QuotePage(props: Props) {
                 <div className="grid gap-4">
                   <div className="grid gap-3">
                     {/*
-                    <Label htmlFor="name-1">Quote</Label>
+                    <Label htmlFor="name-1">Note</Label>
                     */}
                     <Suspense fallback={<EditorSkeleton />}>
                       <div aria-label="editor" >

@@ -25,7 +25,7 @@ import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { useColorThemeStore } from "@/store/use-color-theme.store";
 import { useFontStore, fonts, type Font } from "@/store/use-font.store";
 import { colorThemes, type ColorTheme } from "@/hooks/use-color-theme.hook";
-import type { CardView, Quote, QuoteFormData, SortOption } from "@/model/index.model";
+import type { CardView, Note, QuoteFormData, SortOption } from "@/model/index.model";
 import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
 import { themeModes, type ThemeMode } from '@/hooks/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
@@ -56,7 +56,7 @@ function OpenCloudContainerComponent(props: Props) {
   const { updateCloudQuote } = useUpdateCloudQuote()
   const { updateQuote } = useUpdateQuoteDetails()
   const { createQuote } = useCreateQuoteDetails()
-  const handleCloudDownload = async (note: Quote) => {
+  const handleCloudDownload = async (note: Note) => {
     await createQuote({
       ...note,
       text: note.text || "Empty",
@@ -65,19 +65,19 @@ function OpenCloudContainerComponent(props: Props) {
     toast.success("Stored in local", toastConfig)
   }
 
-  const handleHardDelete = async (note: Quote) => {
+  const handleHardDelete = async (note: Note) => {
     if (!note._id) return
     await deleteCloudQuote({ _id: note._id })
     refetch()
   }
 
-  const handleUpdate = async (note: Quote) => {
+  const handleUpdate = async (note: Note) => {
     if (!note._id) return
     await updateCloudQuote({ _id: note._id, shared: !note?.shared })
     refetch()
   }
 
-  const handleLinkCopy = async (note: Quote) => {
+  const handleLinkCopy = async (note: Note) => {
     const location = router.buildLocation({
       to: "/shared-note/$_id",
       params: {

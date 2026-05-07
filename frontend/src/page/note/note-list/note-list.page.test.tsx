@@ -75,7 +75,7 @@ describe(Component.name, () => {
       logDOM(loader!)
     })
 
-    it("renders quotes when data exists", async () => {
+    it("renders notes when data exists", async () => {
       const testContent = "test note" 
       mockUseGetAllQuoteDetails.mockReturnValue({
         data: [
@@ -132,7 +132,7 @@ describe(Component.name, () => {
   })
 
   describe("search filtering", () => {
-    it("filters quotes by search text", async () => {
+    it("filters notes by search text", async () => {
       mockUseGetAllQuoteDetails.mockReturnValue({
         data: [
           { id: 1, text: "hello world", tags: [] },
@@ -157,7 +157,7 @@ describe(Component.name, () => {
   })
 
   describe("tag filtering", () => {
-    it("filters quotes by tag", async () => {
+    it("filters notes by tag", async () => {
       const mockedData = {
         data: [
           {

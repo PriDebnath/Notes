@@ -3,10 +3,10 @@ import { apiClient } from "@/lib/apiClient";
 import { toastConfig } from "@/components/ui/sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useGetCloudQuoteKey } from "./use-get-cloud-note.hook";
-import type { Quote } from "@/model/index.model";
+import type { Note } from "@/model/index.model";
 import { useGetAllCloudQuoteKey } from "./use-get-all-cloud-note.hook";
 
-export interface Param extends Omit<Quote, 'text'> { 
+export interface Param extends Omit<Note, 'text'> { 
   text?: string;  
 };
 

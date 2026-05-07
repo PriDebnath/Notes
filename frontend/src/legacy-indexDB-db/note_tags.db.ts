@@ -181,6 +181,6 @@ export const getAllQuotesDetails = async (): Promise<QuoteDetails[]> => {
       resolve(result)
     }
 
-    tx.onerror = () => reject('Failed to load quotes details')
+    tx.onerror = () => reject('Failed to load notes details')
   })
 }

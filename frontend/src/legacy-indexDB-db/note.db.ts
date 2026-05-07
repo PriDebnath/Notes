@@ -1,9 +1,9 @@
 import { openDB, STORES } from "./db";
-import type { Quote } from "@/model/index.model";
+import type { Note } from "@/model/index.model";
 
 const STORE_NAME = STORES.QUOTES;
 
-export const getAllQuotes = async (): Promise<Quote[]> => {
+export const getAllQuotes = async (): Promise<Note[]> => {
   const db = await openDB();
   const transaction = db.transaction(STORE_NAME, 'readonly');
   const store = transaction.objectStore(STORE_NAME);
@@ -14,7 +14,7 @@ export const getAllQuotes = async (): Promise<Quote[]> => {
   });
 };
 
-export const getAllQuote = async (quoteId: number): Promise<Quote> => {
+export const getAllQuote = async (quoteId: number): Promise<Note> => {
   const db = await openDB();
   const transaction = db.transaction(STORE_NAME, 'readonly');
   const store = transaction.objectStore(STORE_NAME);
@@ -26,12 +26,12 @@ export const getAllQuote = async (quoteId: number): Promise<Quote> => {
 };
 
 
-export const addQuote = async (note: Quote): Promise<Quote> => {
+export const addQuote = async (note: Note): Promise<Note> => {
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, 'readwrite');
   const store = tx.objectStore(STORE_NAME);
 
-  const promise = new Promise<Quote>((resolve, reject) => {
+  const promise = new Promise<Note>((resolve, reject) => {
     // IMPORTANT: remove id before add
     const { id, ...data } = note;
     const req = store.add({
@@ -53,16 +53,16 @@ export const addQuote = async (note: Quote): Promise<Quote> => {
 
 
 
-export const updateQuote = async (note: Quote): Promise<Quote> => {
+export const updateQuote = async (note: Note): Promise<Note> => {
   if (note.id == null) {
-    throw new Error('Quote id is required for update');
+    throw new Error('Note id is required for update');
   }
 
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, 'readwrite');
   const store = tx.objectStore(STORE_NAME);
 
-  const promise = new Promise<Quote>(async (resolve, reject) => {
+  const promise = new Promise<Note>(async (resolve, reject) => {
     const req = store.put({
       ...note,
       updated_at: new Date(),

@@ -40,7 +40,7 @@ const puppeteer = require('puppeteer'); // v23.0.0 or later
             targetPage.locator('div.flex-col-reverse > button'),
             targetPage.locator('::-p-xpath(//*[@id=\\"radix-_r_5c_\\"]/div[3]/button)'),
             targetPage.locator(':scope >>> div.flex-col-reverse > button'),
-            targetPage.locator('::-p-text(Delete Quote)')
+            targetPage.locator('::-p-text(Delete Note)')
         ])
             .setTimeout(timeout)
             .click({

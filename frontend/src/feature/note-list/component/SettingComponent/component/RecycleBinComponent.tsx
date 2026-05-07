@@ -25,7 +25,7 @@ import { sortOptions, useSortStore } from "@/store/use-sort.store";
 import { useColorThemeStore } from "@/store/use-color-theme.store";
 import { useFontStore, fonts, type Font } from "@/store/use-font.store";
 import { colorThemes, type ColorTheme } from "@/hooks/use-color-theme.hook";
-import type { CardView, Quote, QuoteFormData, SortOption } from "@/model/index.model";
+import type { CardView, Note, QuoteFormData, SortOption } from "@/model/index.model";
 import { cardViewOptions, useCardViewStore } from "@/store/use-card-view.store";
 import { themeModes, type ThemeMode } from '@/hooks/use-dark-or-light-theme.hook'
 import { showInfo, useShowCardInfo, type ShowInfo } from "@/store/use-card-info.store";
@@ -48,7 +48,7 @@ function RecycleBinComponent(props: Props) {
   const { data, isLoading, refetch } = useGetAllDeletedQuoteDetails()
   const { updateQuote } = useUpdateQuoteDetails()
 
-  const handleRestore = async (note: Quote) => {
+  const handleRestore = async (note: Note) => {
     if (!note.id) return
     await updateQuote({
       ...note,
@@ -59,7 +59,7 @@ function RecycleBinComponent(props: Props) {
     refetch()
   }
 
-  const handleHardDelete = async (note: Quote) => {
+  const handleHardDelete = async (note: Note) => {
     if (!note.id) return
     await await deleteQuoteWithLinks(note.id)
     refetch()

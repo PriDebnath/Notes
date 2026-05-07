@@ -9,7 +9,7 @@ const DB_NAME = 'quotes_keeper_db_by_pri';
 const DB_VERSION = 7
 
 export const STORES = {
-  QUOTES: 'quotes',
+  QUOTES: 'notes',
   TAGS: 'tags',
   QUOTES_TAGS: 'quotes_tags', // many to many relationship
 } as const

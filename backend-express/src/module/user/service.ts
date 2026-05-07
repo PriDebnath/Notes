@@ -1,4 +1,4 @@
-import { User, userModel as Model } from "./model.user";
+import { User, userModel as Model } from "./model";
 import { createUserSchema } from "./schema";
 import { hash } from "bcryptjs";
 

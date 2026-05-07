@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { User } from "./model.user";
+import type { User } from "./model";
 
 export const userZodSchema = z.object({
   _id: z.string(),

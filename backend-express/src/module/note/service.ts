@@ -1,7 +1,7 @@
 import z from "zod"
 import { noteCreateZodSchema, noteUpdateZodSchema } from "./schema"
 import { NoteModel } from "./model"
-import { User } from "../user/model.user"
+import { User } from "../user/model"
 import { userPayloadSchema } from "../auth/schema"
 
 

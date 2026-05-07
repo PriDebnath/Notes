@@ -2,7 +2,7 @@ import { ObjectId } from "mongoose"
 import { createUser } from "./service"
 import { Request, Response } from "express"
 import { errorHandler } from "../../utils/error-handler"
-import { userModel as Model, User as Type } from "./model.user"
+import { userModel as Model, User as Type } from "./model"
 
 export const createOne = async (req: Request, res: Response) => {
     try {

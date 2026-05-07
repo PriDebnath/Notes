@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createOne, deleteOne, getAll, getOne, updateOne } from "./controller.user";
+import { createOne, deleteOne, getAll, getOne, updateOne } from "./controller";
 import { validatedJwtToken } from "../../middleware/jwt.middleware";
 
 const router: Router = Router()

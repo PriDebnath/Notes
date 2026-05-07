@@ -24,7 +24,7 @@ export interface Tag {
     name: string;
 }
 
-export interface QuoteTags {
+export interface NoteTags {
     id?: number | undefined;
     quoteId: number;
     tagId: number;
@@ -33,7 +33,7 @@ export interface QuoteTags {
 
 // EXTRA DATA MODELS
 
-export interface QuoteFormData {
+export interface NoteFormData {
     id?: number | undefined;
     text?: string;
     tags?: string[];
@@ -41,7 +41,7 @@ export interface QuoteFormData {
     pri_set?: Pri_set;
 }
 
-export interface QuoteDetails extends Note {
+export interface NoteDetails extends Note {
     tags?: Tag[]
 }
 
@@ -59,7 +59,7 @@ export type ContentChatMessage = {
     content: string;
 }
 
-export type GetAllQuotesDetailsParam = {
+export type GetAllNotesDetailsParam = {
     sortBy?: SortOption,
     include?: 'all' | 'deleted'| 'non-deleted',
 }

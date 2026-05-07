@@ -1,19 +1,19 @@
 import { motion } from "framer-motion"
 import Masonry from "react-masonry-css"
-import type { QuoteDetails } from "@/model/index.model"
-import QuoteCard from "@/feature/note/component/QuoteCardComponent/QuoteCardComponent"
-import QuoteSkeleton from "@/feature/note/component/QuoteCardComponent/component/QuoteSkeletonComponent"
+import type { NoteDetails } from "@/model/index.model"
+import NoteCard from "@/feature/note/component/NoteCardComponent/NoteCardComponent"
+import NoteSkeleton from "@/feature/note/component/NoteCardComponent/component/NoteSkeletonComponent"
 import { useCardViewStore } from "@/store/use-card-view.store"
 
 interface Props {
   loading: boolean
-  notes: QuoteDetails[]
-  onEdit: (note: QuoteDetails) => void
-  onDelete: (note: QuoteDetails) => void
-  onTogglePin: (note: QuoteDetails) => void
+  notes: NoteDetails[]
+  onEdit: (note: NoteDetails) => void
+  onDelete: (note: NoteDetails) => void
+  onTogglePin: (note: NoteDetails) => void
 }
 
-export default function QuoteListComponent(props: Props) {
+export default function NoteListComponent(props: Props) {
   const { loading, notes, onEdit, onDelete, onTogglePin } = props
 
   const { view } = useCardViewStore()
@@ -41,7 +41,7 @@ export default function QuoteListComponent(props: Props) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.1 * i }}
             >
-              <QuoteSkeleton />
+              <NoteSkeleton />
             </motion.div>
           )
         })}
@@ -70,7 +70,7 @@ export default function QuoteListComponent(props: Props) {
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.4, delay: 0.1 * i }}
           >
-            <QuoteCard
+            <NoteCard
               note={q}
               onEdit={onEdit}
               onDelete={onDelete}

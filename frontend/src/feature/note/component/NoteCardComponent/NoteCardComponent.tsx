@@ -83,20 +83,6 @@ const NoteCardComponent = (props: Props) => {
                     "flex flex-col justify-between items-start gap-2",
                     "overflow-hidden",
                 )}>
-                {/* <div className="flex justify-end w-full">
-                    <Button
-                            className={cn("hover:text-primary-600", note.pinned && "text-primary-600")}
-                            variant={"outline"}
-                            onClick={(e) => {
-                                e.preventDefault()
-                                onTogglePin(note)
-                            }}
-                            aria-label={note.pinned ? "Unpin note" : "Pin note"}
-                            size={"sm"}
-                        >
-                            {note.pinned ? <PinOff /> : <Pin />}
-                        </Button>
-                    </div> */}
                 <div className={cn(
                     "tiptap",
                     "prose-sm",
@@ -106,6 +92,14 @@ const NoteCardComponent = (props: Props) => {
                     "removed-xl:prose-2xl",
                     "removed-prose-foreground",
                     "line-clamp-3",
+                    "tiptap",
+                    "prose",
+                    //   "prose-foreground",
+                    //   "removed-prose-sm ",
+                    //   "removed-sm:prose-base ",
+                    //   "  removed-lg:prose-lg",
+                    //   "  removed-xl:prose-2xl",
+                    //   "transition-transform duration-300 ease-out",
                 )}>   {/* IMPORTANT */}
                     <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(note.text) }}></div>
                 </div>
@@ -141,7 +135,7 @@ const NoteCardComponent = (props: Props) => {
 
                         <Button
                             className={cn(
-                                "hover:text-primary focus:text-primary active:text-primary", 
+                                "hover:text-primary focus:text-primary active:text-primary",
                                 note.pinned && "text-primary")
                             }
                             variant={"outline"}

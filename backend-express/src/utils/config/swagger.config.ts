@@ -10,7 +10,8 @@ const options: Options  = {
       version: ""
     },
   },
-  apis: [ path.resolve(__dirname, "../**/*.ts")], // 👈 IMPORTANT
+  // apis: [ path.resolve(__dirname, "../**/*.ts")], // 
+  apis: [ `${process.cwd()}/src/**/*.ts` ]
 };
 
 const swaggerSpec = swaggerJsdoc(options);

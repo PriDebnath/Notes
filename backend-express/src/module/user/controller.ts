@@ -40,6 +40,7 @@ export const updateOne = async (req: Request, res: Response) => {
         const item = await Model.findByIdAndUpdate(_id, {
             ...req.body
         })
+        res.send(item)
     } catch (error: any) {
         errorHandler({ error, response: res })
     }

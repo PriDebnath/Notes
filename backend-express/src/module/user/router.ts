@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { createOne, deleteOne, getAll, getOne, updateOne } from "./controller";
 import { validatedJwtToken } from "../../middleware/jwt.middleware";
+import { validateZodSchema } from "../../middleware/zod.middleware";
+import { userUpdateZodSchema } from "./schema";
 
 const router: Router = Router()
 
@@ -105,7 +107,11 @@ router.get('/:_id',validatedJwtToken, getOne)
  *       200:
  *         description: List
  */
-router.patch('/:_id',updateOne)
+router.patch(
+    '/:_id',
+        validateZodSchema(userUpdateZodSchema, 'body'),
+    updateOne
+)
 
 
 /**

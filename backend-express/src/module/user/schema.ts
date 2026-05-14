@@ -14,3 +14,5 @@ export const createUserSchema = userZodSchema.omit({
   createdAt: true,
   updatedAt: true,
 });
+
+export const userUpdateZodSchema  = userZodSchema.partial()

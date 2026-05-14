@@ -3,8 +3,8 @@ import path from "path";
 import dotenv from "dotenv";
 
 const envSchema = z.object({
-    MONGO_URI: z.string(),
-    PORT: z.coerce.number(),
+    MONGO_URI: z.string().min(1, "MONGO_URI is required"),
+  PORT: z.coerce.number().default(3000),
 });
 
 type Env = z.infer<typeof envSchema>;

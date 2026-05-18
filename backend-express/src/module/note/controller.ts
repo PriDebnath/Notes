@@ -11,7 +11,7 @@ export const syncNote = async (req: Request, res: Response) => {
         if (existingNote) {
             newNote = await updateNote(req.body)
         } else {
-            newNote = await createNote(req.body, req.user)
+            newNote = await createNote(req.body, req?.user!)
         }
         res.status(200).json(newNote)
     } catch (error: any) {
@@ -21,7 +21,7 @@ export const syncNote = async (req: Request, res: Response) => {
 
 export const getAllNote = async (req: Request, res: Response) => {
     try {
-        const data = await getNoteByUser(req.user?._id)
+        const data = await getNoteByUser(req.user?._id!)
         res.status(200).json(data)
     } catch (error: any) {
         errorHandler({ error, response: res })

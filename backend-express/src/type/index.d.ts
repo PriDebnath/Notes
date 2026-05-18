@@ -1,8 +1,9 @@
 import { JwtPayload } from "jsonwebtoken";
 import { userPayloadSchema } from "../module/auth/schema";
+import {  z } from "zod"
 
-type RequestUser = z.infer<typeof userPayloadSchema>;
-
+export type RequestUser = z.infer<typeof userPayloadSchema>;
+ 
 declare global {
   namespace Express {
     interface Request {

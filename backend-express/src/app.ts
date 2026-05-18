@@ -19,7 +19,7 @@ app.use(helmet( ))
 app.use(appMetric)
 app.use(express.json({ strict: false,limit:"10kb" }));
 
-app.use(rateLimit);
+// app.use(rateLimit);
 
 app.use(logger);
 

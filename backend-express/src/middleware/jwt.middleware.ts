@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express"
 import jwt from "jsonwebtoken";
 import { JWT_SECRECT } from "../utils/jwt";
 import { userPayloadSchema } from "../module/auth/schema";
+import { RequestUser } from "../type";
 
 
 export const validatedJwtToken = async (
@@ -22,7 +23,7 @@ export const validatedJwtToken = async (
             const decoded = jwt.verify(token, JWT_SECRECT)
             const user = await userPayloadSchema.parseAsync(decoded)
             // console.log({ decoded, user });
-            req.user = user
+            req.user = user  satisfies RequestUser
             nextFunction()
         } catch (error) {
             return res.status(401).json({ message: "Not authorized" });

@@ -9,11 +9,14 @@ import { router as routerNote } from "./module/note/router";
 import { router as routerUsers } from "./module/user/router";
 import { router as routerPractice} from "./module/practice/router";
 import { logger } from "./utils/config/logger.config";
+import { appMetric } from "./middleware/app-metric.middleware";
+import { register } from "./utils/app-metric";
 
 const app: Express = express()
 
 app.use(cors( ))
 app.use(helmet( ))
+app.use(appMetric)
 app.use(express.json({ strict: false,limit:"10kb" }));
 
 app.use(rateLimit);
@@ -22,6 +25,12 @@ app.use(logger);
 
  // Swagger for API docs
 app.use("/docs", swaggerUi.serve, swaggerUiApp);
+
+// Metric
+app.get("/metrics", async (req, res) => {
+  res.set("Content-Type", register.contentType)
+  res.end(await register.metrics())
+})
 
 // Routers
 app.use("/api/v1/users", routerUsers);

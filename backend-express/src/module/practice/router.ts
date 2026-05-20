@@ -7,9 +7,9 @@ const router: Router = Router()
 
 /**
  * @swagger
- * /api/v1/auth/practiceTransaction:
+ * /api/v1/practice/transaction:
  *   get:
- *     summary: practiceTransaction  
+ *     summary: transaction  
  *     tags: [Auth]
  *     responses: #@important to see response in ui.
  *       201:
@@ -17,6 +17,6 @@ const router: Router = Router()
  *       400:
  *         description: Invalid input
  */
-router.get("/tansaction", practiceTransaction)
+router.get("/transaction", practiceTransaction)
 
 export {router}

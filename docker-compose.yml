@@ -10,18 +10,17 @@ services:
       - "8000:8000"
 
     volumes:
-      # 🔥 bind code (live reload)
       - ./backend-express:/app/backend-express
 
-      # ❗ prevent node_modules overwrite
+      # prevent node_modules overwrite
       - /app/backend-express/node_modules
 
-      # 🔥 share root pnpm store cache (speed boost)
+      # share root pnpm store cache (speed boost)
       - pnpm-store:/root/.local/share/pnpm/store
 
     env_file:
       - .env
 
-    command: pnpm --filter backend-express dev
+    command: pnpm --filter backend-express dev    
 volumes:
   pnpm-store:

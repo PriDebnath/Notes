@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 
 const envSchema = z.object({
     MONGO_URI: z.string().min(1, "MONGO_URI is required"),
-  PORT: z.coerce.number().default(3000),
+    REDIS_URL: z.string().optional(),
+    PORT: z.coerce.number().default(3000),
 });
 
 type Env = z.infer<typeof envSchema>;

@@ -13,10 +13,13 @@ export const appMetric = async (
   const start = Date.now()
   res.on("finish", () => {
     const duration = (Date.now() - start) / 1000
-
+  const route =
+    req.route?.path ||
+    req.originalUrl?.split("?")[0] ||
+    "unknown";
     httpRequestDuration
-      .labels(req.method, req.route?.path || req.url, res.statusCode.toString())
+      .labels(req.method, route, res.statusCode.toString())
       .observe(duration)
-  })
+  }) 
   nextFunction()
 }

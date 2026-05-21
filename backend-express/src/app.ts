@@ -11,6 +11,7 @@ import { router as routerPractice} from "./module/practice/router";
 import { logger } from "./utils/config/logger.config";
 import { appMetric } from "./middleware/app-metric.middleware";
 import { register } from "./utils/app-metric";
+import { dashboardPath, serverAdapter } from "./utils/config/worker-dashboard.config";
 
 const app: Express = express()
 
@@ -19,12 +20,14 @@ app.use(helmet( ))
 app.use(appMetric)
 app.use(express.json({ strict: false,limit:"10kb" }));
 
-app.use(rateLimit);
-
+// app.use(rateLimit);
 app.use(logger);
 
  // Swagger for API docs
 app.use("/docs", swaggerUi.serve, swaggerUiApp);
+
+// Worker dashboard
+  app.use(dashboardPath, serverAdapter.getRouter());
 
 // Metric
 app.get("/metrics", async (req, res) => {

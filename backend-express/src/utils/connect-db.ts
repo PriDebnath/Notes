@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { getEnv } from "./load-env";
+import { env } from "./load-env";
 
 export const connectDB = async () => {
-    const { MONGO_URI } = getEnv()
+    const { MONGO_URI } = env
     try {
         await mongoose.connect(MONGO_URI, { family: 4 });
         console.log("🟩 MongoDB Connected");

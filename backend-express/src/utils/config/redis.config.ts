@@ -1,11 +1,11 @@
 import { createClient } from "redis"
-import { getEnv } from "../load-env"
+import { env } from "../load-env"
 
 export let clientRedis: ReturnType<typeof createClient>;
 
 export const connectRedis = async () => {
   try {
-    const url = getEnv().REDIS_URL;
+    const url = env.REDIS_URL;
 
     if (!url) {
       console.log("🟨 Redis disabled (no URL)");
@@ -18,7 +18,7 @@ export const connectRedis = async () => {
 
     console.log("🟩 redis is running");
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     console.error("🟥 redis is not running");
   }
 };

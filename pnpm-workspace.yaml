@@ -10,3 +10,4 @@ allowBuilds:
   cypress: true
   esbuild: true
   sharp: true
+  msgpackr-extract: true #for bullmq

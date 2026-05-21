@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express"
 import jwt from "jsonwebtoken";
 import { JWT_SECRECT } from "../utils/jwt";
 import { userPayloadSchema } from "../module/auth/schema";
-import { httpRequestDuration } from "../utils/app-metric";
+import { httpRequestDuration } from "../utils/config/app-metric.config";
 
 
 export const appMetric = async (

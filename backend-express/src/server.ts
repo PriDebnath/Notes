@@ -1,7 +1,7 @@
 import {  env} from "./utils/load-env"; // should be  at top
 import  app  from "./app"
 import { connectRedis } from "./utils/config/redis.config";
-import { connectDB } from "./utils/connect-db";
+import { connectDB } from "./utils/config/connect-db.config";
 
 async function startServer() {
   const { PORT } = env;

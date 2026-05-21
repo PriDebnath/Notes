@@ -1,0 +1,28 @@
+
+services:
+  backend-express:
+    container_name: backend-express
+    depends_on: 
+      - redis
+    build:
+      context: .
+      dockerfile: backend-express/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend-express:/app/backend-express
+      # prevent node_modules overwrite
+      - /app/backend-express/node_modules
+      # share root pnpm store cache (speed boost)
+      - pnpm-store:/root/.local/share/pnpm/store
+    env_file:
+      - .env
+    command: pnpm --filter backend-express dev    
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+volumes:
+  pnpm-store:

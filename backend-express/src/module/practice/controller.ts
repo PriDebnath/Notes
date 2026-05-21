@@ -1,12 +1,46 @@
 import { Request, Response, NextFunction } from "express";
 import { User, userModel } from "../user/model";
 import { errorHandler } from "../../utils/error-handler";
-import mongoose from "mongoose";
+import mongoose, { model } from "mongoose";
+import { clientRedis } from "../../utils/config/redis.config";
+import { queue } from "../../utils/config/worker.config ";
+
+export const practiceWorker = async (
+    req: Request, res: Response
+) => {
+    try {
+        if (!queue) {
+            return res.status(503).json({
+                message: "Queue is down (Redis not connected)",
+            });
+        }
+
+        await queue.add("test-job", {
+            name: "pritam debnath",
+            action: "send-email",
+        });
+
+        await queue.add("test-job", {
+            name: "fail",
+            fail: true,
+        });
+
+        return res.json({
+            success: true,
+            message: "Jobs added to queue",
+        });
+    } catch (error: any) {
+        console.log(error);
+        errorHandler({ error, response: res })
+    }
+
+}
+
 
 export const practiceTransaction = async (
     req: Request, res: Response
 ) => {
-  req.log.info('something else')
+    req.log.info('something else')
     console.log("  transaction call start");
     const _id = "69f1dfcb8dca2a9b04c36406"
     try {
@@ -15,13 +49,13 @@ export const practiceTransaction = async (
             let up = await userModel.findByIdAndUpdate(_id, {
                 name: "up2"
             },
-            { returnDocument: 'after' }
+                { returnDocument: 'after' }
             ).session(session)
 
             //console.log({ up });
 
 
-            let upp = await userModel.findByIdAndUpdate(_id+"yo", {
+            let upp = await userModel.findByIdAndUpdate(_id + "yo", {
                 name: "upp2"
             },
                 { returnDocument: 'after' }
@@ -33,8 +67,31 @@ export const practiceTransaction = async (
             console.log("  transaction complete");
         })
     } catch (error: any) {
+        console.log(error);
+
         console.log("  transaction failed");
         errorHandler({ error, response: res })
     }
 
+}
+
+
+export const practiceCache = async (req: Request, res: Response) => {
+    const cacheKey = "cache"
+
+    try {
+        const cachedData = await clientRedis?.get(cacheKey)
+        if (cachedData) {
+            res.status(200).json(JSON.parse(cachedData))
+            req.log.info("Data served from cache")
+            return
+        } else {
+            const data = await userModel.find()
+            res.status(200).json(data)
+            await clientRedis?.set(cacheKey, JSON.stringify(data))
+            req.log.info("Data served from db")
+        }
+    } catch (error) {
+        errorHandler({ error, response: res })
+    }
 }

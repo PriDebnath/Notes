@@ -1,7 +1,5 @@
 import { Router } from "express";
-import { practiceTransaction } from "./controller";
-
-
+import { practiceTransaction, practiceCache, practiceWorker } from "./controller";
 
 const router: Router = Router()
 
@@ -9,14 +7,42 @@ const router: Router = Router()
  * @swagger
  * /api/v1/practice/transaction:
  *   get:
- *     summary: transaction  
  *     tags: [Practice]
  *     responses: #@important to see response in ui.
  *       201:
- *         description: User registered successfully
+ *         description: success
  *       400:
  *         description: Invalid input
  */
 router.get("/transaction", practiceTransaction)
+
+/**
+ * @swagger
+ * /api/v1/practice/cache:
+ *   get:
+ *     tags: [Practice]
+ *     responses: #@important to see response in ui.
+ *       201:
+ *         description: success
+ *       400:
+ *         description: Invalid input
+ *     
+ */
+router.get('/cache', practiceCache)
+
+
+/**
+ * @swagger
+ * /api/v1/practice/worker:
+ *   get:
+ *     tags: [Practice]
+ *     responses: #@important to see response in ui.
+ *       201:
+ *         description: success
+ *       400:
+ *         description: Invalid input
+ *     
+ */
+router.get('/worker', practiceWorker)
 
 export {router}

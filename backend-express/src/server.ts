@@ -1,13 +1,14 @@
+import {  env} from "./utils/load-env"; // should be  at top
 import  app  from "./app"
-import { connectDB } from "./utils/connect-db";
-import {  getEnv, loadEnv } from "./utils/load-env";
+import { connectRedis } from "./utils/config/redis.config";
+import { connectDB } from "./utils/config/connect-db.config";
 
 async function startServer() {
-  await loadEnv();
+  const { PORT } = env;
 
   await connectDB()
 
-  const { PORT } = getEnv();
+  await connectRedis()
 
   app.listen(PORT || 8000, () => {
     console.log(`🟩 Server running on port ${PORT}`);

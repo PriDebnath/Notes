@@ -1,16 +1,17 @@
 import cors from "cors"
 import helmet from "helmet"
-import express, { Express,  } from "express"
 import swaggerUi from "swagger-ui-express"
-import {  rateLimit } from "./utils/config/rate-limiter.config";
-import { swaggerUiApp } from "./utils/config/swagger.config";
+import express, { Express,  } from "express"
+import { logger } from "./utils/config/logger.config";
 import { router as routerAuth } from "./module/auth/router";
 import { router as routerNote } from "./module/note/router";
+import { register } from "./utils/config/app-metric.config";
+import { swaggerUiApp } from "./utils/config/swagger.config";
 import { router as routerUsers } from "./module/user/router";
-import { router as routerPractice} from "./module/practice/router";
-import { logger } from "./utils/config/logger.config";
 import { appMetric } from "./middleware/app-metric.middleware";
-import { register } from "./utils/app-metric";
+import {  rateLimit } from "./utils/config/rate-limiter.config";
+import { router as routerPractice} from "./module/practice/router";
+import { dashboardPath, serverAdapter } from "./utils/config/worker-dashboard.config";
 
 const app: Express = express()
 
@@ -20,11 +21,13 @@ app.use(appMetric)
 app.use(express.json({ strict: false,limit:"10kb" }));
 
 app.use(rateLimit);
-
 app.use(logger);
 
  // Swagger for API docs
 app.use("/docs", swaggerUi.serve, swaggerUiApp);
+
+// Worker dashboard
+  app.use(dashboardPath, serverAdapter.getRouter());
 
 // Metric
 app.get("/metrics", async (req, res) => {

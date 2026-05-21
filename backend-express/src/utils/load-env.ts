@@ -2,33 +2,23 @@ import { z } from "zod";
 import path from "path";
 import dotenv from "dotenv";
 
+dotenv.config({
+    path: path.resolve(__dirname, "../../../.env"),
+});
+
 const envSchema = z.object({
     MONGO_URI: z.string().min(1, "MONGO_URI is required"),
-  PORT: z.coerce.number().default(3000),
+    REDIS_URL: z.string().optional(),
+    PORT: z.coerce.number().default(3000),
 });
 
 type Env = z.infer<typeof envSchema>;
 
-let env: Env;
+export let env: Env = envSchema.parse(process.env);
 
-export const loadEnv = async () => {
-    dotenv.config({
-        path: path.resolve(__dirname, "../../../.env"),
-    });
-
-    try {
-        env = await envSchema.parseAsync(process.env);
-        console.log("🟩 env data loaded");
-    } catch (error) {
-        console.error("🟥 could not load env data");
-        console.error(error);
-        process.exit(1);
-    }
-};
-
-export const getEnv = (): Env => {
-    if (!env) {
-        throw new Error("Env not loaded. Call loadEnv() first.");
-    }
-    return env;
-};
+if (env) {
+    console.log("🟩 env data loaded");
+} else {
+    console.error("🟥 could not load env data");
+    process.exit(1);
+}

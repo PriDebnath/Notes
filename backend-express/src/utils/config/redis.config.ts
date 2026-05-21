@@ -1,7 +1,7 @@
 import { createClient } from "redis"
 import { getEnv } from "../load-env"
 
-let client: ReturnType<typeof createClient>;
+export let clientRedis: ReturnType<typeof createClient>;
 
 export const connectRedis = async () => {
   try {
@@ -12,9 +12,9 @@ export const connectRedis = async () => {
       return;
     }
 
-    client = createClient({ url });
+    clientRedis = createClient({ url });
 
-    await client.connect();
+    await clientRedis.connect();
 
     console.log("🟩 redis is running");
   } catch (error) {
@@ -23,4 +23,3 @@ export const connectRedis = async () => {
   }
 };
 
-export { client };

@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { User, userModel } from "../user/model";
 import { errorHandler } from "../../utils/error-handler";
-import mongoose from "mongoose";
+import mongoose, { model } from "mongoose";
+import { clientRedis } from "../../utils/config/redis.config";
 
 export const practiceTransaction = async (
     req: Request, res: Response
@@ -37,4 +38,25 @@ export const practiceTransaction = async (
         errorHandler({ error, response: res })
     }
 
+}
+
+
+export const practiceCache  =async(req:Request, res: Response)=>{
+    const cacheKey = "cache"
+
+    try {
+        const cachedData = await clientRedis?.get(cacheKey)
+        if(cachedData){
+            res.status(200).json(JSON.parse(cachedData))
+            req.log.info("Data served from cache")
+            return
+        }else{
+        const data = await userModel.find()
+            res.status(200).json(data)
+           await clientRedis?.set(cacheKey, JSON.stringify(data))
+            req.log.info("Data served from db")
+        }
+    } catch (error) {
+        errorHandler({error, response: res})
+    }
 }

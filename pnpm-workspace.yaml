@@ -4,3 +4,9 @@ packages:
   - backend-express
   - testing/cypress-testing
   - testing/playwright-testing
+allowBuilds:
+  '@parcel/watcher': true
+  '@scarf/scarf': true
+  cypress: true
+  esbuild: true
+  sharp: true

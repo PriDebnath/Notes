@@ -10,7 +10,7 @@ const router: Router = Router()
  * /api/v1/practice/transaction:
  *   get:
  *     summary: transaction  
- *     tags: [Auth]
+ *     tags: [Practice]
  *     responses: #@important to see response in ui.
  *       201:
  *         description: User registered successfully

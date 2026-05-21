@@ -1,34 +1,31 @@
 import { env } from "../load-env";
 import { Queue, Worker } from "bullmq";
 
-const url = env.REDIS_URL
-if (!url) {
-  console.log("🟨 Redis disabled so does the worker (no URL)");
-}
+const channelName = "queue";
 
-const connection = {
-  url: url
-};
+export let queue: Queue | null = null;
 
-const channelName = "queue"
-export let queue = new Queue(channelName, { connection })
+export const startQueue = () => {
+  const url = env.REDIS_URL;
 
-if (queue) {
-    console.log("🟩 worker is running");
-}else{
-    console.log("🟥 worker is not running");
-}
-const worker = new Worker(
-  channelName,
-  async (job) => {
-    // console.log("Processing:", job.data);
+  if (!url) {
+    console.log("🟨 Redis disabled → skipping queue & worker");
+    return; // ✅ works here
+  }
 
-    //  mock failure condition
-    // if (job.data.fail) {
-    //   throw new Error(" Mock failure triggered");
-    // }  
+  const connection = { url };
+
+  queue = new Queue(channelName, { connection });
+
+  console.log("🟩 queue is running");
+
+  const worker = new Worker(
+    channelName,
+    async (job) => {
+      console.log("Processing:", job.data);
     },
-  { connection }
-)
+    { connection }
+  );
 
-
+  console.log("🟩 worker is running");
+};

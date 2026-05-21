@@ -9,20 +9,28 @@ export const practiceWorker = async (
     req: Request, res: Response
 ) => {
     try {
-        await queue?.add("test-job", {
-            name: "pritam sucks",
-            action: "send-email"
+        if (!queue) {
+            return res.status(503).json({
+                message: "Queue is down (Redis not connected)",
+            });
+        }
+
+        await queue.add("test-job", {
+            name: "pritam debnath",
+            action: "send-email",
         });
-          await queue?.add("test-job", {
-            name: "pritam fail",
-            fail: true
+
+        await queue.add("test-job", {
+            name: "fail",
+            fail: true,
         });
-        console.log('done ');
-        res.send(0)
+
+        return res.json({
+            success: true,
+            message: "Jobs added to queue",
+        });
     } catch (error: any) {
         console.log(error);
-
-        console.log("  transaction failed");
         errorHandler({ error, response: res })
     }
 

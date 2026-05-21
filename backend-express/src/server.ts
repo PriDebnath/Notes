@@ -1,5 +1,4 @@
 import {  env} from "./utils/load-env"; // should be  at top
-
 import  app  from "./app"
 import { connectRedis } from "./utils/config/redis.config";
 import { connectDB } from "./utils/connect-db";

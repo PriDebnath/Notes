@@ -7,8 +7,15 @@ export const dashboardPath = "/queues"
 export const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath(dashboardPath);
 
-createBullBoard({
-  queues: [new BullMQAdapter(queue)],
-  serverAdapter,
-});
+const runBullBoard = () => {
+  if (!queue) {
+    console.log("🟨 queue disabled → skipping queue UI");
+    return; 
+  }
+  createBullBoard({
+    queues: [new BullMQAdapter(queue)],
+    serverAdapter,
+  });
+}
 
+runBullBoard()

@@ -31,7 +31,7 @@ describe(Component.name, () => {
       await renderWithFileRoutes(<Component mode="add" />)
       const loader = await screen.queryByLabelText("loading-editor")
       if (loader) {
-        expect(await loader).toBeInTheDocument()
+        expect(loader).toBeInTheDocument()
         await waitForElementToBeRemoved(loader, { timeout: 8000 })
       }
       const editor = await screen.findByLabelText("editor")

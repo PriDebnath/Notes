@@ -33,7 +33,7 @@ beforeEach(() => {
     refetch: vi.fn()
   })
 })
- 
+
 describe(Component.name, () => {
   describe("rendering", () => {
     it("renders page with header and search", async () => {
@@ -60,7 +60,7 @@ describe(Component.name, () => {
         isLoading: true,
         error: undefined,
         refetch: vi.fn(),
-      }  )
+      })
 
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
@@ -77,7 +77,7 @@ describe(Component.name, () => {
     })
 
     it("renders notes when data exists", async () => {
-      const testContent = "test note" 
+      const testContent = "test note"
       mockUseGetAllNoteDetails.mockReturnValue({
         data: [
           {
@@ -90,12 +90,12 @@ describe(Component.name, () => {
         isLoading: false,
         error: undefined,
         refetch: vi.fn(),
-      }  )
+      })
 
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
 
-         const loaderList = await screen.queryByLabelText("loading-list")
+      const loaderList = await screen.queryByLabelText("loading-list")
       if (loaderList) {
         expect(await loaderList).toBeInTheDocument()
         await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
@@ -112,16 +112,16 @@ describe(Component.name, () => {
         isLoading: false,
         error: errorMessage,
         refetch: vi.fn(),
-      }  )
+      })
 
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
-    const loaderList = await screen.queryByLabelText("loading-list")
+      const loaderList = await screen.queryByLabelText("loading-list")
       if (loaderList) {
         expect(await loaderList).toBeInTheDocument()
         await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
       }
-      expect(await screen.findByText(errorMessage, {exact: false})).toBeInTheDocument()
+      expect(await screen.findByText(errorMessage, { exact: false })).toBeInTheDocument()
     })
 
     it("renders add new button with navigation link", async () => {
@@ -142,7 +142,7 @@ describe(Component.name, () => {
         isLoading: false,
         error: undefined,
         refetch: vi.fn(),
-      }  )
+      })
 
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
@@ -210,51 +210,55 @@ describe(Component.name, () => {
     })
   })
 
-  // describe("interaction", () => {
-  //   it("opens delete dialog and deletes note", async () => {
-  //     const firstItem = { id: 1, text: "delete me", tags: [{ id: 1, name: "life" }] }
-  //     const mockedData: GetAllNotesReturn = {
-  //       data: [firstItem],
-  //       isLoading: false,
-  //       error: undefined,
-  //       // refetch: vi.fn()
-  //       refetch: vi.fn(async () => {
-  //         mockedData.data = []
-  //         return {} as Awaited<ReturnType<GetAllNotesReturn["refetch"]>>
-  //       })
-  //     }
-  //     mockUseGetAllNoteDetails.mockReturnValue(mockedData)
+  describe("interaction", () => {
+    it("opens delete dialog and deletes note", async () => {
+      const firstItem = { id: 1, text: "delete me", tags: [{ id: 1, name: "life" }] }
+      const mockedData: GetAllNotesReturn = {
+        data: [firstItem],
+        isLoading: false,
+        error: undefined,
+        // refetch: vi.fn()
+        refetch: vi.fn(async () => {
+          mockedData.data = []
+          return {} as Awaited<ReturnType<GetAllNotesReturn["refetch"]>>
+        })
+      }
+      mockUseGetAllNoteDetails.mockReturnValue(mockedData)
 
-  //     await router.navigate({ to: "/" })
-  //     await renderWithFileRoutes(<Component />)
-  //     const loaderList = await screen.queryByLabelText("loading-list")
-  //     if (loaderList) {
-  //       expect(await loaderList).toBeInTheDocument()
-  //       await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
-  //     }
+      await router.navigate({ to: "/" })
+      await renderWithFileRoutes(<Component />)
+      const loaderList = await screen.queryByLabelText("loading-list")
+      if (loaderList) {
+        expect(loaderList).toBeInTheDocument()
+        await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
+      }
 
-  //     const list = await screen.queryByLabelText("list")
-  //     const firstText = screen.queryByText(mockedData?.data?.[0]?.text!)
-  //     await expect(firstText).toBeInTheDocument()
+      const list = await screen.queryByLabelText("list")
+      const firstText = screen.queryByText(mockedData?.data?.[0]?.text!)
+      await expect(firstText).toBeInTheDocument()
 
-  //     const deleteBtn = await screen.findByLabelText("delete-" + firstItem.id)
-  //     await userEvent.click(deleteBtn)
+      const deleteBtn = await screen.findByLabelText("delete-" + firstItem.id)
+      await userEvent.click(deleteBtn)
+      const deletePopupText = "Are you sure you want to delete ?"
+      const deletePopupTextElement = screen.queryByText(deletePopupText)
+      await expect(deletePopupTextElement).toBeInTheDocument()
 
-  //     const deletePopup = await screen.findByLabelText("delete")    
-  //     //  logDOM(deletePopup!)
+      const deletePopup = await screen.findByLabelText("delete")
+      logDOM(deleteBtn!)
 
-  //     await expect(deletePopup).toBeInTheDocument()
-  //      // logDOM(deleteBtn!)
+      await expect(deletePopup).toBeInTheDocument()
+      // logDOM(deleteBtn!)
 
-  //     await userEvent.click(deletePopup)
-  //      logDOM(deletePopup!)
+      await userEvent.click(deletePopup)
+      logDOM(deletePopup!)
 
-  //         //  await expect(mockedData.refetch).toHaveBeenCalled()
+      await waitForElementToBeRemoved(deletePopup, { timeout: 8000 })// important
+      await expect(mockedData.refetch).toHaveBeenCalled()
 
-  //     // await expect(deletePopup).not.toBeInTheDocument()
-  //     // await expect(firstText).not.toBeInTheDocument()
-  //   })
+      await expect(deletePopup).not.toBeInTheDocument()
+      await expect(firstText).not.toBeInTheDocument()
+    })
 
-   
-  // })
+
+  })
 })

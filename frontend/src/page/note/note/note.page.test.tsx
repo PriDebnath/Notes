@@ -7,10 +7,10 @@ import { renderWithFileRoutes } from '@/test/file-route-utils';
 import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { act, logDOM, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
-import { useGetNoteDetails } from '@/feature/note/hook/use-get-note-details.hook';
 
 /// mock hook
-vi.mock("@/api-hook/use-get-note-details.hook")
+import { useGetNoteDetails } from '@/feature/note/hook/use-get-note-details.hook';
+vi.mock("@/feature/note/hook/use-get-note-details.hook")// keep it same
 const mockUseGetNoteDetails = vi.mocked(useGetNoteDetails)
 
 beforeEach(() => {

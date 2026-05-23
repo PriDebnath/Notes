@@ -8,7 +8,7 @@ import { quote } from "@/src/module/quote/controller";
 import { logger } from "@/src/utils/logger";
 
 const app = new Elysia()
-  .use(openapi())
+  .use(openapi()) // Hit '/openapi'
   // Basic per-request logging
   .onRequest(({ request }) => {
     logger.info(
@@ -44,7 +44,7 @@ const app = new Elysia()
       })
       .get("/db", async () => {
         const res = await db.execute(sql`select 1`)
-        logger.info("✅ Database connected successfully")
+        logger.info("🟩 Database connected successfully")
         return {
           status: "ok",
           res

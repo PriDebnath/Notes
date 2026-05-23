@@ -10,6 +10,6 @@ export const env = envSchema.parse(process.env)
 const variableKeys = Object.keys(env).length
 const variableValues = Object.values(env).length
 logger.info(
-    "✅ Environment variables loaded successfully: " 
+    "🟩 Environment variables loaded successfully: " 
     + variableValues + "/" + variableKeys
 )

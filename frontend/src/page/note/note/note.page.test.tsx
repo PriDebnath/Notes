@@ -7,10 +7,10 @@ import { renderWithFileRoutes } from '@/test/file-route-utils';
 import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { act, logDOM, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
-import { useGetNoteDetails } from '@/feature/note/hook/use-get-note-details.hook';
 
 /// mock hook
-vi.mock("@/api-hook/use-get-note-details.hook")
+import { useGetNoteDetails } from '@/feature/note/hook/use-get-note-details.hook';
+vi.mock("@/feature/note/hook/use-get-note-details.hook")// keep it same
 const mockUseGetNoteDetails = vi.mocked(useGetNoteDetails)
 
 beforeEach(() => {
@@ -31,7 +31,7 @@ describe(Component.name, () => {
       await renderWithFileRoutes(<Component mode="add" />)
       const loader = await screen.queryByLabelText("loading-editor")
       if (loader) {
-        expect(await loader).toBeInTheDocument()
+        expect(loader).toBeInTheDocument()
         await waitForElementToBeRemoved(loader, { timeout: 8000 })
       }
       const editor = await screen.findByLabelText("editor")

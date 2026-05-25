@@ -18,6 +18,6 @@ export const quotes = pgTable(
         updated_at: timestamp('updated_at').defaultNow().notNull(),
         deleted_at: timestamp('deleted_at'),
         is_deleted: boolean('is_deleted').default(false).notNull(),
-        user_id: integer("user_id").references(() => users.id, { onDelete: "cascade" })
+        user_id: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull()
     }
 )

@@ -29,6 +29,13 @@
       "when": 1779703134477,
       "tag": "0003_silky_wallow",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779708054512,
+      "tag": "0004_mushy_night_thrasher",
+      "breakpoints": true
     }
   ]
 }

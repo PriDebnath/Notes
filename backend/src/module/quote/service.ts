@@ -18,7 +18,7 @@ class QuoteService {
     }
     async createQuote(quote: NewQuote): Promise<Quote> {
         const newQuote = await db.insert(table.quotes).values({
-            text: quote.text,
+            ...quote,
             createdAt: new Date(),
             updatedAt: new Date(),
         }).returning()

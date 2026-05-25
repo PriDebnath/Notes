@@ -3,8 +3,11 @@ import {
     timestamp,
     serial,
     text,
-    boolean
+    boolean,
+    foreignKey,
+    integer
 } from 'drizzle-orm/pg-core'
+import { users } from '../user/model'
 
 export const quotes = pgTable(
     'quotes',
@@ -15,5 +18,6 @@ export const quotes = pgTable(
         updatedAt: timestamp('updated_at').defaultNow().notNull(),
         deletedAt: timestamp('deleted_at'),
         isDeleted: boolean('is_deleted').default(false).notNull(),
+        userId: integer().references(() => users.id, { onDelete: "cascade" })
     }
 )

@@ -15,6 +15,13 @@
       "when": 1779691598135,
       "tag": "0001_volatile_tigra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779696527242,
+      "tag": "0002_fixed_maverick",
+      "breakpoints": true
     }
   ]
 }

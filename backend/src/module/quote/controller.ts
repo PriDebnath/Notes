@@ -59,6 +59,7 @@ export const quoteController = new Elysia({ prefix: '/quote' })
         async ({ body, cookie: { session } }) => {
             const response = await quoteService.createQuote({
                 text: body.text,
+                userId:1 // dummy
             })
             return response
         }, {

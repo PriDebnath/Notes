@@ -7,6 +7,7 @@ import { openapi } from "@elysiajs/openapi";
 import { quoteController } from "@/src/module/quote/controller";
 import { logger } from "@/src/utils/logger";
 import { userController } from "./module/user/controller";
+import { authController } from "./module/auth/controller";
 
 const app = new Elysia()
   .use(openapi()) // Hit '/openapi'
@@ -58,6 +59,7 @@ const app = new Elysia()
         }
       })
   })
+  .use(authController)
   .use(quoteController)
   .use(userController)
   .listen(3000);

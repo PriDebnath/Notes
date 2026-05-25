@@ -2,7 +2,7 @@ import { Elysia, t } from 'elysia'
 import { quoteService } from '@/src/module/quote/service'
 import { createQuoteSchema, queryQuoteSchema, updateQuoteSchema } from '@/src/module/quote/type'
 
-export const quote = new Elysia({ prefix: '/quote' })
+export const quoteController = new Elysia({ prefix: '/quote' })
     .get(
         '/:id',
         async ({ params, cookie: { session } }) => {

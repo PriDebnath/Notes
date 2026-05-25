@@ -4,8 +4,9 @@ import { Elysia } from "elysia";
 import { sql } from "drizzle-orm";
 import { db } from "@/src/database/connection";
 import { openapi } from "@elysiajs/openapi";
-import { quote } from "@/src/module/quote/controller";
+import { quoteController } from "@/src/module/quote/controller";
 import { logger } from "@/src/utils/logger";
+import { userController } from "./module/user/controller";
 
 const app = new Elysia()
   .use(openapi()) // Hit '/openapi'
@@ -57,7 +58,8 @@ const app = new Elysia()
         }
       })
   })
-  .use(quote)
+  .use(quoteController)
+  .use(userController)
   .listen(3000);
 
 logger.info(

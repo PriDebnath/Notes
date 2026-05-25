@@ -8,4 +8,4 @@ export const table = {
 
 export type Table = typeof table
 
-// export * from "@/src/module/quote/schema";
+export { quotes }  // drizzle look at it to maintain migration

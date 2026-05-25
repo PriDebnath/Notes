@@ -4,7 +4,7 @@ import { InferInsertModel } from "drizzle-orm"
 
 export type User = typeof users.$inferInsert
 
-export type CreateUser = Pick<InferInsertModel<typeof users>, "first_name" | "last_name"|'email'>
+export type CreateUser = Pick<InferInsertModel<typeof users>, "name"|'email'>
 
 export const createUserSchema = z.object({
   first_name: z.string().min(1).max(100),

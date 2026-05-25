@@ -4,8 +4,8 @@ import { boolean, char, pgTable, serial, text, timestamp, varchar} from "drizzle
 
 export const users = pgTable("users", {
     id: serial().primaryKey(),
-    first_name:  varchar( { length: 100 }),
-    last_name:  varchar( { length: 100 }),
+    name:  varchar( { length: 100 }),
+    password:  varchar( { length: 20 }),
     email: text().notNull(),
     created_at: timestamp().defaultNow().notNull(),
     updated_at: timestamp().defaultNow().notNull(),

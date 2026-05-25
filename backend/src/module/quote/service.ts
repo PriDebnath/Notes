@@ -1,8 +1,8 @@
 
 import { eq } from 'drizzle-orm'
-import { db } from '@/src/database'
-import { table } from '@/src/database/schema/quote/quote.schema'
-import type { NewQuote, Quote } from '@/src/database/model/quote/quote.model'
+import { db } from '@/src/database/connection'
+import { table } from '@/src/database/model'
+import type { NewQuote, Quote } from '@/src/module/quote/schema'
 
 class QuoteService {    
     async getQuote(id: number): Promise<Quote | null> {

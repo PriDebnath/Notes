@@ -2,7 +2,7 @@ import "dotenv/config"
 import "@/src/utils/env" // load environment variables and match with zod schema defined in env.ts
 import { Elysia } from "elysia";
 import { sql } from "drizzle-orm";
-import { db } from "@/src/database";
+import { db } from "@/src/database/connection";
 import { openapi } from "@elysiajs/openapi";
 import { quote } from "@/src/module/quote/controller";
 import { logger } from "@/src/utils/logger";

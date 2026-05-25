@@ -1,4 +1,6 @@
-import type { quotes } from "@/src/database/schema/quote/quote.schema"
+
+
+import type { quotes } from "@/src/module/quote/model"
 
 export type Quote = typeof quotes.$inferSelect
 

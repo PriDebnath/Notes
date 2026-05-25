@@ -17,9 +17,3 @@ export const quotes = pgTable(
         isDeleted: boolean('is_deleted').default(false).notNull(),
     }
 )
-
-export const table = {
-	quotes
-} as const
-
-export type Table = typeof table

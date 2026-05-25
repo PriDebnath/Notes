@@ -36,6 +36,13 @@
       "when": 1779708054512,
       "tag": "0004_mushy_night_thrasher",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1779709206171,
+      "tag": "0005_slippery_roughhouse",
+      "breakpoints": true
     }
   ]
 }

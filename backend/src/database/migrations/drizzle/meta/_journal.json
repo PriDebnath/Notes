@@ -22,6 +22,13 @@
       "when": 1779696527242,
       "tag": "0002_fixed_maverick",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779703134477,
+      "tag": "0003_silky_wallow",
+      "breakpoints": true
     }
   ]
 }

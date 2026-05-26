@@ -8,8 +8,19 @@ import { quoteController } from "@/src/module/quote/controller";
 import { logger } from "@/src/utils/logger";
 import { userController } from "./module/user/controller";
 import { authController } from "./module/auth/controller";
+import { authPlugin } from "./module/auth/plugin";
 
 const app = new Elysia()
+  .use(authPlugin)
+  .guard({
+    beforeHandle(request) {
+      const authUser = request?.authUser
+      if (!authUser) {
+        request.set.status = 401
+        throw new Error('Unauthorized')
+      }
+    }
+  })
   .use(openapi()) // Hit '/openapi'
   // Basic per-request logging
   .onRequest(({ request }) => {

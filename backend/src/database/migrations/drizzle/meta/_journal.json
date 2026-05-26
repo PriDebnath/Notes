@@ -50,6 +50,13 @@
       "when": 1779710798168,
       "tag": "0006_natural_black_crow",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1779800765579,
+      "tag": "0007_moaning_talos",
+      "breakpoints": true
     }
   ]
 }

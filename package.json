@@ -13,7 +13,7 @@
     "build:frontend": "pnpm --filter frontend build",
     "dev:frontend": "pnpm --filter frontend dev",
     "d:f": "pnpm --filter frontend dev",
-    "dev:backend": "cd backend &&  bun dev",
+    "dev:backend-elysia-pg": "cd backend-elysia-pg &&  bun dev",
     "dev:backend-express": "cd backend-express && npm run dev",
     "d:b": "cd backend-express && npm run dev",
     "clean:softer": "pnpm cache delete",

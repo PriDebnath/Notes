@@ -8,7 +8,7 @@ importers:
 
   .: {}
 
-  backend:
+  backend-elysia-pg:
     dependencies:
       '@elysiajs/openapi':
         specifier: ^1.4.13

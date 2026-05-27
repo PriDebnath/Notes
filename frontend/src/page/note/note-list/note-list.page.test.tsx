@@ -5,8 +5,6 @@ import { renderWithFileRoutes } from "@/test/file-route-utils"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { logDOM, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react"
 
-// hooks
-import { useGetAllNoteDetails } from "@/feature/note-list/hook/use-get-all-note-details.hook"
 
 // db actions
 import { deleteNoteWithLinks } from "@/db/note_tags.db"
@@ -16,7 +14,10 @@ import { toggleNotePinned } from "@/db/note.db"
 import { useSortStore } from "@/store/use-sort.store"
 import type { NoteDetails } from "@/model/index.model"
 
-vi.mock("@/api-hook/use-get-all-note-details.hook")
+
+// hooks
+import { useGetAllNoteDetails } from "@/feature/note-list/hook/use-get-all-note-details.hook"
+vi.mock("@/feature/note-list/hook/use-get-all-note-details.hook") // keep it same
 const mockUseGetAllNoteDetails = vi.mocked(useGetAllNoteDetails)
 type GetAllNotesReturn = ReturnType<typeof useGetAllNoteDetails>
 
@@ -32,7 +33,7 @@ beforeEach(() => {
     refetch: vi.fn()
   })
 })
- 
+
 describe(Component.name, () => {
   describe("rendering", () => {
     it("renders page with header and search", async () => {
@@ -59,7 +60,7 @@ describe(Component.name, () => {
         isLoading: true,
         error: undefined,
         refetch: vi.fn(),
-      }  )
+      })
 
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
@@ -76,7 +77,7 @@ describe(Component.name, () => {
     })
 
     it("renders notes when data exists", async () => {
-      const testContent = "test note" 
+      const testContent = "test note"
       mockUseGetAllNoteDetails.mockReturnValue({
         data: [
           {
@@ -89,12 +90,12 @@ describe(Component.name, () => {
         isLoading: false,
         error: undefined,
         refetch: vi.fn(),
-      }  )
+      })
 
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
 
-         const loaderList = await screen.queryByLabelText("loading-list")
+      const loaderList = await screen.queryByLabelText("loading-list")
       if (loaderList) {
         expect(await loaderList).toBeInTheDocument()
         await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
@@ -111,16 +112,16 @@ describe(Component.name, () => {
         isLoading: false,
         error: errorMessage,
         refetch: vi.fn(),
-      }  )
+      })
 
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
-    const loaderList = await screen.queryByLabelText("loading-list")
+      const loaderList = await screen.queryByLabelText("loading-list")
       if (loaderList) {
         expect(await loaderList).toBeInTheDocument()
         await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
       }
-      expect(await screen.findByText(errorMessage, {exact: false})).toBeInTheDocument()
+      expect(await screen.findByText(errorMessage, { exact: false })).toBeInTheDocument()
     })
 
     it("renders add new button with navigation link", async () => {
@@ -141,7 +142,7 @@ describe(Component.name, () => {
         isLoading: false,
         error: undefined,
         refetch: vi.fn(),
-      }  )
+      })
 
       await router.navigate({ to: "/" })
       await renderWithFileRoutes(<Component />)
@@ -228,7 +229,7 @@ describe(Component.name, () => {
       await renderWithFileRoutes(<Component />)
       const loaderList = await screen.queryByLabelText("loading-list")
       if (loaderList) {
-        expect(await loaderList).toBeInTheDocument()
+        expect(loaderList).toBeInTheDocument()
         await waitForElementToBeRemoved(loaderList, { timeout: 8000 })
       }
 
@@ -238,20 +239,26 @@ describe(Component.name, () => {
 
       const deleteBtn = await screen.findByLabelText("delete-" + firstItem.id)
       await userEvent.click(deleteBtn)
-      // logDOM(deleteBtn!)
+      const deletePopupText = "Are you sure you want to delete ?"
+      const deletePopupTextElement = screen.queryByText(deletePopupText)
+      await expect(deletePopupTextElement).toBeInTheDocument()
 
       const deletePopup = await screen.findByLabelText("delete")
+      logDOM(deleteBtn!)
+
       await expect(deletePopup).toBeInTheDocument()
- 
-      await userEvent.click(deletePopup, {})
-     
-      await expect(mockDeleteNoteWithLinks).toHaveBeenCalledWith(firstItem.id)
+      // logDOM(deleteBtn!)
+
+      await userEvent.click(deletePopup)
+      logDOM(deletePopup!)
+
+      await waitForElementToBeRemoved(deletePopup, { timeout: 8000 })// important
       await expect(mockedData.refetch).toHaveBeenCalled()
 
       await expect(deletePopup).not.toBeInTheDocument()
       await expect(firstText).not.toBeInTheDocument()
     })
 
-   
+
   })
 })

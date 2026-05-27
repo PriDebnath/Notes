@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
-        "noUnusedLocals": false,
+    "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "ignoreDeprecations" :"6.0" ,
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "target": "es6",
-    "lib": ["es6", "dom"],
-    "types": ["cypress", "node"]
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "types": [
+      "cypress",
+      "node"
+    ]
   },
 }

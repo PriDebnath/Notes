@@ -1,8 +1,10 @@
 import { Elysia, t } from 'elysia'
 import { quoteService } from '@/src/module/quote/service'
 import { createQuoteSchema, queryQuoteSchema, updateQuoteSchema } from '@/src/module/quote/type'
+import { authPlugin } from '../auth/plugin'
 
 export const quoteController = new Elysia({ prefix: '/quote' })
+    .use(authPlugin)
     .get(
         '/:id',
         async ({ params, cookie: { session } }) => {
@@ -56,10 +58,11 @@ export const quoteController = new Elysia({ prefix: '/quote' })
     })
     .post(
         '/',
-        async ({ body, cookie: { session } }) => {
+        async (req) => {
+            const { body, cookie: { session }, authUser }=req
             const response = await quoteService.createQuote({
                 text: body.text,
-                user_id:1 // dummy
+                user_id: authUser?.id!
             })
             return response
         }, {

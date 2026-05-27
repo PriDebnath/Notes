@@ -1,6 +1,6 @@
 import Elysia from "elysia"
 import { signInSchema, signUpSchema } from "./schema"
-import { getUser, getUserByEmail } from "../user/service"
+import { createUser, getUser, getUserByEmail } from "../user/service"
 import bcrypt from "bcrypt"
 import { authPlugin } from "./plugin"
 import { userDetailSchema } from "../user/schema"
@@ -29,7 +29,19 @@ export const authController = new Elysia({ prefix: authControllerPrifix })
         tags: [authControllerPrifix]
     })
     .post("sign-up", async (req) => {
-const {  } = req.body
+        const { name, email, password } = req.body
+         const existingUser = await getUserByEmail(email)
+        if (existingUser) {
+            req.set.status = 400
+            throw new Error("User already present");
+        }
+        const passwordHash = await bcrypt.hash(password, 8)
+        const user = await createUser({
+            email,
+            name,
+            password: passwordHash,
+        })
+        return user
     }, {
         body: signUpSchema,
         tags: [authControllerPrifix]

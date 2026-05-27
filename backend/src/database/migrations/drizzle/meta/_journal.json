@@ -57,6 +57,13 @@
       "when": 1779800765579,
       "tag": "0007_moaning_talos",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1779801772493,
+      "tag": "0008_fixed_argent",
+      "breakpoints": true
     }
   ]
 }

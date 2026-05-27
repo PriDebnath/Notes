@@ -10,13 +10,13 @@ import { userController } from "./module/user/controller";
 import { authController, authControllerPrifix } from "./module/auth/controller";
 import { authPlugin } from "./module/auth/plugin";
 
-const docControllerPrifix = "/docs"
+export const docControllerPrifix = "/docs"
 
 const app = new Elysia()
   .use(authPlugin)
-  .guard({
+ .guard({
     beforeHandle(request) {
-      console.log({ p: request.path });
+      // console.log({ p: request.path });
       const path = request.path
       if (
         path.startsWith(authControllerPrifix)
@@ -52,7 +52,7 @@ const app = new Elysia()
   })
   .onAfterResponse((response) => {
     logger.info({
-      // response,
+      response,
       status: response.set.status,
     }, "After response");
   })

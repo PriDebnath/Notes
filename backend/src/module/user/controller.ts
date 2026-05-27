@@ -1,9 +1,11 @@
 import Elysia from "elysia";
 import { createUser, getUserQuotes, getUsers } from "./service";
 import { createUserSchema } from "./schema";
+import { authPlugin } from "../auth/plugin";
 
 const name = "users"
 export const userController = new Elysia({ prefix: name })
+    .use(authPlugin)
     .get("/", async (req) => {
         const users = getUsers()
         return users

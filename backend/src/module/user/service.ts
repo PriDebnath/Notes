@@ -1,6 +1,6 @@
 import { db } from "@/src/database/connection"
 import { table } from "@/src/database/model"
-import { CreateUser } from "./schema"
+import { CreateUser, userDetailSchema } from "./schema"
 import { eq } from "drizzle-orm"
 
 export const getUser = async (id:number) => {
@@ -26,6 +26,7 @@ export const getUserQuotes = async () => {
 }
 
 export const createUser = async (user: CreateUser) => {
-    const newUser = await db.insert(table.users).values(user).returning()
-    return newUser
+    const [newUser] = await db.insert(table.users).values(user).returning()
+    const userDetail = await userDetailSchema.parseAsync(newUser)
+    return userDetail
 }

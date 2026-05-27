@@ -1,1 +1,0 @@
-export * from "@/src/database/schema/quote/quote.schema";

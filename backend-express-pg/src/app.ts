@@ -1,15 +1,15 @@
 import cors from "cors"
 // import helmet from "helmet"
-// import swaggerUi from "swagger-ui-express"
+import swaggerUi from "swagger-ui-express"
 import express, { Express,  } from "express"
-// import { logger } from "./utils/config/logger.config";
+import { logger } from "./utils/config/logger.config";
 // import { router as routerAuth } from "./module/auth/router";
 // import { router as routerNote } from "./module/note/router";
 // import { register } from "./utils/config/app-metric.config";
-// import { swaggerUiApp } from "./utils/config/swagger.config";
+import { swaggerUiApp } from "./utils/config/swagger.config";
 // import { router as routerUsers } from "./module/user/router";
 // import { appMetric } from "./middleware/app-metric.middleware";
-// import {  rateLimit } from "./utils/config/rate-limiter.config";
+import {  rateLimit } from "./utils/config/rate-limiter.config";
 // import { router as routerPractice} from "./module/practice/router";
 // import { dashboardPath, serverAdapter } from "./utils/config/worker-dashboard.config";
 
@@ -20,11 +20,11 @@ app.use(cors( ))
 // app.use(appMetric)
 app.use(express.json({ strict: false,limit:"10kb" }));
 
-// app.use(rateLimit);
-// app.use(logger);
+app.use(rateLimit);
+app.use(logger);
 
- // Swagger for API docs
-// app.use("/docs", swaggerUi.serve, swaggerUiApp);
+////  Swagger for API docs
+app.use("/docs", swaggerUi.serve, swaggerUiApp);
 
 // Worker dashboard
   // app.use(dashboardPath, serverAdapter.getRouter());

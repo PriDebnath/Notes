@@ -1,8 +1,13 @@
 
 services:
+  redis: 
+    image: redis:7
+    container_name: backend-express-pg-redis
+    ports:
+      - "6379:6379"
   db: # run postgres container on port 5432
     image: postgres:16
-    container_name: quotes-keeper-postgres
+    container_name: backend-express-pg-postgres
     restart: unless-stopped
     environment: 
       POSTGRES_USER: postgres

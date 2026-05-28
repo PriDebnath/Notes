@@ -3,13 +3,13 @@ import path from "path";
 import dotenv from "dotenv";
 
 dotenv.config({
-    path: path.resolve(__dirname, "../../../.env"),
+    path: path.resolve(__dirname, "../../.env"),
 });
 
 const envSchema = z.object({
-    MONGO_URI: z.string().min(1, "MONGO_URI is required"),
     REDIS_URL: z.string().optional(),
-    PORT: z.coerce.number().default(3000),
+    PORT: z.coerce.number().default(8000),
+    PG_DATABASE_URL: z.string().min(1, "PG_DATABASE_URL is required"),
 });
 
 type Env = z.infer<typeof envSchema>;

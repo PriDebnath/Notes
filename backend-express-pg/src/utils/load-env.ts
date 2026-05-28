@@ -17,8 +17,8 @@ type Env = z.infer<typeof envSchema>;
 export let env: Env = envSchema.parse(process.env);
 
 if (env) {
-    console.log("🟩 env data loaded");
+    console.log("🟩 ENV data loaded");
 } else {
-    console.error("🟥 could not load env data");
+    console.error("🟥ENV could not load");
     process.exit(1);
 }

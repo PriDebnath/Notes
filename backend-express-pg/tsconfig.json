@@ -4,16 +4,11 @@
     "outDir": "./dist",
     "module": "commonjs",
     "target": "es2020",
+
     "esModuleInterop": true,
     "strict": true,
-    "ignoreDeprecations": "6.0",
-    "baseUrl": "./",
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
+
     "sourceMap": true,
     "skipLibCheck": true
-  }
+  },
 }

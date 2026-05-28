@@ -7,7 +7,7 @@ import {
     foreignKey,
     integer
 } from 'drizzle-orm/pg-core'
-// import { users } from '../user/model'
+import { users } from '../user/model'
 
 export const notes = pgTable(
     'notes',
@@ -18,6 +18,6 @@ export const notes = pgTable(
         updated_at: timestamp('updated_at').defaultNow().notNull(),
         deleted_at: timestamp('deleted_at'),
         is_deleted: boolean('is_deleted').default(false).notNull(),
-        // user_id: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull()
+        user_id: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull()
     }
 )

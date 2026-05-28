@@ -1,17 +1,17 @@
 
 
 import { notes } from "../../module/note/model";
-// import { users } from "@/src/module/user/model";
+import { users } from "../../module/user/model";
 
 export const table = {
 	notes,
-    // users,
+    users,
 } as const
 
 export type Table = typeof table
 
 export { 
     notes, 
-    // users 
+    users 
 // 
 }  // drizzle look at it to maintain migration

@@ -3,7 +3,7 @@ import cors from "cors"
 import swaggerUi from "swagger-ui-express"
 import express, { Express,  } from "express"
 import { logger } from "./utils/config/logger.config";
-// import { router as routerAuth } from "./module/auth/router";
+import { router as routerAuth } from "./module/auth/router";
 import { router as routerNote } from "./module/note/router";
 // import { register } from "./utils/config/app-metric.config";
 import { swaggerUiApp } from "./utils/config/swagger.config";
@@ -37,7 +37,7 @@ app.use("/docs", swaggerUi.serve, swaggerUiApp);
 
 // Routers
 // app.use("/api/v1/users", routerUsers);
-// app.use("/api/v1/auth", routerAuth);
+app.use("/api/v1/auth", routerAuth);
 app.use("/api/v1/notes", routerNote);
 // app.use("/api/v1/practice", routerPractice);
 

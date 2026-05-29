@@ -13,6 +13,14 @@ export const userFullSchema = z.object({
 }) satisfies z.ZodType<typeof users.$inferSelect>
 
 
+export const createUserShema = z.object({
+    email: z.email(),
+    name: z.string(),
+    password: z.string(),
+}) satisfies z.ZodType<typeof users.$inferInsert>
+
+export type CreateUser = typeof users.$inferInsert
+
 export const userSchema = userFullSchema.omit({
     password: true
 })

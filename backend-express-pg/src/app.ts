@@ -10,6 +10,7 @@ import { swaggerUiApp } from "./utils/config/swagger.config";
 // import { router as routerUsers } from "./module/user/router";
 // import { appMetric } from "./middleware/app-metric.middleware";
 import {  rateLimit } from "./utils/config/rate-limiter.config";
+import { validateJwt } from "./middleware/validate-jwt";
 // import { router as routerPractice} from "./module/practice/router";
 // import { dashboardPath, serverAdapter } from "./utils/config/worker-dashboard.config";
 
@@ -19,9 +20,12 @@ app.use(cors( ))
 // app.use(helmet( ))
 // app.use(appMetric)
 app.use(express.json({ strict: false,limit:"10kb" }));
-
-app.use(rateLimit);
 app.use(logger);
+app.use(rateLimit);
+
+ // custom middleware 
+// app.use(validateJwt);// can apply at globally 
+
 
 ////  Swagger for API docs
 app.use("/docs", swaggerUi.serve, swaggerUiApp);
@@ -44,6 +48,5 @@ app.use("/api/v1/notes", routerNote);
 app.get("/", (req, res) => {
     res.send({ message: "🟩 Server is up and running" })
 })
-// const testReq = {} as import("express").Request
-// testReq.user // ← hover this
+
 export default app  

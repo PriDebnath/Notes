@@ -1,6 +1,5 @@
-import { UserDetail } from "../module/user/schema"
+import { RequestUser } from "../module/user/schema"
 
-export type RequestUser = UserDetail
 
 declare global {
   namespace Express {

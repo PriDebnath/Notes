@@ -19,6 +19,13 @@ export const createUserShema = z.object({
     password: z.string(),
 }) satisfies z.ZodType<typeof users.$inferInsert>
 
+export const userSignInSchema = createUserShema.omit({
+    name: true
+})
+
+export type  UserSignIn =z.infer <typeof userSignInSchema>
+
+
 export type CreateUser = typeof users.$inferInsert
 
 export const userSchema = userFullSchema.omit({
@@ -26,3 +33,11 @@ export const userSchema = userFullSchema.omit({
 })
 
 export type  UserDetail =z.infer <typeof userSchema>
+
+export const requestUserSchema = userSchema.omit({
+    created_at: true,
+    updated_at: true,
+    is_deleted: true,
+})
+
+export type  RequestUser = z.infer <typeof requestUserSchema>

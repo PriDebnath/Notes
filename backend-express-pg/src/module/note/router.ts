@@ -16,17 +16,11 @@ const router =  Router()
  *           schema:
  *             type: object
  *             required:
- *               - email
- *               - password
+ *               - text
  *             properties:
- *               email:
+ *               text:
  *                 type: string
- *                 format: email
- *                 example: debnathpritam0802@gmail.com
- *               password:
- *                 type: string
- *                 format: password
- *                 example: strongPassword123
+ *                 example: text
  *     responses: #@important to see response in ui.
  *       200:
  *         description: success

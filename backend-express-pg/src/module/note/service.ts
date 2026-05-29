@@ -30,3 +30,9 @@ export const updateNote = async (param: UpdateNote) => {
         .returning()
     return item
 }
+
+export const deleteNote = async (id: number) => {
+    const item = await db.delete(table.notes)
+        .where(eq(table.notes.id, id))
+    return item
+}

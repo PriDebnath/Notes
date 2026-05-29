@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addNoteController, getNotesController, updateNoteController } from "./controller";
+import { addNoteController, getNotesController, updateNoteController, getNoteController, deleteNoteController } from "./controller";
 import { validateJwt } from "../../../src/middleware/validate-jwt";
 
 const router =  Router()
@@ -67,5 +67,42 @@ router.post("/", validateJwt, addNoteController )
  *         description: success
  */
 router.patch("/:id", validateJwt, updateNoteController )
+
+/**
+ * @swagger
+ *   /api/v1/notes/{id}:
+ *   get:
+ *     tags: [Notes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Note ID
+ *     responses: #@important to see response in ui.
+ *       200:
+ *         description: success
+ */
+router.get("/:id", validateJwt, getNoteController )
+
+/**
+ * @swagger
+ *   /api/v1/notes/{id}:
+ *   delete:
+ *     tags: [Notes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Note ID
+ *     responses: #@important to see response in ui.
+ *       200:
+ *         description: success
+ */
+router.delete("/:id", validateJwt, deleteNoteController)
+
 
 export { router }

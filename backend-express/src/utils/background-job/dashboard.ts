@@ -1,7 +1,7 @@
 import { createBullBoard } from "@bull-board/api";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { ExpressAdapter } from "@bull-board/express";
-import { queueService } from "./worker.config ";
+import { queueManager } from "../background-job/index";
 
 export const dashboardPath = "/queues";
 
@@ -9,10 +9,11 @@ export const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath(dashboardPath);
 
 export function runBullBoard() {
-  if (!queueService) return;
-
+  if (!queueManager) return;
   createBullBoard({
-    queues: [new BullMQAdapter(queueService.queue)],
+    queues: queueManager
+      .getAll()
+      .map(queue => new BullMQAdapter(queue)),
     serverAdapter,
   });
 }

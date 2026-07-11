@@ -3,29 +3,35 @@ import { User, userModel } from "../user/model";
 import { errorHandler } from "../../utils/error-handler";
 import mongoose, { model } from "mongoose";
 import { clientRedis } from "../../utils/config/redis.config";
-import { queueService } from "../../utils/config/worker.config ";
+import { queueManager } from "../../utils/background-job/index";
+// import { queueService } from "../../utils/config/worker.config ";
 
-const queue = queueService?.queue
+const emailQueue = queueManager?.get('email')
+const notificationQueue = queueManager?.get('notification')
 
 export const practiceWorker = async (
     req: Request, res: Response
 ) => {
     try {
-        if (!queue) {
+        if (!emailQueue) {
             return res.status(503).json({
                 message: "Queue is down (Redis not connected)",
             });
         }
 
-        await queue.add("test-job", {
-            name: "pritam debnath",
+        await emailQueue.add("test-job", {
             action: "send-email",
         });
 
-        await queue.add("test-job", {
+        await emailQueue.add("test-job", {
             name: "fail",
-            fail: true,
         });
+
+        setTimeout(async () => {
+            await notificationQueue?.add("sent-after-2-scond", {
+                name: "anything",
+            });
+        }, 2000);
 
         return res.json({
             success: true,

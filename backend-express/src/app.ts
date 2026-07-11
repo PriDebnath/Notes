@@ -11,7 +11,7 @@ import { router as routerUsers } from "./module/user/router";
 import { appMetric } from "./middleware/app-metric.middleware";
 import { rateLimit } from "./utils/config/rate-limiter.config";
 import { router as routerPractice } from "./module/practice/router";
-import { dashboardPath, runBullBoard, serverAdapter } from "./utils/config/worker-dashboard.config";
+import { dashboardPath, runBullBoard, serverAdapter } from "./utils/background-job/dashboard";
 
 const app: Express = express()
 

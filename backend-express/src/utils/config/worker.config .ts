@@ -1,31 +1,36 @@
+// queue.service.ts
+
+import { Queue, Worker, type ConnectionOptions } from "bullmq";
 import { env } from "../load-env";
-import { Queue, Worker } from "bullmq";
+import { runBullBoard } from "./worker-dashboard.config";
 
-const channelName = "queue";
+export class QueueService {
+  readonly queue: Queue;
+  readonly worker: Worker;
 
-export let queue: Queue | null = null;
+  constructor(connection: ConnectionOptions, queueName: string) {
+    this.queue = new Queue(queueName, { connection });
 
-export const startQueue = () => {
-  const url = env.REDIS_URL;
-
-  if (!url) {
-    console.log("🟨 Redis disabled → skipping queue & worker");
-    return; // ✅ works here
+    this.worker = new Worker(
+      queueName,
+      async (job) => {
+        console.log("Processing:", job.data);
+      },
+      { connection }
+    );
   }
+}
 
-  const connection = { url };
+export const queueService =
+  env.REDIS_URL
+    ? new QueueService({ url: env.REDIS_URL }, "queue")
+    : null;
 
-  queue = new Queue(channelName, { connection });
+if (!queueService) {
+  console.log("🟨 Redis disabled");
+} else {
+  console.log("🟩 Queue running");
+  runBullBoard();
+}
 
-  console.log("🟩 queue is running");
 
-  const worker = new Worker(
-    channelName,
-    async (job) => {
-      console.log("Processing:", job.data);
-    },
-    { connection }
-  );
-
-  console.log("🟩 worker is running");
-};

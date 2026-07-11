@@ -3,7 +3,9 @@ import { User, userModel } from "../user/model";
 import { errorHandler } from "../../utils/error-handler";
 import mongoose, { model } from "mongoose";
 import { clientRedis } from "../../utils/config/redis.config";
-import { queue } from "../../utils/config/worker.config ";
+import { queueService } from "../../utils/config/worker.config ";
+
+const queue = queueService?.queue
 
 export const practiceWorker = async (
     req: Request, res: Response
